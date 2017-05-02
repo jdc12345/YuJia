@@ -39,6 +39,8 @@
 		3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5D1EB831170094CBE4 /* UIBarButtonItem+Helper.m */; };
 		3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */; };
 		3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F611EB831170094CBE4 /* ZYAlertSView.m */; };
+		3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F771EB897C20094CBE4 /* JXPageView.m */; };
+		3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F791EB897CD0094CBE4 /* JXSegment.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +127,12 @@
 		3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
 		3E984F601EB831170094CBE4 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
 		3E984F611EB831170094CBE4 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
+		3E984F711EB87F300094CBE4 /* JXPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXPageView.h; sourceTree = "<group>"; };
+		3E984F721EB87F300094CBE4 /* JXPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPageView.m; sourceTree = "<group>"; };
+		3E984F731EB87F300094CBE4 /* JXSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXSegment.h; sourceTree = "<group>"; };
+		3E984F741EB87F300094CBE4 /* JXSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXSegment.m; sourceTree = "<group>"; };
+		3E984F771EB897C20094CBE4 /* JXPageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = JXPageView.m; path = YuJia/JXPageView.m; sourceTree = "<group>"; };
+		3E984F791EB897CD0094CBE4 /* JXSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = JXSegment.m; path = YuJia/JXSegment.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
 		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +215,8 @@
 		3E984EDD1EB821EE0094CBE4 = {
 			isa = PBXGroup;
 			children = (
+				3E984F791EB897CD0094CBE4 /* JXSegment.m */,
+				3E984F771EB897C20094CBE4 /* JXPageView.m */,
 				3E984EE81EB821EE0094CBE4 /* YuJia */,
 				3E984F021EB821EE0094CBE4 /* YuJiaTests */,
 				3E984F0D1EB821EE0094CBE4 /* YuJiaUITests */,
@@ -326,6 +336,7 @@
 			children = (
 				3E984F461EB82B550094CBE4 /* HomePageViewController.h */,
 				3E984F471EB82B550094CBE4 /* HomePageViewController.m */,
+				3E984F6A1EB87BA90094CBE4 /* View */,
 			);
 			name = HomePage;
 			sourceTree = "<group>";
@@ -369,6 +380,17 @@
 				3E984EFA1EB821EE0094CBE4 /* Info.plist */,
 			);
 			name = Other;
+			sourceTree = "<group>";
+		};
+		3E984F6A1EB87BA90094CBE4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F711EB87F300094CBE4 /* JXPageView.h */,
+				3E984F721EB87F300094CBE4 /* JXPageView.m */,
+				3E984F731EB87F300094CBE4 /* JXSegment.h */,
+				3E984F741EB87F300094CBE4 /* JXSegment.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		9A0057F069AF3E6774E301F8 /* Pods */ = {
@@ -574,6 +596,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
+				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
