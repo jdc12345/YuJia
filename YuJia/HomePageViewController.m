@@ -24,13 +24,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 16, 60, 12)];
-    titleLabel.text = @"切换实景";
-    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-    titleLabel.font = [UIFont systemFontOfSize:12];
-    
-    
+    // Left item
     UIButton *leftNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftNavBtn.frame = CGRectMake(10, 16, 60, 12);
     [leftNavBtn setTitle:@"切换实景" forState:UIControlStateNormal];
@@ -40,14 +34,18 @@
     [self.navigationController.navigationBar addSubview:leftNavBtn];
     
     
+    // Left item
+    UIButton *rightNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightNavBtn.frame = CGRectMake(kScreenW -22, 16, 12, 12);
+    [rightNavBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
+    [rightNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:rightNavBtn];
+    
+    
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     
     // 改变navBar 下面的线
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-//    UIImageView *imageViewHead = [[UIImageView alloc]initWithFrame:CGRectMake(0, navigationBar.frame.size.height +20, kScreenW, 3)];
-//    imageViewHead.image = [UIImage imageNamed:@"headshadow"];
-//    imageViewHead.contentMode = UIViewContentModeScaleToFill;
-//    [self.view addSubview:imageViewHead];
     navBarHairlineImageView = [self findHairlineImageViewUnder:navigationBar];
     UILabel *coverView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 1)];
     coverView.backgroundColor = [UIColor colorWithHexString:@"e9e9e9"];
