@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE151EB864C900583A7F /* UIColor+colorValues.m */; };
+		1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE181EB86A1100583A7F /* YYFunctionListFlowLayout.m */; };
+		1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE1B1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m */; };
+		1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1661FE1D1EB8761900583A7F /* FunctionsList.plist */; };
+		1661FE211EB8777800583A7F /* NSArray+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE201EB8777800583A7F /* NSArray+Addition.m */; };
+		1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE231EB8788700583A7F /* NSObject+Addition.m */; };
+		1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE261EB8789100583A7F /* UILabel+Addition.m */; };
+		1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE291EB8792100583A7F /* YYPropertyFunctionList.m */; };
+		1661FE2D1EB880BF00583A7F /* YYPropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE2C1EB880BF00583A7F /* YYPropertyTableViewCell.m */; };
+		1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -29,8 +39,8 @@
 		3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5D1EB831170094CBE4 /* UIBarButtonItem+Helper.m */; };
 		3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */; };
 		3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F611EB831170094CBE4 /* ZYAlertSView.m */; };
-		3E984F751EB87F300094CBE4 /* JXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F721EB87F300094CBE4 /* JXPageView.m */; };
-		3E984F761EB87F300094CBE4 /* JXSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F741EB87F300094CBE4 /* JXSegment.m */; };
+		3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F771EB897C20094CBE4 /* JXPageView.m */; };
+		3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F791EB897CD0094CBE4 /* JXSegment.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +62,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1661FE141EB864C900583A7F /* UIColor+colorValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+colorValues.h"; sourceTree = "<group>"; };
+		1661FE151EB864C900583A7F /* UIColor+colorValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+colorValues.m"; sourceTree = "<group>"; };
+		1661FE171EB86A1100583A7F /* YYFunctionListFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFunctionListFlowLayout.h; sourceTree = "<group>"; };
+		1661FE181EB86A1100583A7F /* YYFunctionListFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFunctionListFlowLayout.m; sourceTree = "<group>"; };
+		1661FE1A1EB86D8F00583A7F /* YYFunctionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFunctionCollectionViewCell.h; sourceTree = "<group>"; };
+		1661FE1B1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFunctionCollectionViewCell.m; sourceTree = "<group>"; };
+		1661FE1D1EB8761900583A7F /* FunctionsList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FunctionsList.plist; sourceTree = "<group>"; };
+		1661FE1F1EB8777800583A7F /* NSArray+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Addition.h"; sourceTree = "<group>"; };
+		1661FE201EB8777800583A7F /* NSArray+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Addition.m"; sourceTree = "<group>"; };
+		1661FE221EB8788700583A7F /* NSObject+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Addition.h"; sourceTree = "<group>"; };
+		1661FE231EB8788700583A7F /* NSObject+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Addition.m"; sourceTree = "<group>"; };
+		1661FE251EB8789100583A7F /* UILabel+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Addition.h"; sourceTree = "<group>"; };
+		1661FE261EB8789100583A7F /* UILabel+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Addition.m"; sourceTree = "<group>"; };
+		1661FE281EB8792100583A7F /* YYPropertyFunctionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPropertyFunctionList.h; sourceTree = "<group>"; };
+		1661FE291EB8792100583A7F /* YYPropertyFunctionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPropertyFunctionList.m; sourceTree = "<group>"; };
+		1661FE2B1EB880BF00583A7F /* YYPropertyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPropertyTableViewCell.h; sourceTree = "<group>"; };
+		1661FE2C1EB880BF00583A7F /* YYPropertyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPropertyTableViewCell.m; sourceTree = "<group>"; };
+		1661FE2E1EB88B4800583A7F /* YYPropertyItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPropertyItemModel.h; sourceTree = "<group>"; };
+		1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPropertyItemModel.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -102,6 +131,8 @@
 		3E984F721EB87F300094CBE4 /* JXPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXPageView.m; sourceTree = "<group>"; };
 		3E984F731EB87F300094CBE4 /* JXSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JXSegment.h; sourceTree = "<group>"; };
 		3E984F741EB87F300094CBE4 /* JXSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JXSegment.m; sourceTree = "<group>"; };
+		3E984F771EB897C20094CBE4 /* JXPageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = JXPageView.m; path = YuJia/JXPageView.m; sourceTree = "<group>"; };
+		3E984F791EB897CD0094CBE4 /* JXSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = JXSegment.m; path = YuJia/JXSegment.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
 		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,9 +163,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1661FE101EB8646B00583A7F /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				1661FE141EB864C900583A7F /* UIColor+colorValues.h */,
+				1661FE151EB864C900583A7F /* UIColor+colorValues.m */,
+				1661FE1F1EB8777800583A7F /* NSArray+Addition.h */,
+				1661FE201EB8777800583A7F /* NSArray+Addition.m */,
+				1661FE221EB8788700583A7F /* NSObject+Addition.h */,
+				1661FE231EB8788700583A7F /* NSObject+Addition.m */,
+				1661FE251EB8789100583A7F /* UILabel+Addition.h */,
+				1661FE261EB8789100583A7F /* UILabel+Addition.m */,
+			);
+			name = tools;
+			sourceTree = "<group>";
+		};
+		1661FE111EB8647D00583A7F /* M */ = {
+			isa = PBXGroup;
+			children = (
+				1661FE1D1EB8761900583A7F /* FunctionsList.plist */,
+				1661FE281EB8792100583A7F /* YYPropertyFunctionList.h */,
+				1661FE291EB8792100583A7F /* YYPropertyFunctionList.m */,
+				1661FE2E1EB88B4800583A7F /* YYPropertyItemModel.h */,
+				1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */,
+			);
+			name = M;
+			sourceTree = "<group>";
+		};
+		1661FE121EB8648500583A7F /* V */ = {
+			isa = PBXGroup;
+			children = (
+				1661FE171EB86A1100583A7F /* YYFunctionListFlowLayout.h */,
+				1661FE181EB86A1100583A7F /* YYFunctionListFlowLayout.m */,
+				1661FE1A1EB86D8F00583A7F /* YYFunctionCollectionViewCell.h */,
+				1661FE1B1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m */,
+				1661FE2B1EB880BF00583A7F /* YYPropertyTableViewCell.h */,
+				1661FE2C1EB880BF00583A7F /* YYPropertyTableViewCell.m */,
+			);
+			name = V;
+			sourceTree = "<group>";
+		};
+		1661FE131EB8649100583A7F /* C */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */,
+				3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */,
+			);
+			name = C;
+			sourceTree = "<group>";
+		};
 		3E984EDD1EB821EE0094CBE4 = {
 			isa = PBXGroup;
 			children = (
+				3E984F791EB897CD0094CBE4 /* JXSegment.m */,
+				3E984F771EB897C20094CBE4 /* JXPageView.m */,
 				3E984EE81EB821EE0094CBE4 /* YuJia */,
 				3E984F021EB821EE0094CBE4 /* YuJiaTests */,
 				3E984F0D1EB821EE0094CBE4 /* YuJiaUITests */,
@@ -262,8 +344,10 @@
 		3E984F211EB829B80094CBE4 /* PropertyPage */ = {
 			isa = PBXGroup;
 			children = (
-				3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */,
-				3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */,
+				1661FE101EB8646B00583A7F /* tools */,
+				1661FE131EB8649100583A7F /* C */,
+				1661FE121EB8648500583A7F /* V */,
+				1661FE111EB8647D00583A7F /* M */,
 			);
 			name = PropertyPage;
 			sourceTree = "<group>";
@@ -438,6 +522,7 @@
 			files = (
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
+				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,
 				3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,25 +596,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
+				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
+				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
-				3E984F751EB87F300094CBE4 /* JXPageView.m in Sources */,
+				1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */,
+				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
+				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
+				1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
-				3E984F761EB87F300094CBE4 /* JXSegment.m in Sources */,
+				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
 				3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */,
 				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
+				1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */,
+				1661FE2D1EB880BF00583A7F /* YYPropertyTableViewCell.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,
+				1661FE211EB8777800583A7F /* NSArray+Addition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
