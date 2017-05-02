@@ -9,5 +9,15 @@
 #import "YYPropertyFunctionList.h"
 
 @implementation YYPropertyFunctionList
++ (instancetype)itemWithDict:(NSDictionary *)dict{
+    
+    YYPropertyFunctionList *model = [[YYPropertyFunctionList alloc] init];
+    
+    [model setValuesForKeysWithDictionary:dict];
+    return model;
+}
 
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+}
 @end

@@ -8,6 +8,8 @@
 
 #import "CircleGroupViewController.h"
 #import "UIColor+colorValues.h"
+#import "YYCircleTableViewCell.h"
+#import "YYPropertyFunctionList.h"
 
 static NSString* cellid = @"cell_id";
 @interface CircleGroupViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -31,7 +33,19 @@ static NSString* cellid = @"cell_id";
 
 }
 - (void)loadData{
+    NSArray *items = @[@[@{@"name":@"友邻圈",@"icon":@"friends_circle"}],@[@{@"name":@"社区活动",@"icon":@"community_activities"}]
+                       ,@[@{@"name":@"社区拼车",@"icon":@"community_carpool"}]];
     
+    NSMutableArray* arrayItem = [NSMutableArray array];
+    for (NSArray *itemArr in items) {
+        NSMutableArray* arrayM = [NSMutableArray array];
+        for (NSDictionary* dict in itemArr) {
+            YYPropertyFunctionList *model = [YYPropertyFunctionList itemWithDict:dict];
+            [arrayM addObject:model];
+        }
+        [arrayItem addObject:arrayM];
+    }
+    self.itemsData = arrayItem;
     [self setUpUI];
 }
 - (void)setUpUI {
@@ -42,7 +56,7 @@ static NSString* cellid = @"cell_id";
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellid];
+    [tableView registerClass:[YYCircleTableViewCell class] forCellReuseIdentifier:cellid];
     // 轮播器
     
 }
@@ -54,8 +68,8 @@ static NSString* cellid = @"cell_id";
     return 1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid forIndexPath:indexPath];
-    
+    YYCircleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid forIndexPath:indexPath];
+    cell.model = self.itemsData[indexPath.section][indexPath.row];
     return cell;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -67,7 +81,7 @@ static NSString* cellid = @"cell_id";
     return 5*kiphone6;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 33*kiphone6;
+    return 50*kiphone6;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];

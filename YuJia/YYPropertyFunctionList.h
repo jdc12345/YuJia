@@ -11,4 +11,5 @@
 @interface YYPropertyFunctionList : NSObject
 @property (nonatomic, copy) NSString* name;
 @property (nonatomic, copy) NSString* icon;
++ (instancetype)itemWithDict:(NSDictionary *)dict;
 @end

@@ -17,6 +17,7 @@
 		1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE291EB8792100583A7F /* YYPropertyFunctionList.m */; };
 		1661FE2D1EB880BF00583A7F /* YYPropertyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE2C1EB880BF00583A7F /* YYPropertyTableViewCell.m */; };
 		1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */; };
+		1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -81,6 +82,8 @@
 		1661FE2C1EB880BF00583A7F /* YYPropertyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPropertyTableViewCell.m; sourceTree = "<group>"; };
 		1661FE2E1EB88B4800583A7F /* YYPropertyItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPropertyItemModel.h; sourceTree = "<group>"; };
 		1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPropertyItemModel.m; sourceTree = "<group>"; };
+		1661FE341EB89D4000583A7F /* YYCircleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCircleTableViewCell.h; sourceTree = "<group>"; };
+		1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCircleTableViewCell.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -208,6 +211,29 @@
 			children = (
 				3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */,
 				3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */,
+			);
+			name = C;
+			sourceTree = "<group>";
+		};
+		1661FE311EB89D0D00583A7F /* M */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = M;
+			sourceTree = "<group>";
+		};
+		1661FE321EB89D1800583A7F /* V */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = V;
+			sourceTree = "<group>";
+		};
+		1661FE331EB89D1E00583A7F /* C */ = {
+			isa = PBXGroup;
+			children = (
+				1661FE341EB89D4000583A7F /* YYCircleTableViewCell.h */,
+				1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -357,6 +383,9 @@
 			children = (
 				3E984F4C1EB82B7E0094CBE4 /* CircleGroupViewController.h */,
 				3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */,
+				1661FE331EB89D1E00583A7F /* C */,
+				1661FE321EB89D1800583A7F /* V */,
+				1661FE311EB89D0D00583A7F /* M */,
 			);
 			name = CircleGroupPage;
 			sourceTree = "<group>";
@@ -616,6 +645,7 @@
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,
+				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
 				3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */,
 				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
