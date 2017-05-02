@@ -9,12 +9,27 @@
 /* Begin PBXBuildFile section */
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
-		3E984EF11EB821EE0094CBE4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EF01EB821EE0094CBE4 /* ViewController.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
 		3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF51EB821EE0094CBE4 /* Assets.xcassets */; };
 		3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF71EB821EE0094CBE4 /* LaunchScreen.storyboard */; };
 		3E984F041EB821EE0094CBE4 /* YuJiaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F031EB821EE0094CBE4 /* YuJiaTests.m */; };
 		3E984F0F1EB821EE0094CBE4 /* YuJiaUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F0E1EB821EE0094CBE4 /* YuJiaUITests.m */; };
+		3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F261EB82AC50094CBE4 /* YYNavigationController.m */; };
+		3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F281EB82AC50094CBE4 /* YYTabBarController.m */; };
+		3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */; };
+		3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */; };
+		3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F471EB82B550094CBE4 /* HomePageViewController.m */; };
+		3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */; };
+		3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */; };
+		3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F511EB82BA20094CBE4 /* PersonalViewController.m */; };
+		3E984F621EB831170094CBE4 /* HttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F551EB831170094CBE4 /* HttpClient.m */; };
+		3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F571EB831170094CBE4 /* NSArray+Log.m */; };
+		3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F591EB831170094CBE4 /* NSDictionary+Log.m */; };
+		3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5B1EB831170094CBE4 /* NSString+unicode.m */; };
+		3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5D1EB831170094CBE4 /* UIBarButtonItem+Helper.m */; };
+		3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */; };
+		3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F611EB831170094CBE4 /* ZYAlertSView.m */; };
+		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,12 +50,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3E984EED1EB821EE0094CBE4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3E984EEF1EB821EE0094CBE4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		3E984EF01EB821EE0094CBE4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		3E984EF31EB821EE0094CBE4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3E984EF51EB821EE0094CBE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E984EF81EB821EE0094CBE4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +65,39 @@
 		3E984F0A1EB821EE0094CBE4 /* YuJiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YuJiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984F0E1EB821EE0094CBE4 /* YuJiaUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YuJiaUITests.m; sourceTree = "<group>"; };
 		3E984F101EB821EE0094CBE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E984F251EB82AC50094CBE4 /* YYNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYNavigationController.h; sourceTree = "<group>"; };
+		3E984F261EB82AC50094CBE4 /* YYNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYNavigationController.m; sourceTree = "<group>"; };
+		3E984F271EB82AC50094CBE4 /* YYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarController.h; sourceTree = "<group>"; };
+		3E984F281EB82AC50094CBE4 /* YYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBarController.m; sourceTree = "<group>"; };
+		3E984F291EB82AC50094CBE4 /* YYTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBar.h; sourceTree = "<group>"; };
+		3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBar.m; sourceTree = "<group>"; };
+		3E984F2B1EB82AC50094CBE4 /* YYTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarItem.h; sourceTree = "<group>"; };
+		3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBarItem.m; sourceTree = "<group>"; };
+		3E984F461EB82B550094CBE4 /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
+		3E984F471EB82B550094CBE4 /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
+		3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyViewController.h; sourceTree = "<group>"; };
+		3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyViewController.m; sourceTree = "<group>"; };
+		3E984F4C1EB82B7E0094CBE4 /* CircleGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleGroupViewController.h; sourceTree = "<group>"; };
+		3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleGroupViewController.m; sourceTree = "<group>"; };
+		3E984F501EB82BA20094CBE4 /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
+		3E984F511EB82BA20094CBE4 /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
+		3E984F531EB82E5D0094CBE4 /* YYDefine.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYDefine.pch; sourceTree = "<group>"; };
+		3E984F541EB831170094CBE4 /* HttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpClient.h; sourceTree = "<group>"; };
+		3E984F551EB831170094CBE4 /* HttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpClient.m; sourceTree = "<group>"; };
+		3E984F561EB831170094CBE4 /* NSArray+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Log.h"; sourceTree = "<group>"; };
+		3E984F571EB831170094CBE4 /* NSArray+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = "<group>"; };
+		3E984F581EB831170094CBE4 /* NSDictionary+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Log.h"; sourceTree = "<group>"; };
+		3E984F591EB831170094CBE4 /* NSDictionary+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Log.m"; sourceTree = "<group>"; };
+		3E984F5A1EB831170094CBE4 /* NSString+unicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+unicode.h"; sourceTree = "<group>"; };
+		3E984F5B1EB831170094CBE4 /* NSString+unicode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+unicode.m"; sourceTree = "<group>"; };
+		3E984F5C1EB831170094CBE4 /* UIBarButtonItem+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Helper.h"; sourceTree = "<group>"; };
+		3E984F5D1EB831170094CBE4 /* UIBarButtonItem+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Helper.m"; sourceTree = "<group>"; };
+		3E984F5E1EB831170094CBE4 /* UIColor+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extension.h"; sourceTree = "<group>"; };
+		3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
+		3E984F601EB831170094CBE4 /* ZYAlertSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYAlertSView.h; sourceTree = "<group>"; };
+		3E984F611EB831170094CBE4 /* ZYAlertSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYAlertSView.m; sourceTree = "<group>"; };
+		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
+		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +133,8 @@
 				3E984F021EB821EE0094CBE4 /* YuJiaTests */,
 				3E984F0D1EB821EE0094CBE4 /* YuJiaUITests */,
 				3E984EE71EB821EE0094CBE4 /* Products */,
+				9A0057F069AF3E6774E301F8 /* Pods */,
+				FA9530CEF4F09046F856354B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,14 +151,8 @@
 		3E984EE81EB821EE0094CBE4 /* YuJia */ = {
 			isa = PBXGroup;
 			children = (
-				3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */,
-				3E984EED1EB821EE0094CBE4 /* AppDelegate.m */,
-				3E984EEF1EB821EE0094CBE4 /* ViewController.h */,
-				3E984EF01EB821EE0094CBE4 /* ViewController.m */,
-				3E984EF21EB821EE0094CBE4 /* Main.storyboard */,
-				3E984EF51EB821EE0094CBE4 /* Assets.xcassets */,
-				3E984EF71EB821EE0094CBE4 /* LaunchScreen.storyboard */,
-				3E984EFA1EB821EE0094CBE4 /* Info.plist */,
+				3E984F1C1EB829410094CBE4 /* Root_Tools */,
+				3E984F1D1EB8294A0094CBE4 /* Classes */,
 				3E984EE91EB821EE0094CBE4 /* Supporting Files */,
 			);
 			path = YuJia;
@@ -140,6 +184,130 @@
 			path = YuJiaUITests;
 			sourceTree = "<group>";
 		};
+		3E984F1C1EB829410094CBE4 /* Root_Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F541EB831170094CBE4 /* HttpClient.h */,
+				3E984F551EB831170094CBE4 /* HttpClient.m */,
+				3E984F561EB831170094CBE4 /* NSArray+Log.h */,
+				3E984F571EB831170094CBE4 /* NSArray+Log.m */,
+				3E984F581EB831170094CBE4 /* NSDictionary+Log.h */,
+				3E984F591EB831170094CBE4 /* NSDictionary+Log.m */,
+				3E984F5A1EB831170094CBE4 /* NSString+unicode.h */,
+				3E984F5B1EB831170094CBE4 /* NSString+unicode.m */,
+				3E984F5C1EB831170094CBE4 /* UIBarButtonItem+Helper.h */,
+				3E984F5D1EB831170094CBE4 /* UIBarButtonItem+Helper.m */,
+				3E984F5E1EB831170094CBE4 /* UIColor+Extension.h */,
+				3E984F5F1EB831170094CBE4 /* UIColor+Extension.m */,
+				3E984F601EB831170094CBE4 /* ZYAlertSView.h */,
+				3E984F611EB831170094CBE4 /* ZYAlertSView.m */,
+			);
+			name = Root_Tools;
+			sourceTree = "<group>";
+		};
+		3E984F1D1EB8294A0094CBE4 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F1E1EB829710094CBE4 /* AppDelegate */,
+				3E984F1F1EB829830094CBE4 /* Tab+Nav */,
+				3E984F201EB829960094CBE4 /* HomePage */,
+				3E984F211EB829B80094CBE4 /* PropertyPage */,
+				3E984F221EB829D20094CBE4 /* CircleGroupPage */,
+				3E984F231EB829FA0094CBE4 /* PersonalPage */,
+				3E984F241EB82A060094CBE4 /* Other */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		3E984F1E1EB829710094CBE4 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */,
+				3E984EED1EB821EE0094CBE4 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		3E984F1F1EB829830094CBE4 /* Tab+Nav */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F251EB82AC50094CBE4 /* YYNavigationController.h */,
+				3E984F261EB82AC50094CBE4 /* YYNavigationController.m */,
+				3E984F271EB82AC50094CBE4 /* YYTabBarController.h */,
+				3E984F281EB82AC50094CBE4 /* YYTabBarController.m */,
+				3E984F291EB82AC50094CBE4 /* YYTabBar.h */,
+				3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */,
+				3E984F2B1EB82AC50094CBE4 /* YYTabBarItem.h */,
+				3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */,
+			);
+			name = "Tab+Nav";
+			sourceTree = "<group>";
+		};
+		3E984F201EB829960094CBE4 /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F461EB82B550094CBE4 /* HomePageViewController.h */,
+				3E984F471EB82B550094CBE4 /* HomePageViewController.m */,
+			);
+			name = HomePage;
+			sourceTree = "<group>";
+		};
+		3E984F211EB829B80094CBE4 /* PropertyPage */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */,
+				3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */,
+			);
+			name = PropertyPage;
+			sourceTree = "<group>";
+		};
+		3E984F221EB829D20094CBE4 /* CircleGroupPage */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F4C1EB82B7E0094CBE4 /* CircleGroupViewController.h */,
+				3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */,
+			);
+			name = CircleGroupPage;
+			sourceTree = "<group>";
+		};
+		3E984F231EB829FA0094CBE4 /* PersonalPage */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
+				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
+			);
+			name = PersonalPage;
+			sourceTree = "<group>";
+		};
+		3E984F241EB82A060094CBE4 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F531EB82E5D0094CBE4 /* YYDefine.pch */,
+				3E984EF21EB821EE0094CBE4 /* Main.storyboard */,
+				3E984EF51EB821EE0094CBE4 /* Assets.xcassets */,
+				3E984EF71EB821EE0094CBE4 /* LaunchScreen.storyboard */,
+				3E984EFA1EB821EE0094CBE4 /* Info.plist */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		9A0057F069AF3E6774E301F8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */,
+				E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FA9530CEF4F09046F856354B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				31C7631CFB80932FA44BD479 /* libPods-YuJia.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +315,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3E984F131EB821EE0094CBE4 /* Build configuration list for PBXNativeTarget "YuJia" */;
 			buildPhases = (
+				42224D88EB5389098900AA59 /* [CP] Check Pods Manifest.lock */,
 				3E984EE21EB821EE0094CBE4 /* Sources */,
 				3E984EE31EB821EE0094CBE4 /* Frameworks */,
 				3E984EE41EB821EE0094CBE4 /* Resources */,
+				2E9E26B762F17188460D3D1F /* [CP] Embed Pods Frameworks */,
+				30F05BC4CAE1DC2E14DD7226 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -268,13 +439,75 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2E9E26B762F17188460D3D1F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuJia/Pods-YuJia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		30F05BC4CAE1DC2E14DD7226 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuJia/Pods-YuJia-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		42224D88EB5389098900AA59 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3E984EE21EB821EE0094CBE4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E984EF11EB821EE0094CBE4 /* ViewController.m in Sources */,
+				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
+				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
+				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
+				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
+				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
+				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
+				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
+				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
+				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
+				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
+				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
+				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
+				3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */,
+				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
+				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +594,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -408,6 +642,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -424,8 +659,11 @@
 		};
 		3E984F141EB821EE0094CBE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/YuJia/YYDefine.pch";
 				INFOPLIST_FILE = YuJia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.technology.YuJia;
@@ -435,8 +673,11 @@
 		};
 		3E984F151EB821EE0094CBE4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/YuJia/YYDefine.pch";
 				INFOPLIST_FILE = YuJia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.technology.YuJia;
@@ -509,6 +750,7 @@
 				3E984F151EB821EE0094CBE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3E984F161EB821EE0094CBE4 /* Build configuration list for PBXNativeTarget "YuJiaTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +759,7 @@
 				3E984F181EB821EE0094CBE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3E984F191EB821EE0094CBE4 /* Build configuration list for PBXNativeTarget "YuJiaUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +768,7 @@
 				3E984F1B1EB821EE0094CBE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,0 +1,55 @@
+//
+//  YYDefine.pch
+//  YuYi_Client
+//
+//  Created by wylt_ios_1 on 2017/2/17.
+//  Copyright © 2017年 wylt_ios_1. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+
+#define PrefixHeader_pch
+#ifdef __OBJC__ // 只被object－c文件所引用
+//#import <SVProgressHUD.h>
+#pragma mark -
+#pragma mark  ------------Size----------------------
+
+#define kScreenW [UIScreen mainScreen].bounds.size.width
+#define kScreenH [UIScreen mainScreen].bounds.size.height
+#define kiphone6 [UIScreen mainScreen].bounds.size.width/375.0
+
+
+#pragma mark --------------Color--------------------
+#define kColor_DefaultGray [UIColor  colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1]
+
+
+
+#pragma mark  ------------WeakSelf------------------
+
+#define WS(weakSelf) __weak typeof(self) weakSelf = self;
+
+
+#pragma mark -
+#pragma mark ------------Font----------------------
+#define kPingFang_M       @"PingFang-SC-Medium"
+#define kPingFang_S       @"PingFang-SC-Semibold"
+
+
+#pragma mark -
+#pragma mark ---------------Dev - Url------------------
+//#define mPrefixUrl @"http://192.168.1.55:8080/yuyi"
+#pragma mark -
+#pragma mark ---------------Dis - Url------------------
+#define mPrefixUrl @"http://59.110.169.148:8080"
+
+
+// 首页资讯2条数据接口
+#define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/article/findList.do?start=0&limit=2"]
+
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* YYDefine.pch_pch */
+#endif /* YYDefine.pch_pch */

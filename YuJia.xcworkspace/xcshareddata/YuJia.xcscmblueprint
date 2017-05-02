@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B2AEE5F5DCA522C1102E9A0FD0E6A9F4CAF79E64",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "B2AEE5F5DCA522C1102E9A0FD0E6A9F4CAF79E64" : 9223372036854775807,
+    "06B5052EE5036AECE2E491AFB22F7CEC1E478EA1" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "ECB0ADA1-0873-49F1-BB5D-50B1D6B883FB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "B2AEE5F5DCA522C1102E9A0FD0E6A9F4CAF79E64" : "YuJia\/",
+    "06B5052EE5036AECE2E491AFB22F7CEC1E478EA1" : "YuJia\/YuJia\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "YuJia",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "YuJia.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:zy414266852\/YuJia.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "06B5052EE5036AECE2E491AFB22F7CEC1E478EA1"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:zy414266852\/YuJia.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B2AEE5F5DCA522C1102E9A0FD0E6A9F4CAF79E64"
+    }
+  ]
+}
