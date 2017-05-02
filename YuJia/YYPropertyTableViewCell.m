@@ -31,6 +31,7 @@
     [self.btn setTitle:model.event forState:UIControlStateNormal];
 }
 -(void)setupUI{
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UILabel *itemLabel = [UILabel labelWithText:@"2017年5月物业费" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
     [self.contentView addSubview:itemLabel];
     UIButton *btn = [[UIButton alloc]init];
@@ -58,10 +59,10 @@
         self.clickBtnBlock(sender.tag);
     }
 }
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
+//- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+//    [super setSelected:selected animated:animated];
+//
+//    // Configure the view for the selected state
+//}
 
 @end
