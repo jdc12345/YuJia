@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>物业账单</string>
+		<key>icon</key>
+		<string>utility_bill</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>生活缴费</string>
+		<key>icon</key>
+		<string>life_payment</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>报事报修</string>
+		<key>icon</key>
+		<string>report_repair</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>快递收发</string>
+		<key>icon</key>
+		<string>send_receive</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>小区商户</string>
+		<key>icon</key>
+		<string>residential_tenants</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>家政服务</string>
+		<key>icon</key>
+		<string>housekeeping</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>租房信息</string>
+		<key>icon</key>
+		<string>rental_information</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>装修</string>
+		<key>icon</key>
+		<string>renovation</string>
+	</dict>
+</array>
+</plist>
