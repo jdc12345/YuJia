@@ -12,6 +12,7 @@
 #ifdef __OBJC__ // 只被object－c文件所引用
 #import <SVProgressHUD.h>
 #import <Masonry.h>
+#import "UIColor+Extension.h"
 #pragma mark -
 #pragma mark  ------------Size----------------------
 
