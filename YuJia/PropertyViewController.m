@@ -15,6 +15,8 @@
 #import "UILabel+Addition.h"
 #import "YYPropertyTableViewCell.h"
 #import "YYPropertyItemModel.h"
+#import "YJReportRepairVC.h"
+
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 @interface PropertyViewController ()<SDCycleScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource>
@@ -126,9 +128,26 @@ static NSString* collectionCellid = @"collection_cell";
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    UIViewController* vc = [[UIViewController alloc] init];
-    vc.view.backgroundColor = [UIColor redColor];
-    [self.navigationController pushViewController:vc animated:YES];
+    switch (indexPath.row) {
+        case 0:
+            
+            break;
+        case 1:
+            
+            break;
+        case 2:{
+            YJReportRepairVC* vc = [[YJReportRepairVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 3:
+            
+            break;
+            
+        default:
+            break;
+    }
+    
     
 }
 
