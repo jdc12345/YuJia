@@ -77,21 +77,19 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/pick_checked@2x.png"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/pick_checked@3x.png"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/HUAlbumCell.xib"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/HUImagePickerCell.xib"
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "RongCloudIM/RongCloudIM/RongCloud.bundle"
-  install_resource "RongCloudIM/RongCloudIM/en.lproj"
-  install_resource "RongCloudIM/RongCloudIM/zh-Hans.lproj"
-  install_resource "RongCloudIM/RongCloudIM/Emoji.plist"
-  install_resource "RongCloudIM/RongCloudIM/RCConfig.plist"
   install_resource "SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/pick_checked@2x.png"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/pick_checked@3x.png"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/HUAlbumCell.xib"
+  install_resource "HUPhotoBrowser/HUPhotoBrowser/HUPhotoPicker/HUImagePickerCell.xib"
   install_resource "MJRefresh/MJRefresh/MJRefresh.bundle"
-  install_resource "RongCloudIM/RongCloudIM/RongCloud.bundle"
-  install_resource "RongCloudIM/RongCloudIM/en.lproj"
-  install_resource "RongCloudIM/RongCloudIM/zh-Hans.lproj"
-  install_resource "RongCloudIM/RongCloudIM/Emoji.plist"
-  install_resource "RongCloudIM/RongCloudIM/RCConfig.plist"
   install_resource "SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
 fi
 

@@ -10,8 +10,10 @@
 #import "UIColor+Extension.h"
 #import "JXSegment.h"
 #import "JXPageView.h"
+#import "EquipmentTableViewCell.h"
+#import "SightSettingViewController.h"
 
-@interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource>{
+@interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
     UIImageView *navBarHairlineImageView;
@@ -28,27 +30,31 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
+    
+    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenW, 44)];
+    
+    
     // Left item
     UIButton *leftNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    leftNavBtn.frame = CGRectMake(10, 16, 60, 12);
+    leftNavBtn.frame = CGRectMake(0, 16, 60, 12);
     [leftNavBtn setTitle:@"切换实景" forState:UIControlStateNormal];
     [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
     leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [leftNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationController.navigationBar addSubview:leftNavBtn];
+//    [self.navigationController.navigationBar addSubview:leftNavBtn];
     
     
     // Right item
     UIButton *rightNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightNavBtn.frame = CGRectMake(kScreenW -22, 16, 12, 12);
+    rightNavBtn.frame = CGRectMake(kScreenW -22 -10, 16, 12, 12);
     [rightNavBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
     [rightNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationController.navigationBar addSubview:rightNavBtn];
+//    [self.navigationController.navigationBar addSubview:rightNavBtn];
     
     // .TitleVeiw - Segmented Control
     NSArray *segmentedData = [[NSArray alloc]initWithObjects:@"情景",@"设备",nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedData];
-    segmentedControl.frame = CGRectMake((kScreenW -150)/2.0, 7,150, 30.0);
+    segmentedControl.frame = CGRectMake((kScreenW -150 -20)/2.0, 7,150, 30.0);
     /*
      这个是设置按下按钮时的颜色
      */
@@ -72,7 +78,15 @@
     //设置分段控件点击相应事件
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
     
-    [self.navigationController.navigationBar addSubview:segmentedControl];
+//    [self.navigationController.navigationBar addSubview:segmentedControl];
+    
+    [titleView addSubview:leftNavBtn];
+    [titleView addSubview:rightNavBtn];
+    [titleView addSubview:segmentedControl];
+    
+    self.navigationItem.titleView = titleView;
+//    titleView.backgroundColor = [UIColor yellowColor];
+    NSLog(@"%g___________%g",self.navigationItem.titleView.frame.origin.x,self.navigationItem.titleView.frame.size.width);
     
     
     
@@ -90,6 +104,27 @@
     
     
     [self setupSlideBar];
+    
+    
+    
+    UIButton *starBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [starBtn setTitle:@"一键开启" forState:UIControlStateNormal];
+    [starBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    starBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    starBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    starBtn.layer.cornerRadius = 40;
+    starBtn.clipsToBounds = YES;
+    [starBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:starBtn];
+    
+    WS(ws);
+    [starBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(ws.view).with.offset(-15 -49);
+        make.right.equalTo(ws.view).with.offset(-15);
+        make.size.mas_equalTo(CGSizeMake(80 ,80));
+    }];
+
     
     // Do any additional setup after loading the view.
 }
@@ -155,17 +190,16 @@
     [view setBackgroundColor:[self randomColor]];
     
     ////////////////////////////
-    UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -148) style:UITableViewStyleGrouped];
+    UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -148 -5) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
     tableView.dataSource = self;
     tableView.delegate = self;
-    tableView.indicatorStyle =
     tableView.rowHeight = kScreenW *77/320.0 +10;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.showsVerticalScrollIndicator = NO;
     //        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
-//    [tableView registerClass:[YYHomeNewTableViewCell class] forCellReuseIdentifier:@"YYHomeNewTableViewCell"];
-//    [tableView registerClass:[YYHomeMedicineTableViewCell class] forCellReuseIdentifier:@"YYHomeMedicineTableViewCell"];
+    [tableView registerClass:[EquipmentTableViewCell class] forCellReuseIdentifier:@"EquipmentTableViewCell"];
+
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     
     
@@ -192,17 +226,53 @@
     return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 #pragma mark -
+#pragma mark ------------TableView Delegeta----------------------
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.000001;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 0) {
+        SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
+        [self.navigationController pushViewController:sightVC animated:YES];
+    }
+}
+#pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    if (section == 0) {
+        return 1;
+    }else{
+        return 3;
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-     UITableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
-    homeTableViewCell.textLabel.text = @"123";
+    
+    // 图标  情景设置setting  灯light 电视tv 插座socket
+    EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
+    if (indexPath.section == 0) {
+        homeTableViewCell.titleLabel.text = @"情景设置";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:@"setting"];
+        [homeTableViewCell cellMode:NO];
+    }else{
+        homeTableViewCell.titleLabel.text = @"客厅灯";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        [homeTableViewCell cellMode:YES];
+       
+    }
+     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
+}
+- (void)action:(NSString *)actionStr{
+    NSLog(@"点什么点");
 }
 /*
 #pragma mark - Navigation

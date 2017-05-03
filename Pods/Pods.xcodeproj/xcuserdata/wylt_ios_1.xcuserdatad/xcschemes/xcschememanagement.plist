@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>HUPhotoBrowser.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MJExtension.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,17 +57,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>381CF5F475F87C9699CC42F87C6AEFA2</key>
+		<key>3B7D0365915C9035E79941DEBD203DA0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3F58CF75F6754261A5AFB0BBBEEB7506</key>
+		<key>4D4FAA42FB605D90ADA38B1393550B0B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6AE3047B4C58E54C7289AE574F85359D</key>
+		<key>6F4F87A655B584C4EAE75EC0C7D390D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +82,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>AD97657C54652ED894FC35EC8F514540</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>AFAFB55453D161D2BB5CFB30C68A54D5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CA33431D81826F50DD3A663AC5266561</key>
+		<key>E23D7733A56A13D4329FE95272F6A113</key>
 		<dict>
 			<key>primary</key>
 			<true/>
