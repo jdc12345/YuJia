@@ -35,17 +35,7 @@ static NSString* collectionCellid = @"collection_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 297*kiphone6)];
-    headerView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:headerView];
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self.view addSubview:tableView];
-    tableView.tableHeaderView = headerView;
-    self.tableView = tableView;
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    [tableView registerClass:[YYPropertyTableViewCell class] forCellReuseIdentifier:tableCellid];
+    
     [self loadData];
 }
 - (void)loadData{
@@ -72,6 +62,18 @@ static NSString* collectionCellid = @"collection_cell";
     [self setUpUI];
 }
 - (void)setUpUI {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 297*kiphone6)];
+    headerView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:headerView];
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    [self.view addSubview:tableView];
+    tableView.tableHeaderView = headerView;
+    self.tableView = tableView;
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [tableView registerClass:[YYPropertyTableViewCell class] forCellReuseIdentifier:tableCellid];
     // 轮播器
     SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kScreenW, 127*kiphone6) delegate:self placeholderImage:[UIImage imageNamed:@"placeholder"]];
     

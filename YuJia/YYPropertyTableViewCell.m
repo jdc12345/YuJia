@@ -39,6 +39,8 @@
     [btn setTitle:@"立即缴费" forState:UIControlStateNormal];
     btn.titleLabel.textColor = [UIColor colorWithHexString:@"#ffffff"];
     btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    btn.layer.masksToBounds = true;
+    btn.layer.cornerRadius = 3;
     [self.contentView addSubview:btn];
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
