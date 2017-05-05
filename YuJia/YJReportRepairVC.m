@@ -39,7 +39,8 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
 @property(nonatomic, strong)NSString *content;
-@property(nonatomic, assign)NSInteger flag;
+@property(nonatomic, assign)NSInteger flag;//我要报修和报修记录按钮标记
+@property(nonatomic, assign)NSInteger stateFlag;//报修状态按钮标记
 //
 @property(nonatomic,weak)UITableView *recordTableView;
 @end
@@ -101,7 +102,7 @@ static NSString* photoCellid = @"photo_cell";
         if (self.typeView) {
             [self.firstTypeBtn setTitle:typeArr[0] forState:UIControlStateNormal];
             [self.secondTypeBtn setTitle:typeArr[1] forState:UIControlStateNormal];
-            [self.secondTypeBtn setTitle:typeArr[2] forState:UIControlStateNormal];
+            [self.thirdTypeBtn setTitle:typeArr[2] forState:UIControlStateNormal];
             self.typeView.hidden = false;
         }else{
             
@@ -158,6 +159,7 @@ static NSString* photoCellid = @"photo_cell";
     }
 }
 -(void)selectType:(UIButton*)sender{
+    self.stateFlag = sender.tag;//记录保修状态
     sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
     [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     self.typeView.hidden = true;
@@ -201,8 +203,16 @@ static NSString* photoCellid = @"photo_cell";
         tableView.dataSource = self;
     }
     }else{
+        if (self.stateFlag==51) {
+            //加载 待维修 数据
+        }else if (self.stateFlag==52){
+            //加载 处理中 数据
+        }else if (self.stateFlag==53){
+            //加载 已完成 数据
+        }
         if (self.recordTableView) {
             self.recordTableView.hidden = false;
+            [self.recordTableView reloadData];
         }else{
             //添加tableView
             UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];

@@ -1,18 +1,19 @@
 //
-//  YJRepairSectionTwoTableViewCell.m
+//  YJCityTableViewCell.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/5/4.
+//  Created by 万宇 on 2017/5/5.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJRepairSectionTwoTableViewCell.h"
+#import "YJCityTableViewCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
-@interface YJRepairSectionTwoTableViewCell()
+@interface YJCityTableViewCell()
 @property (nonatomic, weak) UILabel* itemLabel;
+@property (nonatomic, weak) UILabel* contentLabel;
 @end
-@implementation YJRepairSectionTwoTableViewCell
+@implementation YJCityTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -35,23 +36,31 @@
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
+        make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6);
     }];
-    UILabel *itemLabel = [UILabel labelWithText:@"选择期望处理时间" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+    UILabel *itemLabel = [UILabel labelWithText:@"城市" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:13];
     [self.contentView addSubview:itemLabel];
+    self.itemLabel = itemLabel;
+    UILabel *contentLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+    [self.contentView addSubview:contentLabel];
     UIImageView *imageView = [[UIImageView alloc]init];
-    imageView.image = [UIImage imageNamed:@"forward"];
+    imageView.image = [UIImage imageNamed:@"gray_forward"];
     [self.contentView addSubview:imageView];
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
+        make.centerY.equalTo(self.contentView);
+        make.width.offset(70*kiphone6);
+    }];
+    [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(itemLabel.mas_right);
         make.centerY.equalTo(self.contentView);
     }];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.offset(-10*kiphone6);
     }];
-    self.itemLabel = itemLabel;
+    self.contentLabel = contentLabel;
 }
 
 @end

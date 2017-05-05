@@ -16,6 +16,8 @@
 #import "YYPropertyTableViewCell.h"
 #import "YYPropertyItemModel.h"
 #import "YJReportRepairVC.h"
+#import "YJPropertyBillVC.h"
+
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -129,14 +131,16 @@ static NSString* collectionCellid = @"collection_cell";
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     switch (indexPath.row) {
-        case 0:
-            
+        case 0:{
+            YJPropertyBillVC *vc = [[YJPropertyBillVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
+        }
         case 1:
             
             break;
         case 2:{
-            YJReportRepairVC* vc = [[YJReportRepairVC alloc] init];
+            YJReportRepairVC *vc = [[YJReportRepairVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

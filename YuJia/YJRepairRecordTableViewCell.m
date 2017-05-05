@@ -12,6 +12,9 @@
 #import <Masonry.h>
 #import "YJImageDisplayCollectionViewCell.h"
 #import "YJRepairRecordFlowLayout.h"
+#import <HUPhotoBrowser.h>
+
+
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
 @interface YJRepairRecordTableViewCell()<UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate>
@@ -174,6 +177,14 @@ static NSString* photoCellid = @"photo_cell";
     return cell;
 
 }
-
+// cell点击事件
+- (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UIImage *image = [UIImage imageNamed:@"house_repair"];
+    NSArray *imageArr = @[image,image,image,image,image];
+    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
+    
+}
 
 @end

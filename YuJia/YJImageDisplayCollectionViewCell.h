@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YJImageDisplayCollectionViewCell : UICollectionViewCell
+@property (nonatomic, weak) UIImageView* imageView;
 @property(nonatomic,weak)UIImage *photo;
 @end

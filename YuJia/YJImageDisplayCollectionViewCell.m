@@ -9,7 +9,7 @@
 #import "YJImageDisplayCollectionViewCell.h"
 @interface YJImageDisplayCollectionViewCell()
 
-@property (nonatomic, weak) UIImageView* imageView;
+
 @end
 @implementation YJImageDisplayCollectionViewCell
 - (instancetype)initWithFrame:(CGRect)frame
