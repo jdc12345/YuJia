@@ -13,6 +13,7 @@
 #import "EquipmentTableViewCell.h"
 #import "SightSettingViewController.h"
 #import "AddEquipmentViewController.h"
+#import "AddSightViewController.h"
 #import "EquipmentViewController.h"
 #import "SightViewController.h"
 
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) NSString *modelSetting;
 @property (nonatomic, weak) UIView *sightView;
 @property (nonatomic, weak) UIView *equipmentView;
+@property (nonatomic, weak) UISegmentedControl *segmentedControl;
 @end
 
 @implementation HomePageViewController
@@ -68,7 +70,7 @@
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引、
     [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     
-    
+    self.segmentedControl = segmentedControl;
     /*
      下面的代码实同正常状态和按下状态的属性控制,比如字体的大小和颜色等
      */
@@ -285,8 +287,15 @@
     }
 }
 - (void)addEquipment{
-    AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
-    [self.navigationController pushViewController:addEquipmentVC animated:YES];
+    NSLog(@"  %ld",self.segmentedControl.selectedSegmentIndex);
+    if (self.segmentedControl.selectedSegmentIndex == 0) {
+        AddSightViewController *addSightVC  = [[AddSightViewController alloc]init];
+        [self.navigationController pushViewController:addSightVC animated:YES];
+    }else{
+        AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
+        [self.navigationController pushViewController:addEquipmentVC animated:YES];
+    }
+
 }
 /*
 #pragma mark - Navigation

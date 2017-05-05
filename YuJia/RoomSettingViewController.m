@@ -99,16 +99,23 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3;
+    return 3 +1;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
-    homeTableViewCell.titleLabel.text = @"客厅灯";
-    homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
-    [homeTableViewCell cellMode:YES];
+    if(indexPath.row == 3){
+        homeTableViewCell.titleLabel.text = @"添加";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:@"+-1"];
+        [homeTableViewCell cellMode:YES];
+        homeTableViewCell.switch0.hidden = YES;
+    }else{
+        homeTableViewCell.titleLabel.text = @"客厅灯";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        [homeTableViewCell cellMode:YES];
+    }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
 }
