@@ -1,20 +1,52 @@
 //
-//  RoomSettingViewController.m
+//  AddSightViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/4.
+//  Created by wylt_ios_1 on 2017/5/5.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "RoomSettingViewController.h"
+#import "AddSightViewController.h"
 #import "EquipmentTableViewCell.h"
-@interface RoomSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
+#import "PopListTableViewController.h"
+#define inputW 230 // 输入框宽度
+#define inputH 35  // 输入框高度
+
+@interface AddSightViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, assign) CGFloat leftPodding;
+
+/**
+ * 当前账号选择框
+ */
+@property (nonatomic, copy) UIButton *curAccount;
+@property (nonatomic, weak) UIButton *openBtn;
+
+///**
+// *  当前选中账号
+// */
+//@property (nonatomic, strong) Account *curAcc;
+
+/**
+ * 当前账号头像
+ */
+@property (nonatomic, copy) UIImageView *icon;
+
+/**
+ *  账号下拉列表
+ */
+@property (nonatomic, strong) PopListTableViewController *accountList;
+
+/**
+ *  下拉列表的frame
+ */
+@property (nonatomic) CGRect listFrame;
 
 @end
 
-@implementation RoomSettingViewController
+@implementation AddSightViewController
+
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -44,7 +76,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"房间设置";
+    self.title = @"添加情景";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -70,6 +102,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
+
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -77,13 +110,12 @@
     sectionView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
     UILabel *sectionTitleLabel  = [[UILabel alloc]init];
-    sectionTitleLabel.text = @"所 属 设 备";
+    sectionTitleLabel.text = @"执 行 任 务";
     sectionTitleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     sectionTitleLabel.font = [UIFont systemFontOfSize:14];
     
     
     [sectionView addSubview:sectionTitleLabel];
-    WS(ws);
     [sectionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sectionView).with.offset(18);
         make.left.equalTo(sectionView).with.offset(20);
@@ -126,8 +158,8 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 135)];
     headView.backgroundColor = [UIColor whiteColor];
     
-    NSString *sightName = @"房 间 名 称";
-    NSString *startW = @"添 加 照 片";
+    NSString *sightName = @"情 景 名 称";
+    NSString *startW = @"启 动 条 件";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGRect rect = [sightName boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
                                           options:NSStringDrawingUsesLineFragmentOrigin
@@ -143,17 +175,29 @@
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
     
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
-    [addBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-    [addBtn sizeToFit];
-
+//    UITextField  *startWText = [[UITextField alloc]init];
+//    startWText.textColor = [UIColor colorWithHexString:@"333333"];
+//    startWText.font = [UIFont systemFontOfSize:14];
+//    
+//    startWText.layer.cornerRadius = 2.5;
+//    startWText.clipsToBounds = YES;
+//    startWText.layer.borderWidth = 1;
+//    startWText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+//    startWText.text = @"一键启动";
+    _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, inputW, inputH)];
     
     
     CGRect frame = CGRectMake(0, 0, 10.0, 30);
     UIView *leftview = [[UIView alloc] initWithFrame:frame];
+//    startWText.leftViewMode = UITextFieldViewModeAlways;
+//    startWText.leftView = leftview;
+    
+    // ？？？？
+    //    sightNameText.leftViewMode = UITextFieldViewModeAlways;
+    //    sightNameText.leftView = leftview;
+    UIView *sightLeftView = [[UIView alloc] initWithFrame:frame];
     sightNameText.leftViewMode = UITextFieldViewModeAlways;
-    sightNameText.leftView = leftview;
+    sightNameText.leftView = sightLeftView;
     
     
     UILabel *sightNameLabel = [[UILabel alloc]init];
@@ -168,20 +212,20 @@
     
     
     [headView addSubview:sightNameText];
-    [headView addSubview:addBtn];
+    [headView addSubview:_curAccount];
     [headView addSubview:sightNameLabel];
     [headView addSubview:startWLabel];
     
-    WS(ws);
+    
     [sightNameText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headView).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
         make.size.mas_equalTo(CGSizeMake(210 ,30));
     }];
-    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_curAccount mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sightNameText.mas_bottom).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
-//        make.size.mas_equalTo(CGSizeMake(210 ,30));
+        make.size.mas_equalTo(CGSizeMake(210 ,30));
     }];
     
     [sightNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -190,13 +234,20 @@
         make.size.mas_equalTo(CGSizeMake(rect.size.width +5,14));
     }];
     [startWLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(addBtn.mas_centerY).with.offset(0);
+        make.centerY.equalTo(_curAccount.mas_centerY).with.offset(0);
         make.left.equalTo(headView).with.offset(20);
         make.size.mas_equalTo(CGSizeMake(rect.size.width +5,14));
     }];
     
+    
+    self.leftPodding = 35 +rect.size.width;
+    
+    // 设置下拉菜单
+    [self setPopMenu];
+    
+    
     return headView;
-}\
+}
 - (UIView *)customFootView{
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74)];
     footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
@@ -204,7 +255,7 @@
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sureBtn.frame = CGRectMake(10, 16, 190, 44);
-    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitle:@"确定添加" forState:UIControlStateNormal];
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
@@ -222,14 +273,106 @@
     return footView;
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
+/**
+ * 设置下拉菜单
  */
+- (void)setPopMenu {
+    
+    // 1.1帐号选择框
+    
+//    _curAccount.center = CGPointMake(self.view.center.x, 200);
+    // 默认当前账号为已有账号的第一个
+//    Account *acc = _dataSource[0];
+    [_curAccount setTitle:@"一键启动" forState:UIControlStateNormal];
+    
+    _curAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    _curAccount.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    // 字体
+    [_curAccount setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
+    _curAccount.titleLabel.font = [UIFont systemFontOfSize:14.0];
+    // 边框
+    _curAccount.layer.cornerRadius = 2.5;
+    _curAccount.clipsToBounds = YES;
+    _curAccount.layer.borderWidth = 0.5;
+    _curAccount.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+    // 显示框背景色
+    [_curAccount setBackgroundColor:[UIColor whiteColor]];
+    [_curAccount addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:_curAccount];
+    // 1.2图标
+    _icon = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, inputH-10, inputH-10)];
+    _icon.layer.cornerRadius = (inputH-10)/2;
+    [_icon setImage:[UIImage imageNamed:@""]];
+//    [_curAccount addSubview:_icon];
+    // 1.3下拉菜单弹出按钮
+    UIButton *openBtn = [[UIButton alloc]init];
+    [openBtn setImage:[UIImage imageNamed:@"v"] forState:UIControlStateNormal];
+    [openBtn setImage:[UIImage imageNamed:@"^"] forState:UIControlStateSelected];
+    [openBtn addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
+    [openBtn sizeToFit];
+    [_curAccount addSubview:openBtn];
+    self.openBtn = openBtn;
+    [openBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_curAccount.mas_centerY).with.offset(0);
+        make.right.equalTo(_curAccount).with.offset(-10);
+    }];
+    
+    // 2.设置账号弹出菜单(最后添加显示在顶层)
+    _accountList = [[PopListTableViewController alloc] init];
+    // 设置弹出菜单的代理为当前这个类
+    _accountList.delegate = self;
+    // 数据
+    _accountList.accountSource = @[@"定时启动",@"定位启动"];
+    _accountList.isOpen = NO;
+    
+    // 初始化frame
+    [self updateListH];
+    // 隐藏下拉菜单
+    _accountList.view.frame = CGRectZero;
+    // 将下拉列表作为子页面添加到当前视图，同时添加子控制器
+    [self addChildViewController:_accountList];
+    [self.view addSubview:_accountList.view];
+}
+/**
+ *  监听代理更新下拉菜单
+ */
+- (void)updateListH {
+    CGFloat listH;
+    // 数据大于3个现实3个半的高度，否则显示完整高度
+    if (_dataSource.count > 3) {
+        listH = inputH * 3.5;
+    }else{
+        listH = inputH * _dataSource.count;
+    }
+    _listFrame = CGRectMake(_leftPodding, 174, 210, 60);
+    _accountList.view.frame = _listFrame;
+}
+/**
+ * 弹出关闭账号选择列表
+ */
+- (void)openAccountList {
+    NSLog(@"123123");
+    [self.view bringSubviewToFront:_accountList.view];
+    _accountList.isOpen = !_accountList.isOpen;
+    self.openBtn.selected = _accountList.isOpen;
+    if (_accountList.isOpen) {
+        _accountList.view.frame = _listFrame;
+    }
+    else {
+        _accountList.view.frame = CGRectZero;
+    }
+}
+
+/**
+ * 监听代理选定cell获取选中账号
+ */
+- (void)selectedCell:(NSInteger)index {
+    // 更新当前选中账号
+//    Account *acc = _dataSource[index];
+    [_icon setImage:[UIImage imageNamed:@""]];
+    [_curAccount setTitle:@"" forState:UIControlStateNormal];
+    // 关闭菜单
+    [self openAccountList];
+}
 
 @end
