@@ -51,7 +51,11 @@
 
 
 - (void)updateChannels:(NSArray*)array{
+//    for (UIButton *btn in self.scrollView.subviews) {
+//        [btn removeFromSuperview];
+//    }
     
+    NSLog(@"rooms === %ld",array.count);
     NSMutableArray *widthMutableArray = [NSMutableArray array];
     NSInteger totalW = 0;
     for (int i = 0; i < array.count; i++) {
@@ -101,7 +105,7 @@
     CGFloat offset = totalW + (selectW - self.bounds.size.width) *0.5 ;
     offset = MIN(_allButtonW - self.bounds.size.width, MAX(0, offset));
 
-    [_scrollView setContentOffset:CGPointMake(offset, 0) animated:YES];
+//    [_scrollView setContentOffset:CGPointMake(offset, 0) animated:YES];
     if ([_delegate respondsToSelector:@selector(JXSegment:didSelectIndex:)]) {
         [_delegate JXSegment:self didSelectIndex:_selectedIndex];
     }

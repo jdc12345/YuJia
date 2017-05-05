@@ -1,19 +1,20 @@
 //
-//  SightSettingViewController.m
+//  RoomSettingViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/3.
+//  Created by wylt_ios_1 on 2017/5/4.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "SightSettingViewController.h"
+#import "RoomSettingViewController.h"
 #import "EquipmentTableViewCell.h"
-@interface SightSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface RoomSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+
 @end
 
-@implementation SightSettingViewController
+@implementation RoomSettingViewController
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -68,8 +69,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
-        [self.navigationController pushViewController:sightVC animated:YES];
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -98,9 +97,9 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
-        return 3;
-
+    
+    return 3;
+    
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     
@@ -123,9 +122,9 @@
     NSString *startW = @"启 动 条 件";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGRect rect = [sightName boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                     attributes:attributes
-                                        context:nil];
+                                          options:NSStringDrawingUsesLineFragmentOrigin
+                                       attributes:attributes
+                                          context:nil];
     
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"333333"];

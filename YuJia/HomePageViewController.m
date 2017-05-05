@@ -12,6 +12,9 @@
 #import "JXPageView.h"
 #import "EquipmentTableViewCell.h"
 #import "SightSettingViewController.h"
+#import "AddEquipmentViewController.h"
+#import "EquipmentViewController.h"
+#import "SightViewController.h"
 
 @interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
@@ -19,7 +22,10 @@
     UIImageView *navBarHairlineImageView;
     UIImageView *tabBarHairlineImageView;
 }
-//@property (nonatomic, strong) FDSlideBar *slideBar;
+
+@property (nonatomic, strong) NSString *modelSetting;
+@property (nonatomic, weak) UIView *sightView;
+@property (nonatomic, weak) UIView *equipmentView;
 @end
 
 @implementation HomePageViewController
@@ -48,7 +54,7 @@
     UIButton *rightNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightNavBtn.frame = CGRectMake(kScreenW -22 -10, 16, 12, 12);
     [rightNavBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
-    [rightNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [rightNavBtn addTarget:self action:@selector(addEquipment) forControlEvents:UIControlEventTouchUpInside];
 //    [self.navigationController.navigationBar addSubview:rightNavBtn];
     
     // .TitleVeiw - Segmented Control
@@ -59,7 +65,8 @@
      这个是设置按下按钮时的颜色
      */
     segmentedControl.tintColor = [UIColor colorWithHexString:@"00bfff"];
-    segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引
+    segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引、
+    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     
     
     /*
@@ -103,28 +110,21 @@
     [navBarHairlineImageView addSubview:coverView];
     
     
-    [self setupSlideBar];
+    
+    SightViewController *sightVC = [[SightViewController alloc]init];
+    sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+    
+    self.sightView = sightVC.view;
+    [self.view addSubview:sightVC.view];
+    [self addChildViewController:sightVC];
     
     
-    
-    UIButton *starBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [starBtn setTitle:@"一键开启" forState:UIControlStateNormal];
-    [starBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-    starBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    starBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    starBtn.layer.cornerRadius = 40;
-    starBtn.clipsToBounds = YES;
-    [starBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:starBtn];
-    
-    WS(ws);
-    [starBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(ws.view).with.offset(-15 -49);
-        make.right.equalTo(ws.view).with.offset(-15);
-        make.size.mas_equalTo(CGSizeMake(80 ,80));
-    }];
-
+    EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
+    equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+    equipmentVC.view.hidden = YES;
+    self.equipmentView = equipmentVC.view;
+    [self.view addSubview:equipmentVC.view];
+    [self addChildViewController:equipmentVC];
     
     // Do any additional setup after loading the view.
 }
@@ -273,6 +273,20 @@
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
+}
+- (void)segmentAction:(UISegmentedControl *)action{
+    NSLog(@"  %ld",action.selectedSegmentIndex);
+    if (action.selectedSegmentIndex == 0) {
+        self.equipmentView.hidden = YES;
+        self.sightView.hidden = NO;
+    }else{
+        self.sightView.hidden = YES;
+        self.equipmentView.hidden = NO;
+    }
+}
+- (void)addEquipment{
+    AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
+    [self.navigationController pushViewController:addEquipmentVC animated:YES];
 }
 /*
 #pragma mark - Navigation
