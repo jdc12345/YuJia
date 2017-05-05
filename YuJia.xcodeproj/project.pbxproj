@@ -56,6 +56,7 @@
 		3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA01EBB2B560094CBE4 /* EquipmentViewController.m */; };
 		3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */; };
 		3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */; };
+		3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA91EBC17450094CBE4 /* AddSightViewController.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
@@ -177,6 +178,8 @@
 		3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentSettingViewController.m; sourceTree = "<group>"; };
 		3E984FA51EBB3D3A0094CBE4 /* RoomSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSettingViewController.h; sourceTree = "<group>"; };
 		3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSettingViewController.m; sourceTree = "<group>"; };
+		3E984FA81EBC17450094CBE4 /* AddSightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSightViewController.h; sourceTree = "<group>"; };
+		3E984FA91EBC17450094CBE4 /* AddSightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSightViewController.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
 		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -409,6 +412,8 @@
 				3E984F8D1EB9DB140094CBE4 /* SightSettingViewController.m */,
 				3E984F901EBB08980094CBE4 /* AddEquipmentViewController.h */,
 				3E984F911EBB08980094CBE4 /* AddEquipmentViewController.m */,
+				3E984FA81EBC17450094CBE4 /* AddSightViewController.h */,
+				3E984FA91EBC17450094CBE4 /* AddSightViewController.m */,
 				3E984F931EBB110F0094CBE4 /* ConnectWifiViewController.h */,
 				3E984F941EBB110F0094CBE4 /* ConnectWifiViewController.m */,
 				3E984F961EBB1C1B0094CBE4 /* SuccessConnectViewController.h */,
@@ -715,6 +720,7 @@
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
 				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,
 				1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */,
+				3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,

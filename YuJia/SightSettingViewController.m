@@ -36,6 +36,7 @@
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
         _tableView.tableHeaderView = [self personInfomation];
+        _tableView.tableFooterView = [self customFootView];
         
     }
     return _tableView;
@@ -83,7 +84,6 @@
     
     
     [sectionView addSubview:sectionTitleLabel];
-    WS(ws);
     [sectionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sectionView).with.offset(18);
         make.left.equalTo(sectionView).with.offset(20);
@@ -150,6 +150,13 @@
     startWText.leftViewMode = UITextFieldViewModeAlways;
     startWText.leftView = leftview;
     
+    // ？？？？
+//    sightNameText.leftViewMode = UITextFieldViewModeAlways;
+//    sightNameText.leftView = leftview;
+    UIView *sightLeftView = [[UIView alloc] initWithFrame:frame];
+        sightNameText.leftViewMode = UITextFieldViewModeAlways;
+        sightNameText.leftView = sightLeftView;
+    
     
     UILabel *sightNameLabel = [[UILabel alloc]init];
     sightNameLabel.text = sightName;
@@ -167,7 +174,7 @@
     [headView addSubview:sightNameLabel];
     [headView addSubview:startWLabel];
     
-    WS(ws);
+    
     [sightNameText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headView).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
@@ -192,7 +199,30 @@
     
     return headView;
 }
-
+- (UIView *)customFootView{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    
+    
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    sureBtn.frame = CGRectMake(10, 16, 190, 44);
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    sureBtn.layer.cornerRadius = 2.5;
+    sureBtn.clipsToBounds = YES;
+    
+    [footView addSubview:sureBtn];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footView).with.offset(30);
+        make.centerX.equalTo(footView);
+        make.size.mas_equalTo(CGSizeMake(190, 44));
+    }];
+    
+    return footView;
+}
 /*
  #pragma mark - Navigation
  

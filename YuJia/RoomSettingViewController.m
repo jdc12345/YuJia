@@ -37,13 +37,14 @@
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
         _tableView.tableHeaderView = [self personInfomation];
+        _tableView.tableFooterView = [self customFootView];
         
     }
     return _tableView;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"情景设置";
+    self.title = @"房间设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -76,7 +77,7 @@
     sectionView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
     UILabel *sectionTitleLabel  = [[UILabel alloc]init];
-    sectionTitleLabel.text = @"执 行 任 务";
+    sectionTitleLabel.text = @"所 属 设 备";
     sectionTitleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     sectionTitleLabel.font = [UIFont systemFontOfSize:14];
     
@@ -118,8 +119,8 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 135)];
     headView.backgroundColor = [UIColor whiteColor];
     
-    NSString *sightName = @"情 景 名 称";
-    NSString *startW = @"启 动 条 件";
+    NSString *sightName = @"房 间 名 称";
+    NSString *startW = @"添 加 照 片";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGRect rect = [sightName boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
                                           options:NSStringDrawingUsesLineFragmentOrigin
@@ -135,19 +136,17 @@
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
     
-    UITextField  *startWText = [[UITextField alloc]init];
-    startWText.textColor = [UIColor colorWithHexString:@"333333"];
-    startWText.font = [UIFont systemFontOfSize:14];
+    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
+    [addBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn sizeToFit];
+
     
-    startWText.layer.cornerRadius = 2.5;
-    startWText.clipsToBounds = YES;
-    startWText.layer.borderWidth = 1;
-    startWText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
-    startWText.text = @"一键启动";
+    
     CGRect frame = CGRectMake(0, 0, 10.0, 30);
     UIView *leftview = [[UIView alloc] initWithFrame:frame];
-    startWText.leftViewMode = UITextFieldViewModeAlways;
-    startWText.leftView = leftview;
+    sightNameText.leftViewMode = UITextFieldViewModeAlways;
+    sightNameText.leftView = leftview;
     
     
     UILabel *sightNameLabel = [[UILabel alloc]init];
@@ -162,7 +161,7 @@
     
     
     [headView addSubview:sightNameText];
-    [headView addSubview:startWText];
+    [headView addSubview:addBtn];
     [headView addSubview:sightNameLabel];
     [headView addSubview:startWLabel];
     
@@ -172,10 +171,10 @@
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
         make.size.mas_equalTo(CGSizeMake(210 ,30));
     }];
-    [startWText mas_makeConstraints:^(MASConstraintMaker *make) {
+    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sightNameText.mas_bottom).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
-        make.size.mas_equalTo(CGSizeMake(210 ,30));
+//        make.size.mas_equalTo(CGSizeMake(210 ,30));
     }];
     
     [sightNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -184,12 +183,36 @@
         make.size.mas_equalTo(CGSizeMake(rect.size.width +5,14));
     }];
     [startWLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(startWText.mas_centerY).with.offset(0);
+        make.centerY.equalTo(addBtn.mas_centerY).with.offset(0);
         make.left.equalTo(headView).with.offset(20);
         make.size.mas_equalTo(CGSizeMake(rect.size.width +5,14));
     }];
     
     return headView;
+}\
+- (UIView *)customFootView{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    
+    
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    sureBtn.frame = CGRectMake(10, 16, 190, 44);
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    sureBtn.layer.cornerRadius = 2.5;
+    sureBtn.clipsToBounds = YES;
+    
+    [footView addSubview:sureBtn];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footView).with.offset(30);
+        make.centerX.equalTo(footView);
+        make.size.mas_equalTo(CGSizeMake(190, 44));
+    }];
+    
+    return footView;
 }
 
 /*
