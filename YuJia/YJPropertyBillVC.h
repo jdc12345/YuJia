@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YJPropertyBillVC : UIViewController
-
+/** block方式监听点击 */
+@property (nonatomic, copy) void (^clickBtnBlock)(NSString *address);
 @end

@@ -64,8 +64,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
   
 }
 - (void)submitAddress{
-    YJPropertyBillVC *vc = [[YJPropertyBillVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    //此处接提交地址接口！！！！！
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
+            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
+//            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+    }
 }
 #pragma mark - UITableView
 

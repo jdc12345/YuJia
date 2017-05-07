@@ -7,6 +7,9 @@
 //
 
 #import "YJModifyAddressVC.h"
+#import "YJAddPropertyBillAddressVC.h"
+#import "YJPropertyBillVC.h"
+
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
@@ -52,14 +55,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         make.width.offset(325*kiphone6);
         make.height.offset(45*kiphone6);
     }];
-    [btn addTarget:self action:@selector(submitAddress) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(addAddress) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:btn];
     tableView.tableFooterView = footerView;
     
 }
-- (void)submitAddress{
-//    YJPropertyBillVC *vc = [[YJPropertyBillVC alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
+- (void)addAddress{
+    YJAddPropertyBillAddressVC *vc = [[YJAddPropertyBillAddressVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - UITableView
 
@@ -68,7 +71,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
-        cell.textLabel.text = @"河北名流一品3单元3层306";
+        cell.textLabel.text = @"河北名流一品3单元2层205";
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
     //添加line
@@ -81,26 +84,49 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     }];
 
         return cell;
-    
+   
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
+            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
+            revise.clickBtnBlock(cell.textLabel.text);
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+    }
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45*kiphone6;
 }
-
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return true;
+}
+/**
+ *  左滑cell时出现什么按钮
+ */
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSLog(@"点击了修改");
+        
+        // 收回左滑出现的按钮(退出编辑模式)
+        tableView.editing = NO;
+    }];
+    UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+//        [self.wineArray removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    
+    return @[action1, action0];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

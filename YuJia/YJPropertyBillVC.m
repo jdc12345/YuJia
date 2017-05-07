@@ -14,11 +14,17 @@
 #import "YJBillResultTableViewCell.h"
 #import "YJModifyAddressVC.h"
 static NSString* billCellid = @"bill_cell";
-@interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+@property(nonatomic,strong)NSMutableArray *yearArr;
+@property(nonatomic,strong)NSMutableArray *monthArr;
+@property(nonatomic,weak)UIPickerView *yearPickerView;
+@property(nonatomic,weak)UIPickerView *monthPickerView;
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,assign)BOOL isBill;
 @property(nonatomic,weak)UIButton *yearBtn;
 @property(nonatomic,weak)UIButton *monthBtn;
+@property(nonatomic,assign)NSInteger nowYear;
+@property(nonatomic,assign)NSInteger nowMonth;
 @end
 
 @implementation YJPropertyBillVC
@@ -32,7 +38,7 @@ static NSString* billCellid = @"bill_cell";
 
 }
 - (void)loadData {
-    self.isBill = true;//请求判断是否是业主
+    self.isBill = true;//请求判断是否是业主，依据地址请求账单
     if (self.isBill) {
         [self setupBill];
     }else{
@@ -80,7 +86,7 @@ static NSString* billCellid = @"bill_cell";
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
     [self.view addSubview:tableView];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.yearBtn.mas_bottom).offset(1*kiphone6);
         make.left.right.bottom.offset(0);
@@ -107,7 +113,55 @@ static NSString* billCellid = @"bill_cell";
     sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
     [sender setImage:[UIImage imageNamed:@"selected_open"] forState:UIControlStateNormal];
     [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
-    if (sender.tag == 101) {
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
+    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+    
+    NSInteger year = [dateComponent year];
+    self.nowYear = year;
+    NSInteger month =  [dateComponent month];
+    self.nowMonth = month;
+    NSInteger day = [dateComponent day];
+    NSInteger hour = [dateComponent hour];
+    NSMutableArray *timeArr = [NSMutableArray array];
+        if (sender.tag == 101) {
+        if (self.yearPickerView) {
+            for (NSInteger i = year-9; i<=year; i++) {
+                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)i];
+                [timeArr addObject:yearStr];
+            }
+            self.yearArr = timeArr;
+            if (self.yearPickerView.hidden) {
+                self.yearPickerView.hidden = false;
+                self.monthPickerView.hidden = true;
+            }else{
+                self.yearPickerView.hidden = true;
+                
+            }
+            
+        }else{
+            for (NSInteger i = year-9; i<=year; i++) {
+                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)i];
+                [timeArr addObject:yearStr];
+            }
+            self.yearArr = timeArr;
+            UIPickerView *pickView = [[UIPickerView alloc]init];
+            [self.view addSubview:pickView];
+            pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+            pickView.dataSource = self;
+            pickView.delegate = self;
+            pickView.showsSelectionIndicator = YES;
+            self.yearPickerView = pickView;
+            [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(sender.mas_bottom);
+                make.left.width.equalTo(sender);
+                make.height.offset(220*kiphone6);
+            }];
+        }
+            self.monthPickerView.hidden = true;
+        
+
         self.monthBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.monthBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
         [self.monthBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
@@ -115,9 +169,137 @@ static NSString* billCellid = @"bill_cell";
         self.yearBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.yearBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
         [self.yearBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        if (self.monthPickerView) {
+            NSInteger selectYear = [self.yearBtn.titleLabel.text integerValue];
+            if (selectYear<year) {
+                for (NSInteger i = 1; i<=12; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }else{
+                for (NSInteger i = 1; i<=month; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }
+            [timeArr addObject:@"全部"];
+            self.monthArr = timeArr;
+            if (self.monthPickerView.hidden) {
+                self.monthPickerView.hidden = false;
+                self.yearPickerView.hidden = true;
+            }else{
+                self.monthPickerView.hidden = true;
+                
+            }
+            
+        }else{
+            NSInteger selectYear = [self.yearBtn.titleLabel.text integerValue];
+            if (selectYear<year) {
+                for (NSInteger i = 1; i<=12; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }else{
+                for (NSInteger i = 1; i<=month; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }
+            [timeArr addObject:@"全部"];
+            self.monthArr = timeArr;
+            UIPickerView *pickView = [[UIPickerView alloc]init];
+            [self.view addSubview:pickView];
+            pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+            pickView.dataSource = self;
+            pickView.delegate = self;
+            pickView.showsSelectionIndicator = YES;
+            self.monthPickerView = pickView;
+            [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(sender.mas_bottom);
+                make.left.width.equalTo(sender);
+                make.height.offset(220*kiphone6);
+            }];
+            self.yearPickerView.hidden = true;
+        }
     }
 
 }
+#pragma mark - pickView
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+// pickerView 每列个数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView==self.yearPickerView) {
+        return self.yearArr.count;
+    }else{
+        return self.monthArr.count;
+    }
+    
+}
+
+#pragma Mark -- UIPickerViewDelegate
+// 每列宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    
+    return pickerView.bounds.size.width;
+}
+// 返回选中的行
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (pickerView==self.yearPickerView) {
+        // 数组越界保护
+        if (row < self.yearArr.count) {
+            
+                [self.yearBtn setTitle:[self.yearArr objectAtIndex:row] forState:UIControlStateNormal];
+            NSMutableArray *timeArr = [NSMutableArray array];
+            NSInteger selectYear = [self.yearBtn.titleLabel.text integerValue];
+            if (selectYear<self.nowYear) {
+                for (NSInteger i = 1; i<=12; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }else{
+                for (NSInteger i = 1; i<=self.nowMonth; i++) {
+                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [timeArr addObject:yearStr];
+                }
+            }
+            [timeArr addObject:@"全部"];
+            self.monthArr = timeArr;
+            [self.monthPickerView reloadAllComponents];
+            }
+    }else{
+        if (row < self.yearArr.count) {
+       [self.monthBtn setTitle:[self.monthArr objectAtIndex:row] forState:UIControlStateNormal];
+        }
+    }
+  //pickerView.hidden = true;
+    
+}
+
+//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView==self.yearPickerView) {
+        if (row >= self.yearArr.count) {
+            return nil;
+        }else{
+            
+            return [self.yearArr objectAtIndex:row];
+        }
+    }else{
+        if (row >= self.monthArr.count) {
+            return nil;
+        }else{
+            
+            return [self.monthArr objectAtIndex:row];
+        }
+    }
+  
+}
+
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -147,6 +329,13 @@ static NSString* billCellid = @"bill_cell";
         make.bottom.equalTo(imageView);
         make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
     }];
+    self.clickBtnBlock = ^(NSString *address) {
+        addressLabel.text = address;
+        //此处需要根据新地址刷新账单
+        
+        
+        
+                 };
 
     UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
     [headerBtn addSubview:cityLabel];

@@ -24,7 +24,17 @@
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
-@interface YJReportRepairVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate>
+@interface YJReportRepairVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@property(nonatomic,strong)NSMutableArray *yearArr;
+@property(nonatomic,strong)NSMutableArray *monthArr;
+@property(nonatomic,strong)NSMutableArray *dayArr;
+@property(nonatomic,strong)NSMutableArray *hourArr;
+@property(nonatomic,strong)NSString *selectTime;
+@property(nonatomic,strong)NSString *year;
+@property(nonatomic,strong)NSString *month;
+@property(nonatomic,strong)NSString *day;
+@property(nonatomic,strong)NSString *hour;
+@property(nonatomic,weak)UIPickerView *timePickerView;
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UITextField *telNumberField;
 @property(nonatomic,weak)UITextField *passWordField;
@@ -43,6 +53,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic, assign)NSInteger stateFlag;//报修状态按钮标记
 //
 @property(nonatomic,weak)UITableView *recordTableView;
+
 @end
 
 @implementation YJReportRepairVC
@@ -182,6 +193,7 @@ static NSString* photoCellid = @"photo_cell";
 
     if (self.flag==101) {
     self.repairType = sender.titleLabel.text;
+    self.selectTime = @"请选择您期望的维修时间";
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];  //你需要更新的组数中的cell
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
         if (self.tableView) {
@@ -261,7 +273,7 @@ static NSString* photoCellid = @"photo_cell";
     if (indexPath.section==1&&indexPath.row==0) {
         cell.item = self.repairType;
     }else{
-        
+        cell.item = self.selectTime;
     }
     return cell;
     }else{
@@ -400,16 +412,191 @@ static NSString* photoCellid = @"photo_cell";
     }
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableView) {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if (tableView == self.tableView) {
     if (indexPath.section==1&&indexPath.row==0) {
         [self resignFirstResponder];
         tableView.hidden = true;
         self.typeView.hidden = false;
         
     }
+    if (indexPath.section==1&&indexPath.row==1) {
+        NSDate *now = [NSDate date];
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
+        NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+        
+        NSInteger year = [dateComponent year];
+        NSInteger month = [dateComponent month];
+        NSMutableArray *monthArr = [NSMutableArray array];
+        NSMutableArray *dayArr = [NSMutableArray array];
+        NSMutableArray *hourArr = [NSMutableArray array];
+        if (self.timePickerView) {
+            if (month<12) {
+                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)year];
+                self.yearArr = [NSMutableArray arrayWithObject:yearStr];
+                for (NSInteger i = month; i<=month+1; i++) {
+                    NSString *monthStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [monthArr addObject:monthStr];
+                }
+                self.monthArr = monthArr;
+            }else{
+                NSString *yearStr1 = [NSString stringWithFormat: @"%ld年", (long)year];
+                NSString *yearStr2 = [NSString stringWithFormat: @"%ld年", (long)year+1];
+                self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
+                 NSString *monthStr12 = [NSString stringWithFormat: @"%ld月", (long)month];
+                NSString *monthStr1 =  @"%ld月";
+                self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
+                }
+            for (NSInteger i = 1; i<=31; i++) {
+                NSString *dayStr = [NSString stringWithFormat: @"%ld日", (long)i];
+                [dayArr addObject:dayStr];
+            }
+            self.dayArr = dayArr;
+            for (NSInteger i = 8; i<=20; i++) {
+                NSString *hourStr = [NSString stringWithFormat: @"%ld时", (long)i];
+                [hourArr addObject:hourStr];
+            }
+            self.hourArr = hourArr;
+            
+
+            if (self.timePickerView.hidden) {
+                self.timePickerView.hidden = false;
+            }else{
+                self.timePickerView.hidden = true;
+                
+            }
+            
+        }else{
+            if (month<12) {
+                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)year];
+                self.yearArr = [NSMutableArray arrayWithObject:yearStr];
+                for (NSInteger i = month; i<=month+1; i++) {
+                    NSString *monthStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    [monthArr addObject:monthStr];
+                }
+                self.monthArr = monthArr;
+            }else{
+                NSString *yearStr1 = [NSString stringWithFormat: @"%ld年", (long)year];
+                NSString *yearStr2 = [NSString stringWithFormat: @"%ld年", (long)year+1];
+                self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
+                NSString *monthStr12 = [NSString stringWithFormat: @"%ld月", (long)month];
+                NSString *monthStr1 =  @"%ld月";
+                self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
+            }
+            for (NSInteger i = 1; i<=31; i++) {
+                NSString *dayStr = [NSString stringWithFormat: @"%ld日", (long)i];
+                [dayArr addObject:dayStr];
+            }
+            self.dayArr = dayArr;
+            for (NSInteger i = 8; i<=20; i++) {
+                NSString *hourStr = [NSString stringWithFormat: @"%ld时", (long)i];
+                [hourArr addObject:hourStr];
+            }
+            self.hourArr = hourArr;
+
+            UIPickerView *pickView = [[UIPickerView alloc]init];
+            [self.view addSubview:pickView];
+            pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+            pickView.dataSource = self;
+            pickView.delegate = self;
+            pickView.showsSelectionIndicator = YES;
+            self.timePickerView = pickView;
+            CGRect rectInTableView = [tableView rectForRowAtIndexPath:indexPath];
+            CGRect rect = [tableView convertRect:rectInTableView toView:[tableView superview]];
+            CGFloat y = CGRectGetMaxY(rect);
+            pickView.frame = CGRectMake(0, y+45*kiphone6, kScreenW, kScreenH-y);
+            //            设置初始默认值
+            [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
+            [self pickerView:self.timePickerView didSelectRow:0 inComponent:1];
+            [self pickerView:self.timePickerView didSelectRow:0 inComponent:2];
+            [self pickerView:self.timePickerView didSelectRow:0 inComponent:3];
+
+        }
+    }
+        
   }
 }
+#pragma mark - pickView
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 4;
+}
+// pickerView 每列个数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (component == 0) {
+        return self.yearArr.count;
+    }else if (component == 1){
+       return self.monthArr.count;
+    }else if (component == 2){
+        return self.dayArr.count;
+    }else{
+        return self.hourArr.count;
+    }
+
+}
+
+#pragma Mark -- UIPickerViewDelegate
+// 每列宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    
+    return pickerView.bounds.size.width/4;
+}
+// 返回选中的行
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 0) {
+        self.year = [NSString stringWithFormat:@"%@",self.yearArr[row]];
+        
+    }else if (component == 1){
+        self.month = [NSString stringWithFormat:@"%@",self.monthArr[row]];
+    }else if (component == 2){
+        self.day = [NSString stringWithFormat:@"%@",self.dayArr[row]];
+    }else if (component == 3){
+        self.hour = [NSString stringWithFormat:@"%@",self.hourArr[row]];
+    }
+    NSString *selectTime = [NSString stringWithFormat:@"您期望的维修时间为:%@%@%@%@",self.year,self.month,self.day,self.hour];
+    self.selectTime = selectTime;
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:1];  //你需要更新的组数中的cell
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return [self.yearArr objectAtIndex:row];
+    } else if (component == 1){
+        return [self.monthArr objectAtIndex:row];
+        
+    } else if (component == 2){
+        return [self.dayArr objectAtIndex:row];
+        
+    }else {
+        return [self.hourArr objectAtIndex:row];
+        
+    }
+    
+}
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
+    if (component == 0) {
+        [label setText:[self.yearArr objectAtIndex:row]];
+    }else if (component == 1){
+        [label setText:[self.monthArr objectAtIndex:row]];
+    }
+    else if (component == 2){
+        [label setText:[self.dayArr objectAtIndex:row]];
+    }
+    else if (component == 3){
+        [label setText:[self.hourArr objectAtIndex:row]];
+    }
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    return label;
+}
+
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
