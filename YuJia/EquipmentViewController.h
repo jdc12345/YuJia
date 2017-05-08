@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EquipmentViewController : UIViewController
-
+@property (nonatomic, copy) NSArray *dataSource;
 @end

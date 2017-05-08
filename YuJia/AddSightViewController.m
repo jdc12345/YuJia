@@ -9,10 +9,11 @@
 #import "AddSightViewController.h"
 #import "EquipmentTableViewCell.h"
 #import "PopListTableViewController.h"
+#import "ZYAlertSView.h"
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
 
-@interface AddSightViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface AddSightViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) CGFloat leftPodding;
@@ -23,10 +24,19 @@
 @property (nonatomic, copy) UIButton *curAccount;
 @property (nonatomic, weak) UIButton *openBtn;
 
-///**
-// *  当前选中账号
-// */
-//@property (nonatomic, strong) Account *curAcc;
+@property (nonatomic, strong) ZYAlertSView *alertView;
+
+@property (nonatomic, strong) UIPickerView *pickerView;
+@property (nonatomic, copy) NSArray *proHourTimeList;
+@property (nonatomic, copy) NSArray *proMinuteTimeList;
+@property (nonatomic, weak) UITextField *sightNameF;
+
+
+@property (nonatomic, copy) NSArray *selectStart;
+@property (nonatomic, weak) UILabel *startModelLabel;
+
+
+
 
 /**
  * 当前账号头像
@@ -80,7 +90,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    
+    self.selectStart = @[@"定时启动",@"定位启动"];
     [self tableView];
     // Do any additional setup after loading the view.
 }
@@ -102,7 +112,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-
+        
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -174,23 +184,26 @@
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+    sightNameText.delegate = self;
     
-//    UITextField  *startWText = [[UITextField alloc]init];
-//    startWText.textColor = [UIColor colorWithHexString:@"333333"];
-//    startWText.font = [UIFont systemFontOfSize:14];
-//    
-//    startWText.layer.cornerRadius = 2.5;
-//    startWText.clipsToBounds = YES;
-//    startWText.layer.borderWidth = 1;
-//    startWText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
-//    startWText.text = @"一键启动";
+    self.sightNameF = sightNameText;
+    
+    //    UITextField  *startWText = [[UITextField alloc]init];
+    //    startWText.textColor = [UIColor colorWithHexString:@"333333"];
+    //    startWText.font = [UIFont systemFontOfSize:14];
+    //
+    //    startWText.layer.cornerRadius = 2.5;
+    //    startWText.clipsToBounds = YES;
+    //    startWText.layer.borderWidth = 1;
+    //    startWText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+    //    startWText.text = @"一键启动";
     _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, inputW, inputH)];
     
     
     CGRect frame = CGRectMake(0, 0, 10.0, 30);
     UIView *leftview = [[UIView alloc] initWithFrame:frame];
-//    startWText.leftViewMode = UITextFieldViewModeAlways;
-//    startWText.leftView = leftview;
+    //    startWText.leftViewMode = UITextFieldViewModeAlways;
+    //    startWText.leftView = leftview;
     
     // ？？？？
     //    sightNameText.leftViewMode = UITextFieldViewModeAlways;
@@ -209,7 +222,7 @@
     startWLabel.text = startW;
     startWLabel.textColor = [UIColor colorWithHexString:@"333333"];
     startWLabel.font = [UIFont systemFontOfSize:14];
-    
+    self.startModelLabel = startWLabel;
     
     [headView addSubview:sightNameText];
     [headView addSubview:_curAccount];
@@ -280,9 +293,9 @@
     
     // 1.1帐号选择框
     
-//    _curAccount.center = CGPointMake(self.view.center.x, 200);
+    //    _curAccount.center = CGPointMake(self.view.center.x, 200);
     // 默认当前账号为已有账号的第一个
-//    Account *acc = _dataSource[0];
+    //    Account *acc = _dataSource[0];
     [_curAccount setTitle:@"一键启动" forState:UIControlStateNormal];
     
     _curAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -298,12 +311,12 @@
     // 显示框背景色
     [_curAccount setBackgroundColor:[UIColor whiteColor]];
     [_curAccount addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:_curAccount];
+    //    [self.view addSubview:_curAccount];
     // 1.2图标
     _icon = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, inputH-10, inputH-10)];
     _icon.layer.cornerRadius = (inputH-10)/2;
     [_icon setImage:[UIImage imageNamed:@""]];
-//    [_curAccount addSubview:_icon];
+    //    [_curAccount addSubview:_icon];
     // 1.3下拉菜单弹出按钮
     UIButton *openBtn = [[UIButton alloc]init];
     [openBtn setImage:[UIImage imageNamed:@"v"] forState:UIControlStateNormal];
@@ -322,7 +335,7 @@
     // 设置弹出菜单的代理为当前这个类
     _accountList.delegate = self;
     // 数据
-    _accountList.accountSource = @[@"定时启动",@"定位启动"];
+    _accountList.accountSource = self.selectStart;
     _accountList.isOpen = NO;
     
     // 初始化frame
@@ -362,17 +375,318 @@
         _accountList.view.frame = CGRectZero;
     }
 }
+- (void)back_click{
+    
+    CGFloat alertW = kScreenW;
+    CGFloat alertH = 390;
+    
+    // titleView
+    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, alertW, alertH)];
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"选择时间段";
+    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    titleLabel.font = [UIFont systemFontOfSize:14];
+    
+    UIPickerView *pickerView = [[UIPickerView alloc] init];
+    // 显示选中框
+    pickerView.showsSelectionIndicator=YES;
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    [self.view addSubview:pickerView];
+    
+    _proHourTimeList = [[NSArray alloc]initWithObjects:@"0时",@"1时",@"2时",@"3时",@"4时",@"5时",@"6时",@"7时",@"8时",@"9时",@"10时",@"11时",@"12时",@"13时",@"14时",@"15时",@"16时",@"17时",@"18时",@"19时",@"20时",@"21时",@"22时",@"23时",nil];
 
+    NSMutableArray *minute = [[NSMutableArray alloc]initWithCapacity:2];
+    for (int i = 0 ; i<60 ; i++) {
+        NSString *minuteStr = [NSString stringWithFormat:@"%d分",i];
+        [minute addObject:minuteStr];
+    }
+    _proMinuteTimeList = minute;
+    
+    UILabel *repeatLabel = [[UILabel alloc]init];
+    repeatLabel.text = @"重复";
+    repeatLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    repeatLabel.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lineLabel = [[UILabel alloc]init];
+    lineLabel.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
+    
+    [titleView addSubview:titleLabel];
+    [titleView addSubview:pickerView];
+    [titleView addSubview:repeatLabel];
+    [titleView addSubview:lineLabel];
+    
+    WS(ws);
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView).with.offset(20);
+        make.top.equalTo(titleView).with.offset(25);;
+        make.size.mas_equalTo(CGSizeMake(120 ,14));
+    }];
+    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView);
+        make.top.equalTo(titleLabel).with.offset(20);;
+        make.size.mas_equalTo(CGSizeMake(kScreenW ,90));
+    }];
+    [repeatLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView).with.offset(20);
+        make.top.equalTo(titleLabel).with.offset(135);;
+        make.size.mas_equalTo(CGSizeMake(120 ,14));
+    }];
+    
+    
+    
+    
+    [lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView);
+        make.bottom.equalTo(titleView);
+        make.size.mas_equalTo(CGSizeMake(alertW ,1));
+    }];
+    
+    
+    CGFloat btnW_Change = (kScreenW - 375)/4.0;
+    NSArray *btnText_Array = @[@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日",@"全部"];
+    
+    for (int i = 0;  i<8 ; i++) {
+        NSInteger row = 0;
+        if (i >= 4)
+            row = 1;
+        
+        UIButton *weekBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        weekBtn.frame = CGRectMake(20 + (76 +10 +btnW_Change)*(i%4), 213 +row *45, 76 +btnW_Change, 30);
+        weekBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+        [weekBtn setTitle:btnText_Array[i] forState:UIControlStateNormal];
+        weekBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        [weekBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
+        [weekBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateSelected];
+        weekBtn.layer.borderColor = [UIColor colorWithHexString:@"f1f1f1"].CGColor;
+        weekBtn.layer.borderWidth = 1;
+        weekBtn.layer.cornerRadius = 2.5;
+        weekBtn.clipsToBounds = YES;
+        [weekBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [titleView addSubview:weekBtn];
+        
+        NSLog(@"x = %d  y = %ld",i%4,213 +row *45);
+    }
+    
+    
+    
+    
+    
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    sureBtn.frame = CGRectMake(10, 16, 190, 44);
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    sureBtn.layer.cornerRadius = 2.5;
+    sureBtn.clipsToBounds = YES;
+    
+    [titleView addSubview:sureBtn];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(titleView).with.offset(-30);
+        make.centerX.equalTo(titleView);
+        make.size.mas_equalTo(CGSizeMake(190, 44));
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
+    [alertV show];
+    self.alertView = alertV;
+    
+}
 /**
  * 监听代理选定cell获取选中账号
  */
 - (void)selectedCell:(NSInteger)index {
     // 更新当前选中账号
-//    Account *acc = _dataSource[index];
+    //    Account *acc = _dataSource[index];
+    
+    NSString *title = self.selectStart[index];
+    [_curAccount setTitle:title forState:UIControlStateNormal];
+    if ([title isEqualToString:@"定时启动"]) {
+        [self back_click];
+        self.selectStart = @[@"一键启动",@"定位启动"];
+    }else if([title isEqualToString:@"定位启动"]){
+        [self back_click_location];
+        self.selectStart = @[@"一键启动",@"定时启动"];
+    }else{
+        self.selectStart = @[@"定时启动",@"定位启动"];
+    }
+    _accountList.accountSource = self.selectStart;
+    [_accountList reloadDataSource];
+//    if (index == 0) {
+//        [self back_click];
+//    }else{
+//        [self back_click_location];
+//    }
+    
+    
     [_icon setImage:[UIImage imageNamed:@""]];
-    [_curAccount setTitle:@"" forState:UIControlStateNormal];
     // 关闭菜单
     [self openAccountList];
 }
 
+- (void)btnClick:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        sender.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    }else{
+        sender.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+    }
+}
+
+#pragma Mark -- UIPickerViewDataSource
+// pickerView 列数
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 2;
+}
+
+// pickerView 每列个数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (component == 0) {
+        return [_proHourTimeList count];
+    }
+    
+    return [_proMinuteTimeList count];
+}
+#pragma Mark -- UIPickerViewDelegate
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component{
+    return 30;
+}
+// 每列宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    
+//    if (component == 1) {
+//        return 40;
+//    }
+    return 80;
+}
+// 返回选中的行
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 0) {
+        NSString  *_proNameStr = [_proHourTimeList objectAtIndex:row];
+        NSLog(@"nameStr=%@",_proNameStr);
+    } else {
+        NSString  *_proTimeStr = [_proMinuteTimeList objectAtIndex:row];
+        NSLog(@"_proTimeStr=%@",_proTimeStr);
+    }
+    
+}
+
+//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return [_proHourTimeList objectAtIndex:row];
+    } else {
+        return [_proMinuteTimeList objectAtIndex:row];
+        
+    }
+}
+
+- (void)back_click_location{
+    
+    CGFloat alertW = kScreenW;
+    CGFloat alertH = 258;
+    
+    // titleView
+    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, alertW, alertH)];
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"启动条件 距家";
+    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    titleLabel.font = [UIFont systemFontOfSize:14];
+    
+    UIPickerView *pickerView = [[UIPickerView alloc] init];
+    // 显示选中框
+    pickerView.showsSelectionIndicator=YES;
+    pickerView.dataSource = self;
+    pickerView.delegate = self;
+    [self.view addSubview:pickerView];
+    
+    
+    NSMutableArray *minute = [[NSMutableArray alloc]initWithCapacity:2];
+    for (int i = 0 ; i<10 ; i++) {
+        NSString *minuteStr = [NSString stringWithFormat:@"%dm",i*100];
+        [minute addObject:minuteStr];
+    }
+    _proMinuteTimeList = minute;
+    
+    NSMutableArray *kmArray = [[NSMutableArray alloc]initWithCapacity:2];
+    for (int i = 0 ; i<10 ; i++) {
+        NSString *minuteStr = [NSString stringWithFormat:@"%dkm",i];
+        [kmArray addObject:minuteStr];
+    }
+    _proHourTimeList = kmArray;
+
+    
+    [titleView addSubview:titleLabel];
+    [titleView addSubview:pickerView];
+
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView).with.offset(20);
+        make.top.equalTo(titleView).with.offset(25);;
+        make.size.mas_equalTo(CGSizeMake(120 ,14));
+    }];
+    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titleView);
+        make.top.equalTo(titleLabel.mas_bottom).with.offset(20);;
+        make.size.mas_equalTo(CGSizeMake(kScreenW ,90));
+    }];
+    
+    
+    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    sureBtn.frame = CGRectMake(10, 16, 190, 44);
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
+    sureBtn.layer.cornerRadius = 2.5;
+    sureBtn.clipsToBounds = YES;
+    
+    [titleView addSubview:sureBtn];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(titleView).with.offset(-30);
+        make.centerX.equalTo(titleView);
+        make.size.mas_equalTo(CGSizeMake(190, 44));
+    }];
+
+    
+    ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
+    [alertV show];
+    self.alertView = alertV;
+    
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if (range.location >= 6) {
+        textField.text = [textField.text substringWithRange:NSMakeRange(0, 6)];
+    }
+    
+    if (range.location <6) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
+- (void)surePost{
+    // 定位启动
+    if (_proHourTimeList.count == 10) {
+        
+        
+    }else{  // 定时启动
+        
+    }
+}
 @end

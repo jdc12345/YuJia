@@ -15,96 +15,33 @@
 #import "AddEquipmentViewController.h"
 #import "EquipmentViewController.h"
 #import "SightViewController.h"
+#import "SightModel.h"
 @interface SightViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
     UIImageView *navBarHairlineImageView;
     UIImageView *tabBarHairlineImageView;
 }
+@property (nonatomic, strong) NSMutableArray *nameList;
 
 @end
 
 @implementation SightViewController
 
-
+- (NSMutableArray *)nameList{
+    if (_nameList == nil) {
+        _nameList = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _nameList;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     //    self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-//    
-//    
-//    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenW, 44)];
-//    
-//    
-//    // Left item
-//    UIButton *leftNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    leftNavBtn.frame = CGRectMake(0, 16, 60, 12);
-//    [leftNavBtn setTitle:@"切换实景" forState:UIControlStateNormal];
-//    [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
-//    leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-//    [leftNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-//    //    [self.navigationController.navigationBar addSubview:leftNavBtn];
-//    
-//    
-//    // Right item
-//    UIButton *rightNavBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    rightNavBtn.frame = CGRectMake(kScreenW -22 -10, 16, 12, 12);
-//    [rightNavBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
-//    [rightNavBtn addTarget:self action:@selector(addEquipment) forControlEvents:UIControlEventTouchUpInside];
-//    //    [self.navigationController.navigationBar addSubview:rightNavBtn];
-//    
-//    // .TitleVeiw - Segmented Control
-//    NSArray *segmentedData = [[NSArray alloc]initWithObjects:@"情景",@"设备",nil];
-//    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedData];
-//    segmentedControl.frame = CGRectMake((kScreenW -150 -20)/2.0, 7,150, 30.0);
-//    /*
-//     这个是设置按下按钮时的颜色
-//     */
-//    segmentedControl.tintColor = [UIColor colorWithHexString:@"00bfff"];
-//    segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引、
-//    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-//    
-//    
-//    /*
-//     下面的代码实同正常状态和按下状态的属性控制,比如字体的大小和颜色等
-//     */
-//    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:12],NSFontAttributeName,[UIColor colorWithHexString:@"666666"], NSForegroundColorAttributeName, nil];
-//    
-//    
-//    [segmentedControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
-//    
-//    
-//    NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:[UIColor colorWithHexString:@"666666"] forKey:NSForegroundColorAttributeName];
-//    
-//    [segmentedControl setTitleTextAttributes:highlightedAttributes forState:UIControlStateHighlighted];
-//    
-//    //设置分段控件点击相应事件
-//    [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
-//    
-//    //    [self.navigationController.navigationBar addSubview:segmentedControl];
-//    
-//    [titleView addSubview:leftNavBtn];
-//    [titleView addSubview:rightNavBtn];
-//    [titleView addSubview:segmentedControl];
-//    
-//    self.navigationItem.titleView = titleView;
-//    //    titleView.backgroundColor = [UIColor yellowColor];
-//    NSLog(@"%g___________%g",self.navigationItem.titleView.frame.origin.x,self.navigationItem.titleView.frame.size.width);
-//    
-//    
-    
-    
-    
-//    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-//    
-//    // 改变navBar 下面的线
-//    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-//    navBarHairlineImageView = [self findHairlineImageViewUnder:navigationBar];
-//    UILabel *coverView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 1)];
-//    coverView.backgroundColor = [UIColor colorWithHexString:@"e9e9e9"];
-//    [navBarHairlineImageView removeFromSuperview];
-//    [navBarHairlineImageView addSubview:coverView];
+    NSLog(@"%ld",self.dataSource.count);
+    for (SightModel *sightModel in self.dataSource) {
+        [self.nameList addObject:sightModel.sceneName];
+    }
     
     
     [self setupSlideBar];
@@ -140,7 +77,7 @@
 {
     
     NSInteger Index = Seg.selectedSegmentIndex;
-    
+    NSLog(@"index = %ld",Index);
     switch (Index)
     {
             //        case 0:
@@ -158,7 +95,8 @@
 }
 - (void)setupSlideBar {
     segment = [[JXSegment alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
-    [segment updateChannels:@[@"首页",@"文章",@"好东西",@"早点与宵夜",@"电子小物",@"苹果",@"收纳集合",@"JBL",@"装b利器",@"测试机啦啦",@"乱七八糟的"]];
+//    [segment updateChannels:@[@"首页",@"文章",@"好东西",@"早点与宵夜",@"电子小物",@"苹果",@"收纳集合",@"JBL",@"装b利器",@"测试机啦啦",@"乱七八糟的"]];
+    [segment updateChannels:self.nameList];
     segment.delegate = self;
     [self.view addSubview:segment];
     
@@ -199,11 +137,13 @@
 #pragma mark - JXSegmentDelegate
 - (void)JXSegment:(JXSegment*)segment didSelectIndex:(NSInteger)index{
     [pageView changeToItemAtIndex:index];
+    NSLog(@"index = %ld",index);
 }
 
 #pragma mark - JXPageViewDelegate
 - (void)didScrollToIndex:(NSInteger)index{
     [segment didChengeToIndex:index];
+//    NSLog(@"index = %ld",index);
 }
 
 
@@ -228,6 +168,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
+        sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }
 }

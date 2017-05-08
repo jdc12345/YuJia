@@ -23,6 +23,7 @@
                     TitleView:(UIView *)titleView
                        selectView:(UIView *)selectView
                          sureView:(UIView *)sureView
+                       andIsCenter:(BOOL)isCenter
 {
     self = [super init];
     if (self) {
@@ -38,7 +39,12 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
         [maskView addGestureRecognizer:tap];
         
-        self.mainView = [[UIView alloc]initWithFrame:CGRectMake((kScreenW -contentSize.width)/2.0, (kScreenH -contentSize.height)/2.0, contentSize.width, contentSize.height)];
+        if (isCenter) {
+            self.mainView = [[UIView alloc]initWithFrame:CGRectMake((kScreenW -contentSize.width)/2.0, (kScreenH -contentSize.height)/2.0, contentSize.width, contentSize.height)];
+        }else{
+            self.mainView = [[UIView alloc]initWithFrame:CGRectMake((kScreenW -contentSize.width)/2.0, kScreenH -contentSize.height, contentSize.width, contentSize.height)];
+        }
+
         self.mainView.backgroundColor = [UIColor whiteColor];
         
         NSLog(@"yyyyy_%g",self.mainView.frame.origin.y);

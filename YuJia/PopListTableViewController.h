@@ -39,4 +39,7 @@
  */
 @property (nonatomic, weak) id<AccountDelegate>delegate;
 
+
+- (void)reloadDataSource;
+
 @end

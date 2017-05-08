@@ -80,6 +80,9 @@
     // 通知代理
     [_delegate selectedCell:indexPath.row];
 }
+- (void)reloadDataSource{
+    [self.tableView reloadData];
+}
 
 //// 打开cell滑动编辑
 //- (BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

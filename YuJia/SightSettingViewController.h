@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SightModel.h"
 
 @interface SightSettingViewController : UIViewController
-
+@property (nonatomic, strong) NSString *sightName;
+@property (nonatomic, strong) SightModel *sightModel;
 @end
