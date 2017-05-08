@@ -144,7 +144,7 @@
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
     [addBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn sizeToFit];
 

@@ -13,7 +13,8 @@
 - (instancetype)initWithContentSize:(CGSize)contentSize
                           TitleView:(UIView *)titleView
                          selectView:(UIView *)selectView
-                           sureView:(UIView *)sureView;
+                           sureView:(UIView *)sureView
+                        andIsCenter:(BOOL)isCenter;
 
 - (void)show;
 - (void)dismiss:(UITapGestureRecognizer *)tap;

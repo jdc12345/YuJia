@@ -16,6 +16,9 @@
 #import "AddSightViewController.h"
 #import "EquipmentViewController.h"
 #import "SightViewController.h"
+#import "SightModel.h"
+#import "EquipmentModel.h"
+#import "RoomModel.h"
 
 @interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
@@ -28,16 +31,31 @@
 @property (nonatomic, weak) UIView *sightView;
 @property (nonatomic, weak) UIView *equipmentView;
 @property (nonatomic, weak) UISegmentedControl *segmentedControl;
+
+@property (nonatomic, strong) NSMutableArray *roomDataSource;
+@property (nonatomic, strong) NSMutableArray *sightDataSource;
 @end
 
 @implementation HomePageViewController
+- (NSMutableArray *)roomDataSource{
+    if (_roomDataSource == nil) {
+        _roomDataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _roomDataSource;
+}
+- (NSMutableArray *)sightDataSource{
+    if (_sightDataSource == nil) {
+        _sightDataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _sightDataSource;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    [self httpRequestHomeInfo];
     
     UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenW, 44)];
     
@@ -113,20 +131,7 @@
     
     
     
-    SightViewController *sightVC = [[SightViewController alloc]init];
-    sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
-    
-    self.sightView = sightVC.view;
-    [self.view addSubview:sightVC.view];
-    [self addChildViewController:sightVC];
-    
-    
-    EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
-    equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
-    equipmentVC.view.hidden = YES;
-    self.equipmentView = equipmentVC.view;
-    [self.view addSubview:equipmentVC.view];
-    [self addChildViewController:equipmentVC];
+
     
     // Do any additional setup after loading the view.
 }
@@ -296,6 +301,64 @@
         [self.navigationController pushViewController:addEquipmentVC animated:YES];
     }
 
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mHomepageInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *roomList = responseObject[@"roomList"];
+        NSArray *sceneList = responseObject[@"sceneList"];
+        
+        for (NSDictionary *roomDict in roomList) {
+            RoomModel *roomModel = [RoomModel mj_objectWithKeyValues:roomDict];
+            NSMutableArray *equipmentArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *equipmentDict in roomModel.equipmentList) {
+                EquipmentModel *equipmentModel = [EquipmentModel mj_objectWithKeyValues:equipmentDict];
+                [equipmentArray addObject:equipmentModel];
+            }
+            roomModel.equipmentList = equipmentArray;
+            [self.roomDataSource addObject:roomModel];
+            
+        }
+//        NSLog(@"%@",self.roomDataSource.firstObject);
+        
+        
+        for (NSDictionary *sceneDict in sceneList) {
+            SightModel *sceneModel = [SightModel mj_objectWithKeyValues:sceneDict];
+            NSMutableArray *equipmentArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *equipmentDict in sceneModel.equipmentList) {
+                EquipmentModel *equipmentModel = [EquipmentModel mj_objectWithKeyValues:equipmentDict];
+                [equipmentArray addObject:equipmentModel];
+            }
+            sceneModel.equipmentList = equipmentArray;
+            [self.sightDataSource addObject:sceneModel];
+            
+        }
+        
+        SightViewController *sightVC = [[SightViewController alloc]init];
+        sightVC.dataSource = self.sightDataSource;
+        sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+        
+        self.sightView = sightVC.view;
+        
+        [self.view addSubview:sightVC.view];
+        [self addChildViewController:sightVC];
+        
+        
+        EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
+        equipmentVC.dataSource = self.roomDataSource;
+        equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+        equipmentVC.view.hidden = YES;
+        
+        self.equipmentView = equipmentVC.view;
+        [self.view addSubview:equipmentVC.view];
+        [self addChildViewController:equipmentVC];
+        
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 /*
 #pragma mark - Navigation

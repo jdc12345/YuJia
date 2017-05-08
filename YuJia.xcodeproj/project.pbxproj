@@ -83,6 +83,9 @@
 		3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA91EBC17450094CBE4 /* AddSightViewController.m */; };
 		3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */; };
 		3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FAF1EBC5D760094CBE4 /* PopListTableViewController.m */; };
+		3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB31EC061D80094CBE4 /* SightModel.m */; };
+		3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB61EC062850094CBE4 /* EquipmentModel.m */; };
+		3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB91EC062F20094CBE4 /* RoomModel.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
@@ -260,6 +263,12 @@
 		3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableViewCell.m; sourceTree = "<group>"; };
 		3E984FAE1EBC5D760094CBE4 /* PopListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopListTableViewController.h; sourceTree = "<group>"; };
 		3E984FAF1EBC5D760094CBE4 /* PopListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopListTableViewController.m; sourceTree = "<group>"; };
+		3E984FB21EC061D80094CBE4 /* SightModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SightModel.h; sourceTree = "<group>"; };
+		3E984FB31EC061D80094CBE4 /* SightModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SightModel.m; sourceTree = "<group>"; };
+		3E984FB51EC062850094CBE4 /* EquipmentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentModel.h; sourceTree = "<group>"; };
+		3E984FB61EC062850094CBE4 /* EquipmentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentModel.m; sourceTree = "<group>"; };
+		3E984FB81EC062F20094CBE4 /* RoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomModel.h; sourceTree = "<group>"; };
+		3E984FB91EC062F20094CBE4 /* RoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomModel.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
 		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -572,7 +581,7 @@
 		3E984F201EB829960094CBE4 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				3E984FAB1EBC5D5D0094CBE4 /* New Group */,
+				3E984FAB1EBC5D5D0094CBE4 /* Model */,
 				3E984F461EB82B550094CBE4 /* HomePageViewController.h */,
 				3E984F471EB82B550094CBE4 /* HomePageViewController.m */,
 				3E984F9C1EBB2B3D0094CBE4 /* SightViewController.h */,
@@ -670,11 +679,17 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		3E984FAB1EBC5D5D0094CBE4 /* New Group */ = {
+		3E984FAB1EBC5D5D0094CBE4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E984FB21EC061D80094CBE4 /* SightModel.h */,
+				3E984FB31EC061D80094CBE4 /* SightModel.m */,
+				3E984FB51EC062850094CBE4 /* EquipmentModel.h */,
+				3E984FB61EC062850094CBE4 /* EquipmentModel.m */,
+				3E984FB81EC062F20094CBE4 /* RoomModel.h */,
+				3E984FB91EC062F20094CBE4 /* RoomModel.m */,
 			);
-			name = "New Group";
+			name = Model;
 			sourceTree = "<group>";
 		};
 		9A0057F069AF3E6774E301F8 /* Pods */ = {
@@ -890,6 +905,7 @@
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
+				3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
@@ -901,6 +917,7 @@
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
+				3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */,
 				166FF4A91EBC52EE00846A59 /* YJBillInfoTableViewCell.m in Sources */,
 				1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */,
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
@@ -925,6 +942,7 @@
 				1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */,
 				3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
+				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
