@@ -122,8 +122,8 @@ static NSString* billCellid = @"bill_cell";
     self.nowYear = year;
     NSInteger month =  [dateComponent month];
     self.nowMonth = month;
-    NSInteger day = [dateComponent day];
-    NSInteger hour = [dateComponent hour];
+//    NSInteger day = [dateComponent day];
+//    NSInteger hour = [dateComponent hour];
     NSMutableArray *timeArr = [NSMutableArray array];
         if (sender.tag == 101) {
         if (self.yearPickerView) {
