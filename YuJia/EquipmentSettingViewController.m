@@ -113,7 +113,9 @@
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
+    
 }
+
 - (UIView *)personInfomation{
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 135)];
     headView.backgroundColor = [UIColor whiteColor];

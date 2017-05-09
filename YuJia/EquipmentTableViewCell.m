@@ -39,7 +39,7 @@
     
     self.iconV = [[UIImageView alloc]init];
     self.iconV.image = [UIImage imageNamed:@"cell1"];
-    
+    [self.iconV sizeToFit];
     
     
     self.titleLabel = [[UILabel alloc]init];
@@ -62,7 +62,7 @@
     [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.cardView);
         make.left.equalTo(self.cardView).with.offset(15 );
-        make.size.mas_equalTo(CGSizeMake(15 *kiphone6, 15 *kiphone6));
+//        make.size.mas_equalTo(CGSizeMake(15 *kiphone6, 15 *kiphone6));
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {

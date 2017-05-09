@@ -55,7 +55,7 @@
     starBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
     starBtn.layer.cornerRadius = 40;
     starBtn.clipsToBounds = YES;
-    [starBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [starBtn addTarget:self action:@selector(buttonClick_Start:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:starBtn];
     
@@ -166,6 +166,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         RoomSettingViewController *sightVC = [[RoomSettingViewController alloc]init];
+        sightVC.roomModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }
 }
@@ -213,6 +214,30 @@
     AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
     [self.navigationController pushViewController:addEquipmentVC animated:YES];
 }
+- (void)buttonClick_Start:(UIButton *)btn{
+    NSLog(@"点点");
+    //    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    NSDictionary *dict = @{@"id":@"1",@"state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
+    [[HttpClient defaultClient]requestWithPath:mEquipmentStart method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"提交成功%@",responseObject);
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"设置成功" preferredStyle:UIAlertControllerStyleAlert];
+        //       UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        
+        //       [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+    }];
+    
+}
+
 /*
  #pragma mark - Navigation
  

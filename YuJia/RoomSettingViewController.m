@@ -137,7 +137,7 @@
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-    
+    sightNameText.text = self.roomModel.roomName;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;

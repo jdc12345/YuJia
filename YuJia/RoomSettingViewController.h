@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RoomModel.h"
 
 @interface RoomSettingViewController : UIViewController
-
+@property (nonatomic, strong) RoomModel *roomModel;
 @end

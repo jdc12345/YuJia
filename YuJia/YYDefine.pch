@@ -26,6 +26,16 @@
 #pragma mark --------------Color--------------------
 #define kColor_DefaultGray [UIColor  colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1]
 
+/**
+ *
+ 1=开关
+ 2=灯
+ 3=电视
+ 4=窗帘
+ 5=空调
+ 6=门锁
+ */
+#define mIcon @[@"",@"socket",@"light",@"tv",@"",@"",@"door"]
 
 
 #pragma mark  ------------WeakSelf------------------
@@ -51,7 +61,12 @@
 
 // 首页数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
-
+//家》情景页面当前选中的情景一键开启功能接口
+//http://192.168.1.55:8080/smarthome/mobileapi/scene/scenectrl.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mSightStart [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/scenectrl.do?"]
+//家》设备页面当前选中的房间一键关闭功能接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/roomctrl.do?id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mEquipmentStart [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/roomctrl.do?"]
 
 
 // Include any system framework and library headers here that should be included in all compilation units.
