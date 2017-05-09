@@ -10,7 +10,7 @@
 #import "UIColor+colorValues.h"
 #import "YYCircleTableViewCell.h"
 #import "YYPropertyFunctionList.h"
-
+#import "YJFriendNeighborVC.h"
 static NSString* cellid = @"cell_id";
 @interface CircleGroupViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
@@ -85,6 +85,10 @@ static NSString* cellid = @"cell_id";
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if (indexPath.row==0) {
+        YJFriendNeighborVC *vc = [[YJFriendNeighborVC alloc]init];
+        [self.navigationController pushViewController:vc animated:true];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

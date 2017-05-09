@@ -9,6 +9,7 @@
 #import "YYCircleTableViewCell.h"
 #import <Masonry.h>
 #import "UIColor+colorValues.h"
+
 @interface YYCircleTableViewCell ()
 
 @property (nonatomic, weak) UIImageView* iconView;
