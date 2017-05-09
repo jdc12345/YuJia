@@ -9,6 +9,7 @@
 #import "YJModifyAddressVC.h"
 #import "YJAddPropertyBillAddressVC.h"
 #import "YJPropertyBillVC.h"
+#import "YJLifepaymentVC.h"
 
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -91,6 +92,11 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
             YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
+            revise.clickBtnBlock(cell.textLabel.text);
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
             revise.clickBtnBlock(cell.textLabel.text);
             [self.navigationController popToViewController:revise animated:YES];
         }

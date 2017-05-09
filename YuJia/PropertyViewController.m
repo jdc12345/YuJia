@@ -17,7 +17,7 @@
 #import "YYPropertyItemModel.h"
 #import "YJReportRepairVC.h"
 #import "YJPropertyBillVC.h"
-
+#import "YJLifepaymentVC.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -136,9 +136,11 @@ static NSString* collectionCellid = @"collection_cell";
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 1:
-            
+        case 1:{
+            YJLifepaymentVC *vc = [[YJLifepaymentVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
             break;
+        }
         case 2:{
             YJReportRepairVC *vc = [[YJReportRepairVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];

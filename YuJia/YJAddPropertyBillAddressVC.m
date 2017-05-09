@@ -10,6 +10,7 @@
 #import "YJCityTableViewCell.h"
 #import "YJBillInfoTableViewCell.h"
 #import "YJPropertyBillVC.h"
+#import "YJLifepaymentVC.h"
 
 static NSString* cityCellid = @"city_cell";
 static NSString* detailInfoCellid = @"detailInfo_cell";
@@ -69,6 +70,11 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
             YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
 //            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+//            revise.clickBtnBlock(cell.textLabel.text);
             [self.navigationController popToViewController:revise animated:YES];
         }
     }
