@@ -346,14 +346,14 @@
         [self addChildViewController:sightVC];
         
         
-        EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
-        equipmentVC.dataSource = self.roomDataSource;
-        equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
-        equipmentVC.view.hidden = YES;
-        
-        self.equipmentView = equipmentVC.view;
-        [self.view addSubview:equipmentVC.view];
-        [self addChildViewController:equipmentVC];
+//        EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
+//        equipmentVC.dataSource = self.roomDataSource;
+//        equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+//        equipmentVC.view.hidden = YES;
+//        
+//        self.equipmentView = equipmentVC.view;
+//        [self.view addSubview:equipmentVC.view];
+//        [self addChildViewController:equipmentVC];
         
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

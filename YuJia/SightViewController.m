@@ -16,6 +16,8 @@
 #import "EquipmentViewController.h"
 #import "SightViewController.h"
 #import "SightModel.h"
+#import "EquipmentModel.h"
+#import "LightSettingViewController.h"
 @interface SightViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
@@ -23,6 +25,8 @@
     UIImageView *tabBarHairlineImageView;
 }
 @property (nonatomic, strong) NSMutableArray *nameList;
+
+@property (nonatomic, assign) NSInteger loadTableV;
 
 @end
 
@@ -55,7 +59,7 @@
     starBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
     starBtn.layer.cornerRadius = 40;
     starBtn.clipsToBounds = YES;
-    [starBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [starBtn addTarget:self action:@selector(buttonClick_Start:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:starBtn];
     
@@ -104,23 +108,31 @@
     pageView.datasource = self;
     pageView.delegate = self;
     [pageView reloadData];
+//    for(int i = 0 ; i<self.nameList.count;i++){
+//        NSLog(@"i === %d",i);
+//        [pageView changeToItemAtIndex:i];
+//    }
     [pageView changeToItemAtIndex:0];
+    
     [self.view addSubview:pageView];
 }
 #pragma mark - JXPageViewDataSource
 -(NSInteger)numberOfItemInJXPageView:(JXPageView *)pageView{
-    return 11;
+    return self.dataSource.count;
 }
 
 -(UIView*)pageView:(JXPageView *)pageView viewAtIndex:(NSInteger)index{
+    NSLog(@"view  index =  %ld",index);
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[self randomColor]];
     
+    self.loadTableV = index;
     ////////////////////////////
     UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -148 -5) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
     tableView.dataSource = self;
     tableView.delegate = self;
+    tableView.tag = 100 +index;
     tableView.rowHeight = kScreenW *77/320.0 +10;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.showsVerticalScrollIndicator = NO;
@@ -137,7 +149,6 @@
 #pragma mark - JXSegmentDelegate
 - (void)JXSegment:(JXSegment*)segment didSelectIndex:(NSInteger)index{
     [pageView changeToItemAtIndex:index];
-    NSLog(@"index = %ld",index);
 }
 
 #pragma mark - JXPageViewDelegate
@@ -170,22 +181,46 @@
         SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
         sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
+    }else{
+        LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+//        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+        [self.navigationController pushViewController:sightVC animated:YES];
     }
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
     }else{
-        return 3;
+        SightModel* sightModel;
+        if (self.dataSource.count == 0) {
+            return 0;
+        }else{
+            
+            sightModel = self.dataSource[tableView.tag - 100];
+            
+            return sightModel.equipmentList.count;
+        }
+        
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    
+    NSLog(@"select = %ld",tableView.tag -100);
+    SightModel* sightModel;
+    EquipmentModel *equipmentModel;
+    if (self.dataSource.count == 0) {
+    }else{
+        sightModel = self.dataSource[tableView.tag -100];
+    }
+    if (sightModel.equipmentList.count != 0) {
+        equipmentModel = sightModel.equipmentList[indexPath.row];
+    }
+    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
     if (indexPath.section == 0) {
@@ -193,9 +228,19 @@
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"setting"];
         [homeTableViewCell cellMode:NO];
     }else{
-        homeTableViewCell.titleLabel.text = @"客厅灯";
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        homeTableViewCell.titleLabel.text = equipmentModel.name;
+        if (equipmentModel.iconUrl.length >0) {
+            
+        }else{
+            homeTableViewCell.titleLabel.text = equipmentModel.name;
+//            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] +1]];
+        }
         [homeTableViewCell cellMode:YES];
+        if ([equipmentModel.state isEqualToString:@"0"]) {
+            homeTableViewCell.switch0.on = YES;
+        }else{
+            homeTableViewCell.switch0.on = NO;
+        }
         
     }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -215,6 +260,30 @@
 - (void)addEquipment{
     AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
     [self.navigationController pushViewController:addEquipmentVC animated:YES];
+}
+- (void)buttonClick_Start:(UIButton *)btn{
+    NSLog(@"点点");
+//    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    NSDictionary *dict = @{@"id":@"1",@"scene_state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
+    [[HttpClient defaultClient]requestWithPath:mSightStart method:1 parameters:dict prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"提交成功%@",responseObject);
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"设置成功" preferredStyle:UIAlertControllerStyleAlert];
+            //       UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
+            //       [alert addAction:cancelAction];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+        }];
+
+    
 }
 /*
  #pragma mark - Navigation
