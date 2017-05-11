@@ -18,6 +18,8 @@
 #import "SightModel.h"
 #import "EquipmentModel.h"
 #import "LightSettingViewController.h"
+#import "AirConditioningViewController.h"
+#import "TVSettingViewController.h"
 @interface SightViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
@@ -122,7 +124,7 @@
 }
 
 -(UIView*)pageView:(JXPageView *)pageView viewAtIndex:(NSInteger)index{
-    NSLog(@"view  index =  %ld",index);
+//    NSLog(@"view  index =  %ld",index);
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[self randomColor]];
     
@@ -182,7 +184,7 @@
         sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }else{
-        LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+        TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
 //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }
@@ -220,7 +222,7 @@
     if (sightModel.equipmentList.count != 0) {
         equipmentModel = sightModel.equipmentList[indexPath.row];
     }
-    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
+//    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
     if (indexPath.section == 0) {
@@ -264,7 +266,17 @@
 - (void)buttonClick_Start:(UIButton *)btn{
     NSLog(@"点点");
 //    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    
+//    NSArray *theData = @[@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"},@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"}];
+//    
+//    NSError *error = nil;
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData options:NSJSONWritingPrettyPrinted error:nil];
+//    
+//    NSString *jsonText = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
     NSDictionary *dict = @{@"id":@"1",@"scene_state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
+    
+//    NSLog(@"%@",jsonText);
     [[HttpClient defaultClient]requestWithPath:mSightStart method:1 parameters:dict prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {

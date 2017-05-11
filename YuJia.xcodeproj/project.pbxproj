@@ -47,9 +47,18 @@
 		16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16742BF51EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m */; };
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
+		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
 		3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */; };
 		3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */; };
 		3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */; };
+		3E90B7331EC2E7BB00CC49D7 /* AirConditioningViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7321EC2E7BB00CC49D7 /* AirConditioningViewController.m */; };
+		3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7351EC3041800CC49D7 /* AirConditioningView.m */; };
+		3E90B73A1EC3F4A600CC49D7 /* AirModelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7391EC3F4A600CC49D7 /* AirModelViewController.m */; };
+		3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B73C1EC3F50900CC49D7 /* AirSpeedViewController.m */; };
+		3E90B7401EC3F54000CC49D7 /* AirDirectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B73F1EC3F54000CC49D7 /* AirDirectionViewController.m */; };
+		3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7421EC3F56F00CC49D7 /* AirTimingViewController.m */; };
+		3E90B7461EC3F66800CC49D7 /* AirModelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7451EC3F66800CC49D7 /* AirModelTableViewCell.m */; };
+		3E90B74A1EC3F68200CC49D7 /* AirDirectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7491EC3F68200CC49D7 /* AirDirectionTableViewCell.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -198,12 +207,30 @@
 		168466A71EBB495E00A98295 /* YJImageDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJImageDisplayCollectionViewCell.h; sourceTree = "<group>"; };
 		168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJImageDisplayCollectionViewCell.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingViewController.h; sourceTree = "<group>"; };
+		3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingViewController.m; sourceTree = "<group>"; };
 		3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSlider.h; sourceTree = "<group>"; };
 		3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSlider.m; sourceTree = "<group>"; };
 		3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketSettingViewController.h; sourceTree = "<group>"; };
 		3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketSettingViewController.m; sourceTree = "<group>"; };
 		3E90B72B1EC1C83D00CC49D7 /* CurtainSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurtainSettingViewController.h; sourceTree = "<group>"; };
 		3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurtainSettingViewController.m; sourceTree = "<group>"; };
+		3E90B7311EC2E7BB00CC49D7 /* AirConditioningViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirConditioningViewController.h; sourceTree = "<group>"; };
+		3E90B7321EC2E7BB00CC49D7 /* AirConditioningViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirConditioningViewController.m; sourceTree = "<group>"; };
+		3E90B7341EC3041800CC49D7 /* AirConditioningView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirConditioningView.h; sourceTree = "<group>"; };
+		3E90B7351EC3041800CC49D7 /* AirConditioningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirConditioningView.m; sourceTree = "<group>"; };
+		3E90B7381EC3F4A600CC49D7 /* AirModelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirModelViewController.h; sourceTree = "<group>"; };
+		3E90B7391EC3F4A600CC49D7 /* AirModelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirModelViewController.m; sourceTree = "<group>"; };
+		3E90B73B1EC3F50900CC49D7 /* AirSpeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirSpeedViewController.h; sourceTree = "<group>"; };
+		3E90B73C1EC3F50900CC49D7 /* AirSpeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirSpeedViewController.m; sourceTree = "<group>"; };
+		3E90B73E1EC3F54000CC49D7 /* AirDirectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirDirectionViewController.h; sourceTree = "<group>"; };
+		3E90B73F1EC3F54000CC49D7 /* AirDirectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirDirectionViewController.m; sourceTree = "<group>"; };
+		3E90B7411EC3F56F00CC49D7 /* AirTimingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirTimingViewController.h; sourceTree = "<group>"; };
+		3E90B7421EC3F56F00CC49D7 /* AirTimingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirTimingViewController.m; sourceTree = "<group>"; };
+		3E90B7441EC3F66800CC49D7 /* AirModelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirModelTableViewCell.h; sourceTree = "<group>"; };
+		3E90B7451EC3F66800CC49D7 /* AirModelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirModelTableViewCell.m; sourceTree = "<group>"; };
+		3E90B7481EC3F68200CC49D7 /* AirDirectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirDirectionTableViewCell.h; sourceTree = "<group>"; };
+		3E90B7491EC3F68200CC49D7 /* AirDirectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirDirectionTableViewCell.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -504,6 +531,33 @@
 			name = friendNeighbor;
 			sourceTree = "<group>";
 		};
+		3E90B7371EC3F41300CC49D7 /* SubController */ = {
+			isa = PBXGroup;
+			children = (
+				3E90B7471EC3F66D00CC49D7 /* View */,
+				3E90B7381EC3F4A600CC49D7 /* AirModelViewController.h */,
+				3E90B7391EC3F4A600CC49D7 /* AirModelViewController.m */,
+				3E90B73B1EC3F50900CC49D7 /* AirSpeedViewController.h */,
+				3E90B73C1EC3F50900CC49D7 /* AirSpeedViewController.m */,
+				3E90B73E1EC3F54000CC49D7 /* AirDirectionViewController.h */,
+				3E90B73F1EC3F54000CC49D7 /* AirDirectionViewController.m */,
+				3E90B7411EC3F56F00CC49D7 /* AirTimingViewController.h */,
+				3E90B7421EC3F56F00CC49D7 /* AirTimingViewController.m */,
+			);
+			name = SubController;
+			sourceTree = "<group>";
+		};
+		3E90B7471EC3F66D00CC49D7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3E90B7441EC3F66800CC49D7 /* AirModelTableViewCell.h */,
+				3E90B7451EC3F66800CC49D7 /* AirModelTableViewCell.m */,
+				3E90B7481EC3F68200CC49D7 /* AirDirectionTableViewCell.h */,
+				3E90B7491EC3F68200CC49D7 /* AirDirectionTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		3E984EDD1EB821EE0094CBE4 = {
 			isa = PBXGroup;
 			children = (
@@ -655,6 +709,11 @@
 				3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */,
 				3E90B72B1EC1C83D00CC49D7 /* CurtainSettingViewController.h */,
 				3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */,
+				3E90B7311EC2E7BB00CC49D7 /* AirConditioningViewController.h */,
+				3E90B7321EC2E7BB00CC49D7 /* AirConditioningViewController.m */,
+				3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */,
+				3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */,
+				3E90B7371EC3F41300CC49D7 /* SubController */,
 				3E984F6A1EB87BA90094CBE4 /* View */,
 			);
 			name = HomePage;
@@ -728,6 +787,8 @@
 				3E984FAF1EBC5D760094CBE4 /* PopListTableViewController.m */,
 				3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */,
 				3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */,
+				3E90B7341EC3041800CC49D7 /* AirConditioningView.h */,
+				3E90B7351EC3041800CC49D7 /* AirConditioningView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -964,7 +1025,9 @@
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
 				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
+				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
+				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
@@ -973,6 +1036,7 @@
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
 				3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */,
+				3E90B7401EC3F54000CC49D7 /* AirDirectionViewController.m in Sources */,
 				3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */,
 				166FF4A91EBC52EE00846A59 /* YJBillInfoTableViewCell.m in Sources */,
 				1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */,
@@ -987,10 +1051,13 @@
 				3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
 				168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */,
+				3E90B74A1EC3F68200CC49D7 /* AirDirectionTableViewCell.m in Sources */,
 				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
+				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
 				164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */,
+				3E90B7331EC2E7BB00CC49D7 /* AirConditioningViewController.m in Sources */,
 				166FF4A51EBC4B6B00846A59 /* YJCityTableViewCell.m in Sources */,
 				16742BF31EC1CEF80016DDD9 /* UIButton+Badge.m in Sources */,
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
@@ -1005,11 +1072,13 @@
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
+				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */,
 				3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */,
 				3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */,
+				3E90B73A1EC3F4A600CC49D7 /* AirModelViewController.m in Sources */,
 				166FF49E1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m in Sources */,
 				3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */,
 				3E984F981EBB1C1B0094CBE4 /* SuccessConnectViewController.m in Sources */,
@@ -1025,6 +1094,7 @@
 				3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */,
 				1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */,
 				1661FE2D1EB880BF00583A7F /* YYPropertyTableViewCell.m in Sources */,
+				3E90B7461EC3F66800CC49D7 /* AirModelTableViewCell.m in Sources */,
 				167130271EB964BD00CC2394 /* YJReportRepairVC.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
