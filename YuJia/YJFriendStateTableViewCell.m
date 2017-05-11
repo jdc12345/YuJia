@@ -9,7 +9,6 @@
 #import "YJFriendStateTableViewCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
-#import <Masonry.h>
 #import "YJImageDisplayCollectionViewCell.h"
 #import "YJRepairRecordFlowLayout.h"
 #import <HUPhotoBrowser.h>
@@ -143,11 +142,10 @@ static NSString* photoCellid = @"photo_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-//    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(iconView.mas_top).offset(-10*kiphone6);
-//        make.bottom.equalTo(likeBtn.mas_bottom).offset(15*kiphone6);
-//        make.width.offset(kScreenW);
-//    }];
+    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(likeBtn.mas_bottom).offset(15*kiphone6);
+        make.width.offset(kScreenW);
+    }];
     self.iconView = iconView;
     self.areaLabel = areaLabel;
     self.typeLabel = typeLabel;
