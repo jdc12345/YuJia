@@ -9,7 +9,7 @@
 #import "YYPropertyTableViewCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
-#import <Masonry.h>
+
 @interface YYPropertyTableViewCell()
 @property (nonatomic, weak) UIButton* btn;
 @property (nonatomic, weak) UILabel* itemLabel;

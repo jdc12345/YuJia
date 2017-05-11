@@ -41,6 +41,17 @@ static NSString* photoCellid = @"photo_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    //添加右侧发送按钮
+    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
+    [postBtn setTitle:@"发送" forState:UIControlStateNormal];
+    [postBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+    postBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    postBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    postBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+    [postBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;

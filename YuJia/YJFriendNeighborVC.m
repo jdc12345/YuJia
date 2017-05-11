@@ -12,6 +12,8 @@
 #import "YJPostFriendStateVC.h"
 #import "UIButton+Badge.h"
 #import "YJFriendStateDetailVC.h"
+#import "YJPostFriendStateVC.h"
+#import "YJNoticeListTableVC.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJFriendNeighborVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -107,7 +109,8 @@ static NSString* tableCellid = @"table_cell";
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCellid];
-    //        [tableView registerClass:[YJRepairSectionTwoTableViewCell class] forCellReuseIdentifier:tableCellid];
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight =  235*kiphone6;
     tableView.delegate =self;
     tableView.dataSource = self;
     UIButton *postBtn = [[UIButton alloc]init];
@@ -177,14 +180,22 @@ static NSString* tableCellid = @"table_cell";
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 235*kiphone6;
+//    return 235*kiphone6;
+    return UITableViewAutomaticDimension;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
+    [self.navigationController pushViewController:detailVc animated:true];
+    
+}
+
 - (void)postBtn:(UIButton*)sender {
     YJPostFriendStateVC *vc = [[YJPostFriendStateVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-    YJFriendStateDetailVC *vc = [[YJFriendStateDetailVC alloc]init];
+
+    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)didReceiveMemoryWarning {
