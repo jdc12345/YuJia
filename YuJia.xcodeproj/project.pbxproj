@@ -12,8 +12,12 @@
 		1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A01EC040CF00A74938 /* YJEditNumberVC.m */; };
 		1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */; };
 		1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */; };
+		161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */; };
+		161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */; };
+		161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */; };
 		164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */; };
 		164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F91EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m */; };
+		165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */; };
 		1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE151EB864C900583A7F /* UIColor+colorValues.m */; };
 		1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE181EB86A1100583A7F /* YYFunctionListFlowLayout.m */; };
 		1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE1B1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m */; };
@@ -149,6 +153,14 @@
 		1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJInputPayNumberVC.m; sourceTree = "<group>"; };
 		1606D9A51EC095C600A74938 /* YJFriendNeighborVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborVC.h; sourceTree = "<group>"; };
 		1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborVC.m; sourceTree = "<group>"; };
+		161918B51EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityActivitiesVC.h; sourceTree = "<group>"; };
+		161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityActivitiesVC.m; sourceTree = "<group>"; };
+		161918B81EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityActivitiesTVCell.h; sourceTree = "<group>"; };
+		161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityActivitiesTVCell.m; sourceTree = "<group>"; };
+		161918BB1EC4329100FE2FD1 /* YJCreatActivitiesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCreatActivitiesVC.h; sourceTree = "<group>"; };
+		161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreatActivitiesVC.m; sourceTree = "<group>"; };
+		161918BE1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCreateActivitieTVCell.h; sourceTree = "<group>"; };
+		161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreateActivitieTVCell.m; sourceTree = "<group>"; };
 		1621A4321EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRepairRecordTableViewCell.h; sourceTree = "<group>"; };
 		1621A4331EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecordTableViewCell.m; sourceTree = "<group>"; };
 		164F83F51EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoAddBtnCollectionViewCell.h; sourceTree = "<group>"; };
@@ -404,6 +416,17 @@
 			name = LifePayMent;
 			sourceTree = "<group>";
 		};
+		161918B41EC3FC7E00FE2FD1 /* Community activities */ = {
+			isa = PBXGroup;
+			children = (
+				161918B81EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.h */,
+				161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */,
+				161918BE1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.h */,
+				161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */,
+			);
+			name = "Community activities";
+			sourceTree = "<group>";
+		};
 		1621A4311EBB213900BDAF10 /* repairRecord */ = {
 			isa = PBXGroup;
 			children = (
@@ -508,6 +531,7 @@
 				1661FE341EB89D4000583A7F /* YYCircleTableViewCell.h */,
 				1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */,
 				16742BEA1EC158E60016DDD9 /* friendNeighbor */,
+				161918B41EC3FC7E00FE2FD1 /* Community activities */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -523,6 +547,10 @@
 				16742BF51EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m */,
 				1672D7A41EC32F8300F5970C /* YJNoticeListTableVC.h */,
 				1672D7A51EC32F8300F5970C /* YJNoticeListTableVC.m */,
+				161918B51EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.h */,
+				161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */,
+				161918BB1EC4329100FE2FD1 /* YJCreatActivitiesVC.h */,
+				161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1080,6 +1108,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */,
 				1606D99B1EC01CDC00A74938 /* YJPayItemTableViewCell.m in Sources */,
 				3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */,
 				166FF4971EBC09E000846A59 /* IWComposeImageView.m in Sources */,
@@ -1103,13 +1132,16 @@
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
+				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
+				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
 				3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */,
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
+				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
 				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
 				3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */,
 				3E90B7401EC3F54000CC49D7 /* AirDirectionViewController.m in Sources */,

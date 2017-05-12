@@ -128,8 +128,8 @@ static NSString* photoCellid = @"photo_cell";
         return nil;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-        UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5*kiphone6)];
-            backView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5*kiphone6)];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     self.backView = backView;
     [self setBtnWithFrame:CGRectMake(0, 0, 130*kiphone6, 35*kiphone6) WithTitle:@"选择分类"andTag:101];
             //输入框

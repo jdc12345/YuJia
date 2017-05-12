@@ -15,13 +15,16 @@
 #import "YJFriendLikeCollectionViewCell.h"
 #import "YJFriendCommentTableViewCell.h"
 #import "YJSelfReplyTableViewCell.h"
+#import <HUImagePickerViewController.h>
+#import "YJPhotoDisplayCollectionViewCell.h"
+#import <HUPhotoBrowser.h>
 
 static NSString* tableCell = @"table_cell";
 static NSString* commentCell = @"comment_cell";
 static NSString* photoCellid = @"photo_cell";
 static NSString* friendCommentCellid = @"friendComment_cell";
 static NSString* selfReplyCellid = @"selfReply_cell";
-@interface YJFriendStateDetailVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate>
+@interface YJFriendStateDetailVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UITableView *commentTableView;
 @property(nonatomic,weak)UIButton *typeBtn;
@@ -52,15 +55,15 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     int i = 1;
     if (i) {
         //添加右侧发送按钮
-        UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [postBtn setTitle:@"删除" forState:UIControlStateNormal];
-        [postBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-        postBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-        postBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+        UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
+        [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
 //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
-        postBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [postBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
+        deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [deleateBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
         self.navigationItem.rightBarButtonItem = rightBarItem;
     }
     [self loadData];
@@ -206,7 +209,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
-        return UITableViewAutomaticDimension;
+    return UITableViewAutomaticDimension;
     
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
@@ -244,10 +247,10 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-//    YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    UIImage *image = [UIImage imageNamed:@"house_repair"];
-//    NSArray *imageArr = @[image,image,image,image,image];
-//    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
+    YJFriendLikeCollectionViewCell *cell = (YJFriendLikeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    UIImage *image = [UIImage imageNamed:@"house_repair"];
+    NSArray *imageArr = @[image,image,image,image,image];
+    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
     
 }
 
