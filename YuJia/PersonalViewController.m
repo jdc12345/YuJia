@@ -60,7 +60,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //    self.title = @"家";
+//        self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
