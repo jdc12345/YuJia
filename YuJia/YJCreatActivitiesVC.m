@@ -253,33 +253,33 @@ static NSString* tableCellid = @"table_cell";
         pickView.showsSelectionIndicator = YES;
         self.timePickerView = pickView;
         
+        //            设置初始默认值
+        [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
+        [self.timePickerView selectRow:0 inComponent:0 animated:true];
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        
+        //        format.AMSymbol = @"上午";
+        //        format.PMSymbol = @"下午";
+        //        format.dateFormat = @"aaa";
+        //        NSString *timeStr = [format stringFromDate:now];
+        //        if ([timeStr isEqualToString:@"上午"]) {
+        //            [self pickerView:self.timePickerView didSelectRow:0 inComponent:1];
+        //        }else{
+        //            [self pickerView:self.timePickerView didSelectRow:1 inComponent:1];
+        //
+        //        }
+        format.dateFormat = @"HH";
+        NSString *timeStr = [format stringFromDate:now];
+        NSInteger row = [timeStr integerValue];
+        [self pickerView:self.timePickerView didSelectRow:row inComponent:1];
+        [self.timePickerView selectRow:row inComponent:1 animated:true];
+        format.dateFormat = @"mm";
+        timeStr = [format stringFromDate:now];
+        row = [timeStr integerValue];
+        [self pickerView:self.timePickerView didSelectRow:row inComponent:2];
+        [self.timePickerView selectRow:row inComponent:2 animated:true];
+    }
   }
-    //            设置初始默认值
-    [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
-    [self.timePickerView selectRow:0 inComponent:0 animated:true];
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    
-    //        format.AMSymbol = @"上午";
-    //        format.PMSymbol = @"下午";
-    //        format.dateFormat = @"aaa";
-    //        NSString *timeStr = [format stringFromDate:now];
-    //        if ([timeStr isEqualToString:@"上午"]) {
-    //            [self pickerView:self.timePickerView didSelectRow:0 inComponent:1];
-    //        }else{
-    //            [self pickerView:self.timePickerView didSelectRow:1 inComponent:1];
-    //
-    //        }
-    format.dateFormat = @"HH";
-    NSString *timeStr = [format stringFromDate:now];
-    NSInteger row = [timeStr integerValue];
-    [self pickerView:self.timePickerView didSelectRow:row inComponent:1];
-    [self.timePickerView selectRow:row inComponent:1 animated:true];
-    format.dateFormat = @"mm";
-    timeStr = [format stringFromDate:now];
-    row = [timeStr integerValue];
-    [self pickerView:self.timePickerView didSelectRow:row inComponent:2];
-    [self.timePickerView selectRow:row inComponent:2 animated:true];
-}
 #pragma mark - pickView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -311,7 +311,7 @@ static NSString* tableCellid = @"table_cell";
 
 {
     
-    return 50.0;
+    return 40.0*kiphone6;
     
 }
 // 返回选中的行

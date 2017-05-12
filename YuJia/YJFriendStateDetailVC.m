@@ -15,7 +15,7 @@
 #import "YJFriendLikeCollectionViewCell.h"
 #import "YJFriendCommentTableViewCell.h"
 #import "YJSelfReplyTableViewCell.h"
-#import <HUImagePickerViewController.h>
+//#import <HUImagePickerViewController.h>
 #import "YJPhotoDisplayCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
 
@@ -24,7 +24,7 @@ static NSString* commentCell = @"comment_cell";
 static NSString* photoCellid = @"photo_cell";
 static NSString* friendCommentCellid = @"friendComment_cell";
 static NSString* selfReplyCellid = @"selfReply_cell";
-@interface YJFriendStateDetailVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate>
+@interface YJFriendStateDetailVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UITableView *commentTableView;
 @property(nonatomic,weak)UIButton *typeBtn;

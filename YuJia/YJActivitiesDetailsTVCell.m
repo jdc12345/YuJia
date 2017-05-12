@@ -1,15 +1,15 @@
 //
-//  YJCommunityActivitiesTVCell.m
+//  YJActivitiesDetailsTVCell.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/5/11.
+//  Created by 万宇 on 2017/5/12.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJCommunityActivitiesTVCell.h"
+#import "YJActivitiesDetailsTVCell.h"
 #import "UILabel+Addition.h"
 
-@interface YJCommunityActivitiesTVCell()
+@interface YJActivitiesDetailsTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
 @property (nonatomic, weak) UILabel* begainTimeLabel;
@@ -17,13 +17,11 @@
 @property (nonatomic, weak) UILabel* addressLabel;
 @property (nonatomic, weak) UILabel* timeLabel;
 @property (nonatomic, weak) UILabel* limiteNumberLabel;
-@property (nonatomic, weak) UIButton* likeBtn;
-@property (nonatomic, weak) UILabel* likeNumberLabel;
-@property (nonatomic, weak) UIButton* addBtn;
-@property (nonatomic, weak) UILabel* addNumberLabel;
-@property (nonatomic, assign) BOOL isLike;
+@property (nonatomic, weak) UILabel* teleNumberLabel;
+@property (nonatomic, weak) UILabel* conentLabel;
+
 @end
-@implementation YJCommunityActivitiesTVCell
+@implementation YJActivitiesDetailsTVCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -43,40 +41,49 @@
 //}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    UIView *headerView = [[UIView alloc]init];//添加line
-    headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [self.contentView addSubview:headerView];
-    [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
-        make.height.offset(60*kiphone6);
-    }];
+    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIImageView *iconView = [[UIImageView alloc]init];//头像图片
     iconView.image = [UIImage imageNamed:@"icon"];
     iconView.layer.masksToBounds = true;
     iconView.layer.cornerRadius = 20*kiphone6;
-    [headerView addSubview:iconView];
+    [self.contentView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
-        make.centerY.equalTo(headerView);
+        make.centerY.equalTo(self.contentView.mas_top).offset(30*kiphone6);
         make.width.height.offset(40*kiphone6);
     }];
     UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//姓名
-    [headerView addSubview:nameLabel];
+    [self.contentView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(headerView);
+        make.centerY.equalTo(iconView);
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
     }];
-    UILabel *begainTimeLabel = [UILabel labelWithText:@"5月6日 6:30" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//开始时间
-    [headerView addSubview:begainTimeLabel];
-    [begainTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(headerView);
+    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//状态
+    [self.contentView addSubview:stateLabel];
+    [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(iconView);
         make.right.offset(-10*kiphone6);
     }];
+    UILabel *begainTimeLabel = [UILabel labelWithText:@"5月6日 6:30" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//开始时间
+    [self.contentView addSubview:begainTimeLabel];
+    [begainTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(iconView);
+        make.right.equalTo(stateLabel.mas_left).offset(-10*kiphone6);
+    }];
+
+    UIView *line = [[UIView alloc]init];//添加line
+    line.backgroundColor = [UIColor colorWithHexString:@"#999999"];
+    [self.contentView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(60*kiphone6);
+        make.left.right.offset(0);
+        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
+    }];
+    
     UILabel *typeLabel = [UILabel labelWithText:@"烧烤聚会" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//活动类型
     [self.contentView addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_bottom).offset(10*kiphone6);
+        make.top.equalTo(line.mas_bottom).offset(10*kiphone6);
         make.left.offset(10*kiphone6);
     }];
     UILabel *timeItemLabel = [UILabel labelWithText:@"时间" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];//时间标题
@@ -115,57 +122,35 @@
         make.left.equalTo(numberItemLabel.mas_right).offset(10*kiphone6);
         make.centerY.equalTo(numberItemLabel);
     }];
-    UIView *footerView = [[UIView alloc]init];//添加尾部视图
-    footerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [self.contentView addSubview:footerView];
-    [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.height.offset(37*kiphone6);
+    UILabel *teleItemLabel = [UILabel labelWithText:@"电话" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];//电话标题
+    [self.contentView addSubview:teleItemLabel];
+    [teleItemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10*kiphone6);
         make.top.equalTo(numberItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *activitieStateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
-    [footerView addSubview:activitieStateLabel];
-    [activitieStateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView);
+    UILabel *teleNumberLabel = [UILabel labelWithText:@"186 1143 9783" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//电话号码
+    [self.contentView addSubview:teleNumberLabel];
+    [teleNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(teleItemLabel.mas_right).offset(10*kiphone6);
+        make.centerY.equalTo(teleItemLabel);
+    }];
+    UILabel *contentItemLabel = [UILabel labelWithText:@"活动内容" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];//活动内容标题
+    [self.contentView addSubview:contentItemLabel];
+    [contentItemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
+        make.top.equalTo(teleItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UIButton *likeBtn = [[UIButton alloc]init];//点赞按钮
-    [likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-    [footerView addSubview:likeBtn];
-    [likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView);
-        make.left.equalTo(activitieStateLabel.mas_right).offset(63*kiphone6);
-    }];
-    UILabel *likeNumberLabel = [UILabel labelWithText:@"1人感兴趣" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//感兴趣人数
-    [footerView addSubview:likeNumberLabel];
-    [likeNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView);
-        make.left.equalTo(likeBtn.mas_right).offset(10*kiphone6);
-    }];
-   
-    UILabel *addNumberLabel = [UILabel labelWithText:@"1人参加" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//参加人数
-    [footerView addSubview:addNumberLabel];
-    [addNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView);
+    UILabel *conentLabel = [UILabel labelWithText:@"活动内容186活动内容1143活动内容9783活动内容186活动内容1143活动内容9783" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//电话号码
+    conentLabel.numberOfLines = 0;
+    [self.contentView addSubview:conentLabel];
+    [conentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10*kiphone6);
+        make.top.equalTo(contentItemLabel.mas_bottom).offset(15*kiphone6);
         make.right.offset(-10*kiphone6);
     }];
-    UIButton *addBtn = [[UIButton alloc]init];//参加按钮
-    [addBtn setImage:[UIImage imageNamed:@"blue-add"] forState:UIControlStateNormal];
-    [footerView addSubview:addBtn];
-    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(footerView);
-        make.right.equalTo(addNumberLabel.mas_left).offset(-10*kiphone6);
-    }];
-
-    UIView *line = [[UIView alloc]init];//添加line
-    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    [self.contentView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.left.right.offset(0);
-        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
-    }];
+    
     [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(footerView.mas_bottom).offset(13.5*kiphone6);
+        make.bottom.equalTo(conentLabel.mas_bottom).offset(15*kiphone6);
         make.width.offset(kScreenW);
     }];
     self.iconView = iconView;
@@ -174,20 +159,10 @@
     self.begainTimeLabel = begainTimeLabel;
     self.timeLabel = timeLabel;
     self.limiteNumberLabel = limiteNumberLabel;
-    self.likeBtn = likeBtn;
-    self.likeNumberLabel = likeNumberLabel;
-    self.addBtn = addBtn;
-    self.addNumberLabel = addNumberLabel;
-    [likeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.teleNumberLabel = teleNumberLabel;
+    self.conentLabel = conentLabel;
+    
 }
--(void)btnClick:(UIButton*)sender{
-    if (self.isLike) {
-        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        self.isLike = false;
-    }else{
-        [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
-        self.isLike = true;
-    }
-}
+
 
 @end
