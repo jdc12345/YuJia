@@ -54,6 +54,14 @@
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
+		3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */; };
+		3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3331EC4685E00C77B58 /* LockTextViewController.m */; };
+		3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3361EC4687200C77B58 /* LockFigureViewController.m */; };
+		3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3391EC4687F00C77B58 /* LockShareViewController.m */; };
+		3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */; };
+		3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B33F1EC4798900C77B58 /* LockSettingTableViewCell.m */; };
+		3E20B3431EC542A100C77B58 /* LockShareTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3421EC542A100C77B58 /* LockShareTableViewCell.m */; };
+		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
 		3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */; };
 		3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */; };
 		3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */; };
@@ -227,6 +235,22 @@
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingViewController.h; sourceTree = "<group>"; };
 		3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingViewController.m; sourceTree = "<group>"; };
+		3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorLockViewController.h; sourceTree = "<group>"; };
+		3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoorLockViewController.m; sourceTree = "<group>"; };
+		3E20B3321EC4685E00C77B58 /* LockTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockTextViewController.h; sourceTree = "<group>"; };
+		3E20B3331EC4685E00C77B58 /* LockTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockTextViewController.m; sourceTree = "<group>"; };
+		3E20B3351EC4687200C77B58 /* LockFigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockFigureViewController.h; sourceTree = "<group>"; };
+		3E20B3361EC4687200C77B58 /* LockFigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockFigureViewController.m; sourceTree = "<group>"; };
+		3E20B3381EC4687F00C77B58 /* LockShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockShareViewController.h; sourceTree = "<group>"; };
+		3E20B3391EC4687F00C77B58 /* LockShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockShareViewController.m; sourceTree = "<group>"; };
+		3E20B33B1EC4688B00C77B58 /* LockSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockSettingViewController.h; sourceTree = "<group>"; };
+		3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockSettingViewController.m; sourceTree = "<group>"; };
+		3E20B33E1EC4798900C77B58 /* LockSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockSettingTableViewCell.h; sourceTree = "<group>"; };
+		3E20B33F1EC4798900C77B58 /* LockSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockSettingTableViewCell.m; sourceTree = "<group>"; };
+		3E20B3411EC542A100C77B58 /* LockShareTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockShareTableViewCell.h; sourceTree = "<group>"; };
+		3E20B3421EC542A100C77B58 /* LockShareTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockShareTableViewCell.m; sourceTree = "<group>"; };
+		3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPersonalViewController.h; sourceTree = "<group>"; };
+		3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPersonalViewController.m; sourceTree = "<group>"; };
 		3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSlider.h; sourceTree = "<group>"; };
 		3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSlider.m; sourceTree = "<group>"; };
 		3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketSettingViewController.h; sourceTree = "<group>"; };
@@ -573,6 +597,14 @@
 				3E90B73F1EC3F54000CC49D7 /* AirDirectionViewController.m */,
 				3E90B7411EC3F56F00CC49D7 /* AirTimingViewController.h */,
 				3E90B7421EC3F56F00CC49D7 /* AirTimingViewController.m */,
+				3E20B3321EC4685E00C77B58 /* LockTextViewController.h */,
+				3E20B3331EC4685E00C77B58 /* LockTextViewController.m */,
+				3E20B3351EC4687200C77B58 /* LockFigureViewController.h */,
+				3E20B3361EC4687200C77B58 /* LockFigureViewController.m */,
+				3E20B3381EC4687F00C77B58 /* LockShareViewController.h */,
+				3E20B3391EC4687F00C77B58 /* LockShareViewController.m */,
+				3E20B33B1EC4688B00C77B58 /* LockSettingViewController.h */,
+				3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */,
 			);
 			name = SubController;
 			sourceTree = "<group>";
@@ -584,6 +616,10 @@
 				3E90B7451EC3F66800CC49D7 /* AirModelTableViewCell.m */,
 				3E90B7481EC3F68200CC49D7 /* AirDirectionTableViewCell.h */,
 				3E90B7491EC3F68200CC49D7 /* AirDirectionTableViewCell.m */,
+				3E20B3411EC542A100C77B58 /* LockShareTableViewCell.h */,
+				3E20B3421EC542A100C77B58 /* LockShareTableViewCell.m */,
+				3E20B33E1EC4798900C77B58 /* LockSettingTableViewCell.h */,
+				3E20B33F1EC4798900C77B58 /* LockSettingTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -743,6 +779,8 @@
 				3E90B7321EC2E7BB00CC49D7 /* AirConditioningViewController.m */,
 				3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */,
 				3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */,
+				3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */,
+				3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */,
 				3E90B7371EC3F41300CC49D7 /* SubController */,
 				3E984F6A1EB87BA90094CBE4 /* View */,
 			);
@@ -777,6 +815,8 @@
 			children = (
 				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
 				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
+				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
+				3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */,
 				3E984F7B1EB89E210094CBE4 /* YYPersonalTableViewCell.h */,
 				3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1041,11 +1081,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1606D99B1EC01CDC00A74938 /* YJPayItemTableViewCell.m in Sources */,
+				3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */,
 				166FF4971EBC09E000846A59 /* IWComposeImageView.m in Sources */,
 				166FF4B51EBC7C0400846A59 /* YJModifyAddressVC.m in Sources */,
+				3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */,
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
+				3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */,
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
@@ -1078,14 +1121,17 @@
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
+				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
 				1672D7A61EC32F8300F5970C /* YJNoticeListTableVC.m in Sources */,
 				167130331EB9F7DD00CC2394 /* YJPhotoFlowLayout.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
+				3E20B3431EC542A100C77B58 /* LockShareTableViewCell.m in Sources */,
 				3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
 				168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */,
 				3E90B74A1EC3F68200CC49D7 /* AirDirectionTableViewCell.m in Sources */,
+				3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */,
 				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
@@ -1110,6 +1156,7 @@
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
+				3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */,
 				3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */,
 				3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */,
 				3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */,
@@ -1134,6 +1181,7 @@
 				167130271EB964BD00CC2394 /* YJReportRepairVC.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
+				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,
 				1661FE211EB8777800583A7F /* NSArray+Addition.m in Sources */,
 			);

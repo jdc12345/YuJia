@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"客厅灯";
+    self.title = @"窗帘";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setSubView];
@@ -61,7 +61,7 @@
     }];
     
     UILabel *titleLabel = [[UILabel alloc]init];
-    titleLabel.text = @"亮度调节";
+    titleLabel.text = @"调节";
     titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     titleLabel.font = [UIFont systemFontOfSize:14];
     

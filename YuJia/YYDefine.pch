@@ -35,7 +35,7 @@
  5=空调
  6=门锁
  */
-#define mIcon @[@"",@"socket",@"light",@"tv",@"",@"",@"door"]
+#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"air-condition",@"lock"]
 
 
 #pragma mark  ------------WeakSelf------------------

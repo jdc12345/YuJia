@@ -20,6 +20,9 @@
 #import "LightSettingViewController.h"
 #import "AirConditioningViewController.h"
 #import "TVSettingViewController.h"
+#import "DoorLockViewController.h"
+#import "SocketSettingViewController.h"
+#import "CurtainSettingViewController.h"
 @interface SightViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
@@ -179,14 +182,70 @@
     return 0.000001;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"select = %ld",tableView.tag -100);
+    SightModel* sightModel;
+    EquipmentModel *equipmentModel;
+    if (self.dataSource.count == 0) {
+    }else{
+        sightModel = self.dataSource[tableView.tag -100];
+    }
+    if (sightModel.equipmentList.count != 0) {
+        equipmentModel = sightModel.equipmentList[indexPath.row];
+    }
+    
     if (indexPath.section == 0) {
         SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
         sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }else{
-        TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
-//        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-        [self.navigationController pushViewController:sightVC animated:YES];
+        switch ([equipmentModel.iconId integerValue]) {
+            case 2:{
+                LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 1:{
+                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 3:{
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 4:{
+                CurtainSettingViewController *sightVC = [[CurtainSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 5:{
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 6:{
+                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
+
     }
 }
 #pragma mark -
@@ -235,7 +294,7 @@
             
         }else{
             homeTableViewCell.titleLabel.text = equipmentModel.name;
-//            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] +1]];
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
         }
         [homeTableViewCell cellMode:YES];
         if ([equipmentModel.state isEqualToString:@"0"]) {
