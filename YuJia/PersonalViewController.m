@@ -10,6 +10,7 @@
 #import "UIColor+Extension.h"
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
+#import "EditPersonalViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -225,7 +226,7 @@
     [editBtn setImage:[UIImage imageNamed:@"compile"] forState:UIControlStateNormal];
     [editBtn sizeToFit];
     editBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [editBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [editBtn addTarget:self action:@selector(editPersonal) forControlEvents:UIControlEventTouchUpInside];
 
     [personV addSubview:editBtn];
     
@@ -328,7 +329,10 @@
     
     return homeTableViewCell;
 }
-
+- (void)editPersonal{
+    EditPersonalViewController *editVC = [[EditPersonalViewController alloc]init];
+    [self.navigationController pushViewController:editVC animated:YES];
+}
 /*
 #pragma mark - Navigation
 

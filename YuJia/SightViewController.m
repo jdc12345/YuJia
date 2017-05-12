@@ -18,6 +18,11 @@
 #import "SightModel.h"
 #import "EquipmentModel.h"
 #import "LightSettingViewController.h"
+#import "AirConditioningViewController.h"
+#import "TVSettingViewController.h"
+#import "DoorLockViewController.h"
+#import "SocketSettingViewController.h"
+#import "CurtainSettingViewController.h"
 @interface SightViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
@@ -122,7 +127,7 @@
 }
 
 -(UIView*)pageView:(JXPageView *)pageView viewAtIndex:(NSInteger)index{
-    NSLog(@"view  index =  %ld",index);
+//    NSLog(@"view  index =  %ld",index);
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[self randomColor]];
     
@@ -177,14 +182,70 @@
     return 0.000001;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"select = %ld",tableView.tag -100);
+    SightModel* sightModel;
+    EquipmentModel *equipmentModel;
+    if (self.dataSource.count == 0) {
+    }else{
+        sightModel = self.dataSource[tableView.tag -100];
+    }
+    if (sightModel.equipmentList.count != 0) {
+        equipmentModel = sightModel.equipmentList[indexPath.row];
+    }
+    
     if (indexPath.section == 0) {
         SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
         sightVC.sightModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
     }else{
-        LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
-//        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-        [self.navigationController pushViewController:sightVC animated:YES];
+        switch ([equipmentModel.iconId integerValue]) {
+            case 2:{
+                LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 1:{
+                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 3:{
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 4:{
+                CurtainSettingViewController *sightVC = [[CurtainSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 5:{
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 6:{
+                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
+
     }
 }
 #pragma mark -
@@ -220,7 +281,7 @@
     if (sightModel.equipmentList.count != 0) {
         equipmentModel = sightModel.equipmentList[indexPath.row];
     }
-    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
+//    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
     if (indexPath.section == 0) {
@@ -233,7 +294,7 @@
             
         }else{
             homeTableViewCell.titleLabel.text = equipmentModel.name;
-//            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] +1]];
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
         }
         [homeTableViewCell cellMode:YES];
         if ([equipmentModel.state isEqualToString:@"0"]) {
@@ -264,7 +325,17 @@
 - (void)buttonClick_Start:(UIButton *)btn{
     NSLog(@"点点");
 //    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    
+//    NSArray *theData = @[@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"},@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"}];
+//    
+//    NSError *error = nil;
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData options:NSJSONWritingPrettyPrinted error:nil];
+//    
+//    NSString *jsonText = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
     NSDictionary *dict = @{@"id":@"1",@"scene_state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
+    
+//    NSLog(@"%@",jsonText);
     [[HttpClient defaultClient]requestWithPath:mSightStart method:1 parameters:dict prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
