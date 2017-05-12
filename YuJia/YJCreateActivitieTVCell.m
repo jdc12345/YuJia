@@ -1,19 +1,19 @@
 //
-//  YJBillInfoTableViewCell.m
+//  YJCreateActivitieTVCell.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/5/5.
+//  Created by 万宇 on 2017/5/11.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJBillInfoTableViewCell.h"
+#import "YJCreateActivitieTVCell.h"
 #import "UILabel+Addition.h"
 
-@interface YJBillInfoTableViewCell()<UITextFieldDelegate>
+@interface YJCreateActivitieTVCell()<UITextFieldDelegate>
 @property(nonatomic,weak)UITextField *contentField;
 @property (nonatomic, weak) UILabel* itemLabel;
 @end
-@implementation YJBillInfoTableViewCell
+@implementation YJCreateActivitieTVCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -39,7 +39,7 @@
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6);
     }];
-    UILabel *itemLabel = [UILabel labelWithText:@"城  市" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:13];
+    UILabel *itemLabel = [UILabel labelWithText:@"活动标题" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];
     [self.contentView addSubview:itemLabel];
     self.itemLabel = itemLabel;
     UITextField *contentField = [[UITextField alloc]init];
@@ -50,7 +50,7 @@
     [self.contentView addSubview:contentField];
     self.contentField = contentField;
     contentField.delegate = self;
-
+    
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(self.contentView);
@@ -61,6 +61,7 @@
         make.centerY.equalTo(self.contentView);
         make.right.offset(-10*kiphone6);
     }];
+    
 }
 
 
