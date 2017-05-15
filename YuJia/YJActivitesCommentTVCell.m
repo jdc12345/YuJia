@@ -90,8 +90,10 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     if (![listArr[indexPath.row] integerValue]) {
         YJFriendCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
         cell.model = @"用户";
+        WS(ws);
         cell.clickBtnBlock = ^(NSString *str){
             NSLog(@"%@",str);
+            ws.clickForReplyBlock(str);
         };
         if (indexPath.row==0) {
             cell.iconView.hidden = false;
@@ -100,8 +102,10 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     }else{
         YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];
         cell.model = @[@"TIAN",@"用户"];
+        WS(ws);
         cell.clickBtnBlock = ^(NSString *str){
-            NSLog(@"%@",str);
+            //NSLog(@"%@",str);
+            ws.clickForReplyBlock(str);
         };
         return cell;
     }

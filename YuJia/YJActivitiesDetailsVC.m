@@ -12,6 +12,7 @@
 #import "YJActivitesCommentTVCell.h"
 #import <HUImagePickerViewController.h>
 #import "YJActivitesPhotoTVCell.h"
+#import "YJPostActivitesCommentVC.h"
 
 static NSString* tableDetailsCell = @"tableDetailsCell_cell";
 static NSString* LikeCell = @"Like_cell";
@@ -30,7 +31,7 @@ static NSString* photoCellid = @"photo_cell";
     [super viewDidLoad];
     self.title = @"社区活动";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = true;
+    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -71,21 +72,19 @@ static NSString* photoCellid = @"photo_cell";
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 235*kiphone6;
     //底部bar
-    [self setBtnWithFrame:CGRectMake(0, kScreenH-38*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
-    [self setBtnWithFrame:CGRectMake(kScreenW/3, kScreenH-38*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"兴趣"andTag:102 andImage:@"like"];
-    [self setBtnWithFrame:CGRectMake(kScreenW/3*2, kScreenH-38*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"参加"andTag:102 andImage:@"gray_add"];
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenH-38*kiphone6, kScreenW, 1*kiphone6)];
-    line.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self.view addSubview:line];
-    [self.view bringSubviewToFront:line];
+    [self setBtnWithFrame:CGRectMake(0, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
+    [self setBtnWithFrame:CGRectMake(kScreenW/3, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"兴趣"andTag:102 andImage:@"like"];
+    [self setBtnWithFrame:CGRectMake(kScreenW/3*2, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"参加"andTag:103 andImage:@"gray_add"];
 
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag andImage:(NSString*)image{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, 1*kiphone6,38*kiphone6)];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-1, 0, 1*kiphone6,38*kiphone6)];
     [btn addSubview:line];
-    line.backgroundColor = [UIColor colorWithHexString:@"#333333"];
-    [self.view addSubview:line];
+    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width,1*kiphone6)];
+    [btn addSubview:line2];
+    line2.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
@@ -108,7 +107,11 @@ static NSString* photoCellid = @"photo_cell";
     [btn addTarget:self action:@selector(selectRepairItem:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)selectRepairItem:(UIButton*)sender{
-    
+    if (sender.tag==101) {
+        YJPostActivitesCommentVC *vc = [[YJPostActivitesCommentVC alloc]init];
+
+        [self.navigationController pushViewController:vc animated:true];
+    }
 }
 #pragma mark - UITableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -134,6 +137,12 @@ static NSString* photoCellid = @"photo_cell";
     }else if (indexPath.row == 3) {
         
         YJActivitesCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
+        WS(ws);
+        cell.clickForReplyBlock = ^(NSString *str){
+            YJPostActivitesCommentVC *vc = [[YJPostActivitesCommentVC alloc]init];
+            vc.replyType = [NSString stringWithFormat:@"%@",str];
+            [ws.navigationController pushViewController:vc animated:true];
+                    };
         return cell;
     }else{
         
