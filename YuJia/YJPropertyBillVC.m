@@ -38,6 +38,28 @@ static NSString* billCellid = @"bill_cell";
 
 }
 - (void)loadData {
+//    CcUserModel *userModel = [CcUserModel defaultClient];
+//    NSString *token = userModel.userToken;
+//    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
+//    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSArray *arr = responseObject[@"rows"];
+//        NSMutableArray *mArr = [NSMutableArray array];
+//        for (NSDictionary *dic in arr) {
+//            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
+//            [mArr addObject:infoModel];
+//        }
+//        self.hotInfos = mArr;
+//        [SVProgressHUD dismiss];// 动画结束
+//        [self setupUI];
+//        if (self.hotInfos.count>0) {
+//            hotStart = self.hotInfos.count;
+//        }
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+//        return ;
+//    }];
     self.isBill = true;//请求判断是否是业主，依据地址请求账单
     if (self.isBill) {
         [self setupBill];

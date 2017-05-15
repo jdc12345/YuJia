@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YJActivitesCommentTVCell : UITableViewCell
-
+/** block方式监听点击 */
+@property (nonatomic, copy) void (^clickForReplyBlock)(NSString *name);
 @end

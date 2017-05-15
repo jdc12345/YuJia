@@ -11,15 +11,7 @@
 #import "YJCreateActivitieTVCell.h"
 #import "BRPlaceholderTextView.h"
 
-typedef enum : NSUInteger {
-    Mon=1,
-    Tue,
-    Wed,
-    Thu,
-    Fri,
-    Sat,
-    Sun
-} weekday;
+
 static NSString* tableCellid = @"table_cell";
 @interface YJCreatActivitiesVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic,weak)UIButton *begainTimeBtn;
@@ -207,19 +199,19 @@ static NSString* tableCellid = @"table_cell";
         NSString *dayStr = [dateFormatter stringFromDate:curDate];
         switch (w) {
             case 01:
-                weekDayStr= @"星期五";
+                weekDayStr= @"星期天";
                 break;
             case 02:
-                weekDayStr= @"星期五";
+                weekDayStr= @"星期一";
                 break;
             case 03:
-                weekDayStr= @"星期五";
+                weekDayStr= @"星期二";
                 break;
             case 04:
-                weekDayStr= @"星期五";
+                weekDayStr= @"星期三";
                 break;
             case 05:
-                weekDayStr= @"星期五";
+                weekDayStr= @"星期四";
                 break;
             case 06:
                 weekDayStr= @"星期五";

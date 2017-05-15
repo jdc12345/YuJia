@@ -12,7 +12,7 @@
 #import "YYPropertyFunctionList.h"
 #import "YJFriendNeighborVC.h"
 #import "YJCommunityActivitiesVC.h"
-
+#import "YJCommunityCarVC.h"
 
 static NSString* cellid = @"cell_id";
 @interface CircleGroupViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -94,6 +94,10 @@ static NSString* cellid = @"cell_id";
     }
     if (indexPath.section==1) {
         YJCommunityActivitiesVC *vc = [[YJCommunityActivitiesVC alloc]init];
+        [self.navigationController pushViewController:vc animated:true];
+    }
+    if (indexPath.section==2) {
+        YJCommunityCarVC *vc = [[YJCommunityCarVC alloc]init];
         [self.navigationController pushViewController:vc animated:true];
     }
     
