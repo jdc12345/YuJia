@@ -11,6 +11,7 @@
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
+#import "MYHomeViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -243,6 +244,7 @@
     for (int i = 0 ; i<4 ;  i++) {
         MMButton *leftNavBtn = [MMButton buttonWithType:UIButtonTypeCustom];
         leftNavBtn.frame = CGRectMake(i *btnW, 130, btnW, 100);
+        leftNavBtn.tag = 800 +i;
         leftNavBtn.backgroundColor = [UIColor whiteColor];
         [leftNavBtn setTitle:nameList[i] forState:UIControlStateNormal];
         [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
@@ -250,6 +252,7 @@
         leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [leftNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
         [headerView addSubview:leftNavBtn];
+        
     }
 
     
@@ -332,6 +335,25 @@
 - (void)editPersonal{
     EditPersonalViewController *editVC = [[EditPersonalViewController alloc]init];
     [self.navigationController pushViewController:editVC animated:YES];
+}
+- (void)action:(UIButton *)sender{
+    switch (sender.tag -800) {
+        case 0:
+            [self.navigationController pushViewController:[[MYHomeViewController alloc]init] animated:YES];
+            break;
+        case 1:
+            
+            break;
+        case 2:
+            
+            break;
+        case 3:
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 /*
 #pragma mark - Navigation

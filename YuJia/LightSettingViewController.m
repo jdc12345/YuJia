@@ -43,6 +43,7 @@
     switch0.tintColor = [UIColor colorWithHexString:@"cccccc"];
     // 控件大小，不能设置frame，只能用缩放比例
     switch0.transform= CGAffineTransformMakeScale(0.8,0.75);
+    [switch0 addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:switch0];
     [switch0 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
@@ -165,7 +166,33 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)httpRequestInfo{
 
+    NSDictionary *equipDict = [self.equipmentModel properties_aps];
+    NSMutableDictionary *postDict = [[NSMutableDictionary alloc]initWithDictionary:equipDict];
+    [postDict setObject:@"token" forKey:mDefineToken];
+    NSLog(@"%@",postDict);
+//    NSDictionary *dict = @{
+//                           @"id":self.equipmentModel.info_id,
+//                           @"token":mDefineToken,
+//                           @"name":self.equipmentModel.name,
+//                           @"iconId":self.equipmentModel.iconId,
+//                           @"iconUrl":self.equipmentModel.iconUrl,
+//                           @"state":self.equipmentModel.state,
+//                           @"roomId":self.equipmentModel.roomId,
+//                           @"serialNumber":self.equipmentModel.serialNumber,
+//                           @"extendState":self.equipmentModel.toExtendState,
+//                           @"familyId":self.equipmentModel.familyId
+//                           };
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:postDict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
 #pragma mark - Navigation
 

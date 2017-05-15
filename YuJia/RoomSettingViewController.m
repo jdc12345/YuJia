@@ -8,6 +8,7 @@
 
 #import "RoomSettingViewController.h"
 #import "EquipmentTableViewCell.h"
+#import "EquipmentModel.h"
 @interface RoomSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -99,22 +100,34 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3 +1;
+    return self.roomModel.equipmentList.count +1;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
-    if(indexPath.row == 3){
+    if(indexPath.row == self.roomModel.equipmentList.count){
         homeTableViewCell.titleLabel.text = @"添加";
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"+-1"];
         [homeTableViewCell cellMode:YES];
         homeTableViewCell.switch0.hidden = YES;
     }else{
-        homeTableViewCell.titleLabel.text = @"客厅灯";
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        EquipmentModel *equipmentModel;
+        equipmentModel = self.roomModel.equipmentList[indexPath.row];
+        homeTableViewCell.titleLabel.text = equipmentModel.name;
+        if (equipmentModel.iconUrl.length >0) {
+            
+        }else{
+            homeTableViewCell.titleLabel.text = equipmentModel.name;
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+        }
         [homeTableViewCell cellMode:YES];
+        if ([equipmentModel.state isEqualToString:@"0"]) {
+            homeTableViewCell.switch0.on = YES;
+        }else{
+            homeTableViewCell.switch0.on = NO;
+        }
     }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
@@ -144,7 +157,7 @@
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setImage:[UIImage imageNamed:@"add"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"add_roomSet"] forState:UIControlStateNormal];
     [addBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn sizeToFit];
 
@@ -208,7 +221,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -220,6 +233,39 @@
     }];
     
     return footView;
+}
+- (void)httpRequestInfo{
+    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];;
+    for (EquipmentModel *equipment in self.roomModel.equipmentList) {
+        [equipmentList addObject: [equipment properties_aps]];
+    }
+    NSLog(@"%@",equipmentList);
+    NSData *picData = UIImageJPEGRepresentation([UIImage imageNamed:@"add"], 0.5);
+//    id formData;
+//    [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)1] fileName:@"123" mimeType:@"image/png"];
+
+    
+    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+    NSDictionary *dict = @{
+                           @"id":self.roomModel.info_id,
+                           @"token":mDefineToken,
+                           @"equipmentList":jsonString,
+                           @"roomName":self.roomModel.roomName,
+                           @"oid":self.roomModel.oid,
+                           @"familyId":self.roomModel.familyId,
+                           @"file":picData
+                           };
+//    NSLog(@"id == %@",self.roomModel.info_id);
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRoomSave] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 /*

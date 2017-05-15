@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SocketSettingViewController : UIViewController
-
+@property (nonatomic, assign) BOOL isNow;
 @end
