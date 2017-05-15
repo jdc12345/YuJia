@@ -58,6 +58,7 @@
 
 
 #define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
+#define mDefineToken1 @"ACDCE729BCE6FABC50881A867CAFC1BC"
 
 // 首页数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
@@ -87,7 +88,11 @@
 #define mRoomSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/save.do?"]
 //保存或更新设备接口  // 单一设备改变状态
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
-#define mEquipmentSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/save.do?"]
+ #define mEquipmentSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/save.do?"]
+
+
+//获取家庭成员列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/homeUser/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 
 
 

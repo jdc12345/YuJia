@@ -1,16 +1,17 @@
 //
-//  MYHomeViewController.m
+//  MYFamilyViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/12.
+//  Created by wylt_ios_1 on 2017/5/15.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "MYHomeViewController.h"
-#import "MYHomeTableViewCell.h"
 #import "MYFamilyViewController.h"
+#import "MYFamilyTableViewCell.h"
+#import "UIBarButtonItem+Helper.h"
+#import "FamilyPersonalViewController.h"
 
-@interface MYHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface MYFamilyViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -19,7 +20,7 @@
 
 @end
 
-@implementation MYHomeViewController
+@implementation MYFamilyViewController
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
@@ -33,7 +34,7 @@
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
         //        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
-        [_tableView registerClass:[MYHomeTableViewCell class] forCellReuseIdentifier:@"MYHomeTableViewCell"];
+        [_tableView registerClass:[MYFamilyTableViewCell class] forCellReuseIdentifier:@"MYFamilyTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
@@ -52,20 +53,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"我的家";
+    self.title = @"我的家人管理";
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5 *kiphone6)];
     headView.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = headView;
+    
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
     // Do any additional setup after loading the view.
 }
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 1) {
-        [self.navigationController pushViewController:[[MYFamilyViewController alloc]init ] animated:YES];
-    }
+    
+    [self.navigationController pushViewController:[[FamilyPersonalViewController alloc]init] animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-
+    
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
@@ -77,24 +80,26 @@
     return 70 ;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MYHomeTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYHomeTableViewCell" forIndexPath:indexPath];
+    MYFamilyTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYFamilyTableViewCell" forIndexPath:indexPath];
     if (indexPath.row == 0) {
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"house_myhome"]];
-        homeTableViewCell.titleLabel.text = @"我的房屋信息";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+        homeTableViewCell.titleLabel.text = @"LIM";
         
     }else if(indexPath.row == 1){
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"Family_myhome"]];
-        homeTableViewCell.titleLabel.text = @"我的家人管理";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+        homeTableViewCell.titleLabel.text = @"赵医生";
     }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"equipmentmanagement_myhome"]];
-        homeTableViewCell.titleLabel.text = @"我的设备管理";
+        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+        homeTableViewCell.titleLabel.text = @"安迪";
     }
     //    homeTableViewCell.backgroundColor = [UIColor blackColor];
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
     
 }
-
+- (void)pushToAdd{
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
