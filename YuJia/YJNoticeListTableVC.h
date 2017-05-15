@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJNoticeListTableVC : UITableViewController
-
+@property(nonatomic,strong)NSArray *noticeArr;
 @end

@@ -60,11 +60,12 @@
     }
     if ([type isEqualToString:@"司机"]) {
         self.addBtn.layer.cornerRadius = 0;
-        [self.addBtn setImage:[UIImage imageNamed:@"blue-add"] forState:UIControlStateNormal];
+        [self.addBtn setImage:[UIImage imageNamed:@"click-add"] forState:UIControlStateNormal];
         [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.footerView);
             make.right.equalTo(self.addNumberLabel.mas_left).offset(-10*kiphone6);
         }];
+        [self.addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
         self.addNumberLabel.hidden = false;
     }
     
@@ -178,12 +179,13 @@
         make.right.offset(-10*kiphone6);
     }];
     UIButton *addBtn = [[UIButton alloc]init];//参加按钮
-    [addBtn setImage:[UIImage imageNamed:@"blue-add"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"click-add"] forState:UIControlStateNormal];
     [footerView addSubview:addBtn];
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(footerView);
         make.right.equalTo(addNumberLabel.mas_left).offset(-10*kiphone6);
     }];
+    [addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *commentNumberLabel = [UILabel labelWithText:@"1" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//感兴趣人数
     [footerView addSubview:commentNumberLabel];
     [commentNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -233,5 +235,10 @@
 }
 -(void)orderClick:(UIButton*)sender{
     [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccccc"]];
+    self.clickForAddBlock(sender);
 }
+-(void)addCar:(UIButton*)sender{
+    self.clickForAddBlock(sender);
+}
+
 @end

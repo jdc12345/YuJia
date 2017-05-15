@@ -39,6 +39,9 @@
 		166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166577AA1EBFF80D00FC812B /* YJLifepaymentVC.m */; };
 		166B40E21EC943EE00CEFAE2 /* YJCommunityCarRelationTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40E11EC943EE00CEFAE2 /* YJCommunityCarRelationTVCell.m */; };
 		166B40E51EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40E41EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m */; };
+		166B40E81EC99A7100CEFAE2 /* YJPropertyAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40E71EC99A7100CEFAE2 /* YJPropertyAddressModel.m */; };
+		166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40EA1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m */; };
+		166B40EE1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40ED1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m */; };
 		166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1621A4331EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.m */; };
 		166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83FF1EBAC3DF002318A6 /* UIView+Extension.m */; };
 		166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F84021EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.m */; };
@@ -234,6 +237,12 @@
 		166B40E11EC943EE00CEFAE2 /* YJCommunityCarRelationTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarRelationTVCell.m; sourceTree = "<group>"; };
 		166B40E31EC95E2A00CEFAE2 /* YJPostCommunityCarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPostCommunityCarVC.h; sourceTree = "<group>"; };
 		166B40E41EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPostCommunityCarVC.m; sourceTree = "<group>"; };
+		166B40E61EC99A7100CEFAE2 /* YJPropertyAddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPropertyAddressModel.h; sourceTree = "<group>"; };
+		166B40E71EC99A7100CEFAE2 /* YJPropertyAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPropertyAddressModel.m; sourceTree = "<group>"; };
+		166B40E91EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityCarNoticesCenterVC.h; sourceTree = "<group>"; };
+		166B40EA1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarNoticesCenterVC.m; sourceTree = "<group>"; };
+		166B40EC1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityCarNoticesCenterTVCell.h; sourceTree = "<group>"; };
+		166B40ED1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarNoticesCenterTVCell.m; sourceTree = "<group>"; };
 		166FF4941EBC09B300846A59 /* NSString+unicode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSString+unicode.m"; path = "YuJia/NSString+unicode.m"; sourceTree = "<group>"; };
 		166FF4951EBC09CB00846A59 /* YYTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYTabBar.m; path = YuJia/YYTabBar.m; sourceTree = "<group>"; };
 		166FF4981EBC210D00846A59 /* YJPropertyBillVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPropertyBillVC.h; sourceTree = "<group>"; };
@@ -541,6 +550,8 @@
 				1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */,
 				1606D99C1EC0213700A74938 /* YJPayItemModel.h */,
 				1606D99D1EC0213700A74938 /* YJPayItemModel.m */,
+				166B40E61EC99A7100CEFAE2 /* YJPropertyAddressModel.h */,
+				166B40E71EC99A7100CEFAE2 /* YJPropertyAddressModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -632,6 +643,8 @@
 				16750B3B1EC8454A002296EE /* YJCommunityCarDetailVC.m */,
 				166B40E31EC95E2A00CEFAE2 /* YJPostCommunityCarVC.h */,
 				166B40E41EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m */,
+				166B40E91EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.h */,
+				166B40EA1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -701,6 +714,8 @@
 				16750B351EC828C2002296EE /* YJCommunityCarTVCell.m */,
 				166B40E01EC943EE00CEFAE2 /* YJCommunityCarRelationTVCell.h */,
 				166B40E11EC943EE00CEFAE2 /* YJCommunityCarRelationTVCell.m */,
+				166B40EC1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.h */,
+				166B40ED1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m */,
 			);
 			name = "Community Car";
 			sourceTree = "<group>";
@@ -1309,7 +1324,9 @@
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */,
+				166B40EE1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m in Sources */,
 				3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */,
+				166B40E81EC99A7100CEFAE2 /* YJPropertyAddressModel.m in Sources */,
 				3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */,
 				3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */,
 				3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */,
@@ -1338,6 +1355,7 @@
 				16750B361EC828C2002296EE /* YJCommunityCarTVCell.m in Sources */,
 				167130271EB964BD00CC2394 /* YJReportRepairVC.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
+				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				16750B321EC8268F002296EE /* YJCommunityCarVC.m in Sources */,

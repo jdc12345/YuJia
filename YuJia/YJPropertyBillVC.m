@@ -13,6 +13,8 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJBillResultTableViewCell.h"
 #import "YJModifyAddressVC.h"
+#import "YJPropertyAddressModel.h"
+
 static NSString* billCellid = @"bill_cell";
 @interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic,strong)NSMutableArray *yearArr;
@@ -25,6 +27,8 @@ static NSString* billCellid = @"bill_cell";
 @property(nonatomic,weak)UIButton *monthBtn;
 @property(nonatomic,assign)NSInteger nowYear;
 @property(nonatomic,assign)NSInteger nowMonth;
+
+@property(nonatomic,strong)NSMutableArray *addresses;
 @end
 
 @implementation YJPropertyBillVC
@@ -40,32 +44,33 @@ static NSString* billCellid = @"bill_cell";
 - (void)loadData {
 //    CcUserModel *userModel = [CcUserModel defaultClient];
 //    NSString *token = userModel.userToken;
-//    NSString *hotUrlStr = [NSString stringWithFormat:@"%@/academicpaper/findhot.do?start=0&limit=6&token=%@",mPrefixUrl,token];
-//    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-//    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSArray *arr = responseObject[@"rows"];
-//        NSMutableArray *mArr = [NSMutableArray array];
-//        for (NSDictionary *dic in arr) {
-//            YYCardDetailModel *infoModel = [YYCardDetailModel mj_objectWithKeyValues:dic];
-//            [mArr addObject:infoModel];
-//        }
-//        self.hotInfos = mArr;
-//        [SVProgressHUD dismiss];// 动画结束
-//        [self setupUI];
-//        if (self.hotInfos.count>0) {
-//            hotStart = self.hotInfos.count;
-//        }
-//        
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        [SVProgressHUD showErrorWithStatus:@"加载失败"];
-//        return ;
-//    }];
-    self.isBill = true;//请求判断是否是业主，依据地址请求账单
-    if (self.isBill) {
-        [self setupBill];
-    }else{
-        [self addAddress];
-    }
+//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.addresses = mArr;
+        
+            [SVProgressHUD dismiss];// 动画结束
+             [self setupBill];
+            
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+             [self addAddress];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
 - (void)addAddress{
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"no_address"]];
@@ -345,7 +350,8 @@ static NSString* billCellid = @"bill_cell";
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(headerBtn);
     }];
-    UILabel *addressLabel = [UILabel labelWithText:@"名流一品3号楼3单元306" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    YJPropertyAddressModel *model = self.addresses[0];
+    UILabel *addressLabel = [UILabel labelWithText:model.address andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(imageView);
@@ -359,7 +365,7 @@ static NSString* billCellid = @"bill_cell";
         
                  };
 
-    UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
+    UILabel *cityLabel = [UILabel labelWithText:model.city andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
@@ -402,10 +408,16 @@ static NSString* billCellid = @"bill_cell";
     return 100*kiphone6;
 }
 - (void)queryBill {
-    
+//http://192.168.1.55:8080/smarthome/mobileapi/detail/findBill.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &address=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA1%E5%8F%B7%E6%A5%BC%E4%B8%80%E5%8D%95%E5%85%831%E6%A5%BC305%E5%8F%B7
+//    &Yeartime=2017
+//    &monthtime=13
+//    [textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+//    NSString *queryUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detail/findBill.do?token=%@&address=%@&Yeartime=%@&monthtime=%@",mPrefixUrl,mDefineToken1,self.yearBtn.titleLabel.text,self.monthBtn.titleLabel.text];
 }
 - (void)modifyAddress{
     YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];
+    vc.addresses = self.addresses;
     [self.navigationController pushViewController:vc animated:true];
 }
 

@@ -11,6 +11,7 @@
 #import "YJCommunityCarTVCell.h"
 #import "YJCommunityCarDetailVC.h"
 #import "YJPostCommunityCarVC.h"
+#import "YJNoticeListTableVC.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJCommunityCarVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -18,6 +19,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIButton *endBtn;
 //@property(nonatomic,weak)UIView *blueView;
 @property(nonatomic,weak)UITableView *tableView;
+@property(nonatomic,weak)UIButton *informationBtn;
 
 @end
 
@@ -35,13 +37,14 @@ static NSString* tableCellid = @"table_cell";
     //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
     [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-    informationBtn.badgeValue = @" ";
-    informationBtn.badgeBGColor = [UIColor redColor];
-    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-    informationBtn.badgeOriginX = 16;
-    informationBtn.badgeOriginY = 1;
-    informationBtn.badgePadding = 0.1;
-    informationBtn.badgeMinSize = 5;
+    self.informationBtn = informationBtn;
+//    informationBtn.badgeValue = @" ";
+//    informationBtn.badgeBGColor = [UIColor redColor];
+//    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+//    informationBtn.badgeOriginX = 16;
+//    informationBtn.badgeOriginY = 1;
+//    informationBtn.badgePadding = 0.1;
+//    informationBtn.badgeMinSize = 5;
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
@@ -137,7 +140,16 @@ static NSString* tableCellid = @"table_cell";
     }else{
        cell.type = @"乘客"; 
     }
-    
+    WS(ws);
+    cell.clickForAddBlock = ^(UIButton *sender){
+        ws.informationBtn.badgeValue = @" ";
+        ws.informationBtn.badgeBGColor = [UIColor redColor];
+        ws.informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+        ws.informationBtn.badgeOriginX = 16;
+        ws.informationBtn.badgeOriginY = 1;
+        ws.informationBtn.badgePadding = 0.1;
+        ws.informationBtn.badgeMinSize = 5;
+    };
     return cell;
     
 }
@@ -156,9 +168,10 @@ static NSString* tableCellid = @"table_cell";
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-    
-    //    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    //    [self.navigationController pushViewController:vc animated:true];
+    NSArray *noticeArr = @[@"社区拼车消息",@"司机T接单了"];
+    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
+    vc.noticeArr = noticeArr;
+    [self.navigationController pushViewController:vc animated:true];
 }
 
 - (void)didReceiveMemoryWarning {

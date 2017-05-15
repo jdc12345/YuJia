@@ -10,6 +10,7 @@
 #import "YJAddPropertyBillAddressVC.h"
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
+#import "YJPropertyAddressModel.h"
 
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -22,6 +23,10 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     [super viewDidLoad];
     self.title = @"物业账单";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+//    [self setupUI];
+}
+-(void)setAddresses:(NSMutableArray *)addresses{
+    _addresses = addresses;
     [self setupUI];
 }
 - (void)setupUI {
@@ -68,11 +73,12 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return self.addresses.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
-        cell.textLabel.text = @"河北名流一品3单元2层205";
+    YJPropertyAddressModel *model = self.addresses[indexPath.row];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", model.city,model.address];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
     //添加line
@@ -115,18 +121,19 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
  */
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        NSLog(@"点击了修改");
-        
-        // 收回左滑出现的按钮(退出编辑模式)
-        tableView.editing = NO;
-    }];
+//    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+//        NSLog(@"点击了修改");
+//        
+//        // 收回左滑出现的按钮(退出编辑模式)
+//        tableView.editing = NO;
+//    }];
     UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-//        [self.wineArray removeObjectAtIndex:indexPath.row];
+        [self.addresses removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
     
-    return @[action1, action0];
+//    return @[action1, action0];
+    return @[action1];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

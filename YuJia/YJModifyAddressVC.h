@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJModifyAddressVC : UIViewController
-
+@property(nonatomic,strong)NSMutableArray *addresses;
 @end

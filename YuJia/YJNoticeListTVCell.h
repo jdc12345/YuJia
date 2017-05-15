@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJNoticeListTVCell : UITableViewCell
-
+@property(nonatomic,strong)NSArray *noticeArr;
 @end
