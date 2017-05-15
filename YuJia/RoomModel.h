@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *familyId;
 @property (nonatomic, strong) NSString *pictures;
 @property (nonatomic, strong) NSString *roomName;
+@property (nonatomic, strong) NSString *oid;
+
 @end

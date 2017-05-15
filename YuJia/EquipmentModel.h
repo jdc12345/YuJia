@@ -14,5 +14,12 @@
 @property (nonatomic, strong) NSString *iconUrl;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *state;
+@property (nonatomic, strong) NSString *roomId;
+@property (nonatomic, strong) NSString *serialNumber;
+@property (nonatomic, strong) NSString *toExtendState;
+@property (nonatomic, strong) NSString *familyId;
+
+- (NSDictionary *)properties_aps;
+
 @end
 

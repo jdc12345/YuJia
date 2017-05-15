@@ -10,6 +10,7 @@
 #import "EquipmentTableViewCell.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
+#import "EquipmentModel.h"
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
 
@@ -140,22 +141,34 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3 +1;
+    return self.sightModel.equipmentList.count +1;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
-    if(indexPath.row == 3){
+    if(indexPath.row == self.sightModel.equipmentList.count){
         homeTableViewCell.titleLabel.text = @"添加";
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"+-1"];
         [homeTableViewCell cellMode:YES];
         homeTableViewCell.switch0.hidden = YES;
     }else{
-        homeTableViewCell.titleLabel.text = @"客厅灯";
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        EquipmentModel *equipmentModel;
+        equipmentModel = self.sightModel.equipmentList[indexPath.row];
+        homeTableViewCell.titleLabel.text = equipmentModel.name;
+        if (equipmentModel.iconUrl.length >0) {
+            
+        }else{
+            homeTableViewCell.titleLabel.text = equipmentModel.name;
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+        }
         [homeTableViewCell cellMode:YES];
+        if ([equipmentModel.state isEqualToString:@"0"]) {
+            homeTableViewCell.switch0.on = YES;
+        }else{
+            homeTableViewCell.switch0.on = NO;
+        }
     }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
@@ -271,7 +284,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -653,6 +666,7 @@
     [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
+
     
     [titleView addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -689,5 +703,34 @@
     }
 }
 
+- (void)httpRequestInfo{
+    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];;
+    for (EquipmentModel *equipment in self.sightModel.equipmentList) {
+        [equipmentList addObject: [equipment properties_aps]];
+    }
+    NSLog(@"%@",equipmentList);
+    
+    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+    NSDictionary *dict = @{
+                           @"id":self.sightModel.info_id,
+                           @"token":mDefineToken,
+                           @"equipmentList":jsonString,
+                           @"sceneName":self.sightModel.sceneName,
+                           @"sceneModel":@"1",
+                           @"sceneTime":@"12:30",
+                           @"sceneDistance":@"11111",
+                           @"repeatMode":@"1,2,3"
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 
 @end

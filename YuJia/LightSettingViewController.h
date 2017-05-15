@@ -11,5 +11,6 @@
 
 @interface LightSettingViewController : UIViewController
 @property (nonatomic, strong) EquipmentModel* equipmentModel;
+@property (nonatomic, assign) BOOL isNow;
 
 @end

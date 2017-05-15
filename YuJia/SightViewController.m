@@ -324,18 +324,8 @@
 }
 - (void)buttonClick_Start:(UIButton *)btn{
     NSLog(@"点点");
-//    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
-    
-//    NSArray *theData = @[@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"},@{@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"}];
-//    
-//    NSError *error = nil;
-//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData options:NSJSONWritingPrettyPrinted error:nil];
-//    
-//    NSString *jsonText = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
     NSDictionary *dict = @{@"id":@"1",@"scene_state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
     
-//    NSLog(@"%@",jsonText);
     [[HttpClient defaultClient]requestWithPath:mSightStart method:1 parameters:dict prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {

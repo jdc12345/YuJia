@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DoorLockViewController : UIViewController
-
+@property (nonatomic, assign) BOOL isNow;
 @end

@@ -15,9 +15,15 @@
 #import "AddEquipmentViewController.h"
 #import "EquipmentViewController.h"
 #import "SightViewController.h"
-#import "EquipmentSettingViewController.h"
-#import "RoomSettingViewController.h"
 #import "RoomModel.h"
+#import "EquipmentModel.h"
+#import "LightSettingViewController.h"
+#import "AirConditioningViewController.h"
+#import "TVSettingViewController.h"
+#import "DoorLockViewController.h"
+#import "SocketSettingViewController.h"
+#import "CurtainSettingViewController.h"
+#import "RoomSettingViewController.h"
 @interface EquipmentViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
     JXSegment *segment;
@@ -25,24 +31,27 @@
     UIImageView *tabBarHairlineImageView;
 }
 @property (nonatomic, strong) NSMutableArray *nameList;
+
+@property (nonatomic, assign) NSInteger loadTableV;
 @end
 
 @implementation EquipmentViewController
+
 - (NSMutableArray *)nameList{
     if (_nameList == nil) {
         _nameList = [[NSMutableArray alloc]initWithCapacity:2];
     }
     return _nameList;
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     //    self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
-    for (RoomModel *roomModel in self.dataSource) {
-        [self.nameList addObject:roomModel.roomName];
+    NSLog(@"%ld",self.dataSource.count);
+    for (RoomModel *sightModel in self.dataSource) {
+        [self.nameList addObject:sightModel.roomName];
     }
-
+    
     
     [self setupSlideBar];
     
@@ -73,29 +82,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)doSomethingInSegment:(UISegmentedControl *)Seg
-{
-    
-    NSInteger Index = Seg.selectedSegmentIndex;
-    
-    switch (Index)
-    {
-            //        case 0:
-            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_apple_small.png")]];
-            //            break;
-            //        case 1:
-            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_orange_small.png")]];
-            //            break;
-            //        case 2:
-            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_banana_small.png")]];
-            //            break;
-            //        default:
-            //            break;
-    }
-}
 - (void)setupSlideBar {
     segment = [[JXSegment alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
-//    [segment updateChannels:@[@"客厅",@"lim的卧室",@"厨房",@"卫生间",@"电子小物"]];
     [segment updateChannels:self.nameList];
     segment.delegate = self;
     [self.view addSubview:segment];
@@ -105,22 +93,26 @@
     pageView.delegate = self;
     [pageView reloadData];
     [pageView changeToItemAtIndex:0];
+    
     [self.view addSubview:pageView];
 }
 #pragma mark - JXPageViewDataSource
 -(NSInteger)numberOfItemInJXPageView:(JXPageView *)pageView{
-    return 5;
+    return self.dataSource.count;
 }
 
 -(UIView*)pageView:(JXPageView *)pageView viewAtIndex:(NSInteger)index{
+    //    NSLog(@"view  index =  %ld",index);
     UIView *view = [[UIView alloc] init];
     [view setBackgroundColor:[self randomColor]];
     
+    self.loadTableV = index;
     ////////////////////////////
     UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -148 -5) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
     tableView.dataSource = self;
     tableView.delegate = self;
+    tableView.tag = 100 +index;
     tableView.rowHeight = kScreenW *77/320.0 +10;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.showsVerticalScrollIndicator = NO;
@@ -142,6 +134,7 @@
 #pragma mark - JXPageViewDelegate
 - (void)didScrollToIndex:(NSInteger)index{
     [segment didChengeToIndex:index];
+    //    NSLog(@"index = %ld",index);
 }
 
 
@@ -164,26 +157,106 @@
     return 0.000001;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"select = %ld",tableView.tag -100);
+    RoomModel* sightModel;
+    EquipmentModel *equipmentModel;
+    if (self.dataSource.count == 0) {
+    }else{
+        sightModel = self.dataSource[tableView.tag -100];
+    }
+    if (sightModel.equipmentList.count != 0) {
+        equipmentModel = sightModel.equipmentList[indexPath.row];
+    }
+    
     if (indexPath.section == 0) {
         RoomSettingViewController *sightVC = [[RoomSettingViewController alloc]init];
         sightVC.roomModel = self.dataSource[segment.selectedIndex];
         [self.navigationController pushViewController:sightVC animated:YES];
+    }else{
+        switch ([equipmentModel.iconId integerValue]) {
+            case 2:{
+                LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 1:{
+                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 3:{
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 4:{
+                CurtainSettingViewController *sightVC = [[CurtainSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 5:{
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 6:{
+                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
     }
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     return 2;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
     }else{
-        return 3;
+        RoomModel* sightModel;
+        if (self.dataSource.count == 0) {
+            return 0;
+        }else{
+            
+            sightModel = self.dataSource[tableView.tag - 100];
+            
+            return sightModel.equipmentList.count;
+        }
+        
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    
+    NSLog(@"select = %ld",tableView.tag -100);
+    RoomModel* sightModel;
+    EquipmentModel *equipmentModel;
+    if (self.dataSource.count == 0) {
+    }else{
+        sightModel = self.dataSource[tableView.tag -100];
+    }
+    if (sightModel.equipmentList.count != 0) {
+        equipmentModel = sightModel.equipmentList[indexPath.row];
+    }
+    //    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
     if (indexPath.section == 0) {
@@ -191,9 +264,19 @@
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"setting"];
         [homeTableViewCell cellMode:NO];
     }else{
-        homeTableViewCell.titleLabel.text = @"客厅灯";
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        homeTableViewCell.titleLabel.text = equipmentModel.name;
+        if (equipmentModel.iconUrl.length >0) {
+            
+        }else{
+            homeTableViewCell.titleLabel.text = equipmentModel.name;
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+        }
         [homeTableViewCell cellMode:YES];
+        if ([equipmentModel.state isEqualToString:@"0"]) {
+            homeTableViewCell.switch0.on = YES;
+        }else{
+            homeTableViewCell.switch0.on = NO;
+        }
         
     }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -216,9 +299,9 @@
 }
 - (void)buttonClick_Start:(UIButton *)btn{
     NSLog(@"点点");
-    //    id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
-    NSDictionary *dict = @{@"id":@"1",@"state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
-    [[HttpClient defaultClient]requestWithPath:mEquipmentStart method:1 parameters:dict prepareExecute:^{
+    NSDictionary *dict = @{@"id":@"1",@"scene_state":@"1",@"token":@"9DB2FD6FDD2F116CD47CE6C48B3047EE"};
+    
+    [[HttpClient defaultClient]requestWithPath:mSightStart method:1 parameters:dict prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"提交成功%@",responseObject);
@@ -236,8 +319,8 @@
         
     }];
     
+    
 }
-
 /*
  #pragma mark - Navigation
  

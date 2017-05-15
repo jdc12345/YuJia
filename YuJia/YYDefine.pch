@@ -35,7 +35,7 @@
  5=空调
  6=门锁
  */
-#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"air-condition",@"lock"]
+#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"air-condition",@"lock",@""]
 
 
 #pragma mark  ------------WeakSelf------------------
@@ -67,6 +67,54 @@
 //家》设备页面当前选中的房间一键关闭功能接口
 //http://192.168.1.55:8080/smarthome/mobileapi/room/roomctrl.do?id=1&state=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mEquipmentStart [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/roomctrl.do?"]
+
+
+//家》情景设置获取情单一情景的名称、启动条件以及执行任务列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/scene/get.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mSightSetting [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/get.do?"]
+//家》房间设置获取单一房的间名称、房间照片以及房间中的设备列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/get.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mRoomSetting [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/get.do?"]
+
+//家》情景设置保存情景名称、启动条件以及执行任务列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/scene/save.do?id=123&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mSightSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/save.do?"]
+
+
+
+//保存或更新房间接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mRoomSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/save.do?"]
+//保存或更新设备接口  // 单一设备改变状态
+//http://192.168.1.55:8080/smarthome/mobileapi/equipment/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mEquipmentSave [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/save.do?"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//获取用户信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/get.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+
+
+
+
+//删除设备接口
+//http://192.168.1.55:8080/smarthome/mobileapi/equipment/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+
+//获取所有设备列表
+//http://192.168.1.55:8080/smarthome/mobileapi/equipment/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 
 
 // Include any system framework and library headers here that should be included in all compilation units.
