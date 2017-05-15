@@ -72,7 +72,7 @@
     [self.contentView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(5*kiphone6);
-        make.left.offset(27*kiphone6);
+        make.left.offset(26*kiphone6);
         make.height.width.offset(11*kiphone6);
     }];
     self.iconView = iconView;
@@ -81,9 +81,8 @@
     textView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self.contentView addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.offset(0);
-        make.left.equalTo(iconView.mas_right).offset(8*kiphone6);
-        make.right.offset(0*kiphone6);
+        make.top.bottom.right.offset(0);
+        make.left.equalTo(iconView.mas_right).offset(2*kiphone6);
     }];
     textView.textColor = [UIColor colorWithHexString:@"#333333"];
     textView.font = [UIFont systemFontOfSize:12];

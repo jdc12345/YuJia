@@ -10,6 +10,7 @@
 #import "UIButton+Badge.h"
 #import "YJCommunityActivitiesTVCell.h"
 #import "YJCreatActivitiesVC.h"
+#import "YJActivitiesDetailsVC.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJCommunityActivitiesVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -24,7 +25,7 @@ static NSString* tableCellid = @"table_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"友邻圈";
+    self.title = @"社区活动";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
@@ -139,8 +140,8 @@ static NSString* tableCellid = @"table_cell";
     return UITableViewAutomaticDimension;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
-//    [self.navigationController pushViewController:detailVc animated:true];
+    YJActivitiesDetailsVC *detailVc = [[YJActivitiesDetailsVC alloc]init];
+    [self.navigationController pushViewController:detailVc animated:true];
     
 }
 

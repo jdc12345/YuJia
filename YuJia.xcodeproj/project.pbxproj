@@ -15,9 +15,15 @@
 		161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */; };
 		161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */; };
 		161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */; };
+		161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */; };
+		163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */; };
+		163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */; };
 		164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */; };
 		164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F91EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m */; };
 		165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */; };
+		165221671EC57EDC0033FB8A /* YJActivitiesDetailsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 165221661EC57EDC0033FB8A /* YJActivitiesDetailsVC.m */; };
+		1652216A1EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 165221691EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m */; };
+		1652216D1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1652216C1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m */; };
 		1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE151EB864C900583A7F /* UIColor+colorValues.m */; };
 		1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE181EB86A1100583A7F /* YYFunctionListFlowLayout.m */; };
 		1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE1B1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m */; };
@@ -163,8 +169,14 @@
 		161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreatActivitiesVC.m; sourceTree = "<group>"; };
 		161918BE1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCreateActivitieTVCell.h; sourceTree = "<group>"; };
 		161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreateActivitieTVCell.m; sourceTree = "<group>"; };
+		161CEE991EC5940800B34E3B /* YJActivitesCommentTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesCommentTVCell.h; sourceTree = "<group>"; };
+		161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesCommentTVCell.m; sourceTree = "<group>"; };
 		1621A4321EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRepairRecordTableViewCell.h; sourceTree = "<group>"; };
 		1621A4331EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecordTableViewCell.m; sourceTree = "<group>"; };
+		163780521EC59FDF00AE104B /* YJActivitesPhotoTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesPhotoTVCell.h; sourceTree = "<group>"; };
+		163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoTVCell.m; sourceTree = "<group>"; };
+		163780551EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesPhotoFlowLayout.h; sourceTree = "<group>"; };
+		163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoFlowLayout.m; sourceTree = "<group>"; };
 		164F83F51EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoAddBtnCollectionViewCell.h; sourceTree = "<group>"; };
 		164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPhotoAddBtnCollectionViewCell.m; sourceTree = "<group>"; };
 		164F83F81EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoDisplayCollectionViewCell.h; sourceTree = "<group>"; };
@@ -175,6 +187,12 @@
 		164F83FF1EBAC3DF002318A6 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		164F84011EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRepairSectionTwoTableViewCell.h; sourceTree = "<group>"; };
 		164F84021EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairSectionTwoTableViewCell.m; sourceTree = "<group>"; };
+		165221651EC57EDC0033FB8A /* YJActivitiesDetailsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitiesDetailsVC.h; sourceTree = "<group>"; };
+		165221661EC57EDC0033FB8A /* YJActivitiesDetailsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitiesDetailsVC.m; sourceTree = "<group>"; };
+		165221681EC583DF0033FB8A /* YJActivitiesDetailsTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitiesDetailsTVCell.h; sourceTree = "<group>"; };
+		165221691EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitiesDetailsTVCell.m; sourceTree = "<group>"; };
+		1652216B1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLikeActivitiesTVCell.h; sourceTree = "<group>"; };
+		1652216C1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLikeActivitiesTVCell.m; sourceTree = "<group>"; };
 		1661FE141EB864C900583A7F /* UIColor+colorValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+colorValues.h"; sourceTree = "<group>"; };
 		1661FE151EB864C900583A7F /* UIColor+colorValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+colorValues.m"; sourceTree = "<group>"; };
 		1661FE171EB86A1100583A7F /* YYFunctionListFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFunctionListFlowLayout.h; sourceTree = "<group>"; };
@@ -429,6 +447,16 @@
 				161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */,
 				161918BE1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.h */,
 				161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */,
+				165221681EC583DF0033FB8A /* YJActivitiesDetailsTVCell.h */,
+				165221691EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m */,
+				1652216B1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.h */,
+				1652216C1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m */,
+				161CEE991EC5940800B34E3B /* YJActivitesCommentTVCell.h */,
+				161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */,
+				163780521EC59FDF00AE104B /* YJActivitesPhotoTVCell.h */,
+				163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */,
+				163780551EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.h */,
+				163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */,
 			);
 			name = "Community activities";
 			sourceTree = "<group>";
@@ -557,6 +585,8 @@
 				161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */,
 				161918BB1EC4329100FE2FD1 /* YJCreatActivitiesVC.h */,
 				161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */,
+				165221651EC57EDC0033FB8A /* YJActivitiesDetailsVC.h */,
+				165221661EC57EDC0033FB8A /* YJActivitiesDetailsVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1132,6 +1162,8 @@
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
 				3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */,
+				163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */,
+				1652216A1EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m in Sources */,
 				1672D7A91EC32FF500F5970C /* YJNoticeListTVCell.m in Sources */,
 				16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
@@ -1151,6 +1183,7 @@
 				3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */,
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
+				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
 				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
@@ -1171,6 +1204,7 @@
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
 				3E20B3431EC542A100C77B58 /* LockShareTableViewCell.m in Sources */,
 				3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */,
+				1652216D1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
 				168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */,
 				3E90B74A1EC3F68200CC49D7 /* AirDirectionTableViewCell.m in Sources */,
@@ -1215,6 +1249,7 @@
 				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
 				164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */,
+				163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */,
 				3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */,
 				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
 				3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */,
@@ -1227,6 +1262,7 @@
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,
+				165221671EC57EDC0033FB8A /* YJActivitiesDetailsVC.m in Sources */,
 				1661FE211EB8777800583A7F /* NSArray+Addition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -96,7 +96,7 @@
     [self.contentView addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.offset(0);
-        make.left.equalTo(iconView.mas_right).offset(8*kiphone6);
+        make.left.equalTo(iconView.mas_right).offset(2*kiphone6);
         make.right.offset(0*kiphone6);
     }];
     textView.textColor = [UIColor colorWithHexString:@"#333333"];
