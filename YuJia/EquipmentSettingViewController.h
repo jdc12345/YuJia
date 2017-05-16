@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface EquipmentSettingViewController : UIViewController
-
+@property (nonatomic, strong) NSString *equipmentName;
 @end

@@ -88,7 +88,7 @@
     segment.delegate = self;
     [self.view addSubview:segment];
     
-    pageView =[[JXPageView alloc] initWithFrame:CGRectMake(0, 40, kScreenW, self.view.bounds.size.height - 100)];
+    pageView =[[JXPageView alloc] initWithFrame:CGRectMake(0, 40, kScreenW, self.view.bounds.size.height - 148 -10)];
     pageView.datasource = self;
     pageView.delegate = self;
     [pageView reloadData];

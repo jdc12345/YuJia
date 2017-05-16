@@ -9,7 +9,8 @@
 #import "MYHomeViewController.h"
 #import "MYHomeTableViewCell.h"
 #import "MYFamilyViewController.h"
-
+#import "EquipmentManagerViewController.h"
+#import "MyRoomInfoViewController.h"
 @interface MYHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -63,6 +64,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 1) {
         [self.navigationController pushViewController:[[MYFamilyViewController alloc]init ] animated:YES];
+    }else if (indexPath.row == 2){
+        [self.navigationController pushViewController:[[EquipmentManagerViewController alloc]init ] animated:YES];
+    }else{
+        [self.navigationController pushViewController:[[MyRoomInfoViewController alloc]init ] animated:YES];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 
