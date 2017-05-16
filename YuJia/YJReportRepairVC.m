@@ -19,8 +19,10 @@
 #import <HUPhotoBrowser.h>
 #import "YJRepairSectionTwoTableViewCell.h"
 #import "YJRepairRecordTableViewCell.h"
+#import "AFNetworking.h"
+#import "YJReportRepairRecordModel.h"
 
-
+static NSInteger start = 0;//上拉加载起始位置
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
@@ -28,7 +30,8 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,strong)NSMutableArray *yearArr;
 @property(nonatomic,strong)NSMutableArray *monthArr;
 @property(nonatomic,strong)NSMutableArray *dayArr;
-@property(nonatomic,strong)NSMutableArray *hourArr;
+@property(nonatomic,strong)NSArray *hourArr;
+@property(nonatomic,strong)NSArray *minusArr;
 @property(nonatomic,strong)NSString *selectTime;
 @property(nonatomic,strong)NSString *year;
 @property(nonatomic,strong)NSString *month;
@@ -45,6 +48,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,weak)UIButton *thirdTypeBtn;
 @property(nonatomic,weak)UIView *typeView;
 @property(nonatomic,strong)NSString *repairType;
+@property(nonatomic,strong)NSString *repairTypeId;
 @property (nonatomic, strong) NSMutableArray *imageArr;
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property(nonatomic,weak)BRPlaceholderTextView *titleView;
@@ -53,7 +57,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic, assign)NSInteger stateFlag;//报修状态按钮标记
 //
 @property(nonatomic,weak)UITableView *recordTableView;
-
+@property(nonatomic,strong)NSMutableArray *recordArr;
 @end
 
 @implementation YJReportRepairVC
@@ -69,6 +73,8 @@ static NSString* photoCellid = @"photo_cell";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"我要报修"andTag:101];
     [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"报修记录"andTag:102];
+    self.hourArr = @[@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20"];
+    self.minusArr = @[@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59"];
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:frame and:title];
@@ -96,7 +102,7 @@ static NSString* photoCellid = @"photo_cell";
         if (self.typeView) {
             [self.firstTypeBtn setTitle:typeArr[0] forState:UIControlStateNormal];
             [self.secondTypeBtn setTitle:typeArr[1] forState:UIControlStateNormal];
-            [self.secondTypeBtn setTitle:typeArr[2] forState:UIControlStateNormal];
+            [self.thirdTypeBtn setTitle:typeArr[2] forState:UIControlStateNormal];
             self.typeView.hidden = false;
         }else{
             
@@ -175,16 +181,19 @@ static NSString* photoCellid = @"photo_cell";
     [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     self.typeView.hidden = true;
     if (sender.tag == 51) {
+        self.repairTypeId = [NSString stringWithFormat:@"%d",1];
         self.secondTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.secondTypeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         self.thirdTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.thirdTypeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
     }else if (sender.tag == 52){
+        self.repairTypeId = [NSString stringWithFormat:@"%d",2];
         self.firstTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.firstTypeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         self.thirdTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.thirdTypeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
     }else{
+        self.repairTypeId = [NSString stringWithFormat:@"%d",3];
         self.firstTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.firstTypeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         self.secondTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -215,32 +224,64 @@ static NSString* photoCellid = @"photo_cell";
         tableView.dataSource = self;
     }
     }else{
+        NSString *state = @"";
         if (self.stateFlag==51) {
             //加载 待维修 数据
+            state = @"1";
         }else if (self.stateFlag==52){
             //加载 处理中 数据
+            state = @"2";
         }else if (self.stateFlag==53){
             //加载 已完成 数据
+            state = @"3";
         }
-        if (self.recordTableView) {
-            self.recordTableView.hidden = false;
-            [self.recordTableView reloadData];
-        }else{
-            //添加tableView
-            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-            self.recordTableView = tableView;
-            [self.view addSubview:tableView];
-            self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-            [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.repairBtn.mas_bottom);
-                make.left.right.bottom.offset(0);
-            }];
-            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            [tableView registerClass:[YJRepairRecordTableViewCell class] forCellReuseIdentifier:tableCellid];
-            //        [tableView registerClass:[YJRepairSectionTwoTableViewCell class] forCellReuseIdentifier:tableCellid];
-            tableView.delegate =self;
-            tableView.dataSource = self;
-        }
+        http://localhost:8080/smarthome/mobileapi/repair/findRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&state=1&start=0&limit=2
+        [SVProgressHUD show];// 动画开始
+        NSString *recordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/findRecord.do?token=%@&state=%@&start=0&limit=2",mPrefixUrl,mDefineToken1,state];
+        [[HttpClient defaultClient]requestWithPath:recordUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJReportRepairRecordModel *infoModel = [YJReportRepairRecordModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                self.recordArr = mArr;
+                if (self.recordTableView) {
+                    self.recordTableView.hidden = false;
+                    [self.recordTableView reloadData];
+                }else{
+                    //添加tableView
+                    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+                    self.recordTableView = tableView;
+                    [self.view addSubview:tableView];
+                    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+                    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.top.equalTo(self.repairBtn.mas_bottom);
+                        make.left.right.bottom.offset(0);
+                    }];
+                    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                    [tableView registerClass:[YJRepairRecordTableViewCell class] forCellReuseIdentifier:tableCellid];
+                    //        [tableView registerClass:[YJRepairSectionTwoTableViewCell class] forCellReuseIdentifier:tableCellid];
+                    tableView.delegate =self;
+                    tableView.dataSource = self;
+                    tableView.rowHeight = UITableViewAutomaticDimension;
+                    tableView.estimatedRowHeight = 180*kiphone6;
+                }
+                if (self.recordArr.count>0) {
+                    start = self.recordArr.count;
+                }
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+
+        
     }
 }
 #pragma mark - UITableView
@@ -259,7 +300,7 @@ static NSString* photoCellid = @"photo_cell";
         }
         return 2;
     }else{
-        return 3;//根据请求回来的数据定
+        return self.recordArr.count;//根据请求回来的数据定
     }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -278,7 +319,7 @@ static NSString* photoCellid = @"photo_cell";
     return cell;
     }else{
         YJRepairRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-        
+        cell.model = self.recordArr[indexPath.row];
         return cell;
     }
 }
@@ -384,6 +425,7 @@ static NSString* photoCellid = @"photo_cell";
             make.width.offset(324.5*kiphone6);
             make.height.offset(45*kiphone6);
         }];
+        [btn addTarget:self action:@selector(reportRepair:) forControlEvents:UIControlEventTouchUpInside];
     }
     return backView;
     }else{
@@ -408,7 +450,7 @@ static NSString* photoCellid = @"photo_cell";
     }
     return 45*kiphone6;
     }else{
-       return 178*kiphone6;//自动计算并缓存行高
+       return UITableViewAutomaticDimension;//自动计算并缓存行高
     }
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -430,35 +472,34 @@ static NSString* photoCellid = @"photo_cell";
         NSInteger month = [dateComponent month];
         NSMutableArray *monthArr = [NSMutableArray array];
         NSMutableArray *dayArr = [NSMutableArray array];
-        NSMutableArray *hourArr = [NSMutableArray array];
         if (self.timePickerView) {
             if (month<12) {
-                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)year];
+                NSString *yearStr = [NSString stringWithFormat: @"%ld", (long)year];
                 self.yearArr = [NSMutableArray arrayWithObject:yearStr];
                 for (NSInteger i = month; i<=month+1; i++) {
-                    NSString *monthStr = [NSString stringWithFormat: @"%ld月", (long)i];
-                    [monthArr addObject:monthStr];
+                    if (month<10) {
+                        NSString *monthStr = [NSString stringWithFormat: @"0%ld", (long)i];
+                        [monthArr addObject:monthStr];
+                    }else{
+                        NSString *monthStr = [NSString stringWithFormat: @"%ld", (long)i];
+                        [monthArr addObject:monthStr];
+                    }
+                    
                 }
                 self.monthArr = monthArr;
             }else{
-                NSString *yearStr1 = [NSString stringWithFormat: @"%ld年", (long)year];
-                NSString *yearStr2 = [NSString stringWithFormat: @"%ld年", (long)year+1];
+                NSString *yearStr1 = [NSString stringWithFormat: @"%ld", (long)year];
+                NSString *yearStr2 = [NSString stringWithFormat: @"%ld", (long)year+1];
                 self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
-                 NSString *monthStr12 = [NSString stringWithFormat: @"%ld月", (long)month];
+                 NSString *monthStr12 = [NSString stringWithFormat: @"%ld", (long)month];
                 NSString *monthStr1 =  @"%ld月";
                 self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
                 }
             for (NSInteger i = 1; i<=31; i++) {
-                NSString *dayStr = [NSString stringWithFormat: @"%ld日", (long)i];
+                NSString *dayStr = [NSString stringWithFormat: @"%ld", (long)i];
                 [dayArr addObject:dayStr];
             }
             self.dayArr = dayArr;
-            for (NSInteger i = 8; i<=20; i++) {
-                NSString *hourStr = [NSString stringWithFormat: @"%ld时", (long)i];
-                [hourArr addObject:hourStr];
-            }
-            self.hourArr = hourArr;
-            
 
             if (self.timePickerView.hidden) {
                 self.timePickerView.hidden = false;
@@ -469,31 +510,31 @@ static NSString* photoCellid = @"photo_cell";
             
         }else{
             if (month<12) {
-                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)year];
+                NSString *yearStr = [NSString stringWithFormat: @"%ld", (long)year];
                 self.yearArr = [NSMutableArray arrayWithObject:yearStr];
                 for (NSInteger i = month; i<=month+1; i++) {
-                    NSString *monthStr = [NSString stringWithFormat: @"%ld月", (long)i];
-                    [monthArr addObject:monthStr];
+                    if (month<10) {
+                        NSString *monthStr = [NSString stringWithFormat: @"0%ld", (long)i];
+                        [monthArr addObject:monthStr];
+                    }else{
+                        NSString *monthStr = [NSString stringWithFormat: @"%ld", (long)i];
+                        [monthArr addObject:monthStr];
+                    }
                 }
                 self.monthArr = monthArr;
             }else{
-                NSString *yearStr1 = [NSString stringWithFormat: @"%ld年", (long)year];
-                NSString *yearStr2 = [NSString stringWithFormat: @"%ld年", (long)year+1];
+                NSString *yearStr1 = [NSString stringWithFormat: @"%ld", (long)year];
+                NSString *yearStr2 = [NSString stringWithFormat: @"%ld", (long)year+1];
                 self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
-                NSString *monthStr12 = [NSString stringWithFormat: @"%ld月", (long)month];
-                NSString *monthStr1 =  @"%ld月";
+                NSString *monthStr12 = [NSString stringWithFormat: @"%ld", (long)month];
+                NSString *monthStr1 =  @"%ld";
                 self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
             }
             for (NSInteger i = 1; i<=31; i++) {
-                NSString *dayStr = [NSString stringWithFormat: @"%ld日", (long)i];
+                NSString *dayStr = [NSString stringWithFormat: @"%ld", (long)i];
                 [dayArr addObject:dayStr];
             }
             self.dayArr = dayArr;
-            for (NSInteger i = 8; i<=20; i++) {
-                NSString *hourStr = [NSString stringWithFormat: @"%ld时", (long)i];
-                [hourArr addObject:hourStr];
-            }
-            self.hourArr = hourArr;
 
             UIPickerView *pickView = [[UIPickerView alloc]init];
             [self.view addSubview:pickView];
@@ -520,7 +561,7 @@ static NSString* photoCellid = @"photo_cell";
 #pragma mark - pickView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 4;
+    return 5;
 }
 // pickerView 每列个数
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
@@ -530,8 +571,10 @@ static NSString* photoCellid = @"photo_cell";
        return self.monthArr.count;
     }else if (component == 2){
         return self.dayArr.count;
-    }else{
+    }else if (component == 3){
         return self.hourArr.count;
+    }else{
+        return self.minusArr.count;
     }
 
 }
@@ -540,11 +583,12 @@ static NSString* photoCellid = @"photo_cell";
 // 每列宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     
-    return pickerView.bounds.size.width/4;
+    return pickerView.bounds.size.width/5;
 }
 // 返回选中的行
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    NSString *minus = @"00";
     if (component == 0) {
         self.year = [NSString stringWithFormat:@"%@",self.yearArr[row]];
         
@@ -554,9 +598,10 @@ static NSString* photoCellid = @"photo_cell";
         self.day = [NSString stringWithFormat:@"%@",self.dayArr[row]];
     }else if (component == 3){
         self.hour = [NSString stringWithFormat:@"%@",self.hourArr[row]];
+    }else if (component == 4){
+        minus = [NSString stringWithFormat:@"%@",self.minusArr[row]];
     }
-    NSString *selectTime = [NSString stringWithFormat:@"您期望的维修时间为:%@%@%@%@",self.year,self.month,self.day,self.hour];
-    self.selectTime = selectTime;
+    self.selectTime = [NSString stringWithFormat:@"您期望的维修时间为:%@-%@-%@ %@:%@:00",self.year,self.month,self.day,self.hour,minus];
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:1];  //你需要更新的组数中的cell
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -572,8 +617,11 @@ static NSString* photoCellid = @"photo_cell";
     } else if (component == 2){
         return [self.dayArr objectAtIndex:row];
         
-    }else {
+    }else if (component == 3){
         return [self.hourArr objectAtIndex:row];
+        
+    }else {
+        return [self.minusArr objectAtIndex:row];
         
     }
     
@@ -591,6 +639,9 @@ static NSString* photoCellid = @"photo_cell";
     }
     else if (component == 3){
         [label setText:[self.hourArr objectAtIndex:row]];
+    }
+    else if (component == 4){
+        [label setText:[self.minusArr objectAtIndex:row]];
     }
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -690,6 +741,58 @@ static NSString* photoCellid = @"photo_cell";
         _imageArr = [[NSMutableArray alloc]init];
     }
     return _imageArr;
+}
+- (void)reportRepair:(UIButton*)sender {
+    sender.enabled = false;
+    YJRepairBaseInfoTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *name = [cell.nameField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *telephone = [cell.telNumberField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *address = [cell.addressField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *details = [self.titleView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *processingTime = [[self.selectTime substringFromIndex:10]stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+//http://192.168.1.55:8080/smarthome/mobileapi/repair/addRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &cname=风雪
+//    &telephone=18782931356
+//    &address=断天涯一单元一号楼
+//    &details=屋顶漏水
+//    &type=1
+//    &processingTime=2017-05-08%2020:09:50
+    [SVProgressHUD show];// 动画开始
+    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/addRecord.do?token=%@&cname=%@&telephone=%@&address=%@&details=%@&type=%@&processingTime=%@",mPrefixUrl,mDefineToken1,name,telephone,address,details,self.repairTypeId,processingTime];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:reportUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //  图片上传
+        for (NSInteger i = 0; i < self.imageArr.count; i ++) {
+            UIImage *images = self.imageArr[i];
+            NSData *picData = UIImageJPEGRepresentation(images, 0.5);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *fileName = [NSString stringWithFormat:@"%@%ld.png", [formatter stringFromDate:[NSDate date]], (long)i];
+            [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [SVProgressHUD dismiss];
+        NSString *message = responseObject[@"message"];
+        [message stringByRemovingPercentEncoding];
+        NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"报修成功!"];
+            sender.enabled = true;
+        }else{
+            [SVProgressHUD showErrorWithStatus:message];
+            sender.enabled = true;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误信息=====%@", error.description);
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"报修失败!"];
+        sender.enabled = true;
+    }];
+
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

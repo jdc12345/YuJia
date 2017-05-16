@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJReportRepairRecordModel.h"
 
 @interface YJRepairRecordTableViewCell : UITableViewCell
-
+@property(nonatomic,strong)YJReportRepairRecordModel *model;
 @end
