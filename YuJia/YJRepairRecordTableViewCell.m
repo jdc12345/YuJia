@@ -13,7 +13,7 @@
 #import "YJImageDisplayCollectionViewCell.h"
 #import "YJRepairRecordFlowLayout.h"
 #import <HUPhotoBrowser.h>
-
+#import <UIImageView+WebCache.h>
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
@@ -25,6 +25,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property (nonatomic, weak) UIButton *finishBtn;
 @property (nonatomic, weak) UIButton *cancelBtn;
+@property(nonatomic,strong)NSArray *imagesArr;
 @end
 @implementation YJRepairRecordTableViewCell
 
@@ -47,8 +48,42 @@ static NSString* photoCellid = @"photo_cell";
     }else if (model.repairType == 3) {
         self.typeLabel.text = @"公共设施报修";
     }
-    
-    
+    self.timeLabel.text =[NSString stringWithFormat:@"期望处理时间:%@",model.processingTimeString];
+    if (model.state == 1) {
+        self.stateLabel.text = @"待维修";
+    }else if (model.state == 2) {
+        self.stateLabel.text = @"处理中";
+    }else if (model.state == 3) {
+        self.stateLabel.text = @"已完成";
+    }
+    self.contentLabel.text = model.details;
+    if (model.state == 1) {
+        self.finishBtn.hidden = false;
+        self.cancelBtn.hidden = false;
+    }else if (model.state == 2) {
+        self.finishBtn.hidden = false;
+        self.cancelBtn.hidden = true;
+    }else if (model.state == 3) {
+        self.finishBtn.hidden = true;
+        self.cancelBtn.hidden = true;
+    }
+    if (![model.picture isEqualToString:@""]) {
+        NSArray *array = [model.picture componentsSeparatedByString:@";"];
+        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+        [arr removeLastObject];
+        self.imagesArr = arr;
+        if (self.imagesArr.count<5) {
+            [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(70*kiphone6);
+            }];
+        }else{
+            [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(140*kiphone6);
+            }];
+        }
+        
+        [self.collectionView reloadData];
+    }
 }
 
 -(void)setupUI{
@@ -163,6 +198,10 @@ static NSString* photoCellid = @"photo_cell";
         make.height.offset(25*kiphone6);
         make.right.equalTo(finishBtn.mas_left).offset(-10*kiphone6);
     }];
+//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(line2.mas_bottom).offset(45*kiphone6);
+//        make.width.offset(kScreenW);
+//    }];
     self.typeLabel = typeLabel;
     self.timeLabel = timeLabel;
     self.stateLabel = stateLabel;
@@ -181,7 +220,7 @@ static NSString* photoCellid = @"photo_cell";
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-  return 5;
+  return self.imagesArr.count;
 }
 
 // cell内容
@@ -189,8 +228,8 @@ static NSString* photoCellid = @"photo_cell";
 {
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
-        
-    cell.photo = [UIImage imageNamed:@"house_repair"];
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
     return cell;
 
 }
@@ -198,9 +237,7 @@ static NSString* photoCellid = @"photo_cell";
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *image = [UIImage imageNamed:@"house_repair"];
-    NSArray *imageArr = @[image,image,image,image,image];
-    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
+    [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.imagesArr atIndex:indexPath.row];
     
 }
 
