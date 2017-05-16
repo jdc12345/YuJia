@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SightModel.h"
+#import "EquipmentModel.h"
 
 @interface EquipmentSettingViewController : UIViewController
 @property (nonatomic, strong) NSString *equipmentName;
+@property (nonatomic, strong) NSString *sightName;
+@property (nonatomic, strong) SightModel *sightModel;
+@property (nonatomic, strong) EquipmentModel *eqipmentModel;
 @end
