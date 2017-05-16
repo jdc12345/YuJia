@@ -74,7 +74,7 @@
     
     EquipmentModel *equipmentModel = self.dataSource[indexPath.row];
     EquipmentSettingViewController *eVC = [[EquipmentSettingViewController alloc]init];
-    eVC.equipmentName = equipmentModel.iconId;
+    eVC.eqipmentModel = equipmentModel;
     [self.navigationController pushViewController:eVC animated:YES];
     
 }
