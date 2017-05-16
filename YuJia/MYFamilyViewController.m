@@ -10,7 +10,9 @@
 #import "MYFamilyTableViewCell.h"
 #import "UIBarButtonItem+Helper.h"
 #import "FamilyPersonalViewController.h"
-
+#import "PersonalModel.h"
+#import <UIImageView+WebCache.h>
+#import "AddFamilyViewController.h"
 @interface MYFamilyViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -24,7 +26,7 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -54,10 +56,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"我的家人管理";
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5 *kiphone6)];
-    headView.backgroundColor = [UIColor clearColor];
-    self.tableView.tableHeaderView = headView;
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+//    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5 *kiphone6)];
+//    headView.backgroundColor = [UIColor clearColor];
+//    self.tableView.tableHeaderView = headView;
+    [self httpRequestHomeInfo];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
     // Do any additional setup after loading the view.
@@ -73,39 +76,58 @@
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return 70 ;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    PersonalModel *personalModel = self.dataSource[indexPath.row];
+    
     MYFamilyTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYFamilyTableViewCell" forIndexPath:indexPath];
-    if (indexPath.row == 0) {
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-        homeTableViewCell.titleLabel.text = @"LIM";
-        
-    }else if(indexPath.row == 1){
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-        homeTableViewCell.titleLabel.text = @"赵医生";
-    }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-        homeTableViewCell.titleLabel.text = @"安迪";
-    }
+    homeTableViewCell.iconV ;
+    homeTableViewCell.titleLabel.text = personalModel.trueName;
+//    if (indexPath.row == 0) {
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+//        homeTableViewCell.titleLabel.text = @"LIM";
+//        
+//    }else if(indexPath.row == 1){
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+//        homeTableViewCell.titleLabel.text = @"赵医生";
+//    }else{
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
+//        homeTableViewCell.titleLabel.text = @"安迪";
+//    }
     //    homeTableViewCell.backgroundColor = [UIColor blackColor];
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
     
 }
 - (void)pushToAdd{
-    
+    [self.navigationController pushViewController:[[AddFamilyViewController alloc]init] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *personalList= responseObject[@"personalList"];
+        for(NSDictionary *eDict in personalList){
+            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
+            [self.dataSource addObject:personalModel];
+        }
+        [self tableView];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
  #pragma mark - Navigation
  

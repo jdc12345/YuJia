@@ -9,6 +9,7 @@
 #import "EquipmentManagerViewController.h"
 #import "EquipmentModel.h"
 #import "EquipmentManagerTableViewCell.h"
+#import "EquipmentSettingViewController.h"
 @interface EquipmentManagerViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -47,6 +48,8 @@
     self.title = @"设备管理";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    [self httpRequestHomeInfo];
     // Do any additional setup after loading the view.
 }
 - (UIView *)personInfomation{
@@ -61,14 +64,18 @@
     return 50;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10;
+    return 0.000001;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.000001;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    EquipmentModel *equipmentModel;
+    EquipmentModel *equipmentModel = self.dataSource[indexPath.row];
+    EquipmentSettingViewController *eVC = [[EquipmentSettingViewController alloc]init];
+    eVC.equipmentName = equipmentModel.iconId;
+    [self.navigationController pushViewController:eVC animated:YES];
     
 }
 #pragma mark -
@@ -81,7 +88,7 @@
     return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    EquipmentModel *equipmentModel;
+    EquipmentModel *equipmentModel = self.dataSource[indexPath.row];
     
     //    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
@@ -104,7 +111,22 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllEquipment,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *equipmentList= responseObject[@"equipmentList"];
+        for(NSDictionary *eDict in equipmentList){
+            EquipmentModel *eModel = [EquipmentModel mj_objectWithKeyValues:eDict];
+            [self.dataSource addObject:eModel];
+        }
+        [self tableView];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
  #pragma mark - Navigation
  

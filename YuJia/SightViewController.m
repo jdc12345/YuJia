@@ -109,7 +109,7 @@
     segment.delegate = self;
     [self.view addSubview:segment];
     
-    pageView =[[JXPageView alloc] initWithFrame:CGRectMake(0, 40, kScreenW, self.view.bounds.size.height - 100)];
+    pageView =[[JXPageView alloc] initWithFrame:CGRectMake(0, 40, kScreenW, self.view.bounds.size.height - 148 -10)];
     pageView.datasource = self;
     pageView.delegate = self;
     [pageView reloadData];
@@ -133,7 +133,7 @@
     
     self.loadTableV = index;
     ////////////////////////////
-    UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -148 -5) style:UITableViewStyleGrouped];
+    UITableView* tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 104, kScreenW, kScreenH -104 - 44) style:UITableViewStyleGrouped];
     tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
     tableView.dataSource = self;
     tableView.delegate = self;
@@ -284,6 +284,7 @@
 //    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
+    homeTableViewCell.equipmentModel = equipmentModel;
     if (indexPath.section == 0) {
         homeTableViewCell.titleLabel.text = @"情景设置";
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"setting"];

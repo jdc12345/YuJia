@@ -43,7 +43,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"情景设置";
+    self.title = @"设备设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -120,8 +120,8 @@
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 135)];
     headView.backgroundColor = [UIColor whiteColor];
     
-    NSString *sightName = @"情 景 名 称";
-    NSString *startW = @"启 动 条 件";
+    NSString *sightName = @"设 备 名 称";
+    NSString *startW = @"所 属 房 间";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGRect rect = [sightName boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
                                           options:NSStringDrawingUsesLineFragmentOrigin

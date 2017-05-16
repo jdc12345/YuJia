@@ -20,4 +20,5 @@
 @property (nonatomic, strong) NSString *sceneDistance;
 @property (nonatomic, strong) NSString *sceneTime;
 @property (nonatomic, strong) NSString *sceneTimeString;
+@property (nonatomic, strong) NSString *sceneTaskId;
 @end

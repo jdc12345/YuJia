@@ -103,6 +103,19 @@
 		3E9439281EC98434001FE471 /* FamilyPersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439271EC98434001FE471 /* FamilyPersonalTableViewCell.m */; };
 		3E94392B1EC99095001FE471 /* EquipmentManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */; };
 		3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */; };
+		3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439301EC9B913001FE471 /* PersonalModel.m */; };
+		3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94394D1ECAA087001FE471 /* ScreenUtil.m */; };
+		3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */; };
+		3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */; };
+		3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439521ECAA087001FE471 /* PickViewController.m */; };
+		3E94395F1ECAA087001FE471 /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439531ECAA087001FE471 /* area.plist */; };
+		3E9439601ECAA087001FE471 /* city.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439541ECAA087001FE471 /* city.plist */; };
+		3E9439611ECAA087001FE471 /* AreaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439561ECAA087001FE471 /* AreaModel.m */; };
+		3E9439621ECAA087001FE471 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439581ECAA087001FE471 /* CityModel.m */; };
+		3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94395A1ECAA087001FE471 /* ProvinceModel.m */; };
+		3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */; };
+		3E94397F1ECAF259001FE471 /* AddFamilyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */; };
+		3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -363,6 +376,29 @@
 		3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentManagerViewController.m; sourceTree = "<group>"; };
 		3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentManagerTableViewCell.h; sourceTree = "<group>"; };
 		3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentManagerTableViewCell.m; sourceTree = "<group>"; };
+		3E94392F1EC9B913001FE471 /* PersonalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalModel.h; sourceTree = "<group>"; };
+		3E9439301EC9B913001FE471 /* PersonalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalModel.m; sourceTree = "<group>"; };
+		3E94394C1ECAA087001FE471 /* ScreenUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenUtil.h; sourceTree = "<group>"; };
+		3E94394D1ECAA087001FE471 /* ScreenUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenUtil.m; sourceTree = "<group>"; };
+		3E94394E1ECAA087001FE471 /* MyRoomInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRoomInfoViewController.h; sourceTree = "<group>"; };
+		3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyRoomInfoViewController.m; sourceTree = "<group>"; };
+		3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyRoomInfoViewController.xib; sourceTree = "<group>"; };
+		3E9439511ECAA087001FE471 /* PickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickViewController.h; sourceTree = "<group>"; };
+		3E9439521ECAA087001FE471 /* PickViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickViewController.m; sourceTree = "<group>"; };
+		3E9439531ECAA087001FE471 /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
+		3E9439541ECAA087001FE471 /* city.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = city.plist; sourceTree = "<group>"; };
+		3E9439551ECAA087001FE471 /* AreaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaModel.h; sourceTree = "<group>"; };
+		3E9439561ECAA087001FE471 /* AreaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaModel.m; sourceTree = "<group>"; };
+		3E9439571ECAA087001FE471 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
+		3E9439581ECAA087001FE471 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
+		3E9439591ECAA087001FE471 /* ProvinceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvinceModel.h; sourceTree = "<group>"; };
+		3E94395A1ECAA087001FE471 /* ProvinceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvinceModel.m; sourceTree = "<group>"; };
+		3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyViewController.h; sourceTree = "<group>"; };
+		3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyViewController.m; sourceTree = "<group>"; };
+		3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyInfoViewController.h; sourceTree = "<group>"; };
+		3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoViewController.m; sourceTree = "<group>"; };
+		3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyInfoTableViewCell.h; sourceTree = "<group>"; };
+		3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoTableViewCell.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -790,6 +826,28 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		3E94394B1ECAA077001FE471 /* HomeInfo */ = {
+			isa = PBXGroup;
+			children = (
+				3E94394C1ECAA087001FE471 /* ScreenUtil.h */,
+				3E94394D1ECAA087001FE471 /* ScreenUtil.m */,
+				3E94394E1ECAA087001FE471 /* MyRoomInfoViewController.h */,
+				3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */,
+				3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */,
+				3E9439511ECAA087001FE471 /* PickViewController.h */,
+				3E9439521ECAA087001FE471 /* PickViewController.m */,
+				3E9439531ECAA087001FE471 /* area.plist */,
+				3E9439541ECAA087001FE471 /* city.plist */,
+				3E9439551ECAA087001FE471 /* AreaModel.h */,
+				3E9439561ECAA087001FE471 /* AreaModel.m */,
+				3E9439571ECAA087001FE471 /* CityModel.h */,
+				3E9439581ECAA087001FE471 /* CityModel.m */,
+				3E9439591ECAA087001FE471 /* ProvinceModel.h */,
+				3E94395A1ECAA087001FE471 /* ProvinceModel.m */,
+			);
+			name = HomeInfo;
+			sourceTree = "<group>";
+		};
 		3E984EDD1EB821EE0094CBE4 = {
 			isa = PBXGroup;
 			children = (
@@ -979,6 +1037,7 @@
 		3E984F231EB829FA0094CBE4 /* PersonalPage */ = {
 			isa = PBXGroup;
 			children = (
+				3E94394B1ECAA077001FE471 /* HomeInfo */,
 				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
 				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
 				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
@@ -1001,6 +1060,14 @@
 				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
 				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
 				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
+				3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */,
+				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
+				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
+				3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */,
+				3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */,
+				3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */,
+				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
+				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
 				3E984F871EB9BF640094CBE4 /* MMButton.m */,
 				3E984F801EB9BD7F0094CBE4 /* MyBtnView.h */,
@@ -1186,8 +1253,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
+				3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */,
 				3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
+				3E94395F1ECAA087001FE471 /* area.plist in Resources */,
+				3E9439601ECAA087001FE471 /* city.plist in Resources */,
 				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,
 				3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */,
 			);
@@ -1262,6 +1332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */,
 				165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */,
 				1606D99B1EC01CDC00A74938 /* YJPayItemTableViewCell.m in Sources */,
 				3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */,
@@ -1276,12 +1347,15 @@
 				3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */,
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
+				3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */,
+				3E9439621ECAA087001FE471 /* CityModel.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
 				3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */,
 				163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */,
 				1652216A1EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m in Sources */,
 				1672D7A91EC32FF500F5970C /* YJNoticeListTVCell.m in Sources */,
 				16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */,
+				3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
@@ -1310,15 +1384,19 @@
 				3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */,
 				166FF4A91EBC52EE00846A59 /* YJBillInfoTableViewCell.m in Sources */,
 				1661FE2A1EB8792100583A7F /* YYPropertyFunctionList.m in Sources */,
+				3E94397F1ECAF259001FE471 /* AddFamilyInfoViewController.m in Sources */,
 				3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */,
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
+				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,
 				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
 				1672D7A61EC32F8300F5970C /* YJNoticeListTableVC.m in Sources */,
+				3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */,
 				167130331EB9F7DD00CC2394 /* YJPhotoFlowLayout.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
+				3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */,
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
 				3E94392B1EC99095001FE471 /* EquipmentManagerViewController.m in Sources */,
 				3E20B3431EC542A100C77B58 /* LockShareTableViewCell.m in Sources */,
@@ -1356,6 +1434,7 @@
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
+				3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */,
 				166B40EE1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m in Sources */,
@@ -1370,6 +1449,7 @@
 				3E984F981EBB1C1B0094CBE4 /* SuccessConnectViewController.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */,
+				3E9439611ECAA087001FE471 /* AreaModel.m in Sources */,
 				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,
 				1672D79A1EC2A3CA00F5970C /* YJFriendLikeFlowLayout.m in Sources */,
 				1671302A1EB9745500CC2394 /* YJHeaderTitleBtn.m in Sources */,

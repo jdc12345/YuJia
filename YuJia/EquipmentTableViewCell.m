@@ -93,7 +93,7 @@
         make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
     }];
     
-    
+    [switch0 addTarget:self action:@selector(controlSwitch0) forControlEvents:UIControlEventValueChanged];
     self.imageV = imageV;
     self.switch0 = switch0;
 
@@ -106,6 +106,51 @@
         self.switch0.hidden = YES;
         self.imageV.hidden = NO;
     }
+}
+- (void)controlSwitch0{
+    NSLog(@"123123");
+    if (self.switch0.on) {
+        self.equipmentModel.state = @"0";
+    }else{
+        self.equipmentModel.state = @"1";
+    }
+    
+    [self httpRequestInfo];
+}
+- (void)httpRequestInfo{
+//    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];;
+//    for (EquipmentModel *equipment in self.sightModel.equipmentList) {
+//        [equipmentList addObject: [equipment properties_aps]];
+//    }
+//    NSLog(@"%@",equipmentList);
+//    
+//    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+//    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+//    NSDictionary *dict = @{
+//                           @"id":self.sightModel.info_id,
+//                           @"token":mDefineToken,
+//                           @"equipmentList":jsonString,
+//                           @"sceneName":self.sightModel.sceneName,
+//                           @"sceneModel":@"1",
+//                           @"sceneTime":@"12:30",
+//                           @"sceneDistance":@"11111",
+//                           @"repeatMode":@"1,2,3"
+//                           };
+    
+    
+    NSMutableDictionary *praraDict = [[NSMutableDictionary alloc]initWithDictionary:[self.equipmentModel properties_aps]];
+    [praraDict setValue:mDefineToken forKey:@"token"];
+    NSLog(@"%@",praraDict);
+    
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mEquipmentSave] method:1 parameters:praraDict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (void)awakeFromNib {
