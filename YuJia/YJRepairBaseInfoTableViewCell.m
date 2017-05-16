@@ -12,9 +12,7 @@
 #import <Masonry.h>
 @interface YJRepairBaseInfoTableViewCell()<UITextFieldDelegate>
 @property (nonatomic, weak) UIImageView* icon;
-@property(nonatomic,weak)UITextField *nameField;
-@property(nonatomic,weak)UITextField *telNumberField;
-@property(nonatomic,weak)UITextField *addressField;
+
 
 @end
 @implementation YJRepairBaseInfoTableViewCell
@@ -52,6 +50,7 @@
         make.width.offset(self.contentView.bounds.size.width-40*kiphone6);
         make.height.equalTo(nameImageView);
     }];
+    self.nameField = nameTextField;
     nameTextField.delegate = self;
     //添加line1
     UIView *line1 = [[UIView alloc]init];
@@ -115,7 +114,8 @@
         make.width.offset(self.contentView.bounds.size.width-40*kiphone6);;
         make.height.equalTo(addressImageView);
     }];
-//    self.passWordField = passWordField;
+    self.addressField = addressField;
+    addressField.delegate = self;
 
 }
 #pragma UItextdelegate
@@ -125,44 +125,45 @@
     
     return YES;
 }
-//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
-//
-//{  //string就是此时输入的那个字符 textField就是此时正在输入的那个输入框 返回YES就是可以改变输入框的值 NO相反
-//    if ([string isEqualToString:@"\n"])  //按会车可以改变
-//    {
-//        return YES;
-//    }
-//    NSString * toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string]; //得到输入框的内容
-//    if (self.telNumberField == textField)  //判断是否是我们想要限定的那个输入框
-//    {
-//        if ([toBeString length] > 11) { //如果输入框内容大于20则弹出警告
-//            //            textField.text = [textField.text substringToIndex:11];
-////            [self showAlertWithMessage:@"您输入的电话号码超过11位"];
-//            
-//            return NO;
-//        }
-//    }
-//    return YES;
-//    
-//}
-//-(void)textFieldDidEndEditing:(UITextField *)textField{
-//    NSString * toBeString = textField.text; //得到输入框的内容
-//    if (self.telNumberField == textField)  //判断是否是我们想要限定的那个输入框
-//        
-//    {
-//        
-//        if ([textField.text length] < 11){
-////            [self showAlertWithMessage:@"您输入的电话号码少于11位"];
-//            
-//            
-//        }else if ([textField.text length] == 11){
-//            if (![self valiMobile:toBeString]) {
-////                [self showAlertWithMessage:@"请输入正确的11位电话号码"];
-//                
-//            }
-//        }
-//    }
-//}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+
+{  //string就是此时输入的那个字符 textField就是此时正在输入的那个输入框 返回YES就是可以改变输入框的值 NO相反
+    if ([string isEqualToString:@"\n"])  //按会车可以改变
+    {
+        return YES;
+    }
+    NSString * toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string]; //得到输入框的内容
+    if (self.telNumberField == textField)  //判断是否是我们想要限定的那个输入框
+    {
+        if ([toBeString length] > 11) { //如果输入框内容大于20则弹出警告
+            textField.text = [textField.text substringToIndex:11];
+//            [self showAlertWithMessage:@"您输入的电话号码超过11位"];
+            [SVProgressHUD showErrorWithStatus:@"您输入的电话号码超过11位"];
+            return NO;
+        }
+    }
+    return YES;
+    
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    NSString * toBeString = textField.text; //得到输入框的内容
+    if (self.telNumberField == textField)  //判断是否是我们想要限定的那个输入框
+        
+    {
+
+        if ([textField.text length] < 11){
+//            [self showAlertWithMessage:@"您输入的电话号码少于11位"];
+            [SVProgressHUD showErrorWithStatus:@"您输入的电话号码少于11位"];
+            
+        }else if ([textField.text length] == 11){
+            if (![self valiMobile:toBeString]) {
+//                [self showAlertWithMessage:@"请输入正确的11位电话号码"];
+                [SVProgressHUD showErrorWithStatus:@"请输入正确的11位电话号码"];
+                
+            }
+        }
+    }
+}
 //-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
 //    NSString * toBeString = textField.text; //得到输入框的内容
 //    if ([textField.text length] == 11){

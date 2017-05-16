@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface YJRepairBaseInfoTableViewCell : UITableViewCell
-
+@property(nonatomic,weak)UITextField *nameField;
+@property(nonatomic,weak)UITextField *telNumberField;
+@property(nonatomic,weak)UITextField *addressField;
 @end

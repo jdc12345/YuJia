@@ -9,6 +9,8 @@
 #import "YJNoticeListTableVC.h"
 #import "YJNoticeListTVCell.h"
 #import "YJFriendStateDetailVC.h"
+#import "YJCommunityCarNoticesCenterVC.h"
+
 static NSString* tableCell = @"table_cell";
 @interface YJNoticeListTableVC ()
 
@@ -25,7 +27,10 @@ static NSString* tableCell = @"table_cell";
     self.tableView.estimatedRowHeight = 55;
 
 }
-
+-(void)setNoticeArr:(NSArray *)noticeArr{
+    _noticeArr = noticeArr;
+    [self.tableView reloadData];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -42,13 +47,20 @@ static NSString* tableCell = @"table_cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YJNoticeListTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
     
-    // Configure the cell...
+    cell.noticeArr = self.noticeArr;
     
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([self.noticeArr[0] isEqualToString:@"TIAN"]) {
         YJFriendStateDetailVC *vc = [[YJFriendStateDetailVC alloc]init];
         [self.navigationController pushViewController:vc animated:true];
+    }else{
+        YJCommunityCarNoticesCenterVC *vc = [[YJCommunityCarNoticesCenterVC alloc]init];
+        [self.navigationController pushViewController:vc animated:true];
+    }
+
+    
 }
 
 /*

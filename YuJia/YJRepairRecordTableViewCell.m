@@ -18,9 +18,13 @@
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
 @interface YJRepairRecordTableViewCell()<UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate>
-@property (nonatomic, weak) UIButton* btn;
 @property (nonatomic, weak) UILabel* typeLabel;
+@property (nonatomic, weak) UILabel* timeLabel;
+@property (nonatomic, weak) UILabel* stateLabel;
+@property (nonatomic, weak) UILabel* contentLabel;
 @property(nonatomic,weak)UICollectionView *collectionView;
+@property (nonatomic, weak) UIButton *finishBtn;
+@property (nonatomic, weak) UIButton *cancelBtn;
 @end
 @implementation YJRepairRecordTableViewCell
 
@@ -34,11 +38,19 @@ static NSString* photoCellid = @"photo_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setModel:(YJReportRepairRecordModel *)model{
+    _model = model;
+    if (model.repairType == 1) {
+        self.typeLabel.text = @"水电燃气";
+    }else if (model.repairType == 2) {
+        self.typeLabel.text = @"房屋报修";
+    }else if (model.repairType == 3) {
+        self.typeLabel.text = @"公共设施报修";
+    }
+    
+    
+}
+
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIView *spaceView = [[UIView alloc]init];//添加分割view
@@ -152,7 +164,12 @@ static NSString* photoCellid = @"photo_cell";
         make.right.equalTo(finishBtn.mas_left).offset(-10*kiphone6);
     }];
     self.typeLabel = typeLabel;
-    self.btn = finishBtn;
+    self.timeLabel = timeLabel;
+    self.stateLabel = stateLabel;
+    self.contentLabel = contentLabel;
+    self.collectionView = photoCollectionView;
+    self.finishBtn = finishBtn;
+    self.cancelBtn = cancelBtn;
     [finishBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 //- (void)btnClick:(UIButton *)sender{

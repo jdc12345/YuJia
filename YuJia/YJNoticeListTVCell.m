@@ -33,6 +33,11 @@
 //    self.itemLabel.text = model.item;
 //    [self.btn setTitle:model.event forState:UIControlStateNormal];
 //}
+-(void)setNoticeArr:(NSArray *)noticeArr{
+    _noticeArr = noticeArr;
+    self.nameLabel.text = noticeArr[0];
+    self.itemLabel.text = noticeArr[1];
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];
@@ -76,7 +81,7 @@
         make.width.offset(kScreenW);
     }];
     self.itemLabel = itemLabel;
-    
+    self.nameLabel = nameLabel;
 }
 
 

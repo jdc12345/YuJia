@@ -10,4 +10,6 @@
 
 @interface YJCommunityCarTVCell : UITableViewCell
 @property(nonatomic,strong)NSString *type;
+/** block方式监听点击 */
+@property (nonatomic, copy) void (^clickForAddBlock)(UIButton *btn);
 @end

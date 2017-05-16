@@ -18,6 +18,8 @@
 #import "YJReportRepairVC.h"
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
+#import "YJExpressDeliveryVC.h"
+
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -146,7 +148,11 @@ static NSString* collectionCellid = @"collection_cell";
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-        case 3:
+        case 3:{
+            YJExpressDeliveryVC *vc = [[YJExpressDeliveryVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
             
             break;
             

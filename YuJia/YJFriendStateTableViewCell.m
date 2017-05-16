@@ -48,7 +48,7 @@ static NSString* photoCellid = @"photo_cell";
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];//头像图片
-    iconView.image = [UIImage imageNamed:@"opinion"];
+    iconView.image = [UIImage imageNamed:@"icon"];
     iconView.layer.masksToBounds = true;
     iconView.layer.cornerRadius = 20*kiphone6;
     [self.contentView addSubview:iconView];
@@ -175,7 +175,7 @@ static NSString* photoCellid = @"photo_cell";
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     
-    cell.photo = [UIImage imageNamed:@"house_repair"];
+    cell.photo = [UIImage imageNamed:@"icon"];
     return cell;
     
 }
@@ -183,7 +183,7 @@ static NSString* photoCellid = @"photo_cell";
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *image = [UIImage imageNamed:@"house_repair"];
+    UIImage *image = [UIImage imageNamed:@"icon"];
     NSArray *imageArr = @[image,image,image,image,image];
     [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
     

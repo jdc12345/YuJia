@@ -194,8 +194,9 @@ static NSString* tableCellid = @"table_cell";
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-
+    NSArray *noticeArr = @[@"TIAN",@"用户TIAN给你点赞了"];
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
+    vc.noticeArr = noticeArr;
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)didReceiveMemoryWarning {
