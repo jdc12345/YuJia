@@ -13,6 +13,8 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
+@property(nonatomic, weak) UITextField *roomNameTF;
+
 @end
 
 @implementation RoomSettingViewController
@@ -155,6 +157,9 @@
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+    self.roomNameTF = sightNameText;
+    
+    
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addBtn setImage:[UIImage imageNamed:@"add_roomSet"] forState:UIControlStateNormal];
@@ -243,7 +248,10 @@
     NSData *picData = UIImageJPEGRepresentation([UIImage imageNamed:@"add"], 0.5);
 //    id formData;
 //    [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)1] fileName:@"123" mimeType:@"image/png"];
-
+    if (self.roomNameTF.text.length >0) {
+        self.roomModel.roomName = self.roomNameTF.text;
+    }
+    
     
     NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];

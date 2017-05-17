@@ -709,6 +709,10 @@
         [equipmentList addObject: [equipment properties_aps]];
     }
     NSLog(@"%@",equipmentList);
+    if (self.sightNameF.text.length >0) {
+        self.sightModel.sceneName = self.sightNameF.text;
+    }
+    
     
     NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
@@ -720,8 +724,7 @@
                            @"sceneModel":@"1",
                            @"sceneTime":@"12:30",
                            @"sceneDistance":@"11111",
-                           @"repeatMode":@"1,2,3",
-                           @"sceneTaskId":self.sightModel.sceneTaskId
+                           @"repeatMode":@"1,2,3"
                            };
     
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{

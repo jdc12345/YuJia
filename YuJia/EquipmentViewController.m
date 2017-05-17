@@ -321,6 +321,15 @@
     
     
 }
+- (void)reloadData:(NSArray *)newDataSource{
+    self.dataSource = newDataSource;
+    [self.nameList removeAllObjects];
+    for (RoomModel *sightModel in self.dataSource) {
+        [self.nameList addObject:sightModel.roomName];
+    }
+    [segment updateChannels:self.nameList];
+    [pageView reloadData];
+}
 /*
  #pragma mark - Navigation
  

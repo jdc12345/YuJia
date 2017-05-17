@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *serialNumber;
 @property (nonatomic, strong) NSString *toExtendState;
 @property (nonatomic, strong) NSString *familyId;
-
+@property (nonatomic, strong) NSString *sceneTaskId;
 - (NSDictionary *)properties_aps;
 
 @end

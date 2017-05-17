@@ -120,6 +120,7 @@
 		3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */; };
 		3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398C1ECBE77C001FE471 /* CcUserModel.m */; };
 		3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */; };
+		3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -411,6 +412,8 @@
 		3E94398C1ECBE77C001FE471 /* CcUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CcUserModel.m; sourceTree = "<group>"; };
 		3E94398E1ECBE795001FE471 /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
 		3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
+		3E9439921ECC3E0C001FE471 /* MyRoomInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRoomInfoModel.h; sourceTree = "<group>"; };
+		3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyRoomInfoModel.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -845,6 +848,8 @@
 				3E94394D1ECAA087001FE471 /* ScreenUtil.m */,
 				3E94394E1ECAA087001FE471 /* MyRoomInfoViewController.h */,
 				3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */,
+				3E9439921ECC3E0C001FE471 /* MyRoomInfoModel.h */,
+				3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */,
 				3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */,
 				3E9439511ECAA087001FE471 /* PickViewController.h */,
 				3E9439521ECAA087001FE471 /* PickViewController.m */,
@@ -1426,6 +1431,7 @@
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
+				3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */,
 				3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
 				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,

@@ -34,6 +34,9 @@
 
 @property (nonatomic, strong) NSMutableArray *roomDataSource;
 @property (nonatomic, strong) NSMutableArray *sightDataSource;
+@property (nonatomic, weak) SightViewController *sightVC;
+@property (nonatomic, weak) EquipmentViewController *equipmentVC;
+
 @end
 
 @implementation HomePageViewController
@@ -309,6 +312,8 @@
         NSLog(@"%@",responseObject);
         NSArray *roomList = responseObject[@"roomList"];
         NSArray *sceneList = responseObject[@"sceneList"];
+        [self.roomDataSource removeAllObjects];
+        [self.sightDataSource removeAllObjects];
         
         for (NSDictionary *roomDict in roomList) {
             RoomModel *roomModel = [RoomModel mj_objectWithKeyValues:roomDict];
@@ -335,13 +340,15 @@
             [self.sightDataSource addObject:sceneModel];
             
         }
+        if (!self.sightVC) {
+            
         
         SightViewController *sightVC = [[SightViewController alloc]init];
         sightVC.dataSource = self.sightDataSource;
         sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
         
         self.sightView = sightVC.view;
-        
+            self.sightVC = sightVC;
         [self.view addSubview:sightVC.view];
         [self addChildViewController:sightVC];
         
@@ -350,15 +357,22 @@
         equipmentVC.dataSource = self.roomDataSource;
         equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
         equipmentVC.view.hidden = YES;
-        
+            self.equipmentVC = equipmentVC;
         self.equipmentView = equipmentVC.view;
         [self.view addSubview:equipmentVC.view];
-        [self addChildViewController:equipmentVC];
+            [self addChildViewController:equipmentVC];
+        }else{
+            [self.equipmentVC reloadData:self.roomDataSource];
+            [self.sightVC reloadData:self.sightDataSource];
+        }
         
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [self httpRequestHomeInfo];
 }
 /*
 #pragma mark - Navigation

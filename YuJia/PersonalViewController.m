@@ -13,6 +13,8 @@
 #import "EditPersonalViewController.h"
 #import "MYHomeViewController.h"
 #import "PersonalSettingViewController.h"
+#import "PersonalModel.h"
+#import <UIImageView+WebCache.h>
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -24,12 +26,15 @@
 @property (nonatomic, strong) NSArray *iconList;
 
 @property (nonatomic, strong) UILabel *nameLabel;
+
 @property (nonatomic, strong) UILabel *idLabel;
 @property (nonatomic, strong) UIImageView *iconV;
+@property (nonatomic, strong) UIImageView *genderV;
+@property (nonatomic, strong) UIButton *editBtn;
 //@property (nonatomic, strong) YYHomeUserModel *personalModel;
 
 @property (nonatomic, weak) UIButton *rightNotBtn;
-
+@property (nonatomic, strong) PersonalModel *personalModel;
 @end
 
 @implementation PersonalViewController
@@ -66,7 +71,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    
+    [self httpRequestHomeInfo];
     self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"收货地址"],@[@"关于宇家",@"意见反馈"]]];
     self.iconList =@[@[@"address"],@[@"about",@"opinion"]];
     // 左侧地址按钮   测
@@ -223,13 +228,13 @@
         make.centerY.equalTo(personV);
         make.left.equalTo(nameLabel.mas_right).with.offset(5 *kiphone6);
     }];
+    self.genderV = imageV;
     
     UIButton *editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [editBtn setImage:[UIImage imageNamed:@"compile"] forState:UIControlStateNormal];
     [editBtn sizeToFit];
     editBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [editBtn addTarget:self action:@selector(editPersonal) forControlEvents:UIControlEventTouchUpInside];
-
     [personV addSubview:editBtn];
     
     [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -335,6 +340,7 @@
 }
 - (void)editPersonal{
     EditPersonalViewController *editVC = [[EditPersonalViewController alloc]init];
+    editVC.personalModel = self.personalModel;
     [self.navigationController pushViewController:editVC animated:YES];
 }
 - (void)action:(UIButton *)sender{
@@ -358,6 +364,28 @@
 }
 - (void)pushSettingVC{
     [self.navigationController pushViewController:[[PersonalSettingViewController alloc]init] animated:YES];
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mUserInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSDictionary *eDict = responseObject[@"Personal"];
+        self.personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
+        self.nameLabel.text = self.personalModel.userName;
+        if (self.personalModel.avatar.length>0) {
+            [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
+        }
+        if ([self.personalModel.gender isEqualToString:@"1"]) {
+            self.genderV.image = [UIImage imageNamed:@"man"];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [self httpRequestHomeInfo];
 }
 /*
 #pragma mark - Navigation
