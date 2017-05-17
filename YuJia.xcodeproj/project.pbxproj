@@ -116,6 +116,10 @@
 		3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */; };
 		3E94397F1ECAF259001FE471 /* AddFamilyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */; };
 		3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */; };
+		3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */; };
+		3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */; };
+		3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398C1ECBE77C001FE471 /* CcUserModel.m */; };
+		3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -399,6 +403,14 @@
 		3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoViewController.m; sourceTree = "<group>"; };
 		3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyInfoTableViewCell.h; sourceTree = "<group>"; };
 		3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoTableViewCell.m; sourceTree = "<group>"; };
+		3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalSettingViewController.h; sourceTree = "<group>"; };
+		3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalSettingViewController.m; sourceTree = "<group>"; };
+		3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneNumberViewController.h; sourceTree = "<group>"; };
+		3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePhoneNumberViewController.m; sourceTree = "<group>"; };
+		3E94398B1ECBE77C001FE471 /* CcUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CcUserModel.h; sourceTree = "<group>"; };
+		3E94398C1ECBE77C001FE471 /* CcUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CcUserModel.m; sourceTree = "<group>"; };
+		3E94398E1ECBE795001FE471 /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
+		3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -848,6 +860,24 @@
 			name = HomeInfo;
 			sourceTree = "<group>";
 		};
+		3E94398A1ECBE773001FE471 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3E94398B1ECBE77C001FE471 /* CcUserModel.h */,
+				3E94398C1ECBE77C001FE471 /* CcUserModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		3E9439911ECBE79A001FE471 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3E94398E1ECBE795001FE471 /* YYSettingTableViewCell.h */,
+				3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		3E984EDD1EB821EE0094CBE4 = {
 			isa = PBXGroup;
 			children = (
@@ -1037,6 +1067,8 @@
 		3E984F231EB829FA0094CBE4 /* PersonalPage */ = {
 			isa = PBXGroup;
 			children = (
+				3E9439911ECBE79A001FE471 /* View */,
+				3E94398A1ECBE773001FE471 /* Model */,
 				3E94394B1ECAA077001FE471 /* HomeInfo */,
 				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
 				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
@@ -1066,6 +1098,10 @@
 				3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */,
 				3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */,
 				3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */,
+				3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */,
+				3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */,
+				3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */,
+				3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1339,6 +1375,7 @@
 				166FF4971EBC09E000846A59 /* IWComposeImageView.m in Sources */,
 				166FF4B51EBC7C0400846A59 /* YJModifyAddressVC.m in Sources */,
 				166BDCAE1ECA86B100441DB5 /* YJExpressDeliveryVC.m in Sources */,
+				3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */,
 				165655CB1EC6F30300B99966 /* YJPostActivitesCommentVC.m in Sources */,
 				3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */,
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
@@ -1389,6 +1426,7 @@
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
+				3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
 				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,
 				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
@@ -1411,6 +1449,7 @@
 				166BDCB61ECAA64C00441DB5 /* YJExpressSenderTVCell.m in Sources */,
 				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
+				3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */,
 				3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */,
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
@@ -1431,6 +1470,7 @@
 				3E9439281EC98434001FE471 /* FamilyPersonalTableViewCell.m in Sources */,
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
+				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,

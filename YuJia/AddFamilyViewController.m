@@ -96,14 +96,15 @@
     phoneTextF.layer.borderWidth = 1;
     phoneTextF.layer.cornerRadius = 2.5;
     phoneTextF.clipsToBounds = YES;
-    phoneTextF.textAlignment = NSTextAlignmentLeft;
+    phoneTextF.textAlignment = NSTextAlignmentCenter;
+    phoneTextF.placeholder = @"输入验证码";
     
     [self.view addSubview:phoneTextF];
     
     [phoneTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(nameTextF.mas_bottom).with.offset(25);
-        make.centerX.equalTo(self.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(270 ,30));
+        make.centerX.equalTo(self.view).with.offset(0 -50);
+        make.size.mas_equalTo(CGSizeMake(170 ,30));
     }];
     
 
@@ -118,11 +119,11 @@
     sureBtn.clipsToBounds = YES;
     
     
-    [phoneTextF addSubview:sureBtn];
+    [self.view addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(phoneTextF).with.offset(0);
-        make.right.equalTo(phoneTextF);
-        make.size.mas_equalTo(CGSizeMake(100, 30));
+        make.bottom.top.equalTo(phoneTextF).with.offset(0);
+        make.left.equalTo(phoneTextF.mas_right).with.offset(-1);
+        make.size.width.mas_equalTo(100);
     }];
 //    
 //    

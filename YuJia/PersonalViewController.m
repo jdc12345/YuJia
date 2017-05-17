@@ -12,6 +12,7 @@
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
 #import "MYHomeViewController.h"
+#import "PersonalSettingViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -354,6 +355,9 @@
         default:
             break;
     }
+}
+- (void)pushSettingVC{
+    [self.navigationController pushViewController:[[PersonalSettingViewController alloc]init] animated:YES];
 }
 /*
 #pragma mark - Navigation
