@@ -98,6 +98,21 @@ static NSString* tableCellid = @"table_cell";
     
 }
 -(void)loadData{
+//    [SVProgressHUD show];// 动画开始
+//    NSString *recordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/findRecord.do?token=%@&state=%@&start=0&limit=2",mPrefixUrl,mDefineToken1,state];
+//    [[HttpClient defaultClient]requestWithPath:recordUrlStr method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        [SVProgressHUD dismiss];// 动画结束
+//        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//            NSArray *arr = responseObject[@"result"];
+//            NSMutableArray *mArr = [NSMutableArray array];
+//            for (NSDictionary *dic in arr) {
+//                YJReportRepairRecordModel *infoModel = [YJReportRepairRecordModel mj_objectWithKeyValues:dic];
+//                [mArr addObject:infoModel];
+//            }
+//            self.recordArr = mArr;
+//        }
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;

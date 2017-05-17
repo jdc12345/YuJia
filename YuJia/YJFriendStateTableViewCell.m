@@ -134,6 +134,7 @@ static NSString* photoCellid = @"photo_cell";
     [likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(commentNumberLabel);
         make.right.equalTo(likeNumberLabel.mas_left).offset(-5*kiphone6);
+        make.bottom.offset(-15*kiphone6);
     }];
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
@@ -142,10 +143,10 @@ static NSString* photoCellid = @"photo_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(likeBtn.mas_bottom).offset(15*kiphone6);
-        make.width.offset(kScreenW);
-    }];
+//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(likeBtn.mas_bottom).offset(15*kiphone6);
+//        make.width.offset(kScreenW);
+//    }];
     self.iconView = iconView;
     self.areaLabel = areaLabel;
     self.typeLabel = typeLabel;
