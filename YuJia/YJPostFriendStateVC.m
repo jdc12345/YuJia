@@ -16,18 +16,27 @@
 #import <HUPhotoBrowser.h>
 #import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
+#import <AFNetworking.h>
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
 @interface YJPostFriendStateVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIButton *typeBtn;
+@property(nonatomic, strong)NSString *typeBtnTitle;
 @property(nonatomic,weak)BRPlaceholderTextView *contentView;
 @property(nonatomic, strong)NSString *content;
 @property (nonatomic, strong) NSMutableArray *imageArr;
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property(nonatomic,weak)UIView *backView;
 @property(nonatomic,weak)UIView *selectView;
+@property (nonatomic, strong)NSString *visibleRange;
+@property(nonatomic,strong)NSArray *areaArr;
+@property(nonatomic,weak)UIButton *areaBtn;
+@property(nonatomic, strong)NSString *areaBtnTitle;
+@property(nonatomic,weak)UIView *selectAreaView;
+@property(nonatomic, strong)NSString *rQid;
+@property(nonatomic, strong)NSString *categoryId;
 @end
 
 @implementation YJPostFriendStateVC
@@ -48,21 +57,41 @@ static NSString* photoCellid = @"photo_cell";
     postBtn.titleLabel.font = [UIFont systemFontOfSize:15];
 //    postBtn.titleLabel.textAlignment = NSTextAlignmentRight;
     postBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-    [postBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [postBtn addTarget:self action:@selector(postBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
+    self.areaBtnTitle = @"请选择小区";
+    self.typeBtnTitle = @"请选择分类";
 
-    //添加tableView
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-    self.tableView = tableView;
-    [self.view addSubview:tableView];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+   
+    //    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
+    NSString *areaUrlStr = [NSString stringWithFormat:@"%@/mobileapi/residentialQuarters/findRQ.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:areaUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            self.areaArr = responseObject[@"result"];
+            //添加tableView
+            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+            self.tableView = tableView;
+            [self.view addSubview:tableView];
+            self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+            [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.left.right.bottom.offset(0);
+            }];
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableView.delegate =self;
+            tableView.dataSource = self;
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
+        }else if ([responseObject[@"code"] isEqualToString:@"-2"]){
+            [SVProgressHUD showErrorWithStatus:@"您的信息还不够完善，请完善信息后再试"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
     }];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.delegate =self;
-    tableView.dataSource = self;
 
     
 }
@@ -100,7 +129,7 @@ static NSString* photoCellid = @"photo_cell";
         NSArray *itemArr = @[@"健康",@"居家",@"母婴",@"旅游",@"美食",@"宠物"];
         for (int i=0; i<itemArr.count; i++) {
             UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, i*28*kiphone6, 130*kiphone6, 28*kiphone6)];
-            btn.tag = 51+i;
+            btn.tag = 2+i;
             [btn setTitle:itemArr[i] forState:UIControlStateNormal];
             [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
             btn.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -111,7 +140,9 @@ static NSString* photoCellid = @"photo_cell";
 }
 -(void)updateType:(UIButton*)sender{
     [self.typeBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    self.typeBtnTitle = sender.titleLabel.text;
     [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccaca"]];
+    self.categoryId = [NSString stringWithFormat:@"%ld",sender.tag];
     self.selectView.hidden = true;
     
 }
@@ -196,6 +227,21 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(photoCollectionView.mas_bottom);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
+    NSString *btnTitile = @"选择小区";
+    if (self.areaArr.count == 1) {
+        btnTitile = self.areaArr[0][@"rname"];
+    }
+    YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:CGRectZero and:btnTitile];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    [self.backView addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(0);
+        make.centerY.equalTo(line.mas_bottom).offset(19*kiphone6);
+        make.width.offset(130*kiphone6);
+        make.height.offset(35*kiphone6);
+    }];
+    self.areaBtn = btn;
+    [btn addTarget:self action:@selector(selectAreaItem:) forControlEvents:UIControlEventTouchUpInside];
     UISwitch *switchButton = [[UISwitch alloc]init];
     switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
     switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
@@ -269,8 +315,10 @@ static NSString* photoCellid = @"photo_cell";
                 [self.imageArr removeObjectAtIndex:indexPath.row];
                 NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
                 [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-                self.contentView.text = self.content;//刷新后保存报修内容
                 [self.collectionView reloadData];
+                self.contentView.text = self.content;//刷新后保存报修内容
+                [self.typeBtn setTitle:self.typeBtnTitle forState:UIControlStateNormal];
+                [self.areaBtn setTitle:self.areaBtnTitle forState:UIControlStateNormal];
             };
             cell.photo = self.imageArr[indexPath.row];
             return cell;
@@ -282,8 +330,11 @@ static NSString* photoCellid = @"photo_cell";
         [self.imageArr removeObjectAtIndex:indexPath.row];
         NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:1];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-        self.contentView.text = self.content;//刷新后保存报修内容
         [self.collectionView reloadData];
+        self.contentView.text = self.content;//刷新后保存报修内容
+        [self.typeBtn setTitle:self.typeBtnTitle forState:UIControlStateNormal];
+        [self.areaBtn setTitle:self.areaBtnTitle forState:UIControlStateNormal];
+
     };
     cell.photo = self.imageArr[indexPath.row];
     return cell;
@@ -299,8 +350,11 @@ static NSString* photoCellid = @"photo_cell";
     //    self.imageArr = [NSMutableArray arrayWithArray:arr];
     NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
     [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-    self.contentView.text = self.content;//刷新后保存报修内容
+    
     [self.collectionView reloadData];
+    self.contentView.text = self.content;//刷新后保存报修内容
+    [self.typeBtn setTitle:self.typeBtnTitle forState:UIControlStateNormal];
+    [self.areaBtn setTitle:self.areaBtnTitle forState:UIControlStateNormal];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 // cell点击事件
@@ -318,6 +372,103 @@ static NSString* photoCellid = @"photo_cell";
     return _imageArr;
 }
 -(void)switchAction:(UISwitch*)sener{
+    if (sener.isOn) {
+        self.visibleRange = [NSString stringWithFormat:@"%d",2];
+    }else{
+        self.visibleRange = [NSString stringWithFormat:@"%d",1];
+    }
+}
+-(void)postBtnClick:(UIButton *)sender{
+    if (self.categoryId==nil||self.rQid==nil) {
+        [SVProgressHUD showWithStatus:@"请确认已选择分类或者小区"];
+        return;
+    }
+http://192.168.1.55:8080/smarthome/mobileapi/state/PublishState.do?
+//    RQid=1
+//    &token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &categoryId=2
+//    &content=我今天心情很好，出去钓鱼
+//    &visibleRange=2
+    sender.enabled = false;
+    [SVProgressHUD show];// 动画开始
+    NSString *contentText = [self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/PublishState.do?RQid=%@&token=%@&categoryId=%@&content=%@&visibleRange=%@",mPrefixUrl,self.rQid,mDefineToken1,self.categoryId,contentText,self.visibleRange];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:postUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //  图片上传
+        for (NSInteger i = 0; i < self.imageArr.count; i ++) {
+            UIImage *images = self.imageArr[i];
+            NSData *picData = UIImageJPEGRepresentation(images, 0.5);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *fileName = [NSString stringWithFormat:@"%@%ld.png", [formatter stringFromDate:[NSDate date]], (long)i];
+            [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [SVProgressHUD dismiss];
+        NSString *message = responseObject[@"message"];
+        [message stringByRemovingPercentEncoding];
+        NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"发送成功!"];
+            sender.enabled = true;
+        }else{
+            [SVProgressHUD showErrorWithStatus:message];
+            sender.enabled = true;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误信息=====%@", error.description);
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"发送失败!"];
+        sender.enabled = true;
+    }];
+
+}
+- (void)selectAreaItem:(UIButton*)sender{
+    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    [sender setImage:[UIImage imageNamed:@"selected_open"] forState:UIControlStateNormal];
+    [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    if (self.selectAreaView) {
+        if (self.selectAreaView.hidden==false) {
+            self.selectAreaView.hidden=true;
+        }else{
+            self.selectAreaView.hidden=false;
+        }
+        
+    }else{
+        UIView *selectAreaView = [[UIView alloc]init];
+        selectAreaView.backgroundColor = [UIColor whiteColor];
+        selectAreaView.layer.borderColor = [UIColor colorWithHexString:@"#cccaca"].CGColor;
+        selectAreaView.layer.borderWidth =1*kiphone6/[UIScreen mainScreen].scale;
+        [self.tableView addSubview:selectAreaView];
+        CGRect focusFrame = [self.backView convertRect:sender.frame toView:self.tableView];
+        selectAreaView.frame = CGRectMake(focusFrame.origin.x, focusFrame.origin.y+focusFrame.size.height, focusFrame.size.width, focusFrame.size.height*self.areaArr.count);
+//        [selectAreaView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.equalTo(sender);
+//            make.top.equalTo(sender.mas_bottom);
+//            make.height.offset(self.areaArr.count*28*kiphone6);
+//        }];
+        self.selectAreaView =selectAreaView;
+        for (int i=0; i<self.areaArr.count; i++) {
+            UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, i*28*kiphone6, 130*kiphone6, 28*kiphone6)];
+            btn.tag = [self.areaArr[i][@"id"] integerValue];
+            [btn setTitle:self.areaArr[i][@"rname"] forState:UIControlStateNormal];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:12];
+            [selectAreaView addSubview:btn];
+            [btn addTarget:self action:@selector(updateAreaType:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+  
+}
+-(void)updateAreaType:(UIButton*)sender{
+    [self.areaBtn setTitle:sender.titleLabel.text forState:UIControlStateNormal];
+    self.areaBtnTitle = sender.titleLabel.text;
+    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccaca"]];
+    self.rQid = [NSString stringWithFormat:@"%ld",sender.tag];
+    self.selectAreaView.hidden = true;
     
 }
 - (void)didReceiveMemoryWarning {

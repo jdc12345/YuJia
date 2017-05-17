@@ -12,12 +12,17 @@
 		1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A01EC040CF00A74938 /* YJEditNumberVC.m */; };
 		1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */; };
 		1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */; };
+		1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */; };
+		1618C1E41ECC56CA003BBA58 /* YJNearByShopTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */; };
+		1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E61ECC5C56003BBA58 /* ZFBLevelView.m */; };
+		1618C1EA1ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */; };
 		161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */; };
 		161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */; };
 		161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */; };
 		161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */; };
 		163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */; };
 		163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */; };
+		1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */; };
 		164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */; };
 		164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F91EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m */; };
 		165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */; };
@@ -192,6 +197,14 @@
 		1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJInputPayNumberVC.m; sourceTree = "<group>"; };
 		1606D9A51EC095C600A74938 /* YJFriendNeighborVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborVC.h; sourceTree = "<group>"; };
 		1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborVC.m; sourceTree = "<group>"; };
+		1618C1DE1ECC46E6003BBA58 /* YJNearbyShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopViewController.h; sourceTree = "<group>"; };
+		1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopViewController.m; sourceTree = "<group>"; };
+		1618C1E21ECC56CA003BBA58 /* YJNearByShopTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearByShopTVCell.h; sourceTree = "<group>"; };
+		1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearByShopTVCell.m; sourceTree = "<group>"; };
+		1618C1E51ECC5C56003BBA58 /* ZFBLevelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFBLevelView.h; sourceTree = "<group>"; };
+		1618C1E61ECC5C56003BBA58 /* ZFBLevelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFBLevelView.m; sourceTree = "<group>"; };
+		1618C1E81ECC6F2D003BBA58 /* YJNearbyShopDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopDetailVC.h; sourceTree = "<group>"; };
+		1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopDetailVC.m; sourceTree = "<group>"; };
 		161918B51EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityActivitiesVC.h; sourceTree = "<group>"; };
 		161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityActivitiesVC.m; sourceTree = "<group>"; };
 		161918B81EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityActivitiesTVCell.h; sourceTree = "<group>"; };
@@ -208,6 +221,8 @@
 		163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoTVCell.m; sourceTree = "<group>"; };
 		163780551EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesPhotoFlowLayout.h; sourceTree = "<group>"; };
 		163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoFlowLayout.m; sourceTree = "<group>"; };
+		1639CFE71ECBE7C80015F8AA /* YJFriendNeighborStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborStateModel.h; sourceTree = "<group>"; };
+		1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborStateModel.m; sourceTree = "<group>"; };
 		164F83F51EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoAddBtnCollectionViewCell.h; sourceTree = "<group>"; };
 		164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPhotoAddBtnCollectionViewCell.m; sourceTree = "<group>"; };
 		164F83F81EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoDisplayCollectionViewCell.h; sourceTree = "<group>"; };
@@ -530,6 +545,28 @@
 			name = LifePayMent;
 			sourceTree = "<group>";
 		};
+		1618C1DD1ECC4660003BBA58 /* Nearby shop */ = {
+			isa = PBXGroup;
+			children = (
+				1618C1DE1ECC46E6003BBA58 /* YJNearbyShopViewController.h */,
+				1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */,
+				1618C1E81ECC6F2D003BBA58 /* YJNearbyShopDetailVC.h */,
+				1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */,
+			);
+			name = "Nearby shop";
+			sourceTree = "<group>";
+		};
+		1618C1E11ECC5676003BBA58 /* Nearby shop */ = {
+			isa = PBXGroup;
+			children = (
+				1618C1E21ECC56CA003BBA58 /* YJNearByShopTVCell.h */,
+				1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */,
+				1618C1E51ECC5C56003BBA58 /* ZFBLevelView.h */,
+				1618C1E61ECC5C56003BBA58 /* ZFBLevelView.m */,
+			);
+			name = "Nearby shop";
+			sourceTree = "<group>";
+		};
 		161918B41EC3FC7E00FE2FD1 /* Community activities */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,6 +667,7 @@
 				166FF49F1EBC497000846A59 /* preprotyBill */,
 				1606D9981EC017ED00A74938 /* LifePayMent */,
 				166BDCB01ECA968600441DB5 /* Express delivery */,
+				1618C1E11ECC5676003BBA58 /* Nearby shop */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -644,6 +682,7 @@
 				166FF49B1EBC2A3B00846A59 /* PropertyBill */,
 				166BDCAF1ECA86CC00441DB5 /* Express delivery */,
 				166577A81EBFF75600FC812B /* Life payment */,
+				1618C1DD1ECC4660003BBA58 /* Nearby shop */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -651,6 +690,8 @@
 		1661FE311EB89D0D00583A7F /* M */ = {
 			isa = PBXGroup;
 			children = (
+				1639CFE71ECBE7C80015F8AA /* YJFriendNeighborStateModel.h */,
+				1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1361,6 +1402,7 @@
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
 				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
 				3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */,
+				1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */,
 				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
@@ -1369,6 +1411,7 @@
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
+				1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */,
 				166BDCB31ECA972B00441DB5 /* YJExpressReceiveTVCell.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
 				3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */,
@@ -1389,6 +1432,7 @@
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
+				1618C1EA1ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
 				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,
 				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
@@ -1411,6 +1455,7 @@
 				166BDCB61ECAA64C00441DB5 /* YJExpressSenderTVCell.m in Sources */,
 				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
+				1618C1E41ECC56CA003BBA58 /* YJNearByShopTVCell.m in Sources */,
 				3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */,
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
@@ -1455,6 +1500,7 @@
 				1671302A1EB9745500CC2394 /* YJHeaderTitleBtn.m in Sources */,
 				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
 				3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */,
+				1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
 				166B40E51EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m in Sources */,
 				164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */,
