@@ -12,7 +12,7 @@
 #import "YJImageDisplayCollectionViewCell.h"
 #import "YJRepairRecordFlowLayout.h"
 #import <HUPhotoBrowser.h>
-
+#import <UIImageView+WebCache.h>
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
@@ -40,11 +40,18 @@ static NSString* photoCellid = @"photo_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setModel:(YJFriendNeighborStateModel *)model{
+    _model = model;
+    NSString *iconStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconStr] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.typeLabel.text = model.cname;
+    self.conentLabel.text = model.content;
+    self.timeLabel.text = model.createTimeString;
+    self.areaLabel.text = model.rname;
+    self.commentNumberLabel.text = [NSString stringWithFormat:@"%ld",model.commentNum];
+    self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld",model.LikeNum];
+}
+
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];//头像图片
