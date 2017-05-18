@@ -20,4 +20,10 @@
  */
 @property (nonatomic, strong) UILabel *account;
 
+
+@property (nonatomic, assign) BOOL isCenter;
+
+
+- (void)setToCenter;
+
 @end

@@ -11,6 +11,19 @@
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "EquipmentModel.h"
+#import "UIBarButtonItem+Helper.h"
+
+
+
+#import "LightSettingViewController.h"
+#import "AirConditioningViewController.h"
+#import "TVSettingViewController.h"
+#import "DoorLockViewController.h"
+#import "SocketSettingViewController.h"
+#import "CurtainSettingViewController.h"
+#import "SelectEquipmentViewController.h"
+
+
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
 
@@ -90,6 +103,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
+    
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
     self.selectStart = @[@"定时启动",@"定位启动"];
     [self tableView];
     // Do any additional setup after loading the view.
@@ -111,7 +126,67 @@
     return 0.000001;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
+    NSLog(@"12321");
+    if(indexPath.row == self.sightModel.equipmentList.count){
+        SelectEquipmentViewController *equipmentList = [[SelectEquipmentViewController alloc]init];
+          equipmentList.itemClick = ^(EquipmentModel *index){
+             NSMutableArray *changeList  = [[NSMutableArray alloc]initWithArray: self.sightModel.equipmentList];
+              [changeList addObject:index];
+              self.sightModel.equipmentList = changeList;
+              [self.tableView reloadData];
+          };
+        [self.navigationController pushViewController:equipmentList animated:YES];
+    }else{
+    EquipmentModel *equipmentModel;
+    equipmentModel = self.sightModel.equipmentList[indexPath.row];
+    
+    NSLog(@"点击了第几个%ld",[equipmentModel.iconId integerValue]);
+        switch ([equipmentModel.iconId integerValue]) {
+            case 2:{
+                LightSettingViewController *sightVC = [[LightSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 1:{
+                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 3:{
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 4:{
+                CurtainSettingViewController *sightVC = [[CurtainSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 5:{
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 6:{
+                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
         
     }
 }
@@ -732,6 +807,20 @@
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
 
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+-(void)changeInfo{;
+    NSDictionary *dict = @{
+                           @"ids":self.sightModel.info_id,
+                           @"token":mDefineToken
+                           };
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveSigh] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];

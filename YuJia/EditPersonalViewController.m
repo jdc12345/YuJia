@@ -29,11 +29,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        self.title = @"个人信息";
+    self.title = @"个人信息";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
     [self createSubViews];
     // Do any additional setup after loading the view.
 }
@@ -116,7 +116,7 @@
     
     NSArray *segmentedData = [[NSArray alloc]initWithObjects:@"男",@"女",nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc]initWithItems:segmentedData];
-//    segmentedControl.frame = CGRectMake((kScreenW -150 -20)/2.0, 7,150, 30.0);
+    //    segmentedControl.frame = CGRectMake((kScreenW -150 -20)/2.0, 7,150, 30.0);
     /*
      这个是设置按下按钮时的颜色
      */
@@ -141,7 +141,7 @@
     //设置分段控件点击相应事件
     [segmentedControl addTarget:self action:@selector(segmentAction)forControlEvents:UIControlEventValueChanged];
     
-
+    
     [self.view addSubview:segmentedControl];
     
     [segmentedControl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -161,7 +161,7 @@
         self.genderSel.selectedSegmentIndex = 0;
     }
     
-
+    
 }
 - (void)changeIconImage{
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -257,81 +257,46 @@
     }else{
         [dict setValue:@"0" forKey:@"gender"];;
     }
-//    [dict setValue:self.personalModel.info_id forKey:@"id"];
-//    [dict setValue:mDefineToken forKey:@"token"];
     [dict setValue:self.nameTextF.text forKey:@"userName"];
-//    [dict setValue:data forKey:@"file1"];
-//
-//    NSLog(@"%@信息%@",encodedImageStr,dict);
-//    [[HttpClient defaultClient]requestWithPath:mSaveMyInfo method:1 parameters:dict prepareExecute:^{
-//        
-//    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSLog(@"%@",responseObject);
-//        NSString *result;
-//        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-//                result = @"修改用户信息成功";
-//            
-//        }else{
-//            result = responseObject[@"message"];
-//        }
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:result preferredStyle:UIAlertControllerStyleAlert];
-//        //       UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-//            if ([responseObject[@"code"] isEqualToString:@"0"]) {
-//                [self.navigationController popViewControllerAnimated:YES];
-//            }else{
-//            }
-//            
-//        }];
-//        
-//        //       [alert addAction:cancelAction];
-//        [alert addAction:okAction];
-//        [self presentViewController:alert animated:YES completion:nil];
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"%@",error);
-//    }];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [manager.requestSerializer setValue:mDefineToken forHTTPHeaderField:@"token"];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:[NSString stringWithFormat:@"%@token=%@",mSaveMyInfo,mDefineToken] parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.iconV.image,0.2) name:@"file1" fileName:@"something.jpg" mimeType:@"image/jpeg"];
+        [formData appendPartWithFileData:UIImageJPEGRepresentation(self.iconV.image,0.2) name:@"file1" fileName:@"something.jpg" mimeType:@"image/jpeg"];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"%@",responseObject);
-                NSString *result;
-                if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                        result = @"修改用户信息成功";
+        NSLog(@"%@",responseObject);
+        NSString *result;
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            result = @"修改用户信息成功";
+            
+        }else{
+            result = responseObject[@"message"];
+        }
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:result preferredStyle:UIAlertControllerStyleAlert];
+        //       UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+            }
+            
+        }];
         
-                }else{
-                    result = responseObject[@"message"];
-                }
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:result preferredStyle:UIAlertControllerStyleAlert];
-                //       UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-                    if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }else{
-                    }
-        
-                }];
-        
-                //       [alert addAction:cancelAction];
-                [alert addAction:okAction];
-                [self presentViewController:alert animated:YES completion:nil];
+        //       [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [[[UIAlertView alloc]initWithTitle:@"上传失败" message:@"网络故障，请稍后重试" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
     }];
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

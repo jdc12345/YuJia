@@ -55,6 +55,7 @@
 //    Account *acc = _accountSource[indexPath.row];
     cell.avatar.image = [UIImage imageNamed:@""];// 头像
     cell.account.text = _accountSource[indexPath.row];// 账号
+    [cell setToCenter];
     [cell setBackgroundColor:[UIColor whiteColor]];
     //分割线清偏移
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -72,7 +73,7 @@
 
 // cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 30;
+    return _cellHigh;
 }
 
 // cell选中事件

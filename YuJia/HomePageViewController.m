@@ -58,7 +58,7 @@
 //    self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self httpRequestHomeInfo];
+//    [self httpRequestHomeInfo];
     
     UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenW, 44)];
     
@@ -341,14 +341,12 @@
             
         }
         if (!self.sightVC) {
-            
-        
         SightViewController *sightVC = [[SightViewController alloc]init];
         sightVC.dataSource = self.sightDataSource;
         sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
         
         self.sightView = sightVC.view;
-            self.sightVC = sightVC;
+        self.sightVC = sightVC;
         [self.view addSubview:sightVC.view];
         [self addChildViewController:sightVC];
         
