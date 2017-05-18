@@ -18,13 +18,10 @@
     
     NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
     
+    NSPropertyListFormat format = NSPropertyListOpenStepFormat;
     
-     NSPropertyListFormat format = NSPropertyListOpenStepFormat;
-    
-     NSString *returnStr = [NSPropertyListSerialization propertyListWithData:tempData options:NSPropertyListImmutable format:&format error:nil];
+    NSString *returnStr = [NSPropertyListSerialization propertyListWithData:tempData options:NSPropertyListImmutable format:&format error:nil];
   
     return [returnStr stringByReplacingOccurrencesOfString:@"\\r\\n" withString:@"\n"];
-    
-  
 }
 @end

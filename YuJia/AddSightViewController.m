@@ -10,6 +10,7 @@
 #import "EquipmentTableViewCell.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
+#import "SightModel.h"
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
 
@@ -17,7 +18,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) CGFloat leftPodding;
-
+@property (nonatomic, strong) SightModel *sightModel;
 /**
  * 当前账号选择框
  */
@@ -52,11 +53,9 @@
  *  下拉列表的frame
  */
 @property (nonatomic) CGRect listFrame;
-
 @end
 
 @implementation AddSightViewController
-
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -65,7 +64,7 @@
 }
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -86,7 +85,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"添加情景";
+    self.title = @"情景设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -141,22 +140,34 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3 +1;
+    return self.sightModel.equipmentList.count +1;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentTableViewCell" forIndexPath:indexPath];
-    if(indexPath.row == 3){
+    if(indexPath.row == self.sightModel.equipmentList.count){
         homeTableViewCell.titleLabel.text = @"添加";
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"+-1"];
         [homeTableViewCell cellMode:YES];
         homeTableViewCell.switch0.hidden = YES;
     }else{
-        homeTableViewCell.titleLabel.text = @"客厅灯";
-        homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
+        EquipmentModel *equipmentModel;
+        equipmentModel = self.sightModel.equipmentList[indexPath.row];
+        homeTableViewCell.titleLabel.text = equipmentModel.name;
+        if (equipmentModel.iconUrl.length >0) {
+            
+        }else{
+            homeTableViewCell.titleLabel.text = equipmentModel.name;
+            homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+        }
         [homeTableViewCell cellMode:YES];
+        if ([equipmentModel.state isEqualToString:@"0"]) {
+            homeTableViewCell.switch0.on = YES;
+        }else{
+            homeTableViewCell.switch0.on = NO;
+        }
     }
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
@@ -179,7 +190,7 @@
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-    
+    sightNameText.text = self.sightModel.sceneName;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
@@ -272,7 +283,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -395,7 +406,7 @@
     [self.view addSubview:pickerView];
     
     _proHourTimeList = [[NSArray alloc]initWithObjects:@"0时",@"1时",@"2时",@"3时",@"4时",@"5时",@"6时",@"7时",@"8时",@"9时",@"10时",@"11时",@"12时",@"13时",@"14时",@"15时",@"16时",@"17时",@"18时",@"19时",@"20时",@"21时",@"22时",@"23时",nil];
-
+    
     NSMutableArray *minute = [[NSMutableArray alloc]initWithCapacity:2];
     for (int i = 0 ; i<60 ; i++) {
         NSString *minuteStr = [NSString stringWithFormat:@"%d分",i];
@@ -523,11 +534,11 @@
     }
     _accountList.accountSource = self.selectStart;
     [_accountList reloadDataSource];
-//    if (index == 0) {
-//        [self back_click];
-//    }else{
-//        [self back_click_location];
-//    }
+    //    if (index == 0) {
+    //        [self back_click];
+    //    }else{
+    //        [self back_click_location];
+    //    }
     
     
     [_icon setImage:[UIImage imageNamed:@""]];
@@ -566,9 +577,9 @@
 // 每列宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     
-//    if (component == 1) {
-//        return 40;
-//    }
+    //    if (component == 1) {
+    //        return 40;
+    //    }
     return 80;
 }
 // 返回选中的行
@@ -628,11 +639,11 @@
         [kmArray addObject:minuteStr];
     }
     _proHourTimeList = kmArray;
-
+    
     
     [titleView addSubview:titleLabel];
     [titleView addSubview:pickerView];
-
+    
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView).with.offset(20);
         make.top.equalTo(titleView).with.offset(25);;
@@ -655,13 +666,14 @@
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
+    
     [titleView addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(titleView).with.offset(-30);
         make.centerX.equalTo(titleView);
         make.size.mas_equalTo(CGSizeMake(190, 44));
     }];
-
+    
     
     ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
     [alertV show];
@@ -689,4 +701,42 @@
         
     }
 }
+
+- (void)httpRequestInfo{
+    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];;
+    for (EquipmentModel *equipment in self.sightModel.equipmentList) {
+        [equipmentList addObject: [equipment properties_aps]];
+    }
+    NSLog(@"%@",equipmentList);
+    if (self.sightNameF.text.length >0) {
+        self.sightModel.sceneName = self.sightNameF.text;
+    }
+    
+    
+    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+    NSDictionary *dict = @{
+//                           @"id":self.sightModel.info_id,
+                           @"token":mDefineToken,
+                           @"equipmentList":jsonString,
+                           @"sceneName":self.sightModel.sceneName,
+                           @"sceneModel":@"1",
+                           @"sceneTime":@"12:30",
+                           @"sceneDistance":@"11111",
+                           @"repeatMode":@"1,2,3"
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+
+
 @end
+
+

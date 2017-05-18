@@ -133,6 +133,12 @@
 //http://192.168.1.55:8080/smarthome/mobileapi/family/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&ownerName=333&ownerTelephone=13717883005
 #define mSaveMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/save.do?"]
 ////////////////////／/////////////////////////////////////
+//删除情景模式接口
+//http://192.168.1.55:8080/smarthome/mobileapi/scene/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mRemoveSigh [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/delete.do?"]
 
+//删除房间接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mRemoveRoom [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/delete.do?"]
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */

@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSMutableArray *nameList;
 
 @property (nonatomic, assign) NSInteger loadTableV;
+@property (nonatomic, strong) NSMutableArray *tableViews;
 
 @end
 
@@ -42,6 +43,13 @@
         _nameList = [[NSMutableArray alloc]initWithCapacity:2];
     }
     return _nameList;
+}
+
+- (NSMutableArray *)tableViews{
+    if (_tableViews == nil) {
+        _tableViews = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _tableViews;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -146,7 +154,7 @@
     
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     
-    
+    [self.tableViews addObject:tableView];
     ////////////////////////////
     return tableView;
 }
@@ -348,6 +356,10 @@
     
 }
 - (void)reloadData:(NSArray *)newDataSource{
+    
+    
+    
+    NSInteger index = segment.selectedIndex;
     self.dataSource = newDataSource;
     [self.nameList removeAllObjects];
     for (SightModel *sightModel in self.dataSource) {
@@ -355,6 +367,11 @@
     }
     [segment updateChannels:self.nameList];
     [pageView reloadData];
+    NSLog(@"tableView count = %ld",index);
+    for (UITableView *tableV in self.tableViews) {
+        [tableV reloadData];
+    };
+    [segment didChengeToIndex:index];
 }
 /*
  #pragma mark - Navigation

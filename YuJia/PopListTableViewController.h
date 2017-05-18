@@ -39,7 +39,8 @@
  */
 @property (nonatomic, weak) id<AccountDelegate>delegate;
 
-
+@property (nonatomic, assign) CGFloat cellHigh;
+@property (nonatomic, assign) BOOL isCenter;
 - (void)reloadDataSource;
 
 @end

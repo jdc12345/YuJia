@@ -9,6 +9,7 @@
 #import "RoomSettingViewController.h"
 #import "EquipmentTableViewCell.h"
 #import "EquipmentModel.h"
+#import "UIBarButtonItem+Helper.h"
 @interface RoomSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -50,7 +51,7 @@
     self.title = @"房间设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
     
     [self tableView];
     // Do any additional setup after loading the view.
@@ -275,7 +276,20 @@
         NSLog(@"%@",error);
     }];
 }
-
+-(void)changeInfo{;
+    NSDictionary *dict = @{
+                           @"ids":self.roomModel.info_id,
+                           @"token":mDefineToken
+                           };
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveRoom] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
  #pragma mark - Navigation
  

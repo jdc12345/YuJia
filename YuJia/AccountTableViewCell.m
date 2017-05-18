@@ -22,12 +22,20 @@
         [self.contentView addSubview:_avatar];
         
         // 账号
+
         _account = [[UILabel alloc]initWithFrame:CGRectMake(10, 8, 80, 14)];
+
         _account.font = [UIFont systemFontOfSize:14.0];
         _account.textColor = [UIColor colorWithHexString:@"333333"];
         [self.contentView addSubview:_account];
+    
     }
     return self;
 }
-
+- (void)setToCenter{
+        [_account mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.contentView);
+            make.size.mas_equalTo(CGSizeMake(80, 14));
+        }];
+}
 @end

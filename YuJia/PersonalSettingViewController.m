@@ -10,6 +10,7 @@
 #import "CcUserModel.h"
 #import "YYSettingTableViewCell.h"
 #import "ChangePhoneNumberViewController.h"
+#import "ChangePassWordViewController.h"
 @interface PersonalSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -91,7 +92,8 @@
             ChangePhoneNumberViewController *aboutVC = [[ChangePhoneNumberViewController alloc]init];
             [self.navigationController pushViewController:aboutVC animated:YES];
         }else if(indexPath.row == 1){
-
+             ChangePassWordViewController *aboutVC = [[ChangePassWordViewController alloc]init];
+            [self.navigationController pushViewController:aboutVC animated:YES];
         }else if(indexPath.row == 2){
             
         }

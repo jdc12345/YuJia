@@ -128,6 +128,9 @@
 		3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398C1ECBE77C001FE471 /* CcUserModel.m */; };
 		3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */; };
 		3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */; };
+		3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */; };
+		3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */; };
+		3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -435,6 +438,12 @@
 		3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
 		3E9439921ECC3E0C001FE471 /* MyRoomInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRoomInfoModel.h; sourceTree = "<group>"; };
 		3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyRoomInfoModel.m; sourceTree = "<group>"; };
+		3E9439961ECD3ECB001FE471 /* ChangePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePassWordViewController.h; sourceTree = "<group>"; };
+		3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePassWordViewController.m; sourceTree = "<group>"; };
+		3E9439991ECD8013001FE471 /* AboutYuJiaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutYuJiaViewController.h; sourceTree = "<group>"; };
+		3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutYuJiaViewController.m; sourceTree = "<group>"; };
+		3E94399C1ECD950D001FE471 /* SelectEquipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectEquipmentViewController.h; sourceTree = "<group>"; };
+		3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectEquipmentViewController.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -873,6 +882,8 @@
 				3E20B3391EC4687F00C77B58 /* LockShareViewController.m */,
 				3E20B33B1EC4688B00C77B58 /* LockSettingViewController.h */,
 				3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */,
+				3E94399C1ECD950D001FE471 /* SelectEquipmentViewController.h */,
+				3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */,
 			);
 			name = SubController;
 			sourceTree = "<group>";
@@ -1158,6 +1169,10 @@
 				3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */,
 				3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */,
 				3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */,
+				3E9439961ECD3ECB001FE471 /* ChangePassWordViewController.h */,
+				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
+				3E9439991ECD8013001FE471 /* AboutYuJiaViewController.h */,
+				3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1522,6 +1537,7 @@
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
+				3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */,
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
 				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,
 				166FF4AD1EBC6BA600846A59 /* YJBillResultTableViewCell.m in Sources */,
@@ -1530,6 +1546,7 @@
 				1672D7A31EC2BE7500F5970C /* YJSelfReplyTableViewCell.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
 				3E9439281EC98434001FE471 /* FamilyPersonalTableViewCell.m in Sources */,
+				3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */,
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
@@ -1574,6 +1591,7 @@
 				167130271EB964BD00CC2394 /* YJReportRepairVC.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
+				3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				16750B321EC8268F002296EE /* YJCommunityCarVC.m in Sources */,
