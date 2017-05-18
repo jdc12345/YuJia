@@ -10,4 +10,7 @@
 
 @interface SightViewController : UIViewController
 @property (nonatomic, copy) NSArray *dataSource;
+
+
+- (void)reloadData:(NSArray *)newDataSource;
 @end

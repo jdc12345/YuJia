@@ -347,6 +347,15 @@
 
     
 }
+- (void)reloadData:(NSArray *)newDataSource{
+    self.dataSource = newDataSource;
+    [self.nameList removeAllObjects];
+    for (SightModel *sightModel in self.dataSource) {
+        [self.nameList addObject:sightModel.sceneName];
+    }
+    [segment updateChannels:self.nameList];
+    [pageView reloadData];
+}
 /*
  #pragma mark - Navigation
  

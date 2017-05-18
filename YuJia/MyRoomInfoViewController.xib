@@ -129,7 +129,7 @@
                             <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="c0D-6k-XGx">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_myhome" translatesAutoresizingMaskIntoConstraints="NO" id="c0D-6k-XGx">
                             <rect key="frame" x="86" y="18" width="15" height="15"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="15" id="Miq-Sq-Hek"/>
@@ -240,4 +240,7 @@
             <point key="canvasLocation" x="-73" y="26"/>
         </view>
     </objects>
+    <resources>
+        <image name="location_myhome" width="12" height="17"/>
+    </resources>
 </document>

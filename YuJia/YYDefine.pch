@@ -94,9 +94,7 @@
 
  #define mFamilyList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/homeUser/findList.do?"]
 
-//获取用户信息接口
-//http://192.168.1.55:8080/smarthome/mobileapi/personal/get.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
- #define mUserInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/get.do?"]
+
 
 //删除设备接口
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
@@ -115,18 +113,26 @@
  #define mAddEquipment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/save.do?"]
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-//获取我的房屋信息接口
-//http://192.168.1.55:8080/smarthome/mobileapi/family/get.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
- #define mMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/get.do?"]
-//保存我的房屋信息接口
-//http://192.168.1.55:8080/smarthome/mobileapi/family/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&ownerName=333&ownerTelephone=13717883005
-#define mSaveMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/save.do?"]
-//保存个人信息接口
-//http://192.168.1.55:8080/smarthome/mobileapi/personal/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
- #define mSaveMyInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/save.do?"]
+
+
 //删除家人接口
 //http://192.168.1.55:8080/smarthome/mobileapi/homeUser/delete.do?homePersonalId=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
  #define mDelHomeUser [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/homeUser/delete.do?"]
+
+////////////////////／///////////////////////////////////// 5.17
+//获取用户信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/get.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mUserInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/get.do?"]
+//保存个人信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mSaveMyInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/save.do?"]
+//获取我的房屋信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/family/get.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/get.do?"]
+//保存我的房屋信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/family/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&ownerName=333&ownerTelephone=13717883005
+#define mSaveMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/save.do?"]
+////////////////////／/////////////////////////////////////
 
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */

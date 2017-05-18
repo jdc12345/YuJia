@@ -8,6 +8,8 @@
 
 #import "MyRoomInfoViewController.h"
 #import "PickViewController.h"
+#import "MyRoomInfoModel.h"
+#import "UIBarButtonItem+Helper.h"
 
 @interface MyRoomInfoViewController ()<UITextViewDelegate>
 
@@ -29,12 +31,20 @@
 @property (copy, nonatomic) NSString *area;
 
 
+@property (nonatomic, strong) MyRoomInfoModel *myRoomInfoModel;
+
+@property (nonatomic, weak) PickViewController *userType;
+
 @end
 
 @implementation MyRoomInfoViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self httpRequestHomeInfo];
+    self.detailAdressTextView.delegate = self;
+    self.title = @"我的房屋信息";
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestSaveHomeInfo)];
 //    self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
 
 }
@@ -42,8 +52,9 @@
 - (IBAction)myIsChooseBtnAction:(UIButton *)sender {
     PickViewController *alertVC = [[PickViewController alloc]init];
     alertVC.count = 1;
-    alertVC.dataArr = @[@"访客",@"业主",@"租户"];
+    alertVC.dataArr = @[@"业主",@"租户",@"访客"];
     alertVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    self.userType = alertVC;
     [self presentViewController:alertVC animated:YES completion:nil];
     alertVC.blocksureBtn = ^(id arr) {
         self.myIsLabel.text = arr[0];
@@ -62,7 +73,6 @@
         self.city = arr[1];
         self.area = arr[2];
         self.adressLabel.text = str;
-        
     };
   
 }
@@ -108,6 +118,7 @@
 
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    NSLog(@"123123");
     if (![text isEqualToString:@""]) {
         self.placeHolderLabel.hidden = YES;
     }
@@ -129,6 +140,75 @@
     if ([textView.text isEqualToString:@""] ) {
         self.placeHolderLabel.hidden = NO;
     }
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mMyHomeInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSDictionary *dict = responseObject[@"Family"];
+        self.myRoomInfoModel = [MyRoomInfoModel mj_objectWithKeyValues:dict];
+        
+        NSString *userType;
+        switch ([self.myRoomInfoModel.userType integerValue]) {
+            case 0:
+                userType = @"业主";
+                break;
+            case 1:
+                userType = @"租客";
+                break;
+            case 2:
+                userType = @"访客";
+                break;
+            default:
+                userType = @"啥玩意";
+                break;
+        }
+    
+        self.nameField.text = self.myRoomInfoModel.ownerName;
+        self.phoneField.text = self.myRoomInfoModel.ownerTelephone;
+        self.myIsLabel.text = userType;
+        self.adressLabel.text = self.myRoomInfoModel.areaName;
+        self.detailAdressTextView.text = self.myRoomInfoModel.address;
+        if (self.myRoomInfoModel.address.length >0) {
+            self.placeHolderLabel.hidden = YES;
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+- (void)httpRequestSaveHomeInfo{
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity:2];
+    // userType
+    NSString *userType;
+    if ([self.myIsLabel.text isEqualToString:@"业主"]) {
+        userType = @"0";
+    }else  if ([self.myIsLabel.text isEqualToString:@"租户"]){
+        userType = @"1";
+    }else{
+        userType = @"2";
+    }
+    [dict setValue:mDefineToken forKey:@"token"];
+    [dict setValue:self.nameField.text forKey:@"ownerName"];
+    [dict setValue:self.phoneField.text forKey:@"ownerTelephone"];
+    [dict setValue:self.myIsLabel.text forKey:@"userType"];
+    [dict setValue:self.adressLabel.text forKey:@"areaName"];
+    [dict setValue:self.detailAdressTextView.text forKey:@"address"];
+    
+    NSLog(@"%@",dict);
+    
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mSaveMyHomeInfo,mDefineToken] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 @end

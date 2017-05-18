@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong) NSString *telephone;
 @property (nonatomic, strong) NSString *trueName;
-@property (nonatomic, strong) NSString *userMame;
+@property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *userType;
 
 @property (nonatomic, strong) NSString *weixin;

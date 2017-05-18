@@ -14,7 +14,7 @@
     UIView *_divideView;
     UIView *_divideLineView;
 }
-
+@property (nonatomic, assign) NSInteger count;
 @end
 
 @implementation JXSegment
@@ -51,9 +51,10 @@
 
 
 - (void)updateChannels:(NSArray*)array{
-//    for (UIButton *btn in self.scrollView.subviews) {
-//        [btn removeFromSuperview];
-//    }
+    for (int i = 0; i<self.count; i++) {
+        UIButton *btn = (UIButton *)[self.scrollView viewWithTag:1000+i];
+        [btn removeFromSuperview];
+    }
     
     NSLog(@"rooms === %ld",array.count);
     NSMutableArray *widthMutableArray = [NSMutableArray array];
@@ -85,6 +86,9 @@
     _scrollView.contentSize = CGSizeMake(totalW,0);
     widthArray = [widthMutableArray copy];
     _divideLineView.frame = CGRectMake(0, _scrollView.frame.size.height-2, totalW, 2);
+    
+    
+    self.count = array.count;
 }
 
 - (void)clickSegmentButton:(UIButton*)selectedButton{
