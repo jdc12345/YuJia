@@ -32,7 +32,7 @@ static NSString* tableCellid = @"table_cell";
     [self loadData];
 }
 - (void)loadData {
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 290*kiphone6)];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 340*kiphone6)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     UIImageView *bigImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon"]];
     [headerView addSubview:bigImageView];
@@ -56,16 +56,16 @@ static NSString* tableCellid = @"table_cell";
     UILabel *priceLabel = [UILabel labelWithText:@"人均： ¥ 20/人" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
     [headerView addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(starView.mas_right).offset(5*kiphone6);
-        make.centerY.equalTo(starView);
+        make.left.offset(85*kiphone6);
+        make.top.equalTo(nameLabel.mas_bottom).offset(10*kiphone6);
     }];
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [headerView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
-        make.bottom.offset(-58*kiphone6);
-        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
+        make.bottom.offset(-108*kiphone6);
+        make.height.offset(1*kiphone6);
     }];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_address"]];
     [headerView addSubview:imageView];
@@ -84,9 +84,9 @@ static NSString* tableCellid = @"table_cell";
     [headerView addSubview:line2];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
-        make.bottom.offset(0);
+        make.height.offset(58*kiphone6);
         make.right.offset(-65*kiphone6);
-        make.width.offset(1*kiphone6/[UIScreen mainScreen].scale);
+        make.width.offset(1*kiphone6);
     }];
     UIButton *phoneBtn = [[UIButton alloc]init];
     [phoneBtn setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
@@ -96,7 +96,28 @@ static NSString* tableCellid = @"table_cell";
         make.centerX.equalTo(headerView.mas_right).offset(-32*kiphone6);
     }];
     [phoneBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+    UIView *grayView = [[UIView alloc]init];//添加line
+    grayView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    [headerView addSubview:grayView];
+    [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.offset(0);
+        make.top.equalTo(line2.mas_bottom);
+        make.height.offset(5*kiphone6);
+    }];
+    UILabel *productLabel = [UILabel labelWithText:@"店铺产品" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//西饼店
+    [headerView addSubview:productLabel];
+    [productLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10*kiphone6);
+        make.centerY.equalTo(grayView.mas_bottom).offset(22.5*kiphone6);
+    }];
+    UIView *line3 = [[UIView alloc]init];//添加line
+    line3.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    [headerView addSubview:line3];
+    [line3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.left.right.offset(0);
+        make.height.offset(1*kiphone6);
+    }];
+
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     tableView.tableHeaderView = headerView;
@@ -108,11 +129,10 @@ static NSString* tableCellid = @"table_cell";
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:tableCellid];
-    //        [tableView registerClass:[YJRepairSectionTwoTableViewCell class] forCellReuseIdentifier:tableCellid];
     tableView.delegate =self;
     tableView.dataSource = self;
-    tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 180*kiphone6;
+//    tableView.rowHeight = UITableViewAutomaticDimension;
+//    tableView.estimatedRowHeight = 180*kiphone6;
 }
 #pragma mark - UITableView
 
@@ -122,10 +142,26 @@ static NSString* tableCellid = @"table_cell";
     
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-    //        cell.model = self.recordArr[indexPath.row];
+    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:tableCellid];
+    cell.imageView.image = [UIImage imageNamed:@"sf"];
+    cell.textLabel.text = @"小蛋糕";
+    cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+    cell.textLabel.font = [UIFont systemFontOfSize:15];
+    cell.detailTextLabel.text = @"¥ 88";
+    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00bfff"];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+    UIView *line = [[UIView alloc]init];//添加line
+    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    [cell.contentView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.left.right.offset(0);
+        make.height.offset(1*kiphone6);
+    }];
     return cell;
     
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 75*kiphone6;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     

@@ -26,9 +26,9 @@
     [super awakeFromNib];
     [self setupUI];
 }
--(void)setModel:(NSString *)model{
+-(void)setModel:(YJFriendStateCommentModel *)model{
     _model = model;
-    NSString *content = [NSString stringWithFormat:@"%@: 你说你要浪里格朗，我说你要浪里个浪，到底是浪里格朗还是浪里个浪",model];
+    NSString *content = [NSString stringWithFormat:@"%@: %@",model.userName,model.content];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:content];
 //    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
 //    // 行间距
@@ -38,11 +38,11 @@
 //    [attStr addAttribute:NSParagraphStyleAttributeName
 //                    value:paragraphStyle
 //                    range:NSMakeRange(0, attStr.length)];
-    [attStr addAttribute:NSLinkAttributeName value:@"click://" range:NSMakeRange(0, model.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, model.length)];
+    [attStr addAttribute:NSLinkAttributeName value:@"click://" range:NSMakeRange(0, model.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, model.userName.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
                     value:[UIColor colorWithHexString:@"#00bfff"]
-                    range:NSMakeRange(0, model.length)];
+                    range:NSMakeRange(0, model.userName.length)];
     _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
     
     

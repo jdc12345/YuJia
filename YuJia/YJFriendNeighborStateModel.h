@@ -12,7 +12,7 @@
 //username  String      用户名
 //content  String      状态详情
 //picture    String      状态图片
-//LikeNum  Integer      点赞总数
+//likeNum  long      点赞总数
 //commentNum  Integer    评论总数
 //ID    Long      状态ID
 #import <Foundation/Foundation.h>
@@ -25,7 +25,8 @@
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *picture;
-@property (nonatomic, assign) NSInteger LikeNum;
-@property (nonatomic, assign) NSInteger commentNum;
-@property (nonatomic, assign) long ID;
+@property (nonatomic, assign) long likeNum;
+@property (nonatomic, assign) long commentNum;
+@property (nonatomic, assign) long info_id;//和id重名
+@property (nonatomic, assign) BOOL islike;
 @end

@@ -26,11 +26,10 @@
     [super awakeFromNib];
     [self setupUI];
 }
--(void)setModel:(NSArray *)model{
+-(void)setModel:(YJFriendStateCommentModel *)model{
     _model = model;
-    NSString *str1 = model[0];
-    NSString *str2 = model[1];
-    NSString *content = [NSString stringWithFormat:@"%@回复%@: 你说你要浪里格朗，我说你要浪里个浪，到底是浪里格朗还是浪里个浪",str1,str2];
+
+    NSString *content = [NSString stringWithFormat:@"%@回复%@: %@",model.userName,model.coverPersonalName,model.content];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:content];
     //    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     //    // 行间距
@@ -40,17 +39,17 @@
     //    [attStr addAttribute:NSParagraphStyleAttributeName
     //                    value:paragraphStyle
     //                    range:NSMakeRange(0, attStr.length)];
-    [attStr addAttribute:NSLinkAttributeName value:@"me://" range:NSMakeRange(0, str1.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, str1.length)];
+    [attStr addAttribute:NSLinkAttributeName value:@"me://" range:NSMakeRange(0, model.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, model.userName.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
                    value:[UIColor colorWithHexString:@"#00bfff"]
-                   range:NSMakeRange(0, str1.length)];
+                   range:NSMakeRange(0, model.userName.length)];
     _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
-    [attStr addAttribute:NSLinkAttributeName value:@"user://" range:NSMakeRange(str1.length+2, str2.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(str1.length+2, str2.length)];
+    [attStr addAttribute:NSLinkAttributeName value:@"user://" range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
                    value:[UIColor colorWithHexString:@"#00bfff"]
-                   range:NSMakeRange(str1.length+2, str2.length)];
+                   range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
     
     self.textview.attributedText = attStr;
 }

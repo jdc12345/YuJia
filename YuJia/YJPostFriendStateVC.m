@@ -60,9 +60,9 @@ static NSString* photoCellid = @"photo_cell";
     [postBtn addTarget:self action:@selector(postBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
-    self.areaBtnTitle = @"请选择小区";
     self.typeBtnTitle = @"请选择分类";
-
+    self.areaBtnTitle = @"请选择小区";
+    self.visibleRange = @"1";
    
     //    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
     NSString *areaUrlStr = [NSString stringWithFormat:@"%@/mobileapi/residentialQuarters/findRQ.do?token=%@",mPrefixUrl,mDefineToken1];
@@ -72,6 +72,10 @@ static NSString* photoCellid = @"photo_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             self.areaArr = responseObject[@"result"];
+            if (self.areaArr.count==1) {
+                self.areaBtnTitle = self.areaArr[0][@"rname"];
+                self.rQid = self.areaArr[0][@"id"];
+            }
             //添加tableView
             UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
             self.tableView = tableView;
@@ -252,7 +256,17 @@ static NSString* photoCellid = @"photo_cell";
         make.centerY.equalTo(line.mas_bottom).offset(19*kiphone6);
         make.right.offset(-10 *kiphone6);
     }];
-    [switchButton setOn:NO];
+    if ([self.visibleRange isEqualToString:@"1"]) {
+        [switchButton setOn:NO];
+    }else{
+        [switchButton setOn:YES];
+    }
+    
+    if (switchButton.isOn) {
+        self.visibleRange = [NSString stringWithFormat:@"%d",2];
+    }else{
+        self.visibleRange = [NSString stringWithFormat:@"%d",1];
+    }
     [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
     UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
     [backView addSubview:itemLabel];
@@ -328,7 +342,7 @@ static NSString* photoCellid = @"photo_cell";
     YJPhotoDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     cell.imageView.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
         [self.imageArr removeObjectAtIndex:indexPath.row];
-        NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:1];
+        NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:indexPath.section];
         [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.collectionView reloadData];
         self.contentView.text = self.content;//刷新后保存报修内容
@@ -380,7 +394,7 @@ static NSString* photoCellid = @"photo_cell";
 }
 -(void)postBtnClick:(UIButton *)sender{
     if (self.categoryId==nil||self.rQid==nil) {
-        [SVProgressHUD showWithStatus:@"请确认已选择分类或者小区"];
+        [SVProgressHUD showErrorWithStatus:@"请确认已选择分类或者小区"];
         return;
     }
 http://192.168.1.55:8080/smarthome/mobileapi/state/PublishState.do?

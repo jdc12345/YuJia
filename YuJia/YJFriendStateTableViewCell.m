@@ -27,6 +27,8 @@ static NSString* photoCellid = @"photo_cell";
 @property (nonatomic, weak) UIButton* likeBtn;
 @property (nonatomic, weak) UILabel* likeNumberLabel;
 @property (nonatomic, weak) UILabel* commentNumberLabel;
+@property(nonatomic,strong)NSArray *imagesArr;
+@property(nonatomic,strong)NSMutableArray *urlStrs;
 @end
 @implementation YJFriendStateTableViewCell
 
@@ -49,7 +51,34 @@ static NSString* photoCellid = @"photo_cell";
     self.timeLabel.text = model.createTimeString;
     self.areaLabel.text = model.rname;
     self.commentNumberLabel.text = [NSString stringWithFormat:@"%ld",model.commentNum];
-    self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld",model.LikeNum];
+    self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld",model.likeNum];
+    if (![model.picture isEqualToString:@""]) {
+        NSArray *array = [model.picture componentsSeparatedByString:@";"];
+        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+        [arr removeLastObject];
+        self.imagesArr = arr;
+        if (self.imagesArr.count<5&&self.imagesArr.count>0) {
+            [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(70*kiphone6);
+            }];
+        }else if (self.imagesArr.count>4){
+            [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(140*kiphone6);
+            }];
+        }
+        
+        [self.collectionView reloadData];
+    }else{
+        [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.offset(0);
+        }];
+        [self.collectionView reloadData];
+    }
+    if (self.model.islike) {
+        [self.likeBtn setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+    }else{
+        [self.likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+    }
 }
 
 -(void)setupUI{
@@ -150,10 +179,7 @@ static NSString* photoCellid = @"photo_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(likeBtn.mas_bottom).offset(15*kiphone6);
-//        make.width.offset(kScreenW);
-//    }];
+
     self.iconView = iconView;
     self.areaLabel = areaLabel;
     self.typeLabel = typeLabel;
@@ -165,16 +191,48 @@ static NSString* photoCellid = @"photo_cell";
     self.commentNumberLabel = commentNumberLabel;
     [likeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
-//- (void)btnClick:(UIButton *)sender{
-//    if (self.clickBtnBlock) {
-//        self.clickBtnBlock(sender.tag);
-//    }
-//}
+- (void)btnClick:(UIButton *)sender{
+    
+    NSInteger likeNumber = [self.likeNumberLabel.text integerValue];
+    if (self.model.islike) {
+        [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+        if (likeNumber>0) {
+            self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld",likeNumber-1];
+            self.model.likeNum -=1;
+        }        
+    self.model.islike = false;
+    }else{
+       [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+        self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld",likeNumber+1];
+        self.model.likeNum +=1;
+        self.model.islike = true;
+    }
+//    http://192.168.1.55:8080/smarthome/mobileapi/state/LikeStat.do?token=EC9CDB5177C01F016403DFAAEE3C1182&stateId=9
+//    [SVProgressHUD show];// 动画开始
+    NSString *likeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/LikeStat.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:likeUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+        }else if ([responseObject[@"code"] isEqualToString:@"1"]){
+            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+
+}
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 4;
+    return self.imagesArr.count;
 }
 
 // cell内容
@@ -182,8 +240,10 @@ static NSString* photoCellid = @"photo_cell";
 {
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
-    
-    cell.photo = [UIImage imageNamed:@"icon"];
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
+    [self.urlStrs addObject:urlStr];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+//    cell.photo = [UIImage imageNamed:@"icon"];
     return cell;
     
 }
@@ -191,9 +251,14 @@ static NSString* photoCellid = @"photo_cell";
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *image = [UIImage imageNamed:@"icon"];
-    NSArray *imageArr = @[image,image,image,image,image];
-    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
     
+    [HUPhotoBrowser showFromImageView:cell.imageView withURLStrings:self.urlStrs placeholderImage:[UIImage imageNamed:@"icon"] atIndex:indexPath.row dismiss:nil];
+    
+}
+-(NSMutableArray *)urlStrs{
+    if (_urlStrs == nil) {
+        _urlStrs = [NSMutableArray array];
+    }
+    return _urlStrs;
 }
 @end

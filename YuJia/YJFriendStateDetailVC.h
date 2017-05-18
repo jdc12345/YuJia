@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJFriendNeighborStateModel.h"
 
 @interface YJFriendStateDetailVC : UIViewController
-
+@property(nonatomic,strong)YJFriendNeighborStateModel *model;
 @end

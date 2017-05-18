@@ -130,21 +130,7 @@ static NSString* tableCellid = @"table_cell";
         make.width.offset(28*kiphone6);
         make.height.offset(2.5*kiphone6);
     }];
-    UIButton *postBtn = [[UIButton alloc]init];
-    [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
-    //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    postBtn.layer.cornerRadius = 25*kiphone6;
-    postBtn.layer.masksToBounds = YES;
-    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:postBtn];
-    
-    WS(ws);
-    [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(ws.view).with.offset(-54*kiphone6);
-        make.right.equalTo(ws.view).with.offset(-12*kiphone6);
-        make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
-    }];
-http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 //    &residentialQuartersId=2
 //    &visibleRange=1
 //    &start=0
@@ -198,12 +184,10 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
-        [SVProgressHUD show];// 动画开始
-        NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,weakSelf.rqId,weakSelf.categoryId,weakSelf.visibleRange];
+        NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,weakSelf.rqId,weakSelf.visibleRange,weakSelf.categoryId];
         [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
-            [SVProgressHUD dismiss];// 动画结束
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
                 NSArray *arr = responseObject[@"result"];
                 NSMutableArray *mArr = [NSMutableArray array];
@@ -217,47 +201,60 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
+            [weakSelf.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [SVProgressHUD dismiss];// 动画结束
+            [weakSelf.tableView.mj_header endRefreshing];
             return ;
         }];
 
     }];
-//    //设置上拉加载更多
-//    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//        // 进入加载状态后会自动调用这个block
-//        if (self.commentInfos.count==0) {
-//            [weakSelf.tableView.mj_footer endRefreshing];
-//            return ;
-//        }
-//        
-//        NSString *urlStr = [NSString stringWithFormat:@"%@/academicpaper/academicpaperComment.do?start=%ld&limit=2&id=%@&token=%@",mPrefixUrl,start,self.info_id,token];
-//        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-//        } success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSDictionary *dic = responseObject[@"result"];
-//            YYCardDetailPageModel *infoModel = [YYCardDetailPageModel mj_objectWithKeyValues:dic];
-//            weakSelf.infoModel  = infoModel;//帖子数据
-//            NSMutableArray *arr = [NSMutableArray array];
-//            for (NSDictionary *dict in infoModel.commentList) {
-//                YYCardCommentDetailModel *comModel = [YYCardCommentDetailModel mj_objectWithKeyValues:dict];
-//                [arr addObject:comModel];
-//            }
-//            [weakSelf.commentInfos addObjectsFromArray:arr];//评论数据源
-//            [weakSelf.tableView reloadData];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 进入加载状态后会自动调用这个block
+        if (self.statesArr.count==0) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return ;
+        }
+        NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=%ld&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,weakSelf.rqId,weakSelf.visibleRange,start,weakSelf.categoryId];
+        [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                for (NSDictionary *dic in arr) {
+                    YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
+                    [weakSelf.statesArr addObject:infoModel];
+                }
+                start = weakSelf.statesArr.count;
+                [weakSelf.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
 //            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
 //                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 //                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 //            }
-//            [weakSelf.tableView.mj_footer endRefreshing];
-//            if (weakSelf.commentInfos.count>0) {
-//                start = weakSelf.commentInfos.count;
-//            }
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            [weakSelf.tableView.mj_footer endRefreshing];
-//            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
-//            return ;
-//        }];
-//    }];
+            [weakSelf.tableView.mj_footer endRefreshing];
+
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+            return ;
+        }];
+    }];
+    UIButton *postBtn = [[UIButton alloc]init];
+    [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
+    //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    postBtn.layer.cornerRadius = 25*kiphone6;
+    postBtn.layer.masksToBounds = YES;
+    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:postBtn];
+    
+    WS(ws);
+    [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(ws.view).with.offset(-54*kiphone6);
+        make.right.equalTo(ws.view).with.offset(-12*kiphone6);
+        make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
+    }];
 
 }
 -(void)scrollBlueView:(UIButton*)sender{
@@ -287,6 +284,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
             start = self.statesArr.count;
             [self.tableView reloadData];
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            self.statesArr = [NSMutableArray array];
+            start = self.statesArr.count;
+            [self.tableView reloadData];
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -315,6 +315,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
         self.otherCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.otherCommunityBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
         [self.otherCommunityBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        self.visibleRange = @"1";
         if (self.areaArr.count>1) {
             if (self.selectView) {
                 if (self.selectView.hidden==false) {
@@ -348,6 +349,33 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
             }
         }else if (self.areaArr.count==1){
             self.rqId = self.areaArr[0][@"id"];
+            [SVProgressHUD show];// 动画开始
+            NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,self.rqId,self.visibleRange,self.categoryId];
+            [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [SVProgressHUD dismiss];// 动画结束
+                if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                    NSArray *arr = responseObject[@"result"];
+                    NSMutableArray *mArr = [NSMutableArray array];
+                    for (NSDictionary *dic in arr) {
+                        YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
+                        [mArr addObject:infoModel];
+                    }
+                    self.statesArr = mArr;
+                    start = self.statesArr.count;
+                    [self.tableView reloadData];
+                }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                    self.statesArr = [NSMutableArray array];
+                    start = self.statesArr.count;
+                    [self.tableView reloadData];
+                    [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+                }
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [SVProgressHUD dismiss];// 动画结束
+                return ;
+            }];
+
         }
         }else{
         self.myCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -371,6 +399,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
                     start = self.statesArr.count;
                     [self.tableView reloadData];
                 }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                    self.statesArr = [NSMutableArray array];
+                    start = self.statesArr.count;
+                    [self.tableView reloadData];
                     [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
                 }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -401,6 +432,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
             start = self.statesArr.count;
             [self.tableView reloadData];
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            self.statesArr = [NSMutableArray array];
+            start = self.statesArr.count;
+            [self.tableView reloadData];
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -429,6 +463,8 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
+    YJFriendStateTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    detailVc.model = cell.model;    
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
