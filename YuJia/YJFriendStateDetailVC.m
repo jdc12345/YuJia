@@ -7,7 +7,7 @@
 //
 
 #import "YJFriendStateDetailVC.h"
-#import "BRPlaceholderTextView.h"
+
 #import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import "YJFriendStateTableViewCell.h"
@@ -20,6 +20,7 @@
 #import "YJFriendStateLikeModel.h"
 #import "YJFriendStateCommentModel.h"
 #import <UIImageView+WebCache.h>
+#import "YJFriendNeighborVC.h"
 
 static NSString* tableCell = @"table_cell";
 static NSString* commentCell = @"comment_cell";
@@ -36,11 +37,12 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property(nonatomic,weak)UIView *backView;
 @property(nonatomic,weak)UIView *selectView;
-//评论
-@property(weak, nonatomic)BRPlaceholderTextView *commentField;
+
 @property(nonatomic, strong)NSMutableArray *commentList;
 @property(nonatomic, strong)NSMutableArray *likeList;
 @property(nonatomic,weak)UIView *fieldBackView;
+@property(nonatomic,assign)long coverPersonalId;
+//@property(nonatomic,assign)long personalId;
 @end
 
 @implementation YJFriendStateDetailVC
@@ -48,33 +50,21 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"友邻圈";
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+    self.navigationController.navigationBar.translucent = true;
+//    self.edgesForExtendedLayout = UIRectEdgeBottom;     //从navigationBar下面开始计算一直到屏幕底部
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    int i = 1;
-    if (i) {
-        //添加右侧发送按钮
-        UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
-        [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-        deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-        deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-//        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
-        deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [deleateBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
-        self.navigationItem.rightBarButtonItem = rightBarItem;
-    }
-    //添加大tableView
+    self.coverPersonalId = 0;//设定默认是评论该状态
+        //添加大tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
     [self.view addSubview:tableView];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+        make.top.left.right.offset(0);
+        make.bottom.offset(-45*kiphone6);
     }];
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCell];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -84,8 +74,22 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     tableView.estimatedRowHeight = 235*kiphone6;
 
 }
+
 -(void)setModel:(YJFriendNeighborStateModel *)model{
     _model = model;
+    if (self.userId == model.personalId) {
+        //添加右侧发送按钮
+        UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
+        [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+        //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+        deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [deleateBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
+        self.navigationItem.rightBarButtonItem = rightBarItem;
+    }
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self loadData];
@@ -127,6 +131,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
  
 }
 -(void)setupCommentTableView{
+
     //评论tableView中的头部试图
     UIView *commentHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, 45*kiphone6)];
     commentHeaderView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -163,6 +168,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     commentTableView.dataSource = self;
     commentTableView.rowHeight = UITableViewAutomaticDimension;
     commentTableView.estimatedRowHeight = 38*kiphone6;
+//    commentTableView.scrollEnabled = false;
+    commentTableView.showsHorizontalScrollIndicator = false;
+    commentTableView.showsVerticalScrollIndicator = false;
     self.tableView.tableFooterView = footBackView;
     commentTableView.tableHeaderView = commentHeaderView;
     
@@ -182,6 +190,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     [fieldBackView layoutIfNeeded];
     //键盘的Frame改变的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+   
     //输入框
     BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
     [fieldBackView addSubview:commentField];
@@ -233,12 +242,13 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     if (model.coverPersonalId == 0) {//判断是用户评论还是自己回复评论
         YJFriendCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
         cell.model = model;
-        
         cell.clickBtnBlock = ^(NSString *str){
             NSRange range = [str rangeOfString:@"{"];
             NSString *strs = [str substringToIndex:range.location];
             [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+            ws.coverPersonalId = model.coverPersonalId;
             [ws.commentField becomeFirstResponder];
+            
         };
         if (indexPath.row==0) {
             cell.iconView.hidden = false;
@@ -251,6 +261,15 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
             NSRange range = [str rangeOfString:@"{"];
             NSString *strs = [str substringToIndex:range.location];
             [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+//            YJSelfReplyTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//            YJFriendStateCommentModel *model = cell.model;
+            if ([model.userName isEqualToString:strs]) {
+                [ws.commentField setPlaceholder:@"评论"];
+                ws.coverPersonalId = 0;
+            }else{
+                ws.coverPersonalId = model.coverPersonalId;
+            }
+            
             [ws.commentField becomeFirstResponder];
         };
         return cell;
@@ -311,10 +330,8 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
     
     CGRect rect = [rectValue CGRectValue];
-    CGRect rectField = self.fieldBackView.frame;
-    CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-64*kiphone6, rectField.size.width, rectField.size.height) ;
-    [UIView animateWithDuration:0.25 animations:^{
-        self.fieldBackView.frame = newRect;
+    [self.fieldBackView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_top).offset(rect.origin.y);
     }];
     
 }
@@ -338,47 +355,57 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
         
         [textView resignFirstResponder];
         if (textView.text!=nil&&![textView.text isEqualToString:@""]) {
-//            //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
-//            NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
-//            [SVProgressHUD show];// 动画开始
-//            [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
-//                
-//            } success:^(NSURLSessionDataTask *task, id responseObject) {
-//                if ([responseObject[@"code"] isEqualToString:@"0"]) {
-//                    //更新评论数据源
-//                    NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
-//                    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-//                        
-//                    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//                        [SVProgressHUD dismiss];//结束动画
-//                        NSArray *arr = responseObject[@"result"];
-//                        NSMutableArray *mArr = [NSMutableArray array];
-//                        for (NSDictionary *dic in arr) {
-//                            YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
-//                            [mArr addObject:infoModel];
-//                        }
-//                        self.commentInfoModels  = mArr;
-//                        if (self.commentInfoModels.count>0) {
-//                            start = self.commentInfoModels.count;
-//                        }//更新加载起始位置
-//                        NSInteger count = [self.commentCountLabel.text integerValue];
-//                        count += 1;
-//                        self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
-//                        [self.tableView reloadData];
-//                        self.commentField.text = nil;
-//                        self.commentField.placeholder = @"说点什么吧";
-//                        self.commentField.imagePlaceholder = @"writing";
-//                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//                        [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
-//                        return ;
-//                    }];
-//                }else{
-//                    [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
-//                }
-//            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//                [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
-//                return ;
-//            }];
+//http://192.168.1.55:8080/smarthome/mobileapi/state/commentStat.do?token=EC9CDB5177C01F016403DFAAEE3C1182&stateId=1&content=评论内容
+            if (self.coverPersonalId == self.userId) {
+                self.coverPersonalId = 0;
+            }
+            NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/state/commentStat.do?token=%@&stateId=%ld&content=%@&coverPersonalId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id,[self.commentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],self.coverPersonalId];
+            [SVProgressHUD show];// 动画开始
+            [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                    //更新评论数据源
+                    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+                    [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+                        
+                    } success:^(NSURLSessionDataTask *task, id responseObject) {
+                        [SVProgressHUD dismiss];// 动画结束
+                        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                            NSDictionary *bigDic = responseObject[@"result"];
+                            NSArray *likeArr = bigDic[@"likeNum"];
+                            NSMutableArray *likemArr = [NSMutableArray array];
+                            for (NSDictionary *dic in likeArr) {
+                                YJFriendStateLikeModel *infoModel = [YJFriendStateLikeModel mj_objectWithKeyValues:dic];
+                                [likemArr addObject:infoModel];
+                            }
+                            self.likeList = likemArr;//解析点赞数据
+                            NSArray *commentArr = bigDic[@"comment"];
+                            NSMutableArray *commentmArr = [NSMutableArray array];
+                            for (NSDictionary *dic in commentArr) {
+                                YJFriendStateCommentModel *infoModel = [YJFriendStateCommentModel mj_objectWithKeyValues:dic];
+                                [commentmArr addObject:infoModel];
+                            }
+                            self.commentList = commentmArr;//解析评论数据
+                            [self.commentTableView reloadData];
+                            
+
+                        self.commentField.text = nil;
+                        [self.commentField setPlaceholder:@"说点什么吧"];
+    
+                     }
+                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
+                        return ;
+                    }];
+                }else{
+                    [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
+                }
+                self.coverPersonalId = 0;
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+                return ;
+            }];
         
         }else{
             [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
@@ -413,8 +440,40 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
+-(void)informationBtnClick:(UIButton *)sender{
+http://192.168.1.55:8080/smarthome/mobileapi/state/delteState.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&stateId=34
+    [SVProgressHUD show];// 动画开始
+    NSString *deleUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/delteState.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:deleUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"删除成功"];
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[YJFriendNeighborVC class]]) {
+                    YJFriendNeighborVC *revise =(YJFriendNeighborVC *)controller;
+//                    revise.clickBtnBlock(cell.textLabel.text);
+                    [revise deleRefresh];
+                    [self.navigationController popToViewController:revise animated:YES];
+                }
+               
+            }
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+  
+}
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.translucent = false;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

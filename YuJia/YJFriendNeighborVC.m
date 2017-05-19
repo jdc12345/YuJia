@@ -30,6 +30,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,strong)NSString *rqId;
 @property(nonatomic,weak)UIView *selectView;//选择自己小区
 @property(nonatomic,strong)NSString *visibleRange;//可见小区
+@property(nonatomic,assign)long userId;
 @end
 
 @implementation YJFriendNeighborVC
@@ -148,6 +149,8 @@ static NSString* tableCellid = @"table_cell";
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *userId = responseObject[@"userid"];
+            self.userId = [userId integerValue];
             NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
@@ -454,6 +457,14 @@ static NSString* tableCellid = @"table_cell";
     
     YJFriendStateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.model = self.statesArr[indexPath.row];
+    WS(ws);
+    cell.commentBtnBlock = ^(YJFriendNeighborStateModel *model){
+        YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
+        detailVc.userId = ws.userId;
+        detailVc.model = model;
+        [ws.navigationController pushViewController:detailVc animated:true];
+        [detailVc.commentField becomeFirstResponder];
+    };
         return cell;
     
 }
@@ -464,6 +475,7 @@ static NSString* tableCellid = @"table_cell";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
     YJFriendStateTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    detailVc.userId = self.userId;
     detailVc.model = cell.model;    
     [self.navigationController pushViewController:detailVc animated:true];
     
@@ -472,6 +484,31 @@ static NSString* tableCellid = @"table_cell";
 - (void)postBtn:(UIButton*)sender {
     YJPostFriendStateVC *vc = [[YJPostFriendStateVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
+}
+-(void)deleRefresh{
+    // 进入刷新状态后会自动调用这个block
+    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,self.rqId,self.visibleRange,self.categoryId];
+    [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.statesArr = mArr;
+            start = self.statesArr.count;
+            [self.tableView reloadData];
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+        [self.tableView.mj_header endRefreshing];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self.tableView.mj_header endRefreshing];
+        return ;
+    }];
 }
 -(void)informationBtnClick:(UIButton*)sender{
     NSArray *noticeArr = @[@"TIAN",@"用户TIAN给你点赞了"];

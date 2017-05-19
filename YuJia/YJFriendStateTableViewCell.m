@@ -190,6 +190,7 @@ static NSString* photoCellid = @"photo_cell";
     self.likeNumberLabel = likeNumberLabel;
     self.commentNumberLabel = commentNumberLabel;
     [likeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [commentBtn addTarget:self action:@selector(commentClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)btnClick:(UIButton *)sender{
     
@@ -227,6 +228,9 @@ static NSString* photoCellid = @"photo_cell";
         return ;
     }];
 
+}
+- (void)commentClick:(UIButton *)sender{
+    self.commentBtnBlock(self.model);
 }
 #pragma mark - UICollectionView
 // 有多少行

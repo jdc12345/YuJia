@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *picture;
+@property (nonatomic, assign) long personalId;
 @property (nonatomic, assign) long likeNum;
 @property (nonatomic, assign) long commentNum;
 @property (nonatomic, assign) long info_id;//和id重名
