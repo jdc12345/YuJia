@@ -10,7 +10,7 @@
 #import "UILabel+Addition.h"
 
 @interface YJBillInfoTableViewCell()<UITextFieldDelegate>
-@property(nonatomic,weak)UITextField *contentField;
+
 @property (nonatomic, weak) UILabel* itemLabel;
 @end
 @implementation YJBillInfoTableViewCell
