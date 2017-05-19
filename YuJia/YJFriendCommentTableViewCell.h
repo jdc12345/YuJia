@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJFriendStateCommentModel.h"
 
 @interface YJFriendCommentTableViewCell : UITableViewCell
-@property (nonatomic, strong) NSString *model;
+@property (nonatomic, strong) YJFriendStateCommentModel *model;
 @property (nonatomic, weak) UIImageView* iconView;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickBtnBlock)(NSString *name);

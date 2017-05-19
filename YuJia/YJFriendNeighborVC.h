@@ -10,4 +10,5 @@
 
 @interface YJFriendNeighborVC : UIViewController
 
+-(void)deleRefresh;
 @end

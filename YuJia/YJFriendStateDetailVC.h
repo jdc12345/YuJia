@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJFriendNeighborStateModel.h"
+#import "BRPlaceholderTextView.h"
 
 @interface YJFriendStateDetailVC : UIViewController
-
+@property(nonatomic,strong)YJFriendNeighborStateModel *model;
+//评论
+@property(weak, nonatomic)BRPlaceholderTextView *commentField;
+@property(nonatomic,assign)long userId;
 @end

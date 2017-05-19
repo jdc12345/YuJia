@@ -163,6 +163,7 @@
         make.left.right.offset(0);
         make.height.offset(37*kiphone6);
         make.top.equalTo(destinationItemLabel.mas_bottom).offset(10*kiphone6);
+        make.bottom.offset(13.5*kiphone6);
     }];
     self.footerView =footerView;
     UILabel *activitieStateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
@@ -207,10 +208,7 @@
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(footerView.mas_bottom).offset(13.5*kiphone6);
-        make.width.offset(kScreenW);
-    }];
+    
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     self.typeLabel = typeLabel;

@@ -42,19 +42,9 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIView *backView = [[UIView alloc]init];
     backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self.contentView addSubview:backView];
-    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.bottom.offset(0);
-        make.left.offset(10*kiphone6);
-        make.right.offset(-10*kiphone6);
-    }];
+    
     UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectZero];
     commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [backView addSubview:commentTableView];
-    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.offset(0);
-        make.height.offset(100*kiphone6);
-    }];
     self.tableView = commentTableView;
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
@@ -64,7 +54,19 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     commentTableView.dataSource = self;
     commentTableView.rowHeight = UITableViewAutomaticDimension;
     commentTableView.estimatedRowHeight = 38*kiphone6;
-    
+    [backView addSubview:commentTableView];
+    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.offset(0);
+        // make.height.offset(100*kiphone6);
+        make.bottom.offset(0);
+    }];
+    [self.contentView addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.offset(0);
+        make.left.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
+    }];
+
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [backView addSubview:line];
@@ -73,11 +75,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
 
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(commentTableView.mas_bottom).offset(5*kiphone6);
-        make.width.offset(kScreenW);
-    }];
-    
+        
 }
 #pragma mark - UITableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

@@ -26,6 +26,7 @@ static NSString* photoCellid = @"photo_cell";
 @property (nonatomic, weak) UIButton *finishBtn;
 @property (nonatomic, weak) UIButton *cancelBtn;
 @property(nonatomic,strong)NSArray *imagesArr;
+@property(nonatomic,strong)NSMutableArray *urlStrs;
 @end
 @implementation YJRepairRecordTableViewCell
 
@@ -229,6 +230,7 @@ static NSString* photoCellid = @"photo_cell";
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
+    [self.urlStrs addObject:urlStr];
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
     return cell;
 
@@ -237,8 +239,14 @@ static NSString* photoCellid = @"photo_cell";
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     YJImageDisplayCollectionViewCell *cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.imagesArr atIndex:indexPath.row];
+    [HUPhotoBrowser showFromImageView:cell.imageView withURLStrings:self.urlStrs placeholderImage:[UIImage imageNamed:@"icon"] atIndex:indexPath.row dismiss:nil];
+//    [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.imagesArr atIndex:indexPath.row];
     
 }
-
+-(NSMutableArray *)urlStrs{
+    if (_urlStrs == nil) {
+        _urlStrs = [NSMutableArray array];
+    }
+    return _urlStrs;
+}
 @end
