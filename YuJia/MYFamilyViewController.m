@@ -86,20 +86,9 @@
     PersonalModel *personalModel = self.dataSource[indexPath.row];
     
     MYFamilyTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYFamilyTableViewCell" forIndexPath:indexPath];
-    homeTableViewCell.iconV ;
-    homeTableViewCell.titleLabel.text = personalModel.trueName;
-//    if (indexPath.row == 0) {
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-//        homeTableViewCell.titleLabel.text = @"LIM";
-//        
-//    }else if(indexPath.row == 1){
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-//        homeTableViewCell.titleLabel.text = @"赵医生";
-//    }else{
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"avatar.jpg"]];
-//        homeTableViewCell.titleLabel.text = @"安迪";
-//    }
-    //    homeTableViewCell.backgroundColor = [UIColor blackColor];
+    [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,personalModel.avatar]]];;
+    homeTableViewCell.titleLabel.text = personalModel.userName;
+    homeTableViewCell.introduceLabel.text = personalModel.comment;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
     

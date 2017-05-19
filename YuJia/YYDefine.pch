@@ -140,5 +140,37 @@
 //删除房间接口
 //http://192.168.1.55:8080/smarthome/mobileapi/room/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mRemoveRoom [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/delete.do?"]
+
+
+//添加意见反馈接口
+//http://192.168.1.55:8080/smarthome/mobileapi/feedback/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mFeedBack [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/feedback/save.do?"]
+
+/////////////////////////// 周五
+//查询我的家和我相关的家
+//http://192.168.1.55:8080/smarthome/mobileapi/family/findMyRelativeHome.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mAllHome [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/findMyRelativeHome.do?"]
+
+//个人用户修改密码接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/mdfPasswd.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&oldPwd=123&newPwd=123234
+#define mChangePSW [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/mdfPasswd.do?"]
+//添加家人接口,参数修改了
+//http://192.168.1.55:8080/smarthome/mobileapi/myFamily/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+//http://192.168.1.55:8080/smarthome/mobileapi/myFamily/save.do?telephone=18335277251&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&addvcode=177428
+#define mAddFamilyUsers [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/save.do?"]
+
+//删除我的家人接口
+//http://192.168.1.55:8080/smarthome/mobileapi/myFamily/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mRemoveFamily [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/save.do?"]
+
+//添加家人发送验证码
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/addvcode.do?telephone=13717883005&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mAddFamilyVcode [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/addvcode.do?"]
+
+
+//设置我当前关联的家和权限
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/setFamily.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&familyId=123&personalId=123234
+#define mSetFamily [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/setFamily.do?"]
+
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */

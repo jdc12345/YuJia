@@ -360,8 +360,14 @@
         [self.view addSubview:equipmentVC.view];
             [self addChildViewController:equipmentVC];
         }else{
-            [self.equipmentVC reloadData:self.roomDataSource];
-            [self.sightVC reloadData:self.sightDataSource];
+            if (self.roomDataSource.count >0) {
+                [self.equipmentVC reloadData:self.roomDataSource];
+            }
+            if (self.sightDataSource.count >0) {
+                [self.sightVC reloadData:self.sightDataSource];
+            }
+            
+            
         }
         
         

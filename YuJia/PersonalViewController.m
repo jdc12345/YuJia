@@ -16,6 +16,7 @@
 #import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
+#import "YYFeedbackViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -296,7 +297,7 @@
         if (indexPath.row == 0) {
             [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
         }else if(indexPath.row == 1){
-
+            [self.navigationController pushViewController:[[YYFeedbackViewController alloc]init] animated:YES];
         }else{
 
         }

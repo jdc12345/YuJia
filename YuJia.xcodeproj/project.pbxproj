@@ -91,6 +91,8 @@
 		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
 		3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3481EC5874800C77B58 /* MYHomeViewController.m */; };
 		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
+		3E6468521ECE887B003E785B /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468511ECE887B003E785B /* YYFeedbackViewController.m */; };
+		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
 		3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */; };
 		3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */; };
 		3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */; };
@@ -365,6 +367,10 @@
 		3E20B3481EC5874800C77B58 /* MYHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeViewController.m; sourceTree = "<group>"; };
 		3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeTableViewCell.h; sourceTree = "<group>"; };
 		3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeTableViewCell.m; sourceTree = "<group>"; };
+		3E6468501ECE887B003E785B /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
+		3E6468511ECE887B003E785B /* YYFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFeedbackViewController.m; sourceTree = "<group>"; };
+		3E6468531ECEC66D003E785B /* AllHomeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllHomeModel.h; sourceTree = "<group>"; };
+		3E6468541ECEC66D003E785B /* AllHomeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllHomeModel.m; sourceTree = "<group>"; };
 		3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSlider.h; sourceTree = "<group>"; };
 		3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSlider.m; sourceTree = "<group>"; };
 		3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketSettingViewController.h; sourceTree = "<group>"; };
@@ -920,6 +926,8 @@
 		3E94398A1ECBE773001FE471 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E6468531ECEC66D003E785B /* AllHomeModel.h */,
+				3E6468541ECEC66D003E785B /* AllHomeModel.m */,
 				3E94398B1ECBE77C001FE471 /* CcUserModel.h */,
 				3E94398C1ECBE77C001FE471 /* CcUserModel.m */,
 			);
@@ -1149,6 +1157,8 @@
 				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
 				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
 				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
+				3E6468501ECE887B003E785B /* YYFeedbackViewController.h */,
+				3E6468511ECE887B003E785B /* YYFeedbackViewController.m */,
 				3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */,
 				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
 				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
@@ -1517,6 +1527,7 @@
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
 				3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */,
 				3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */,
+				3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */,
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
 				164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */,
@@ -1538,6 +1549,7 @@
 				3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */,
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
+				3E6468521ECE887B003E785B /* YYFeedbackViewController.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
