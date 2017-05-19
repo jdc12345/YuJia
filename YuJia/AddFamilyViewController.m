@@ -190,11 +190,26 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)pushToAdd{
-    AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
-    [self.navigationController pushViewController:fInfo animated:YES];
+    [self httpRequestInfo];
     
 }
-
+- (void)httpRequestInfo{
+    NSDictionary *dict = @{
+                           @"token":mDefineToken,
+                           @"telephone":@"12345678911",
+                           @"addvcode":@"123123"
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mAddFamilyUsers] method:1 parameters:dict prepareExecute:^{
+        AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
+        [self.navigationController pushViewController:fInfo animated:YES];
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 
 /*
  #pragma mark - Navigation

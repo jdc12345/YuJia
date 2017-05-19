@@ -248,8 +248,8 @@
     NSArray *iconList = @[@"myhome",@"mycircle",@"MyOrder",@"collect"];
     
     
-    CGFloat btnW = kScreenW/4.0;
-    for (int i = 0 ; i<4 ;  i++) {
+    CGFloat btnW = kScreenW/2.0;
+    for (int i = 0 ; i<2 ;  i++) {
         MMButton *leftNavBtn = [MMButton buttonWithType:UIButtonTypeCustom];
         leftNavBtn.frame = CGRectMake(i *btnW, 130, btnW, 100);
         leftNavBtn.tag = 800 +i;

@@ -233,7 +233,7 @@
 - (void)httpRequestInfo{
     NSDictionary *dict = @{
                            @"token":mDefineToken,
-                           @"oldPwd":@"123",
+                           @"oldPwd":@"123456",
                            @"newPwd":@"123123"
                            };
     
