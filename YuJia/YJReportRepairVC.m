@@ -21,6 +21,7 @@
 #import "YJRepairRecordTableViewCell.h"
 #import "AFNetworking.h"
 #import "YJReportRepairRecordModel.h"
+#import <MJRefresh.h>
 
 static NSInteger start = 0;//上拉加载起始位置
 static NSString* tableCellid = @"table_cell";
@@ -270,6 +271,83 @@ static NSString* photoCellid = @"photo_cell";
                     tableView.dataSource = self;
                     tableView.rowHeight = UITableViewAutomaticDimension;
                     tableView.estimatedRowHeight = 180*kiphone6;
+                    __weak typeof(self) weakSelf = self;
+                    tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+                        // 进入刷新状态后会自动调用这个block
+                        NSString *state = @"";
+                        if (weakSelf.stateFlag==51) {
+                            //加载 待维修 数据
+                            state = @"1";
+                        }else if (weakSelf.stateFlag==52){
+                            //加载 处理中 数据
+                            state = @"2";
+                        }else if (weakSelf.stateFlag==53){
+                            //加载 已完成 数据
+                            state = @"3";
+                        }
+                    http://localhost:8080/smarthome/mobileapi/repair/findRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&state=1&start=0&limit=2
+                        [SVProgressHUD show];// 动画开始
+                        NSString *recordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/findRecord.do?token=%@&state=%@&start=0&limit=2",mPrefixUrl,mDefineToken1,state];
+                        [[HttpClient defaultClient]requestWithPath:recordUrlStr method:0 parameters:nil prepareExecute:^{
+                            
+                        } success:^(NSURLSessionDataTask *task, id responseObject) {
+                            [SVProgressHUD dismiss];// 动画结束
+                            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                                NSArray *arr = responseObject[@"result"];
+                                NSMutableArray *mArr = [NSMutableArray array];
+                                for (NSDictionary *dic in arr) {
+                                    YJReportRepairRecordModel *infoModel = [YJReportRepairRecordModel mj_objectWithKeyValues:dic];
+                                    [mArr addObject:infoModel];
+                                }
+                                weakSelf.recordArr = mArr;
+                                start = weakSelf.recordArr.count;
+                                [weakSelf.recordTableView reloadData];
+                            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+                            }
+                            [weakSelf.recordTableView.mj_header endRefreshing];
+                        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                            [weakSelf.recordTableView.mj_header endRefreshing];
+                            return ;
+                        }];
+                        
+                    }];
+                    //设置上拉加载更多
+                    self.recordTableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+                        // 进入加载状态后会自动调用这个block
+                        if (self.recordArr.count==0) {
+                            [weakSelf.recordTableView.mj_footer endRefreshing];
+                            return ;
+                        }
+                        NSString *recordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/findRecord.do?token=%@&state=%@&start=%ld&limit=2",mPrefixUrl,mDefineToken1,state,start];
+                        [[HttpClient defaultClient]requestWithPath:recordUrlStr method:0 parameters:nil prepareExecute:^{
+                            
+                        } success:^(NSURLSessionDataTask *task, id responseObject) {
+                            [SVProgressHUD dismiss];// 动画结束
+                            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                                NSArray *arr = responseObject[@"result"];
+                                for (NSDictionary *dic in arr) {
+                                    YJReportRepairRecordModel *infoModel = [YJReportRepairRecordModel mj_objectWithKeyValues:dic];
+                                    [weakSelf.recordArr addObject:infoModel];
+                                }
+                                start = weakSelf.recordArr.count;
+                                [weakSelf.recordTableView reloadData];
+                            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+                            }
+                            //            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
+                            //                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                            //                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                            //            }
+                            [weakSelf.recordTableView.mj_footer endRefreshing];
+                            
+                        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                            [weakSelf.recordTableView.mj_footer endRefreshing];
+                            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+                            return ;
+                        }];
+                    }];
+
                 }
                 if (self.recordArr.count>0) {
                     start = self.recordArr.count;
@@ -320,6 +398,70 @@ static NSString* photoCellid = @"photo_cell";
     }else{
         YJRepairRecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
         cell.model = self.recordArr[indexPath.row];
+        WS(ws);
+//    http://192.169.1.55:8080/smarthome/mobileapi/repair/updateState.do?token=ACDCE729BCE6FABC50881A867CAFC1BC &id=1 &state=2
+        __weak typeof(cell) weakCell = cell;
+        cell.clickBtnBlock = ^(NSString *state){
+            [SVProgressHUD show];// 动画开始
+            NSString *changeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/updateState.do?token=%@&id=%ld&state=%@",mPrefixUrl,mDefineToken1,weakCell.model.info_id,state];
+            [[HttpClient defaultClient]requestWithPath:changeUrlStr method:0 parameters:nil prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [SVProgressHUD dismiss];// 动画结束
+                if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                    if ([state isEqualToString:@"4"]) {
+                        [SVProgressHUD showSuccessWithStatus:@"取消成功"];
+                    }
+                    if ([state isEqualToString:@"3"]) {
+                        [SVProgressHUD showSuccessWithStatus:@"已完成维修"];
+                    }
+                    NSString *bigState = @"";
+                    if (ws.stateFlag==51) {
+                        //加载 待维修 数据
+                        bigState = @"1";
+                    }else if (ws.stateFlag==52){
+                        //加载 处理中 数据
+                        bigState = @"2";
+                    }else if (ws.stateFlag==53){
+                        //加载 已完成 数据
+                        bigState = @"3";
+                    }
+                http://localhost:8080/smarthome/mobileapi/repair/findRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&state=1&start=0&limit=2
+                    [SVProgressHUD show];// 动画开始
+                    NSString *recordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/findRecord.do?token=%@&state=%@&start=0&limit=2",mPrefixUrl,mDefineToken1,bigState];
+                    [[HttpClient defaultClient]requestWithPath:recordUrlStr method:0 parameters:nil prepareExecute:^{
+                        
+                    } success:^(NSURLSessionDataTask *task, id responseObject) {
+                        [SVProgressHUD dismiss];// 动画结束
+                        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                            NSArray *arr = responseObject[@"result"];
+                            NSMutableArray *mArr = [NSMutableArray array];
+                            for (NSDictionary *dic in arr) {
+                                YJReportRepairRecordModel *infoModel = [YJReportRepairRecordModel mj_objectWithKeyValues:dic];
+                                [mArr addObject:infoModel];
+                            }
+                            ws.recordArr = mArr;
+                            [ws.recordTableView reloadData];
+                            if (ws.recordArr.count>0) {
+                                start = ws.recordArr.count;
+                            }
+                        }
+                        
+                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                        [SVProgressHUD dismiss];// 动画结束
+                        return ;
+                    }];
+
+                }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                    [SVProgressHUD showErrorWithStatus:@"状态修改失败"];
+                }
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [SVProgressHUD dismiss];// 动画结束
+                return ;
+            }];
+  
+        };
         return cell;
     }
 }

@@ -292,7 +292,7 @@ static NSString* payCellid = @"pay_cell";
     UIButton *btn = [[UIButton alloc]init];
     btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
     [btn setTitle:@"立即缴费" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(nowPayMoney) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(nowPayMoney:) forControlEvents:UIControlEventTouchUpInside];
     [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
     btn.layer.masksToBounds = true;
@@ -305,6 +305,10 @@ static NSString* payCellid = @"pay_cell";
         make.height.offset(45*kiphone6);
     }];
  
+}
+-(void)nowPayMoney:(UIButton*)sender{
+    [SVProgressHUD showInfoWithStatus:@"此功能暂时还未开放"];
+    
 }
 -(void)selectBtnClick:(UIButton*)sender{
     [sender setImage:[UIImage imageNamed:@"selected"] forState:UIControlStateNormal];
