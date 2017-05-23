@@ -20,6 +20,7 @@
 #import "YJLifepaymentVC.h"
 #import "YJExpressDeliveryVC.h"
 #import "YJNearbyShopViewController.h"
+#import "YJRenovationViewController.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -155,6 +156,18 @@ static NSString* collectionCellid = @"collection_cell";
         }
         case 4:{
             YJNearbyShopViewController *vc = [[YJNearbyShopViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 5:{
+            YJRenovationViewController *vc = [[YJRenovationViewController alloc] init];
+            vc.title = @"家政服务";
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 7:{
+            YJRenovationViewController *vc = [[YJRenovationViewController alloc] init];
+            vc.title = @"装修服务";
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

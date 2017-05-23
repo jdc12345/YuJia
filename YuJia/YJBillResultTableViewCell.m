@@ -9,11 +9,16 @@
 #import "YJBillResultTableViewCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
+#import "YJMonthDetailItemModel.h"
 
 static NSString* defaultRightCellid = @"defaultRight_cell";
 @interface YJBillResultTableViewCell()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property (nonatomic, weak) UILabel* itemLabel;
+//@property(nonatomic,strong)NSMutableArray *models;
+@property(nonatomic,strong)NSString *waters;
+@property(nonatomic,strong)NSString *electric;
+@property(nonatomic,strong)NSString *gas;
 @end
 @implementation YJBillResultTableViewCell
 
@@ -27,7 +32,25 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-
+-(void)setSumModel:(YJMonthDetailSumModel *)sumModel{
+    _sumModel = sumModel;
+    if (sumModel.moneySum) {
+        NSMutableArray *mArr = [NSMutableArray array];
+        for (NSDictionary *dic in sumModel.items) {
+            YJMonthDetailItemModel *infoModel = [YJMonthDetailItemModel mj_objectWithKeyValues:dic];
+            if (infoModel.paymentItemId == 1) {
+                self.waters = [NSString stringWithFormat:@"%ld元",infoModel.money];
+            }if (infoModel.paymentItemId == 2) {
+                self.electric = [NSString stringWithFormat:@"%ld元",infoModel.money];
+            }if (infoModel.paymentItemId == 3) {
+                self.gas = [NSString stringWithFormat:@"%ld元",infoModel.money];
+            }
+            [mArr addObject:infoModel];
+        }
+    }
+    [self.tableView reloadData];
+    
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIView *headerView = [[UIView alloc]init];
@@ -57,10 +80,10 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
     tableView.bounces = false;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:defaultRightCellid];
-//    [tableView registerClass:[YJBillInfoTableViewCell class] forCellReuseIdentifier:detailInfoCellid];
+
     tableView.delegate =self;
     tableView.dataSource = self;
-    
+    tableView.scrollEnabled = false;
 }
 #pragma mark - UITableView
 
@@ -84,17 +107,17 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
     cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
     if (indexPath.row==0) {
-       cell.textLabel.text = @"2017-5";
-       cell.detailTextLabel.text = @"合计缴费：180.00元";
+       cell.textLabel.text = self.sumModel.time;
+       cell.detailTextLabel.text = [NSString stringWithFormat:@"合计缴费：%ld元", self.sumModel.moneySum];
     }else if(indexPath.row==1){
         cell.textLabel.text = @"水费";
-        cell.detailTextLabel.text = @"60.00元";
+        cell.detailTextLabel.text = self.waters?self.waters:@"0元";
     }else if(indexPath.row==2){
         cell.textLabel.text = @"电费";
-        cell.detailTextLabel.text = @"60.00元";
+        cell.detailTextLabel.text = self.electric?self.electric:@"0元";
     }else if(indexPath.row==3){
         cell.textLabel.text = @"燃气费";
-        cell.detailTextLabel.text = @"60.00元";
+        cell.detailTextLabel.text = self.gas?self.gas:@"0元";
     }
 
     return cell;

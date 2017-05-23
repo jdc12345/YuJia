@@ -82,9 +82,10 @@ static NSString* photoCellid = @"photo_cell";
                 make.height.offset(140*kiphone6);
             }];
         }
-        
-        [self.collectionView reloadData];
+    }else{
+        self.imagesArr = [NSArray array];
     }
+    [self.collectionView reloadData];
 }
 
 -(void)setupUI{
@@ -210,13 +211,22 @@ static NSString* photoCellid = @"photo_cell";
     self.collectionView = photoCollectionView;
     self.finishBtn = finishBtn;
     self.cancelBtn = cancelBtn;
+    cancelBtn.tag = 31;
+    finishBtn.tag = 32;
+    [cancelBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [finishBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
-//- (void)btnClick:(UIButton *)sender{
-//    if (self.clickBtnBlock) {
-//        self.clickBtnBlock(sender.tag);
-//    }
-//}
+- (void)btnClick:(UIButton *)sender{
+    NSString *state ;
+    if (sender.tag == 31) {
+        state = @"4";
+    }else if (sender.tag == 32){
+        state = @"3";
+    }
+    if (self.clickBtnBlock) {
+        self.clickBtnBlock(state);
+    }
+}
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section

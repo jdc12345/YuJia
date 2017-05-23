@@ -11,4 +11,5 @@
 
 @interface YJRepairRecordTableViewCell : UITableViewCell
 @property(nonatomic,strong)YJReportRepairRecordModel *model;
+@property(nonatomic,copy)void (^clickBtnBlock)(NSString *state);
 @end

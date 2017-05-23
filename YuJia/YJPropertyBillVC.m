@@ -14,6 +14,8 @@
 #import "YJBillResultTableViewCell.h"
 #import "YJModifyAddressVC.h"
 #import "YJPropertyAddressModel.h"
+#import "YJMonthDetailItemModel.h"
+#import "YJMonthDetailSumModel.h"
 
 static NSString* billCellid = @"bill_cell";
 @interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -29,6 +31,8 @@ static NSString* billCellid = @"bill_cell";
 @property(nonatomic,assign)NSInteger nowMonth;
 
 @property(nonatomic,strong)NSMutableArray *addresses;
+@property(nonatomic,strong)NSString *address;//当前显示的地址
+@property(nonatomic,strong)NSMutableArray *months;
 @end
 
 @implementation YJPropertyBillVC
@@ -57,7 +61,8 @@ static NSString* billCellid = @"bill_cell";
                 [mArr addObject:infoModel];
             }
             self.addresses = mArr;
-        
+            YJPropertyAddressModel *model = self.addresses[0];
+            self.address = model.detailAddress;//默认选择第一个地址
             [SVProgressHUD dismiss];// 动画结束
              [self setupBill];
             
@@ -298,7 +303,7 @@ static NSString* billCellid = @"bill_cell";
             [self.monthPickerView reloadAllComponents];
             }
     }else{
-        if (row < self.yearArr.count) {
+        if (row < self.monthArr.count) {
        [self.monthBtn setTitle:[self.monthArr objectAtIndex:row] forState:UIControlStateNormal];
         }
     }
@@ -330,11 +335,12 @@ static NSString* billCellid = @"bill_cell";
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return self.months.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJBillResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:billCellid forIndexPath:indexPath];
+    cell.sumModel = self.months[indexPath.row];
     return cell;
   
 }
@@ -350,21 +356,23 @@ static NSString* billCellid = @"bill_cell";
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(headerBtn);
     }];
-    YJPropertyAddressModel *model = self.addresses[0];
-    UILabel *addressLabel = [UILabel labelWithText:model.detailAddress andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    
+    UILabel *addressLabel = [UILabel labelWithText:self.address andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    self.address = addressLabel.text;
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(imageView);
         make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
     }];
+    WS(ws);
     self.clickBtnBlock = ^(NSString *address) {
         addressLabel.text = address;
+        ws.address = address;
         //此处需要根据新地址刷新账单
-        
-        
-        
+        [ws queryBill];
+                
                  };
-
+    YJPropertyAddressModel *model = self.addresses[0];
     UILabel *cityLabel = [UILabel labelWithText:model.city andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -408,12 +416,49 @@ static NSString* billCellid = @"bill_cell";
     return 100*kiphone6;
 }
 - (void)queryBill {
+    self.yearPickerView.hidden = true;
+    self.monthPickerView.hidden = true;
 //http://192.168.1.55:8080/smarthome/mobileapi/detail/findBill.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
 //    &address=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA1%E5%8F%B7%E6%A5%BC%E4%B8%80%E5%8D%95%E5%85%831%E6%A5%BC305%E5%8F%B7
 //    &Yeartime=2017
 //    &monthtime=13
-//    [textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-//    NSString *queryUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detail/findBill.do?token=%@&address=%@&Yeartime=%@&monthtime=%@",mPrefixUrl,mDefineToken1,self.yearBtn.titleLabel.text,self.monthBtn.titleLabel.text];
+//
+    NSString *Yeartime = [self.yearBtn.titleLabel.text substringToIndex:4];
+    NSString *monthtime = [NSString string];
+    if ([self.monthBtn.titleLabel.text isEqualToString:@"全部"]) {
+        monthtime = @"13";
+    }else{
+        NSRange range = [self.monthBtn.titleLabel.text rangeOfString:@"月"];
+        monthtime = [self.monthBtn.titleLabel.text substringToIndex:range.location];
+    }
+    NSString *address = [self.address stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+    NSString *queryUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detail/findBill.do?token=%@&address=%@&Yeartime=%@&monthtime=%@",mPrefixUrl,mDefineToken1,address,Yeartime,monthtime];
+    [SVProgressHUD show];
+    [[HttpClient defaultClient]requestWithPath:queryUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"itemsYear"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJMonthDetailSumModel *infoModel = [YJMonthDetailSumModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.months = mArr;
+            [self.tableView reloadData];
+
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+
 }
 - (void)modifyAddress{
     YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];

@@ -27,5 +27,6 @@
 @property (nonatomic, copy) NSString *contactAddress;
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, assign) NSInteger state;
+@property (nonatomic, assign) long info_id;
 @property (nonatomic, copy) NSString *processingTimeString;
 @end

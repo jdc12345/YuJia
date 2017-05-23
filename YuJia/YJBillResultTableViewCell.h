@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YJMonthDetailSumModel.h"
 @interface YJBillResultTableViewCell : UITableViewCell
-
+@property(nonatomic,strong)YJMonthDetailSumModel *sumModel;
 @end
