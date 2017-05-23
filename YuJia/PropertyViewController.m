@@ -21,6 +21,7 @@
 #import "YJExpressDeliveryVC.h"
 #import "YJNearbyShopViewController.h"
 #import "YJRenovationViewController.h"
+#import "YJRentalHouseVC.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -162,6 +163,12 @@ static NSString* collectionCellid = @"collection_cell";
         case 5:{
             YJRenovationViewController *vc = [[YJRenovationViewController alloc] init];
             vc.title = @"家政服务";
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 6:{
+            YJRentalHouseVC *vc = [[YJRentalHouseVC alloc] init];
+            vc.title = @"租房信息";
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
