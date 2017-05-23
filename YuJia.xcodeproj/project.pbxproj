@@ -87,6 +87,7 @@
 		1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */; };
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
+		3E10BE011ED3D69000FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
 		3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */; };
 		3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3331EC4685E00C77B58 /* LockTextViewController.m */; };
@@ -100,6 +101,9 @@
 		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
 		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
+		3E8970DD1ED3C64A00C9DEB1 /* LockChangePWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */; };
+		3E8970E01ED3C97000C9DEB1 /* LockRecardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970DF1ED3C97000C9DEB1 /* LockRecardViewController.m */; };
+		3E8970E31ED3CA2200C9DEB1 /* LockRecardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970E21ED3CA2200C9DEB1 /* LockRecardTableViewCell.m */; };
 		3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */; };
 		3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */; };
 		3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */; };
@@ -368,6 +372,8 @@
 		168466A71EBB495E00A98295 /* YJImageDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJImageDisplayCollectionViewCell.h; sourceTree = "<group>"; };
 		168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJImageDisplayCollectionViewCell.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
+		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
 		3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingViewController.h; sourceTree = "<group>"; };
 		3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingViewController.m; sourceTree = "<group>"; };
 		3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorLockViewController.h; sourceTree = "<group>"; };
@@ -396,6 +402,12 @@
 		3E6468511ECE887B003E785B /* YYFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFeedbackViewController.m; sourceTree = "<group>"; };
 		3E6468531ECEC66D003E785B /* AllHomeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllHomeModel.h; sourceTree = "<group>"; };
 		3E6468541ECEC66D003E785B /* AllHomeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllHomeModel.m; sourceTree = "<group>"; };
+		3E8970DB1ED3C64A00C9DEB1 /* LockChangePWViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockChangePWViewController.h; sourceTree = "<group>"; };
+		3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockChangePWViewController.m; sourceTree = "<group>"; };
+		3E8970DE1ED3C97000C9DEB1 /* LockRecardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockRecardViewController.h; sourceTree = "<group>"; };
+		3E8970DF1ED3C97000C9DEB1 /* LockRecardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockRecardViewController.m; sourceTree = "<group>"; };
+		3E8970E11ED3CA2200C9DEB1 /* LockRecardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockRecardTableViewCell.h; sourceTree = "<group>"; };
+		3E8970E21ED3CA2200C9DEB1 /* LockRecardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockRecardTableViewCell.m; sourceTree = "<group>"; };
 		3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSlider.h; sourceTree = "<group>"; };
 		3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSlider.m; sourceTree = "<group>"; };
 		3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketSettingViewController.h; sourceTree = "<group>"; };
@@ -921,6 +933,14 @@
 				3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */,
 				3E94399C1ECD950D001FE471 /* SelectEquipmentViewController.h */,
 				3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */,
+				3E8970DB1ED3C64A00C9DEB1 /* LockChangePWViewController.h */,
+				3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */,
+				3E8970DE1ED3C97000C9DEB1 /* LockRecardViewController.h */,
+				3E8970DF1ED3C97000C9DEB1 /* LockRecardViewController.m */,
+				3E8970E11ED3CA2200C9DEB1 /* LockRecardTableViewCell.h */,
+				3E8970E21ED3CA2200C9DEB1 /* LockRecardTableViewCell.m */,
+				3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */,
+				3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */,
 			);
 			name = SubController;
 			sourceTree = "<group>";
@@ -1514,6 +1534,7 @@
 				1672D7A91EC32FF500F5970C /* YJNoticeListTVCell.m in Sources */,
 				16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */,
 				3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */,
+				3E10BE011ED3D69000FAF87C /* UnLockRecordModel.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
@@ -1548,6 +1569,7 @@
 				3E94397F1ECAF259001FE471 /* AddFamilyInfoViewController.m in Sources */,
 				3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */,
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
+				3E8970E31ED3CA2200C9DEB1 /* LockRecardTableViewCell.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				166B425C1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
@@ -1582,6 +1604,7 @@
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
 				164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */,
+				3E8970DD1ED3C64A00C9DEB1 /* LockChangePWViewController.m in Sources */,
 				3E90B7331EC2E7BB00CC49D7 /* AirConditioningViewController.m in Sources */,
 				166FF4A51EBC4B6B00846A59 /* YJCityTableViewCell.m in Sources */,
 				16742BF31EC1CEF80016DDD9 /* UIButton+Badge.m in Sources */,
@@ -1647,6 +1670,7 @@
 				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
 				3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
+				3E8970E01ED3C97000C9DEB1 /* LockRecardViewController.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				16750B321EC8268F002296EE /* YJCommunityCarVC.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,

@@ -7,9 +7,10 @@
 //
 
 #import "LockSettingViewController.h"
-//#import "YYPersonalTableViewCell.h"
 #import "LockSettingTableViewCell.h"
 #import "AirModelTableViewCell.h"
+#import "LockChangePWViewController.h"
+#import "LockRecardViewController.h"
 @interface LockSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -102,15 +103,10 @@
     
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            //            NSString *nameStr = @"salkjdklasjdklajslk";
-            //            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-            //            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-            //                                                options:NSStringDrawingUsesLineFragmentOrigin
-            //                                             attributes:attributes
-            //                                                context:nil];
-            //            self.nameLabel.text = nameStr;
-            //            self.nameLabel.frame = rect;
+            [self.navigationController pushViewController:[[LockChangePWViewController alloc]init] animated:YES];
         }else{
+            
+            [self.navigationController pushViewController:[[LockRecardViewController alloc]init] animated:YES];
         }
         
     }else if(indexPath.section == 1){
@@ -126,8 +122,7 @@
         
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    //    [self.navigationController popToRootViewControllerAnimated:YES];
-    //    self.tabBarController.selectedIndex = 4;
+
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------

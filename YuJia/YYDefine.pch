@@ -172,5 +172,12 @@
 //http://192.168.1.55:8080/smarthome/mobileapi/personal/setFamily.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&familyId=123&personalId=123234
 #define mSetFamily [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/setFamily.do?"]
 
+
+//查询开锁记录列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/unlockRecords/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&equipmentId=6&row=15
+#define mOpenLock [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/unlockRecords/findList.do?"]
+
+
+
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */
