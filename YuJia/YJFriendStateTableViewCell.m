@@ -46,6 +46,7 @@ static NSString* photoCellid = @"photo_cell";
     _model = model;
     NSString *iconStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconStr] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.nameLabel.text = model.userName;
     self.typeLabel.text = model.cname;
     self.conentLabel.text = model.content;
     self.timeLabel.text = model.createTimeString;
@@ -181,6 +182,7 @@ static NSString* photoCellid = @"photo_cell";
     }];
 
     self.iconView = iconView;
+    self.nameLabel = nameLabel;
     self.areaLabel = areaLabel;
     self.typeLabel = typeLabel;
     self.conentLabel = contentLabel;

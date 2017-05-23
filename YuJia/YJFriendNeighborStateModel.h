@@ -22,7 +22,7 @@
 @property (nonatomic, copy) NSString *rname;
 @property (nonatomic, copy) NSString *cname;
 @property (nonatomic, copy) NSString *avatar;
-@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *picture;
 @property (nonatomic, assign) long personalId;

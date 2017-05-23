@@ -44,7 +44,7 @@ static NSString* billCellid = @"bill_cell";
 - (void)loadData {
 //    CcUserModel *userModel = [CcUserModel defaultClient];
 //    NSString *token = userModel.userToken;
-//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主地址
     [SVProgressHUD show];// 动画开始
     NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
@@ -351,7 +351,7 @@ static NSString* billCellid = @"bill_cell";
         make.centerY.equalTo(headerBtn);
     }];
     YJPropertyAddressModel *model = self.addresses[0];
-    UILabel *addressLabel = [UILabel labelWithText:model.address andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    UILabel *addressLabel = [UILabel labelWithText:model.detailAddress andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(imageView);

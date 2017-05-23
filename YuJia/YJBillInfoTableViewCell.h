@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface YJBillInfoTableViewCell : UITableViewCell
+@property(nonatomic,weak)UITextField *contentField;
 @property(nonatomic,strong)NSString *item;
 @end

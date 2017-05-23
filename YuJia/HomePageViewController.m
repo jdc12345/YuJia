@@ -19,6 +19,7 @@
 #import "SightModel.h"
 #import "EquipmentModel.h"
 #import "RoomModel.h"
+#import "LogInViewController.h"
 
 @interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
@@ -283,6 +284,7 @@
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
+    [self.navigationController pushViewController:[[LogInViewController alloc]init] animated:YES];
 }
 - (void)segmentAction:(UISegmentedControl *)action{
     NSLog(@"  %ld",action.selectedSegmentIndex);

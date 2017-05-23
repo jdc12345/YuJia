@@ -10,4 +10,5 @@
 
 @interface YJCityTableViewCell : UITableViewCell
 @property(nonatomic,strong)NSString *item;
+@property(nonatomic,strong)NSString *city;
 @end

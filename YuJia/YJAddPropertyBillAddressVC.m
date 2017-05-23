@@ -11,11 +11,19 @@
 #import "YJBillInfoTableViewCell.h"
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
+#import "YJCityDetailModel.h"
+#import "YJAreaDetailModel.h"
 
 static NSString* cityCellid = @"city_cell";
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJAddPropertyBillAddressVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
+@property(nonatomic,weak)UIView *selectView;
+@property(nonatomic,weak)UIView *selectAreaView;
+@property(nonatomic, strong)NSString *cityName;
+@property(nonatomic, strong)NSString *yardName;
+@property(nonatomic, strong)NSString *areaCode;
+@property(nonatomic, strong)NSString *yardid;
 @end
 
 @implementation YJAddPropertyBillAddressVC
@@ -25,6 +33,147 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     self.title = @"添加地址";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setupUI];
+}
+-(void)loadCityData{
+    http://192.168.1.55:8080/smarthome/mobilepub/baseArea/findList.do 获取城市列表
+    [SVProgressHUD show];// 动画开始
+    NSString *getCityUrlStr = [NSString stringWithFormat:@"%@/mobilepub/baseArea/findList.do",mPrefixUrl];
+    [[HttpClient defaultClient]requestWithPath:getCityUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"baseAreaList"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJCityDetailModel *infoModel = [YJCityDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self selectViewWithNames:mArr and:10];
+            
+        }else{
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+
+}
+-(void)selectViewWithNames:(NSArray*)names and:(NSInteger)tag{
+    if (self.selectView) {
+        if (self.selectView.hidden==false) {
+            self.selectView.hidden=true;
+        }else{
+            self.selectView.hidden=false;
+        }
+        
+    }else{
+        UIView *selectView = [[UIView alloc]init];
+        selectView.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+        selectView.layer.borderColor = [UIColor colorWithHexString:@"#cccaca"].CGColor;
+        selectView.layer.borderWidth =1*kiphone6/[UIScreen mainScreen].scale;
+        [self.view addSubview:selectView];
+        [self.view bringSubviewToFront:selectView];
+        [selectView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.offset(5*kiphone6);
+            make.right.offset(-5*kiphone6);
+            make.width.offset(130*kiphone6);
+            make.height.offset(28*kiphone6*names.count);
+        }];
+        self.selectView =selectView;
+        for (int i=0; i<names.count; i++) {
+            UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, i*28*kiphone6, 130*kiphone6, 28*kiphone6)];
+            YJCityDetailModel *infoModel = names[i];
+            btn.tag = tag+[infoModel.areaCode integerValue];
+            [btn setTitle:infoModel.areaName forState:UIControlStateNormal];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:12];
+            [selectView addSubview:btn];
+            [btn addTarget:self action:@selector(updateCity:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+-(void)updateCity:(UIButton*)sender{
+    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccaca"]];
+    self.areaCode = [NSString stringWithFormat:@"%ld",sender.tag-10];
+    self.selectView.hidden = true;
+    YJCityTableViewCell *cell =[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.city = sender.titleLabel.text;
+    self.cityName = sender.titleLabel.text;
+}
+-(void)loadAreaData{
+http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?AreaCode=130681 获取小区列表
+    [SVProgressHUD show];// 动画开始
+    if (self.areaCode == nil) {
+        [SVProgressHUD showErrorWithStatus:@"请选择城市"];
+    }
+    NSString *getAreaUrlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findAll.do?AreaCode=%@",mPrefixUrl,self.areaCode];
+    [[HttpClient defaultClient]requestWithPath:getAreaUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJAreaDetailModel *infoModel = [YJAreaDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            [self selectViewWithAreaNames:mArr and:20];
+            
+        }else{
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+    
+}
+-(void)selectViewWithAreaNames:(NSArray*)names and:(NSInteger)tag{
+    if (self.selectAreaView) {
+        if (self.selectAreaView.hidden==false) {
+            self.selectAreaView.hidden=true;
+        }else{
+            self.selectAreaView.hidden=false;
+        }
+        
+    }else{
+        UIView *selectAreaView = [[UIView alloc]init];
+        selectAreaView.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+        selectAreaView.layer.borderColor = [UIColor colorWithHexString:@"#cccaca"].CGColor;
+        selectAreaView.layer.borderWidth =1*kiphone6/[UIScreen mainScreen].scale;
+        [self.view addSubview:selectAreaView];
+        [self.view bringSubviewToFront:selectAreaView];
+        [selectAreaView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.offset(5*kiphone6);
+            make.right.offset(-5*kiphone6);
+            make.width.offset(130*kiphone6);
+            make.height.offset(28*kiphone6*names.count);
+        }];
+        self.selectAreaView =selectAreaView;
+        for (int i=0; i<names.count; i++) {
+            UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, i*28*kiphone6, 130*kiphone6, 28*kiphone6)];
+            YJAreaDetailModel *infoModel = names[i];
+            btn.tag = tag+[infoModel.info_id integerValue];
+            [btn setTitle:infoModel.rname forState:UIControlStateNormal];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:12];
+            [selectAreaView addSubview:btn];
+            [btn addTarget:self action:@selector(updateArea:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+-(void)updateArea:(UIButton*)sender{
+    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccaca"]];
+    self.yardid = [NSString stringWithFormat:@"%ld",sender.tag-20];
+    self.selectAreaView.hidden = true;
+    YJCityTableViewCell *cell =[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    cell.city = sender.titleLabel.text;
+    self.yardName = sender.titleLabel.text;
 }
 - (void)setupUI {
     //添加tableView
@@ -65,7 +214,51 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
   
 }
 - (void)submitAddress{
+    NSString *city = [self.cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *yard = [self.yardName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *nameCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    NSString *name = [nameCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *telCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+//    NSString *telNum = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *buildCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+    NSString *buildNumber = [NSString stringWithFormat:@"%@号楼",buildCell.contentField.text];
+    NSString *buildingNumber = [buildNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *floorCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+     NSString *floorNumber = [NSString stringWithFormat:@"%@层",floorCell.contentField.text];
+    NSString *floor = [floorNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *unitNumberCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    NSString *unit = [NSString stringWithFormat:@"%@单元",unitNumberCell.contentField.text];
+    NSString *unitNumber = [unit stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJBillInfoTableViewCell *roomCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
+    NSString *room = [NSString stringWithFormat:@"%@室",roomCell.contentField.text];
+    NSString *roomNumber = [room stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &city=%E5%8C%97%E4%BA%AC
+//    &yard=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81
+//    &yarid=1&ownerName=%E6%B5%81%E5%B0%8F%E8%99%BE
+//    &ownerTelephone=18782918821&buildingNumber=1%E5%8F%B7%E6%A5%BC
+//    &unitNumber=5
+//    &floor=3
+//    &roomNumber=301
     //此处接提交地址接口！！！！！
+    [SVProgressHUD show];// 动画开始
+    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/addAddress.do?token=%@&city=%@&yard=%@&yarid=%@&ownerName=%@&ownertelephone=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@",mPrefixUrl,mDefineToken1,city,yard,self.yardid,name,telCell.contentField.text,buildingNumber,unitNumber,floor,roomNumber];
+    [[HttpClient defaultClient]requestWithPath:reportUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            
+        }else{
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
             YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
@@ -92,6 +285,10 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         return cell;
     }else{
         YJBillInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
+        if (indexPath.row>2) {
+            cell.contentField.keyboardType = UIKeyboardTypeNumberPad;
+            [self addToolSender:cell.contentField];
+        }
         cell.item = itemArr[indexPath.row];
         return cell;
     }
@@ -101,7 +298,33 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45*kiphone6;
 }
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row==0) {
+        [self loadCityData];
+    }else if (indexPath.row==1){
+        [self loadAreaData];
+    }
+}
+-(void)addToolSender:(UITextField*)textField{
+    
+    UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
+    [topView setBarStyle:UIBarStyleDefault];
+    UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(2, 5, 50, 25);
+    [btn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitle:@"完成" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+    [topView setItems:buttonsArray];
+    
+    textField.inputAccessoryView = topView;
+}
+-(void)resignFirstResponderText {
+    [self.view endEditing:true];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -78,7 +78,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
     YJPropertyAddressModel *model = self.addresses[indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", model.city,model.address];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", model.city,model.detailAddress];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
         cell.textLabel.font = [UIFont systemFontOfSize:14];
     //添加line

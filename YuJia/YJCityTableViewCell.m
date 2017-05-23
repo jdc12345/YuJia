@@ -29,6 +29,10 @@
     _item = item;
     self.itemLabel.text = item;
 }
+-(void)setCity:(NSString *)city{
+    _city = city;
+    self.contentLabel.text = city;
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     //添加line
