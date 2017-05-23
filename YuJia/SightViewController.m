@@ -125,7 +125,10 @@
 //        NSLog(@"i === %d",i);
 //        [pageView changeToItemAtIndex:i];
 //    }
-    [pageView changeToItemAtIndex:0];
+    if (self.nameList.count >0) {
+        [pageView changeToItemAtIndex:0];
+    }
+    
     
     [self.view addSubview:pageView];
 }

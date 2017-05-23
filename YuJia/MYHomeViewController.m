@@ -12,6 +12,7 @@
 #import "EquipmentManagerViewController.h"
 #import "MyRoomInfoViewController.h"
 #import "PopListTableViewController.h"
+#import "AllHomeModel.h"
 #define inputW 20 // 输入框宽度
 #define inputH 50  // 输入框高度
 @interface MYHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -61,7 +62,7 @@
         //        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
         [_tableView registerClass:[MYHomeTableViewCell class] forCellReuseIdentifier:@"MYHomeTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
-        _tableView.tableHeaderView = [self personInfomation];
+        
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
     }
@@ -78,8 +79,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"我的家";
-    self.selectStart = @[@"lim创建的家",@"zzz创建的家"];
+//    self.selectStart = @[@"lim创建的家",@"zzz创建的家"];
     [self tableView];
+    [self httpRequestHomeInfo];
     // Do any additional setup after loading the view.
 }
 #pragma mark -
@@ -250,6 +252,27 @@
     [_icon setImage:[UIImage imageNamed:@""]];
     // 关闭菜单
     [self openAccountList];
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllHome,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *allHome = responseObject[@"mapList"];
+        NSMutableArray *nameList = [[NSMutableArray alloc]initWithCapacity:2];
+        for (NSDictionary *dict in allHome) {
+            AllHomeModel *homeModel = [AllHomeModel mj_objectWithKeyValues:dict];
+            [self.dataSource addObject:homeModel];
+            [nameList addObject:homeModel.familyName];
+        }
+        
+      
+        self.selectStart = nameList;
+        _tableView.tableHeaderView = [self personInfomation];
+        [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 /*
  #pragma mark - Navigation

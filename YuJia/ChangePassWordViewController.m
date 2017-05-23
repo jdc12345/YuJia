@@ -25,7 +25,7 @@
     // Do any additional setup after loading the view.
 }
 - (void)pushToAdd{
-    
+    [self httpRequestInfo];
 }
 - (void)settingSubView{
 //    UIView *headView = [[UIView alloc]init];
@@ -230,7 +230,22 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)httpRequestInfo{
+    NSDictionary *dict = @{
+                           @"token":mDefineToken,
+                           @"oldPwd":@"123456",
+                           @"newPwd":@"123123"
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mChangePSW] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
 /*
  #pragma mark - Navigation
  

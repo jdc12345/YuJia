@@ -16,6 +16,7 @@
 #import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
+#import "YYFeedbackViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -247,8 +248,8 @@
     NSArray *iconList = @[@"myhome",@"mycircle",@"MyOrder",@"collect"];
     
     
-    CGFloat btnW = kScreenW/4.0;
-    for (int i = 0 ; i<4 ;  i++) {
+    CGFloat btnW = kScreenW/2.0;
+    for (int i = 0 ; i<2 ;  i++) {
         MMButton *leftNavBtn = [MMButton buttonWithType:UIButtonTypeCustom];
         leftNavBtn.frame = CGRectMake(i *btnW, 130, btnW, 100);
         leftNavBtn.tag = 800 +i;
@@ -296,7 +297,7 @@
         if (indexPath.row == 0) {
             [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
         }else if(indexPath.row == 1){
-
+            [self.navigationController pushViewController:[[YYFeedbackViewController alloc]init] animated:YES];
         }else{
 
         }

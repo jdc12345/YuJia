@@ -104,6 +104,8 @@
 		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
 		3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3481EC5874800C77B58 /* MYHomeViewController.m */; };
 		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
+		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
+		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
 		3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */; };
 		3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B7291EC1C7A500CC49D7 /* SocketSettingViewController.m */; };
 		3E90B72D1EC1C83D00CC49D7 /* CurtainSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E90B72C1EC1C83D00CC49D7 /* CurtainSettingViewController.m */; };
@@ -187,6 +189,8 @@
 		3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB61EC062850094CBE4 /* EquipmentModel.m */; };
 		3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB91EC062F20094CBE4 /* RoomModel.m */; };
 		3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */; };
+		3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468511ECE887B003E785B /* YYFeedbackViewController.m */; };
+		3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
 /* End PBXBuildFile section */
 
@@ -402,6 +406,12 @@
 		3E20B3481EC5874800C77B58 /* MYHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeViewController.m; sourceTree = "<group>"; };
 		3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeTableViewCell.h; sourceTree = "<group>"; };
 		3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeTableViewCell.m; sourceTree = "<group>"; };
+		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
+		3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCircleViewController.m; sourceTree = "<group>"; };
+		3E6468501ECE887B003E785B /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
+		3E6468511ECE887B003E785B /* YYFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFeedbackViewController.m; sourceTree = "<group>"; };
+		3E6468531ECEC66D003E785B /* AllHomeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllHomeModel.h; sourceTree = "<group>"; };
+		3E6468541ECEC66D003E785B /* AllHomeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllHomeModel.m; sourceTree = "<group>"; };
 		3E90B7221EC1BB8C00CC49D7 /* MMSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSlider.h; sourceTree = "<group>"; };
 		3E90B7231EC1BB8C00CC49D7 /* MMSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSlider.m; sourceTree = "<group>"; };
 		3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketSettingViewController.h; sourceTree = "<group>"; };
@@ -567,6 +577,8 @@
 		3E984FB91EC062F20094CBE4 /* RoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomModel.m; sourceTree = "<group>"; };
 		3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSettingViewController.h; sourceTree = "<group>"; };
 		3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightSettingViewController.m; sourceTree = "<group>"; };
+		3ED9F33E1ED2B3BC00AF7E0F /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
+		3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
 		FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -997,6 +1009,8 @@
 		3E94398A1ECBE773001FE471 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E6468531ECEC66D003E785B /* AllHomeModel.h */,
+				3E6468541ECEC66D003E785B /* AllHomeModel.m */,
 				3E94398B1ECBE77C001FE471 /* CcUserModel.h */,
 				3E94398C1ECBE77C001FE471 /* CcUserModel.m */,
 			);
@@ -1127,6 +1141,8 @@
 				3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */,
 				3E984F2B1EB82AC50094CBE4 /* YYTabBarItem.h */,
 				3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */,
+				3ED9F33E1ED2B3BC00AF7E0F /* LogInViewController.h */,
+				3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */,
 			);
 			name = "Tab+Nav";
 			sourceTree = "<group>";
@@ -1226,6 +1242,8 @@
 				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
 				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
 				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
+				3E6468501ECE887B003E785B /* YYFeedbackViewController.h */,
+				3E6468511ECE887B003E785B /* YYFeedbackViewController.m */,
 				3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */,
 				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
 				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
@@ -1240,6 +1258,8 @@
 				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
 				3E9439991ECD8013001FE471 /* AboutYuJiaViewController.h */,
 				3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */,
+				3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */,
+				3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1508,6 +1528,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */,
+				3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */,
 				1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */,
 				1681276D1ECD2B66003EBC9F /* YJNearbyShopDetailVC.m in Sources */,
 				166B42621ED03BF600E8FEF0 /* YJRenovationViewController.m in Sources */,
@@ -1549,6 +1571,7 @@
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
 				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
+				3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */,
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
 				1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */,
@@ -1601,6 +1624,7 @@
 				16239DC21ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m in Sources */,
 				3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */,
 				3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */,
+				3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */,
 				3E90B7361EC3041800CC49D7 /* AirConditioningView.m in Sources */,
 				1661FE271EB8789100583A7F /* UILabel+Addition.m in Sources */,
 				164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */,
