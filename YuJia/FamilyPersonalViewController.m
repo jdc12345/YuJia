@@ -8,12 +8,18 @@
 
 #import "FamilyPersonalViewController.h"
 #import "FamilyPersonalTableViewCell.h"
+#import "PersonalModel.h"
+#import <UIImageView+WebCache.h>
+#import "UIBarButtonItem+Helper.h"
 @interface FamilyPersonalViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *idLabel;
 @property (nonatomic, strong) UIImageView *iconV;
+
+@property (nonatomic, strong) PersonalModel *personalModel;
+
 @end
 
 @implementation FamilyPersonalViewController
@@ -50,9 +56,13 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
+    
     [self.dataSource addObjectsFromArray:@[@"控制我的设备",@"控制我的门锁",@"添加设备到我的家",@"从我的家删除设备"]];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestChangeInfo)];
+    
+    [self httpRequestHomeInfo];
 //    [self.view addSubview:[self personInfomation]];
-    [self tableView];
+
     // Do any additional setup after loading the view.
 }
 
@@ -74,16 +84,19 @@
 //    [personV addGestureRecognizer:tapGest];
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
+        [iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
     iconV.layer.cornerRadius = 30;
     iconV.clipsToBounds = YES;
     //
     UILabel *nameLabel = [[UILabel alloc]init];
     nameLabel.text = @"LIM   家人";
+    nameLabel.text = [NSString stringWithFormat:@"%@  %@",self.personalModel.userName,self.personalModel.comment];
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
     nameLabel.font = [UIFont systemFontOfSize:14];
     //
     UILabel *idName = [[UILabel alloc]init];
     idName.text = @"18328887563";
+    idName.text = self.telePhone;
     idName.textColor = [UIColor colorWithHexString:@"333333"];
     idName.font = [UIFont systemFontOfSize:14];
     //
@@ -187,6 +200,41 @@
 //    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.row]];
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
+}
+
+// 获取家人权限
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mseeFamilyInfo,mDefineToken,self.homeID] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        self.personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"MyFamily"]];
+        [self tableView];
+        
+        
+        
+        NSMutableArray *pmsnArray = [[NSMutableArray alloc]initWithObjects:self.personalModel.pmsnCtrlDevice,self.personalModel.pmsnCtrlDoor,self.personalModel.pmsnCtrlAdd,self.personalModel.pmsnCtrlDel, nil];
+        for (int i = 0; i<4; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            FamilyPersonalTableViewCell *familyCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            if ([pmsnArray[i] isEqualToString:@"1"]) {
+                familyCell.iconBtn.selected = YES;
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+// 修改家人权限
+- (void)httpRequestChangeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mseeFamilyInfo,mDefineToken,self.homeID] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 /*
 #pragma mark - Navigation

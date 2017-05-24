@@ -9,6 +9,8 @@
 #import "AddFamilyInfoViewController.h"
 #import "AddFamilyInfoTableViewCell.h"
 #import "PopListTableViewController.h"
+#import <UIImageView+WebCache.h>
+#import "UIBarButtonItem+Helper.h"
 @interface AddFamilyInfoViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -38,6 +40,8 @@
  */
 @property (nonatomic) CGRect listFrame;
 @property (nonatomic, assign) CGFloat leftPodding;
+@property (nonatomic, strong) UITextField *commentBtn;
+@property (nonatomic, strong) NSString *currentTitle;
 @end
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
@@ -78,7 +82,10 @@
     
     [self.dataSource addObjectsFromArray:@[@"控制我的设备",@"控制我的门锁",@"添加设备到我的家",@"从我的家删除设备"]];
     
-    self.selectStart = @[@"定时启动",@"定位启动"];
+    self.selectStart = @[@"家人",@"租户",@"访客",@"自定义"];
+    
+    
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestInfo)];
     //    [self.view addSubview:[self personInfomation]];
     [self tableView];
     // Do any additional setup after loading the view.
@@ -102,16 +109,19 @@
     //    [personV addGestureRecognizer:tapGest];
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
+    [iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
     iconV.layer.cornerRadius = 30;
     iconV.clipsToBounds = YES;
     //
     UILabel *nameLabel = [[UILabel alloc]init];
     nameLabel.text = @"LIM   家人";
+    nameLabel.text = [NSString stringWithFormat:@"%@  %@",self.personalModel.userName,self.personalModel.comment];
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
     nameLabel.font = [UIFont systemFontOfSize:14];
     //
     UILabel *idName = [[UILabel alloc]init];
     idName.text = @"18328887563";
+    nameLabel.text = [NSString stringWithFormat:@"%@",self.personalModel.telephone];
     idName.textColor = [UIColor colorWithHexString:@"333333"];
     idName.font = [UIFont systemFontOfSize:14];
     //
@@ -168,7 +178,26 @@
         make.left.equalTo(remarkLabel.mas_right).with.offset(30);
         make.size.mas_equalTo(CGSizeMake(185 , 30));
     }];
+    ////////自定义
+    UITextField *newNumberTextF = [[UITextField alloc]init];
+    newNumberTextF.font = [UIFont systemFontOfSize:15];
+    newNumberTextF.textColor = [UIColor colorWithHexString:@"333333"];
+    newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
+    newNumberTextF.layer.borderWidth = 1;
+    newNumberTextF.layer.cornerRadius = 2.5;
+    newNumberTextF.clipsToBounds = YES;
+    newNumberTextF.textAlignment = NSTextAlignmentLeft;
     
+    [remarksView addSubview:newNumberTextF];
+    
+    [newNumberTextF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(remarksView).with.offset(0);
+        make.left.equalTo(remarkLabel.mas_right).with.offset(30);
+        make.size.mas_equalTo(CGSizeMake(185 , 30));
+    }];
+    self.commentBtn = newNumberTextF;
+    self.commentBtn.hidden = YES;
+    ////////
     [headView addSubview:remarksView];
     [headView addSubview:personV];
     
@@ -256,8 +285,8 @@
     //    _curAccount.center = CGPointMake(self.view.center.x, 200);
     // 默认当前账号为已有账号的第一个
     //    Account *acc = _dataSource[0];
-    [_curAccount setTitle:@"一键启动" forState:UIControlStateNormal];
-    
+    [_curAccount setTitle:@"家人" forState:UIControlStateNormal];
+    self.currentTitle = @"家人";
     _curAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _curAccount.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     // 字体
@@ -297,7 +326,8 @@
     // 数据
     _accountList.accountSource = self.selectStart;
     _accountList.isOpen = NO;
-    
+    _accountList.isCenter = NO;
+    _accountList.cellHigh = 30;
     // 初始化frame
     [self updateListH];
     // 隐藏下拉菜单
@@ -317,7 +347,7 @@
     }else{
         listH = inputH * _dataSource.count;
     }
-    _listFrame = CGRectMake(100, 184 +30, 185, 60);
+    _listFrame = CGRectMake(100, 184 +30, 185, 120);
     _accountList.view.frame = _listFrame;
 }
 /**
@@ -340,16 +370,18 @@
     //    Account *acc = _dataSource[index];
     
     NSString *title = self.selectStart[index];
+    self.currentTitle = title;
     [_curAccount setTitle:title forState:UIControlStateNormal];
-    if ([title isEqualToString:@"定时启动"]) {
-//        [self back_click];
-        self.selectStart = @[@"一键启动",@"定位启动"];
-    }else if([title isEqualToString:@"定位启动"]){
-//        [self back_click_location];
-        self.selectStart = @[@"一键启动",@"定时启动"];
-    }else{
-        self.selectStart = @[@"定时启动",@"定位启动"];
+    if ([title isEqualToString:@"自定义"]) {
+        _curAccount.hidden = YES;
+        _commentBtn.hidden = NO;
     }
+//    else if([title isEqualToString:@"定位启动"]){
+////        [self back_click_location];
+//        self.selectStart = @[@"一键启动",@"定时启动"];
+//    }else{
+//        self.selectStart = @[@"定时启动",@"定位启动"];
+//    }
     _accountList.accountSource = self.selectStart;
     [_accountList reloadDataSource];
     //    if (index == 0) {
@@ -362,6 +394,42 @@
     [_icon setImage:[UIImage imageNamed:@""]];
     // 关闭菜单
     [self openAccountList];
+}
+- (void)httpRequestInfo{
+    
+    NSMutableArray *pmsnArray = [[NSMutableArray alloc]initWithCapacity:2];;
+    for (int i = 0; i<4; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        AddFamilyInfoTableViewCell *familyCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        if(familyCell.iconBtn.selected){
+            [pmsnArray addObject:@"1"];
+        }else{
+            [pmsnArray addObject:@"0"];
+        }
+    }
+    NSLog(@"array = %@",self.personalModel.info_id);
+    NSDictionary *dict2 = @{
+                            @"token":mDefineToken,
+                            @"homePersonalId":self.personalModel.info_id,
+                            @"comment":self.currentTitle,
+                            @"pmsnCtrlDevice":pmsnArray[0],
+                            @"pmsnCtrlDoor":pmsnArray[1],
+                            @"pmsnCtrlAdd":pmsnArray[2],
+                            @"pmsnCtrlDel":pmsnArray[3]
+                            };
+    
+    NSLog(@"dict2 = %@",dict2);
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSetFamilyUsers] method:1 parameters:dict2 prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
 }
 /*
  #pragma mark - Navigation

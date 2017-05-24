@@ -17,6 +17,7 @@
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
+#import "MyCircleViewController.h"
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -74,8 +75,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self httpRequestHomeInfo];
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@[@"收货地址"],@[@"关于宇家",@"意见反馈"]]];
-    self.iconList =@[@[@"address"],@[@"about",@"opinion"]];
+    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"关于宇家",@"意见反馈"]];
+    self.iconList =@[@"about",@"opinion"];
     // 左侧地址按钮   测
     UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -280,20 +281,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-//            NSString *nameStr = @"salkjdklasjdklajslk";
-//            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-//            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-//                                                options:NSStringDrawingUsesLineFragmentOrigin
-//                                             attributes:attributes
-//                                                context:nil];
-//            self.nameLabel.text = nameStr;
-//            self.nameLabel.frame = rect;
-        }else{
-        }
-        
-    }else if(indexPath.section == 1){
+//    if (indexPath.section == 1) {
+//        if (indexPath.row == 0) {
+////            NSString *nameStr = @"salkjdklasjdklajslk";
+////            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
+////            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
+////                                                options:NSStringDrawingUsesLineFragmentOrigin
+////                                             attributes:attributes
+////                                                context:nil];
+////            self.nameLabel.text = nameStr;
+////            self.nameLabel.frame = rect;
+//        }else{
+//        }
+//        
+//    }else if(indexPath.section == 0){
         if (indexPath.row == 0) {
             [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
         }else if(indexPath.row == 1){
@@ -301,10 +302,10 @@
         }else{
 
         }
+    
         
         
-        
-    }
+//    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     //    [self.navigationController popToRootViewControllerAnimated:YES];
     //    self.tabBarController.selectedIndex = 4;
@@ -312,11 +313,11 @@
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return self.dataSource.count;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *list = self.dataSource[section];
-    return list.count;
+//    NSArray *list = self.dataSource[section];
+    return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -335,8 +336,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYPersonalTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"YYPersonalTableViewCell" forIndexPath:indexPath];
     
-    homeTableViewCell.titleLabel.text = self.dataSource[indexPath.section][indexPath.row];
-    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.section][indexPath.row]];
+    homeTableViewCell.titleLabel.text = self.dataSource[indexPath.row];
+    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.row]];
     
     return homeTableViewCell;
 }
@@ -351,7 +352,7 @@
             [self.navigationController pushViewController:[[MYHomeViewController alloc]init] animated:YES];
             break;
         case 1:
-            
+            [self.navigationController pushViewController:[[MyCircleViewController alloc]init] animated:YES];
             break;
         case 2:
             

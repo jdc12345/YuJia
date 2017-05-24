@@ -26,4 +26,14 @@
 @property (nonatomic, strong) NSString *comment;
 
 @property (nonatomic, strong) NSString *weixin;
+@property (nonatomic, strong) NSString *myFamilyId;
+
+// 权限
+@property (nonatomic, strong) NSString *pmsnCtrlAdd;
+@property (nonatomic, strong) NSString *pmsnCtrlDel;
+@property (nonatomic, strong) NSString *pmsnCtrlDevice;
+@property (nonatomic, strong) NSString *pmsnCtrlDoor;
+
+
+
 @end

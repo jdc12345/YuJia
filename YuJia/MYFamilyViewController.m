@@ -68,8 +68,11 @@
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    [self.navigationController pushViewController:[[FamilyPersonalViewController alloc]init] animated:YES];
+    PersonalModel *personalModel = self.dataSource[indexPath.row];
+    FamilyPersonalViewController *familyInfo = [[FamilyPersonalViewController alloc]init];
+    familyInfo.homeID = personalModel.myFamilyId;
+    familyInfo.telePhone = personalModel.telephone;
+    [self.navigationController pushViewController:familyInfo animated:YES];
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     
 }

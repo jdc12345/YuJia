@@ -55,7 +55,10 @@
 //    Account *acc = _accountSource[indexPath.row];
     cell.avatar.image = [UIImage imageNamed:@""];// 头像
     cell.account.text = _accountSource[indexPath.row];// 账号
-    [cell setToCenter];
+    if (self.isCenter) {
+        [cell setToCenter];
+    }
+    
     [cell setBackgroundColor:[UIColor whiteColor]];
     //分割线清偏移
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {

@@ -157,12 +157,15 @@
 //添加家人接口,参数修改了
 //http://192.168.1.55:8080/smarthome/mobileapi/myFamily/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 //http://192.168.1.55:8080/smarthome/mobileapi/myFamily/save.do?telephone=18335277251&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&addvcode=177428
-#define mAddFamilyUsers [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/save.do?"]
-
+#define mAddFamilyUsers [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/savetest.do?"]
+//http://192.168.1.55:8080/smarthome/mobileapi/myFamily/save.do?
+#define mSetFamilyUsers [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/save.do?"]
 //删除我的家人接口
 //http://192.168.1.55:8080/smarthome/mobileapi/myFamily/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mRemoveFamily [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/save.do?"]
-
+// 查询家人
+//myFamily/get.do?
+#define mseeFamilyInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/myFamily/get.do?"]
 //添加家人发送验证码
 //http://192.168.1.55:8080/smarthome/mobileapi/personal/addvcode.do?telephone=13717883005&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mAddFamilyVcode [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/addvcode.do?"]

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="anM-A0-tiV">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQ7-q4-tUD">
+                    <rect key="frame" x="0.0" y="147" width="375" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="ARW-RH-chJ"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWr-oA-lsl">
+                    <rect key="frame" x="10" y="65.5" width="8" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.18949644299999999" green="0.84392182910000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="卧       室" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4eL-OC-50U">
+                    <rect key="frame" x="23" y="65.5" width="56" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pFA-wM-S9K">
+                    <rect key="frame" x="89" y="5" width="126" height="137"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="126" id="Uaw-MK-wJT"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="卧室"/>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rent_more" translatesAutoresizingMaskIntoConstraints="NO" id="ZOG-o0-EVa">
+                    <rect key="frame" x="203" y="67.5" width="7" height="12"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstItem="4eL-OC-50U" firstAttribute="leading" secondItem="rWr-oA-lsl" secondAttribute="trailing" constant="5" id="1kl-bX-08H"/>
+                <constraint firstItem="rWr-oA-lsl" firstAttribute="top" secondItem="4eL-OC-50U" secondAttribute="top" id="1xX-dc-bF9"/>
+                <constraint firstItem="4eL-OC-50U" firstAttribute="centerY" secondItem="anM-A0-tiV" secondAttribute="centerY" id="1yv-sa-jHh"/>
+                <constraint firstItem="cQ7-q4-tUD" firstAttribute="top" secondItem="pFA-wM-S9K" secondAttribute="bottom" constant="5" id="DiD-Aa-Dbu"/>
+                <constraint firstItem="rWr-oA-lsl" firstAttribute="leading" secondItem="anM-A0-tiV" secondAttribute="leading" constant="10" id="HYD-2D-35G"/>
+                <constraint firstItem="cQ7-q4-tUD" firstAttribute="leading" secondItem="anM-A0-tiV" secondAttribute="leading" id="Rtx-bQ-41s"/>
+                <constraint firstItem="pFA-wM-S9K" firstAttribute="top" secondItem="anM-A0-tiV" secondAttribute="top" constant="5" id="i4X-UI-5B0"/>
+                <constraint firstItem="pFA-wM-S9K" firstAttribute="leading" secondItem="4eL-OC-50U" secondAttribute="trailing" constant="10" id="iId-n3-hke"/>
+                <constraint firstAttribute="trailing" secondItem="cQ7-q4-tUD" secondAttribute="trailing" id="oQi-l4-pmX"/>
+                <constraint firstItem="ZOG-o0-EVa" firstAttribute="centerY" secondItem="pFA-wM-S9K" secondAttribute="centerY" id="s2I-dJ-3hD"/>
+                <constraint firstItem="ZOG-o0-EVa" firstAttribute="trailing" secondItem="pFA-wM-S9K" secondAttribute="trailing" constant="-5" id="wem-On-vTa"/>
+                <constraint firstAttribute="bottom" secondItem="cQ7-q4-tUD" secondAttribute="bottom" id="yBN-IN-pUv"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-81.5" y="135"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="rent_more" width="7" height="12"/>
+    </resources>
+</document>

@@ -424,7 +424,8 @@
     // 数据
     _accountList.accountSource = self.selectStart;
     _accountList.isOpen = NO;
-    
+    _accountList.isCenter = NO;
+    _accountList.cellHigh = 30;
     // 初始化frame
     [self updateListH];
     // 隐藏下拉菜单

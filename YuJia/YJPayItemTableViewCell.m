@@ -8,7 +8,7 @@
 
 #import "YJPayItemTableViewCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
+
 @interface YJPayItemTableViewCell()
 @property (nonatomic, weak) UILabel* itemLabel;
 @property (nonatomic, weak) UILabel* numberLabel;
