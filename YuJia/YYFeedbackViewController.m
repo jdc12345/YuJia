@@ -117,7 +117,15 @@
 }
 - (void)sendFeedBack{
     NSString *tokenStr = [CcUserModel defaultClient].userToken;
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@content=%@&token=%@&contact=%@",mFeedBack,self.feedTextView.text,tokenStr,self.phoneTextF.text] method:0 parameters:nil prepareExecute:^{
+    
+    NSDictionary *dict = @{
+                           @"token":mDefineToken,
+                           @"id":_personalModel.myFamilyId,
+                           @"content":self.feedTextView.text,
+                           @"contact":self.phoneTextF.text
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:mFeedBack method:1 parameters:dict prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"提交成功%@",responseObject);

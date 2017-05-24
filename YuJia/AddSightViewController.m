@@ -709,6 +709,7 @@
         [equipmentList addObject: [equipment properties_aps]];
     }
     NSLog(@"%@",equipmentList);
+    self.sightModel = [[SightModel alloc]init];
     if (self.sightNameF.text.length >0) {
         self.sightModel.sceneName = self.sightNameF.text;
     }

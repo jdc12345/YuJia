@@ -179,6 +179,9 @@
 //查询开锁记录列表接口
 //http://192.168.1.55:8080/smarthome/mobileapi/unlockRecords/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&equipmentId=6&row=15
 #define mOpenLock [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/unlockRecords/findList.do?"]
+//修改绑定手机号接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/mdfTelephone.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&telephone=13717883005&pwd=123456
+#define mChangePhone [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/mdfTelephone.do?"]
 
 
 
