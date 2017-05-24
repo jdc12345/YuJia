@@ -21,7 +21,7 @@
 #import "YJExpressDeliveryVC.h"
 #import "YJNearbyShopViewController.h"
 #import "YJRenovationViewController.h"
-#import "YJRentalHouseVC.h"
+#import "YJHouseSearchListVC.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -167,8 +167,7 @@ static NSString* collectionCellid = @"collection_cell";
             break;
         }
         case 6:{
-            YJRentalHouseVC *vc = [[YJRentalHouseVC alloc] init];
-            vc.title = @"租房信息";
+            YJHouseSearchListVC *vc = [[YJHouseSearchListVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
