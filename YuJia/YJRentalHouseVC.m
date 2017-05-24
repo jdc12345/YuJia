@@ -21,10 +21,11 @@
 static NSString* tableCell = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
-@interface YJRentalHouseVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate>
+@interface YJRentalHouseVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)YJBackView *backView;
+@property(nonatomic,weak)YJSelectView *selectView;
 @property(nonatomic,assign)NSInteger flag;
 @property(nonatomic,weak)UIButton *allBtn;
 @property(nonatomic,weak)UIButton *shareBtn;
@@ -32,6 +33,16 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,weak)UIView *shareView;
 @property (nonatomic, strong) NSMutableArray *imageArr;
 @property(nonatomic,weak)UICollectionView *collectionView;
+@property(nonatomic,weak)UIView *coverView;
+@property(nonatomic,weak)UIPickerView *onePickerView;
+@property(nonatomic,strong)NSArray *oneArr;
+@property(nonatomic,strong)NSDictionary *areaDic;
+@property(nonatomic,strong)NSArray *oneLevelArr;
+@property(nonatomic,strong)NSArray *twoLevelArr;
+@property(nonatomic,strong)NSString *oneLevelArea;
+@property(nonatomic,strong)NSString *twoLevelArea;
+@property(nonatomic,assign)NSInteger pickFlag;
+@property(nonatomic,weak)UIToolbar * topView;
 @end
 
 @implementation YJRentalHouseVC
@@ -126,6 +137,12 @@ static NSString* photoCellid = @"photo_cell";
         [selectView layoutIfNeeded];
         UIView *line2=(UIView *)[selectView viewWithTag:13];
         self.line2 = line2;
+    self.selectView = selectView;
+    [selectView.directionBtn addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+    [selectView.areaBtn addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *payType=(UIButton *)[selectView viewWithTag:24];
+    [payType addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+
     //添加大tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
@@ -165,9 +182,196 @@ static NSString* photoCellid = @"photo_cell";
     tableView.tableFooterView = footerView;
 
 }
+-(void)pickerView:(UIButton*)sender{
+    if (sender.tag==101) {
+        self.pickFlag = 101;
+        self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
+        self.oneLevelArr = [self.areaDic allKeys];
+        self.twoLevelArr = self.areaDic[@"北京市"];
+
+        [self pickerView:self.onePickerView titleForRow:0 forComponent:0];
+        [self pickerView:self.onePickerView didSelectRow:0 inComponent:0];//第二列需要刷新数据
+        [self pickerView:self.onePickerView titleForRow:0 forComponent:1];
+    }else if (sender.tag==102){
+        self.pickFlag = 102;
+        self.oneArr = @[@"东",@"南",@"西",@"北",@"东西",@"南北"];
+    }else if (sender.tag==103){
+        self.pickFlag = 103;
+        self.oneArr = @[@"主卧",@"次卧",@"隔断"];
+    }else if (sender.tag==24){
+        self.pickFlag = 24;
+        self.oneArr = @[@"押一付一",@"押一付三",@"半年付",@"年付"];
+    }
+    if (self.coverView) {
+        
+        [self.onePickerView reloadAllComponents];
+        self.topView.hidden = false;
+        self.onePickerView.hidden = false;
+        self.coverView.hidden = false;
+    }else{
+    //大蒙布View
+    UIView *coverView = [[UIView alloc]init];
+    coverView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+    coverView.alpha = 0.3;
+    [self.view addSubview:coverView];
+    self.coverView = coverView;
+    [coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.offset(0);
+    }];
+    coverView.userInteractionEnabled = YES;
+    //添加tap手势：
+    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+    //将手势添加至需要相应的view中
+    //    [backView addGestureRecognizer:tapGesture];
+    
+    UIPickerView *pickView = [[UIPickerView alloc]init];
+    [self.view addSubview:pickView];
+    [self.view bringSubviewToFront:pickView];
+    [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.offset(0);
+        make.height.offset(200*kiphone6);
+    }];
+    pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    pickView.dataSource = self;
+    pickView.delegate = self;
+    pickView.showsSelectionIndicator = YES;
+    self.onePickerView = pickView;
+        UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
+        [topView setBarStyle:UIBarStyleDefault];
+        UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(2, 5, 50, 25);
+        [btn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitle:@"完成" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+        NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+        [topView setItems:buttonsArray];
+        [self.view addSubview:topView];
+        [self.view bringSubviewToFront:topView];
+        self.topView = topView;
+        [topView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.offset(0);
+            make.bottom.equalTo(pickView.mas_top);
+//            make.height.offset(200*kiphone6);
+        }];
+
+    }
+//    //            设置初始默认值
+//    [self pickerView:self.onePickerView didSelectRow:0 inComponent:0];
+//    [self.onePickerView selectRow:0 inComponent:0 animated:true];
+//    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+}
+#pragma mark - pickView
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    if (self.pickFlag == 101) {
+        return 2;
+    }
+    return 1;
+}
+// pickerView 每列个数
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (self.pickFlag == 101) {
+        if (component==0) {
+            return self.oneLevelArr.count;
+        }if (component==1) {
+            return self.twoLevelArr.count;
+        }
+    }
+    return self.oneArr.count;
+}
+
+#pragma Mark -- UIPickerViewDelegate
+// 每列宽度
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+//    if (component==0) {
+//        return pickerView.bounds.size.width*0.5;
+//    }
+    return 120;
+}
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+
+{
+    
+    return 40.0*kiphone6;
+    
+}
+// 返回选中的行
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+
+    if (self.pickFlag==101) {
+        
+        if (component==0) {
+            self.oneLevelArea = self.oneLevelArr[row];
+            self.twoLevelArr = self.areaDic[self.oneLevelArr[row]];
+            [pickerView reloadComponent:1];
+            self.twoLevelArea = self.twoLevelArr[0];
+        }else if (component==1) {
+            self.twoLevelArea = self.twoLevelArr[row];
+            
+        }
+        NSString *allArea = [NSString stringWithFormat:@"%@%@",self.oneLevelArea,self.twoLevelArea];
+        [self.selectView.areaBtn setTitle:allArea forState:UIControlStateNormal];
+    }else if (self.pickFlag==102) {
+        [self.selectView.directionBtn setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
+    }else if (self.pickFlag==103) {
+        UIButton *roomType=(UIButton *)[self.shareView viewWithTag:103];
+        [roomType setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
+    }else if (self.pickFlag==24) {
+        UIButton *payType=(UIButton *)[self.selectView viewWithTag:24];
+        [payType setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
+    }
+    
+}
+
+//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (self.pickFlag==101) {
+        
+        if (component==0) {
+            return self.oneLevelArr[row];
+        }else if (component==1) {
+        
+            return self.twoLevelArr[row];
+            
+        }
+    }
+    
+
+    return self.oneArr[row];
+}
+//- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+//{
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
+//    if (component == 0) {
+//        [label setText:[self.dayArr objectAtIndex:row]];
+//        //    }else if (component == 1){
+//        //        [label setText:[self.monthArr objectAtIndex:row]];
+//    }
+//    else if (component == 1){
+//        [label setText:[NSString stringWithFormat:@"%@时",self.hourArr[row]]];
+//    }
+//    else if (component == 2){
+//        [label setText:[NSString stringWithFormat:@"%@分",self.minusArr[row]]];
+//    }
+//    label.backgroundColor = [UIColor clearColor];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    return label;
+//}
+
+-(void)resignFirstResponderText {
+    self.topView.hidden = true;
+    self.onePickerView.hidden = true;
+    self.coverView.hidden = true;
+    
+}
 -(void)submitAddress{
     
 }
+
 #pragma mark - UITableView
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -364,6 +568,9 @@ static NSString* photoCellid = @"photo_cell";
                 self.shareView = shareView;
  
             }
+            UIButton *roomType=(UIButton *)[self.shareView viewWithTag:103];
+            [roomType addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+    
         }
     }
 }

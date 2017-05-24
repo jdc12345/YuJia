@@ -91,6 +91,12 @@
 		1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */; };
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
+		169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */; };
+		1695197A1ED405AB00C2C380 /* YJHouseListTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519791ED405AB00C2C380 /* YJHouseListTVCell.m */; };
+		1695197D1ED40ED900C2C380 /* YJHouseDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */; };
+		1695197F1ED42B4400C2C380 /* HouseConfigureList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1695197E1ED42B4400C2C380 /* HouseConfigureList.plist */; };
+		169519821ED42F6E00C2C380 /* YJHouseConfigurePicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519811ED42F6E00C2C380 /* YJHouseConfigurePicModel.m */; };
+		169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519841ED4498F00C2C380 /* YJSearchHourseVC.m */; };
 		169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */; };
 		169E04A41ED301570002FDB2 /* YJRentPersonInfoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
@@ -385,6 +391,17 @@
 		168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecordFlowLayout.m; sourceTree = "<group>"; };
 		168466A71EBB495E00A98295 /* YJImageDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJImageDisplayCollectionViewCell.h; sourceTree = "<group>"; };
 		168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJImageDisplayCollectionViewCell.m; sourceTree = "<group>"; };
+		169519751ED3E0EB00C2C380 /* YJHouseSearchListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseSearchListVC.h; sourceTree = "<group>"; };
+		169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchListVC.m; sourceTree = "<group>"; };
+		169519781ED405AB00C2C380 /* YJHouseListTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseListTVCell.h; sourceTree = "<group>"; };
+		169519791ED405AB00C2C380 /* YJHouseListTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseListTVCell.m; sourceTree = "<group>"; };
+		1695197B1ED40ED900C2C380 /* YJHouseDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseDetailVC.h; sourceTree = "<group>"; };
+		1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseDetailVC.m; sourceTree = "<group>"; };
+		1695197E1ED42B4400C2C380 /* HouseConfigureList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HouseConfigureList.plist; sourceTree = "<group>"; };
+		169519801ED42F6E00C2C380 /* YJHouseConfigurePicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseConfigurePicModel.h; sourceTree = "<group>"; };
+		169519811ED42F6E00C2C380 /* YJHouseConfigurePicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseConfigurePicModel.m; sourceTree = "<group>"; };
+		169519831ED4498F00C2C380 /* YJSearchHourseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSearchHourseVC.h; sourceTree = "<group>"; };
+		169519841ED4498F00C2C380 /* YJSearchHourseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSearchHourseVC.m; sourceTree = "<group>"; };
 		169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YJShareRentView.xib; sourceTree = "<group>"; };
 		169E04A21ED301570002FDB2 /* YJRentPersonInfoTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRentPersonInfoTVCell.h; sourceTree = "<group>"; };
 		169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRentPersonInfoTVCell.m; sourceTree = "<group>"; };
@@ -716,6 +733,7 @@
 			isa = PBXGroup;
 			children = (
 				1661FE1D1EB8761900583A7F /* FunctionsList.plist */,
+				1695197E1ED42B4400C2C380 /* HouseConfigureList.plist */,
 				1661FE281EB8792100583A7F /* YYPropertyFunctionList.h */,
 				1661FE291EB8792100583A7F /* YYPropertyFunctionList.m */,
 				1661FE2E1EB88B4800583A7F /* YYPropertyItemModel.h */,
@@ -734,6 +752,8 @@
 				166B425E1ED032C900E8FEF0 /* YJMonthDetailSumModel.m */,
 				166B425A1ED0319E00E8FEF0 /* YJMonthDetailItemModel.h */,
 				166B425B1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m */,
+				169519801ED42F6E00C2C380 /* YJHouseConfigurePicModel.h */,
+				169519811ED42F6E00C2C380 /* YJHouseConfigurePicModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -879,8 +899,14 @@
 		166CD8F71ED279DA00CC4F11 /* Rental house */ = {
 			isa = PBXGroup;
 			children = (
+				169519751ED3E0EB00C2C380 /* YJHouseSearchListVC.h */,
+				169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */,
 				166CD8F81ED27A6F00CC4F11 /* YJRentalHouseVC.h */,
 				166CD8F91ED27A6F00CC4F11 /* YJRentalHouseVC.m */,
+				1695197B1ED40ED900C2C380 /* YJHouseDetailVC.h */,
+				1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */,
+				169519831ED4498F00C2C380 /* YJSearchHourseVC.h */,
+				169519841ED4498F00C2C380 /* YJSearchHourseVC.m */,
 			);
 			name = "Rental house";
 			sourceTree = "<group>";
@@ -896,6 +922,8 @@
 				169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */,
 				169E04A21ED301570002FDB2 /* YJRentPersonInfoTVCell.h */,
 				169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */,
+				169519781ED405AB00C2C380 /* YJHouseListTVCell.h */,
+				169519791ED405AB00C2C380 /* YJHouseListTVCell.m */,
 			);
 			name = "Rental house";
 			sourceTree = "<group>";
@@ -1481,6 +1509,7 @@
 				3E9439601ECAA087001FE471 /* city.plist in Resources */,
 				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,
 				3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */,
+				1695197F1ED42B4400C2C380 /* HouseConfigureList.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1565,6 +1594,7 @@
 				3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */,
 				166FF4971EBC09E000846A59 /* IWComposeImageView.m in Sources */,
 				166FF4B51EBC7C0400846A59 /* YJModifyAddressVC.m in Sources */,
+				169519821ED42F6E00C2C380 /* YJHouseConfigurePicModel.m in Sources */,
 				166CD8FA1ED27A6F00CC4F11 /* YJRentalHouseVC.m in Sources */,
 				166BDCAE1ECA86B100441DB5 /* YJExpressDeliveryVC.m in Sources */,
 				3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */,
@@ -1573,11 +1603,13 @@
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
+				169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */,
 				3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */,
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
 				3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */,
 				3E9439621ECAA087001FE471 /* CityModel.m in Sources */,
+				1695197D1ED40ED900C2C380 /* YJHouseDetailVC.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
 				3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */,
 				163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */,
@@ -1594,6 +1626,7 @@
 				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
+				169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
 				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
@@ -1639,6 +1672,7 @@
 				3E9439221EC95AB8001FE471 /* MYFamilyViewController.m in Sources */,
 				3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */,
 				166BDCB91ECAF08D00441DB5 /* YJReportRepairRecordModel.m in Sources */,
+				1695197A1ED405AB00C2C380 /* YJHouseListTVCell.m in Sources */,
 				1652216D1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
 				168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */,
