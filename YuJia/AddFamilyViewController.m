@@ -9,9 +9,11 @@
 #import "AddFamilyViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "AddFamilyInfoViewController.h"
+#import "PersonalModel.h"
 
 @interface AddFamilyViewController ()
-
+@property(nonatomic, weak) UITextField *phoneTF;
+@property(nonatomic, weak) UITextField *vcodeTF;
 @end
 
 @implementation AddFamilyViewController
@@ -80,6 +82,8 @@
     nameTextF.clipsToBounds = YES;
     nameTextF.textAlignment = NSTextAlignmentCenter;
     
+    
+    self.phoneTF = nameTextF;
     [self.view addSubview:nameTextF];
     
     [nameTextF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,6 +103,8 @@
     phoneTextF.textAlignment = NSTextAlignmentCenter;
     phoneTextF.placeholder = @"输入验证码";
     
+    
+    self.vcodeTF = phoneTextF;
     [self.view addSubview:phoneTextF];
     
     [phoneTextF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -194,23 +200,43 @@
     
 }
 - (void)httpRequestInfo{
-    NSDictionary *dict = @{
+    NSDictionary *dict2 = @{
                            @"token":mDefineToken,
-                           @"telephone":@"12345678911",
-                           @"addvcode":@"123123"
+                           @"telephone":self.phoneTF.text,
                            };
     
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mAddFamilyUsers] method:1 parameters:dict prepareExecute:^{
-        AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
-        [self.navigationController pushViewController:fInfo animated:YES];
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobileapi/personal/addvcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+        
     } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
+        
+        self.vcodeTF.text = responseObject[@"result"];
+        NSDictionary *dict = @{
+                               @"token":mDefineToken,
+                               @"telephone":self.phoneTF.text,
+                               @"addvcode":self.vcodeTF.text
+                               };
+        
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mAddFamilyUsers] method:1 parameters:dict prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
+            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
+            fInfo.personalModel = personalModel;
+            [self.navigationController pushViewController:fInfo animated:YES];
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
-}
+    
 
+}
+// 13717883008
 /*
  #pragma mark - Navigation
  

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PersonalModel.h"
 
 @interface AddFamilyInfoViewController : UIViewController
-
+@property (nonatomic, strong) PersonalModel *personalModel;
 @end

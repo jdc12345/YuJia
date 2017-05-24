@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface FamilyPersonalViewController : UIViewController
-
+@property (nonatomic, strong) NSString *homeID;
+@property (nonatomic, strong) NSString *telePhone;
 @end

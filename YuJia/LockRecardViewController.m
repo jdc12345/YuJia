@@ -1,28 +1,30 @@
 //
-//  MYFamilyViewController.m
+//  LockRecardViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/15.
+//  Created by wylt_ios_1 on 2017/5/23.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "MYFamilyViewController.h"
-#import "MYFamilyTableViewCell.h"
+#import "LockRecardViewController.h"
+#import "LockRecardTableViewCell.h"
 #import "UIBarButtonItem+Helper.h"
 #import "FamilyPersonalViewController.h"
-#import "PersonalModel.h"
+//#import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
-#import "AddFamilyViewController.h"
-@interface MYFamilyViewController ()<UITableViewDataSource, UITableViewDelegate>
+#import "UnLockRecordModel.h"
+// #import "AddFamilyViewController.h"
+
+@interface LockRecardViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger currentRow;
 
-
 @end
 
-@implementation MYFamilyViewController
+@implementation LockRecardViewController
+
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
@@ -35,11 +37,11 @@
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
-        //        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
-        [_tableView registerClass:[MYFamilyTableViewCell class] forCellReuseIdentifier:@"MYFamilyTableViewCell"];
+        [_tableView registerClass:[LockRecardTableViewCell class] forCellReuseIdentifier:@"LockRecardTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
+        _tableView.tableHeaderView = [self personInfomation];
         
         
     }
@@ -55,25 +57,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"我的家人管理";
+    self.title = @"开锁记录";
     self.automaticallyAdjustsScrollViewInsets = NO;
-//    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5 *kiphone6)];
-//    headView.backgroundColor = [UIColor clearColor];
-//    self.tableView.tableHeaderView = headView;
     [self httpRequestHomeInfo];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
-    // Do any additional setup after loading the view.
+}
+- (UIView *)personInfomation{
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 10)];
+    headView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    return headView;
+    
 }
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    PersonalModel *personalModel = self.dataSource[indexPath.row];
-    FamilyPersonalViewController *familyInfo = [[FamilyPersonalViewController alloc]init];
-    familyInfo.homeID = personalModel.myFamilyId;
-    familyInfo.telePhone = personalModel.telephone;
-    [self.navigationController pushViewController:familyInfo animated:YES];
-    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     
 }
 #pragma mark -
@@ -82,22 +79,26 @@
     return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 70 ;
+    return 60;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.000001;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.000001;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    PersonalModel *personalModel = self.dataSource[indexPath.row];
+    UnLockRecordModel *personalModel = self.dataSource[indexPath.row];
     
-    MYFamilyTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYFamilyTableViewCell" forIndexPath:indexPath];
+    LockRecardTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"LockRecardTableViewCell" forIndexPath:indexPath];
     [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,personalModel.avatar]]];;
     homeTableViewCell.titleLabel.text = personalModel.userName;
-    homeTableViewCell.introduceLabel.text = personalModel.comment;
+    homeTableViewCell.timeLabel.text = personalModel.createTimeString;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
     
 }
 - (void)pushToAdd{
-    [self.navigationController pushViewController:[[AddFamilyViewController alloc]init] animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,13 +106,13 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&equipmentId=6&row=15",mOpenLock,mDefineToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
-        NSArray *personalList= responseObject[@"personalList"];
+        NSArray *personalList= responseObject[@"unlockRecordsList"];
         for(NSDictionary *eDict in personalList){
-            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
+            UnLockRecordModel *personalModel = [UnLockRecordModel mj_objectWithKeyValues:eDict];
             [self.dataSource addObject:personalModel];
         }
         [self tableView];
@@ -120,14 +121,6 @@
         NSLog(@"%@",error);
     }];
 }
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
 
 @end
