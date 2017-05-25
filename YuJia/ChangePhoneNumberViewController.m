@@ -10,6 +10,9 @@
 #import "UIBarButtonItem+Helper.h"
 
 @interface ChangePhoneNumberViewController ()
+@property  (nonatomic, strong) UITextField *phoneTF;
+@property  (nonatomic, strong) UITextField *vcodeTF;
+@property  (nonatomic, strong) UITextField *pwTF;
 
 @end
 
@@ -20,7 +23,7 @@
     self.title = @"修改绑定手机号";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestInfo)];
     [self settingSubView];
     // Do any additional setup after loading the view.
 }
@@ -213,6 +216,10 @@
         make.right.equalTo(footView).with.offset(-15);
     }];
     
+    self.phoneTF = newNumberTextF;
+    self.vcodeTF = yanLabelTextF;
+    self.pwTF = passwordTextF;
+    
 }
 - (void)surePost{
     
@@ -220,6 +227,44 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)httpRequestInfo{
+    NSDictionary *dict2 = @{
+                            @"token":mDefineToken,
+                            @"telephone":self.phoneTF.text,
+                            };
+    
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobileapi/personal/bindvcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        self.vcodeTF.text = responseObject[@"result"];
+        NSDictionary *dict = @{
+                               @"token":mDefineToken,
+                               @"telephone":self.phoneTF.text,
+                               @"bindvcode":self.vcodeTF.text,
+                               @"pwd":self.pwTF.text
+                               };
+        
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mChangePhone] method:1 parameters:dict prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+//            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
+//            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
+//            fInfo.personalModel = personalModel;
+//            [self.navigationController pushViewController:fInfo animated:YES];
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
 }
 
 /*

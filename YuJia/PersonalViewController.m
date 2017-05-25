@@ -298,7 +298,10 @@
         if (indexPath.row == 0) {
             [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
         }else if(indexPath.row == 1){
-            [self.navigationController pushViewController:[[YYFeedbackViewController alloc]init] animated:YES];
+            
+            YYFeedbackViewController *feedBackVC = [[YYFeedbackViewController alloc]init];
+            feedBackVC.personalModel = self.personalModel;
+            [self.navigationController pushViewController:feedBackVC animated:YES];
         }else{
 
         }

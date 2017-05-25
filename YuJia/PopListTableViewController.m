@@ -25,7 +25,7 @@
 //    self.tableView.layer.borderWidth = 0.5;
     self.tableView.layer.cornerRadius = 2.5;
     self.tableView.clipsToBounds = YES;
-    self.tableView.layer.borderWidth = 0.5;
+    self.tableView.layer.borderWidth = 1.5;
     self.tableView.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
     // 默认关闭下拉列表
     _isOpen = NO;
@@ -69,7 +69,6 @@
     }
     if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]){
         [cell setPreservesSuperviewLayoutMargins:NO];
-        
     }
     return cell;
 }
@@ -82,7 +81,9 @@
 // cell选中事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // 通知代理
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [_delegate selectedCell:indexPath.row];
+    
 }
 - (void)reloadDataSource{
     [self.tableView reloadData];

@@ -20,6 +20,15 @@
 #import "EquipmentModel.h"
 #import "RoomModel.h"
 #import "LogInViewController.h"
+#import "PopListTableViewController.h"
+#import "AddSightViewController.h"
+#import "AddRoomViewController.h"
+#import "AddEquipmentViewController.h"
+
+
+
+#define inputW 20 // 输入框宽度
+#define inputH 50  // 输入框高度
 
 @interface HomePageViewController ()<JXSegmentDelegate,JXPageViewDataSource,JXPageViewDelegate, UITabBarDelegate,UITableViewDataSource,UITableViewDelegate>{
     JXPageView *pageView;
@@ -37,6 +46,30 @@
 @property (nonatomic, strong) NSMutableArray *sightDataSource;
 @property (nonatomic, weak) SightViewController *sightVC;
 @property (nonatomic, weak) EquipmentViewController *equipmentVC;
+
+
+//////////////////////////////////////////////////////／
+/**
+ * 当前账号选择框
+ */
+@property (nonatomic, copy) UIButton *curAccount;
+@property (nonatomic, weak) UIButton *openBtn;
+
+/**
+ * 当前账号头像
+ */
+@property (nonatomic, copy) UIImageView *icon;
+
+/**
+ *  账号下拉列表
+ */
+@property (nonatomic, strong) PopListTableViewController *accountList;
+
+/**
+ *  下拉列表的frame
+ */
+@property (nonatomic) CGRect listFrame;
+@property (nonatomic, copy) NSArray *selectStart;
 
 @end
 
@@ -56,10 +89,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.title = @"家";
+    //    self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-//    [self httpRequestHomeInfo];
+    //    [self httpRequestHomeInfo];
     
     UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenW, 44)];
     
@@ -71,7 +104,7 @@
     [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
     leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [leftNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.navigationController.navigationBar addSubview:leftNavBtn];
+    //    [self.navigationController.navigationBar addSubview:leftNavBtn];
     
     
     // Right item
@@ -79,7 +112,7 @@
     rightNavBtn.frame = CGRectMake(kScreenW -22 -10, 16, 12, 12);
     [rightNavBtn setImage:[UIImage imageNamed:@"+"] forState:UIControlStateNormal];
     [rightNavBtn addTarget:self action:@selector(addEquipment) forControlEvents:UIControlEventTouchUpInside];
-//    [self.navigationController.navigationBar addSubview:rightNavBtn];
+    //    [self.navigationController.navigationBar addSubview:rightNavBtn];
     
     // .TitleVeiw - Segmented Control
     NSArray *segmentedData = [[NSArray alloc]initWithObjects:@"情景",@"设备",nil];
@@ -109,14 +142,14 @@
     //设置分段控件点击相应事件
     [segmentedControl addTarget:self action:@selector(doSomethingInSegment:)forControlEvents:UIControlEventValueChanged];
     
-//    [self.navigationController.navigationBar addSubview:segmentedControl];
+    //    [self.navigationController.navigationBar addSubview:segmentedControl];
     
     [titleView addSubview:leftNavBtn];
     [titleView addSubview:rightNavBtn];
     [titleView addSubview:segmentedControl];
     
     self.navigationItem.titleView = titleView;
-//    titleView.backgroundColor = [UIColor yellowColor];
+    //    titleView.backgroundColor = [UIColor yellowColor];
     NSLog(@"%g___________%g",self.navigationItem.titleView.frame.origin.x,self.navigationItem.titleView.frame.size.width);
     
     
@@ -135,7 +168,7 @@
     
     
     
-
+    
     
     // Do any additional setup after loading the view.
 }
@@ -165,17 +198,17 @@
     
     switch (Index)
     {
-//        case 0:
-//            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_apple_small.png")]];
-//            break;
-//        case 1:
-//            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_orange_small.png")]];
-//            break;
-//        case 2:
-//            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_banana_small.png")]];
-//            break;
-//        default:
-//            break;
+            //        case 0:
+            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_apple_small.png")]];
+            //            break;
+            //        case 1:
+            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_orange_small.png")]];
+            //            break;
+            //        case 2:
+            //            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:kSrcName(@"bg_banana_small.png")]];
+            //            break;
+            //        default:
+            //            break;
     }
 }
 - (void)setupSlideBar {
@@ -210,7 +243,7 @@
     tableView.showsVerticalScrollIndicator = NO;
     //        _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
     [tableView registerClass:[EquipmentTableViewCell class] forCellReuseIdentifier:@"EquipmentTableViewCell"];
-
+    
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     
     
@@ -277,9 +310,9 @@
         homeTableViewCell.titleLabel.text = @"客厅灯";
         homeTableViewCell.iconV.image = [UIImage imageNamed:@"light"];
         [homeTableViewCell cellMode:YES];
-       
+        
     }
-     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
 }
 - (void)action:(NSString *)actionStr{
@@ -298,15 +331,105 @@
 }
 - (void)addEquipment{
     NSLog(@"  %ld",self.segmentedControl.selectedSegmentIndex);
-    if (self.segmentedControl.selectedSegmentIndex == 0) {
-        AddSightViewController *addSightVC  = [[AddSightViewController alloc]init];
-        [self.navigationController pushViewController:addSightVC animated:YES];
-    }else{
-        AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
-        [self.navigationController pushViewController:addEquipmentVC animated:YES];
+    //    。。。
+    
+    //    if (self.segmentedControl.selectedSegmentIndex == 0) {
+    //        AddSightViewController *addSightVC  = [[AddSightViewController alloc]init];
+    //        [self.navigationController pushViewController:addSightVC animated:YES];
+    //    }else{
+    //        AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
+    //        [self.navigationController pushViewController:addEquipmentVC animated:YES];
+    //    }
+    // 2.设置账号弹出菜单(最后添加显示在顶层)
+    if (_accountList == nil) {
+        _accountList = [[PopListTableViewController alloc] init];
+        // 设置弹出菜单的代理为当前这个类
+        _accountList.delegate = self;
+        // 数据
+        self.selectStart = @[@"添加情景",@"添加房间",@"添加设备"];
+        _accountList.accountSource = self.selectStart;
+        _accountList.isOpen = NO;
+        _accountList.isCenter = NO;
+        _accountList.cellHigh = 30;
+        // 边框
+        _accountList.view.layer.cornerRadius = 2.5;
+        _accountList.view.clipsToBounds = YES;
+        _accountList.view.layer.borderWidth = 1.5;
+        _accountList.view.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+        // 初始化frame
+        [self updateListH];
+        // 隐藏下拉菜单
+        _accountList.view.frame = CGRectZero;
+        // 将下拉列表作为子页面添加到当前视图，同时添加子控制器
+        [self addChildViewController:_accountList];
+        [self.view addSubview:_accountList.view];
     }
-
+    [self openAccountList];
 }
+/**
+ *  监听代理更新下拉菜单                                 需要设置高度！！！！！！！！！！！！
+ */
+- (void)updateListH {
+    CGFloat listH;
+    // 数据大于3个现实3个半的高度，否则显示完整高度
+    //    if (_dataSource.count > 3) {
+    //        listH = inputH * 3.5;
+    //    }else{
+    //        listH = inputH * _dataSource.count;
+    //    }
+    _listFrame = CGRectMake(kScreenW -90, 64, 80, 90);
+    _accountList.view.frame = _listFrame;
+}
+/**
+ * 弹出关闭账号选择列表
+ */
+- (void)openAccountList {
+    NSLog(@"123123");
+    [self.view bringSubviewToFront:_accountList.view];
+    _accountList.isOpen = !_accountList.isOpen;
+    self.openBtn.selected = _accountList.isOpen;
+    if (_accountList.isOpen) {
+        _accountList.view.frame = _listFrame;
+    }
+    else {
+        _accountList.view.frame = CGRectZero;
+    }
+}
+/**
+ * 监听代理选定cell获取选中账号
+ */
+- (void)selectedCell:(NSInteger)index {
+    // 更新当前选中账号
+    //    Account *acc = _dataSource[index];
+    
+    //    NSString *title = self.selectStart[index];
+    //    [_curAccount setTitle:title forState:UIControlStateNormal];
+    //    _accountList.accountSource = self.selectStart;
+    
+    
+    //    [_icon setImage:[UIImage imageNamed:@""]];
+    
+    switch (index) {
+        case 0:
+        {AddSightViewController *addSightVC  = [[AddSightViewController alloc]init];
+            [self.navigationController pushViewController:addSightVC animated:YES];}
+            break;
+        case 1:
+        {AddRoomViewController *addSightVC  = [[AddRoomViewController alloc]init];
+            [self.navigationController pushViewController:addSightVC animated:YES];}
+            break;
+        case 2:
+        {AddEquipmentViewController *addEquipmentVC  = [[AddEquipmentViewController alloc]init];
+            [self.navigationController pushViewController:addEquipmentVC animated:YES];}
+            break;
+            
+        default:
+            break;
+    }
+    // 关闭菜单
+    [self openAccountList];
+}
+
 - (void)httpRequestHomeInfo{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mHomepageInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{
         
@@ -328,7 +451,7 @@
             [self.roomDataSource addObject:roomModel];
             
         }
-//        NSLog(@"%@",self.roomDataSource.firstObject);
+        //        NSLog(@"%@",self.roomDataSource.firstObject);
         
         
         for (NSDictionary *sceneDict in sceneList) {
@@ -343,23 +466,23 @@
             
         }
         if (!self.sightVC) {
-        SightViewController *sightVC = [[SightViewController alloc]init];
-        sightVC.dataSource = self.sightDataSource;
-        sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
-        
-        self.sightView = sightVC.view;
-        self.sightVC = sightVC;
-        [self.view addSubview:sightVC.view];
-        [self addChildViewController:sightVC];
-        
-        
-        EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
-        equipmentVC.dataSource = self.roomDataSource;
-        equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
-        equipmentVC.view.hidden = YES;
+            SightViewController *sightVC = [[SightViewController alloc]init];
+            sightVC.dataSource = self.sightDataSource;
+            sightVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+            
+            self.sightView = sightVC.view;
+            self.sightVC = sightVC;
+            [self.view addSubview:sightVC.view];
+            [self addChildViewController:sightVC];
+            
+            
+            EquipmentViewController *equipmentVC = [[EquipmentViewController alloc]init];
+            equipmentVC.dataSource = self.roomDataSource;
+            equipmentVC.view.frame = CGRectMake(0, 64, kScreenW, kScreenH -64);
+            equipmentVC.view.hidden = YES;
             self.equipmentVC = equipmentVC;
-        self.equipmentView = equipmentVC.view;
-        [self.view addSubview:equipmentVC.view];
+            self.equipmentView = equipmentVC.view;
+            [self.view addSubview:equipmentVC.view];
             [self addChildViewController:equipmentVC];
         }else{
             if (self.roomDataSource.count >0) {
@@ -381,13 +504,13 @@
     [self httpRequestHomeInfo];
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
