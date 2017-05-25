@@ -183,7 +183,12 @@
 //http://192.168.1.55:8080/smarthome/mobileapi/personal/mdfTelephone.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&telephone=13717883005&pwd=123456
 #define mChangePhone [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/mdfTelephone.do?"]
 
+//门锁——密码解锁接口
+//http://192.168.1.55:8080/smarthome/mobileapi/equipment/doorOpenPasswd.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&equipmentId=6&pwd=123
+#define mOpenLockWithPW [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/doorOpenPasswd.do?"]
 
-
+//门锁——修改密码接口 门锁暂时没有其它状态控制，所以扩展状态控制字段就用来保存密码 默认密码为：000000
+//http://192.168.1.55:8080/smarthome/mobileapi/equipment/doorPasswd.do?
+#define mLockChangePSW [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/doorPasswd.do?"]
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */

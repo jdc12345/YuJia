@@ -33,10 +33,20 @@
 @property (nonatomic, strong) NSMutableArray *nameList;
 
 @property (nonatomic, assign) NSInteger loadTableV;
+
+
+@property (nonatomic, strong) NSMutableArray *tableViews;
+//@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, strong) UIButton *startBtn;
 @end
 
 @implementation EquipmentViewController
-
+- (NSMutableArray *)tableViews{
+    if (_tableViews == nil) {
+        _tableViews = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _tableViews;
+}
 - (NSMutableArray *)nameList{
     if (_nameList == nil) {
         _nameList = [[NSMutableArray alloc]initWithCapacity:2];
@@ -67,6 +77,7 @@
     [starBtn addTarget:self action:@selector(buttonClick_Start:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:starBtn];
+    self.startBtn = starBtn;
     
     WS(ws);
     [starBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -121,6 +132,13 @@
     
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     
+    
+    RoomModel *sightModel = self.dataSource[index];
+    if (sightModel.equipmentList.count == 0) {
+        tableView.tableFooterView = [self createTableFootView];
+    }
+    
+    [self.tableViews addObject:tableView];
     
     ////////////////////////////
     return tableView;
@@ -322,13 +340,91 @@
     
 }
 - (void)reloadData:(NSArray *)newDataSource{
+    
+    
+    
+    NSInteger index = segment.selectedIndex;
+    NSLog(@"当前选中的%ld",index);
     self.dataSource = newDataSource;
     [self.nameList removeAllObjects];
     for (RoomModel *sightModel in self.dataSource) {
         [self.nameList addObject:sightModel.roomName];
     }
     [segment updateChannels:self.nameList];
+    
+    [self.tableViews removeAllObjects];
+    pageView = nil;
+    pageView =[[JXPageView alloc] initWithFrame:CGRectMake(0, 40, kScreenW, self.view.bounds.size.height - 148 -10)];
+    pageView.datasource = self;
+    pageView.delegate = self;
     [pageView reloadData];
+    if (self.nameList.count >0) {
+        [pageView changeToItemAtIndex:0];
+    }
+    
+    
+    [self.view addSubview:pageView];
+    if (index < self.dataSource.count) {
+        [segment didChengeToIndex:index];
+    }
+    [self.view bringSubviewToFront:self.startBtn];
+    
+}
+- (UIView *)createTableFootView{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 500)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    
+    UIView *clickView = [[UIView alloc]init];
+    clickView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(emptyClick)];
+    [clickView addGestureRecognizer:tapGest];
+    [footView addSubview:clickView];
+    [clickView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footView).with.offset(90);
+        make.centerX.equalTo(footView);
+        make.size.mas_equalTo(CGSizeMake(160, 230));
+    }];
+    
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nodevice"]];
+    [clickView addSubview:imageV];
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(clickView);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 160));
+    }];
+    
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"还没添加设备哦！";
+    titleLabel.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imageV.mas_bottom).with.offset(15);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    
+    UILabel *titleLabel2 = [[UILabel alloc]init];
+    titleLabel2.text = @"去添加吧！";
+    titleLabel2.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel2.font = [UIFont systemFontOfSize:13];
+    titleLabel2.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel2];
+    [titleLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).with.offset(10);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    return footView;
+    
+}
+- (void)emptyClick{
+    SightSettingViewController *sightVC = [[SightSettingViewController alloc]init];
+    sightVC.sightModel = self.dataSource[segment.selectedIndex];
+    [self.navigationController pushViewController:sightVC animated:YES];
 }
 /*
  #pragma mark - Navigation

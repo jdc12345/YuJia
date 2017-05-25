@@ -1,17 +1,17 @@
 //
-//  RoomSettingViewController.m
+//  AddRoomViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/4.
+//  Created by wylt_ios_1 on 2017/5/25.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "RoomSettingViewController.h"
+#import "AddRoomViewController.h"
 #import "EquipmentTableViewCell.h"
 #import "EquipmentModel.h"
 #import "UIBarButtonItem+Helper.h"
 #import "SelectEquipmentViewController.h"
-@interface RoomSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface AddRoomViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
@@ -19,7 +19,7 @@
 
 @end
 
-@implementation RoomSettingViewController
+@implementation AddRoomViewController
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -52,8 +52,8 @@
     self.title = @"房间设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
+    self.roomModel  = [[RoomModel alloc]init];
     [self tableView];
     // Do any additional setup after loading the view.
 }
@@ -175,7 +175,7 @@
     [addBtn setImage:[UIImage imageNamed:@"add_roomSet"] forState:UIControlStateNormal];
     [addBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn sizeToFit];
-
+    
     
     
     CGRect frame = CGRectMake(0, 0, 10.0, 30);
@@ -209,7 +209,7 @@
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sightNameText.mas_bottom).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);
-//        make.size.mas_equalTo(CGSizeMake(210 ,30));
+        //        make.size.mas_equalTo(CGSizeMake(210 ,30));
     }];
     
     [sightNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -256,8 +256,8 @@
     }
     NSLog(@"%@",equipmentList);
     NSData *picData = UIImageJPEGRepresentation([UIImage imageNamed:@"add"], 0.5);
-//    id formData;
-//    [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)1] fileName:@"123" mimeType:@"image/png"];
+    //    id formData;
+    //    [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)1] fileName:@"123" mimeType:@"image/png"];
     if (self.roomNameTF.text.length >0) {
         self.roomModel.roomName = self.roomNameTF.text;
     }
@@ -266,15 +266,15 @@
     NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
     NSDictionary *dict = @{
-                           @"id":self.roomModel.info_id,
+//                           @"id":self.roomModel.info_id,
                            @"token":mDefineToken,
                            @"equipmentList":jsonString,
-                           @"roomName":self.roomModel.roomName,
-                           @"oid":self.roomModel.oid,
-                           @"familyId":self.roomModel.familyId,
-                           @"file":picData
+                           @"roomName":self.roomModel.roomName
+//                           @"oid":self.roomModel.oid,
+//                           @"familyId":self.roomModel.familyId,
+//                           @"file":picData
                            };
-//    NSLog(@"id == %@",self.roomModel.info_id);
+    //    NSLog(@"id == %@",self.roomModel.info_id);
     
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRoomSave] method:1 parameters:dict prepareExecute:^{
         
@@ -285,20 +285,20 @@
         NSLog(@"%@",error);
     }];
 }
--(void)changeInfo{;
-    NSDictionary *dict = @{
-                           @"ids":self.roomModel.info_id,
-                           @"token":mDefineToken
-                           };
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveRoom] method:1 parameters:dict prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-    }];
-}
+//-(void)changeInfo{;
+//    NSDictionary *dict = @{
+//                           @"ids":self.roomModel.info_id,
+//                           @"token":mDefineToken
+//                           };
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveRoom] method:1 parameters:dict prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
+//}
 /*
  #pragma mark - Navigation
  

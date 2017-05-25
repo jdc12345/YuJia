@@ -112,6 +112,7 @@
 		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
 		3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3481EC5874800C77B58 /* MYHomeViewController.m */; };
 		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
+		3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */; };
 		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
 		3E8970DD1ED3C64A00C9DEB1 /* LockChangePWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */; };
@@ -432,6 +433,8 @@
 		3E20B3481EC5874800C77B58 /* MYHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeViewController.m; sourceTree = "<group>"; };
 		3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeTableViewCell.h; sourceTree = "<group>"; };
 		3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeTableViewCell.m; sourceTree = "<group>"; };
+		3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRoomViewController.h; sourceTree = "<group>"; };
+		3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRoomViewController.m; sourceTree = "<group>"; };
 		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
 		3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCircleViewController.m; sourceTree = "<group>"; };
 		3E6468501ECE887B003E785B /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
@@ -1210,10 +1213,14 @@
 				3E984FA01EBB2B560094CBE4 /* EquipmentViewController.m */,
 				3E984F8C1EB9DB140094CBE4 /* SightSettingViewController.h */,
 				3E984F8D1EB9DB140094CBE4 /* SightSettingViewController.m */,
+				3E984FA51EBB3D3A0094CBE4 /* RoomSettingViewController.h */,
+				3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */,
 				3E984F901EBB08980094CBE4 /* AddEquipmentViewController.h */,
 				3E984F911EBB08980094CBE4 /* AddEquipmentViewController.m */,
 				3E984FA81EBC17450094CBE4 /* AddSightViewController.h */,
 				3E984FA91EBC17450094CBE4 /* AddSightViewController.m */,
+				3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */,
+				3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */,
 				3E984F931EBB110F0094CBE4 /* ConnectWifiViewController.h */,
 				3E984F941EBB110F0094CBE4 /* ConnectWifiViewController.m */,
 				3E984F961EBB1C1B0094CBE4 /* SuccessConnectViewController.h */,
@@ -1222,8 +1229,6 @@
 				3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */,
 				3E984FA21EBB383C0094CBE4 /* EquipmentSettingViewController.h */,
 				3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */,
-				3E984FA51EBB3D3A0094CBE4 /* RoomSettingViewController.h */,
-				3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */,
 				3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */,
 				3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */,
 				3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */,
@@ -1637,6 +1642,7 @@
 				166BDCB31ECA972B00441DB5 /* YJExpressReceiveTVCell.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
 				3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */,
+				3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */,
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,

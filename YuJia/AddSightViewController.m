@@ -11,6 +11,7 @@
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "SightModel.h"
+#import "SelectEquipmentViewController.h"
 #define inputW 230 // 输入框宽度
 #define inputH 35  // 输入框高度
 
@@ -88,7 +89,7 @@
     self.title = @"情景设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    self.sightModel = [[SightModel alloc]init];
     self.selectStart = @[@"定时启动",@"定位启动"];
     [self tableView];
     // Do any additional setup after loading the view.
@@ -110,8 +111,15 @@
     return 0.000001;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        
+    if(indexPath.row == self.sightModel.equipmentList.count){
+        SelectEquipmentViewController *equipmentList = [[SelectEquipmentViewController alloc]init];
+        equipmentList.itemClick = ^(EquipmentModel *index){
+            NSMutableArray *changeList  = [[NSMutableArray alloc]initWithArray: self.sightModel.equipmentList];
+            [changeList addObject:index];
+            self.sightModel.equipmentList = changeList;
+            [self.tableView reloadData];
+        };
+        [self.navigationController pushViewController:equipmentList animated:YES];
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -709,7 +717,7 @@
         [equipmentList addObject: [equipment properties_aps]];
     }
     NSLog(@"%@",equipmentList);
-    self.sightModel = [[SightModel alloc]init];
+    
     if (self.sightNameF.text.length >0) {
         self.sightModel.sceneName = self.sightNameF.text;
     }

@@ -10,7 +10,9 @@
 #import "UIBarButtonItem+Helper.h"
 
 @interface LockChangePWViewController ()
-
+@property (nonatomic, strong) UITextField *oldPSW;
+@property (nonatomic, strong) UITextField *rePSW;
+@property (nonatomic, strong) UITextField *nePSW;
 @end
 
 @implementation LockChangePWViewController
@@ -152,7 +154,7 @@
     newNumberTextF.layer.cornerRadius = 2.5;
     newNumberTextF.clipsToBounds = YES;
     newNumberTextF.textAlignment = NSTextAlignmentLeft;
-    
+    self.oldPSW = newNumberTextF;
     [footView addSubview:newNumberTextF];
     
     [newNumberTextF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -171,7 +173,7 @@
     passwordTextF.layer.cornerRadius = 2.5;
     passwordTextF.clipsToBounds = YES;
     passwordTextF.textAlignment = NSTextAlignmentLeft;
-    
+    self.nePSW = passwordTextF;
     [footView addSubview:passwordTextF];
     
     [passwordTextF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -189,7 +191,7 @@
     yanLabelTextF.layer.cornerRadius = 2.5;
     yanLabelTextF.clipsToBounds = YES;
     yanLabelTextF.textAlignment = NSTextAlignmentLeft;
-    
+    self.rePSW = yanLabelTextF;
     [footView addSubview:yanLabelTextF];
     
     [yanLabelTextF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -234,11 +236,12 @@
 - (void)httpRequestInfo{
     NSDictionary *dict = @{
                            @"token":mDefineToken,
-                           @"oldPwd":@"123456",
-                           @"newPwd":@"123123"
+                           @"equipmentId":@"6",
+                           @"oldPwd":self.oldPSW.text,
+                           @"newPwd":self.nePSW.text
                            };
-    
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mChangePSW] method:1 parameters:dict prepareExecute:^{
+    NSLog(@"%@",dict);
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLockChangePSW] method:1 parameters:dict prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);

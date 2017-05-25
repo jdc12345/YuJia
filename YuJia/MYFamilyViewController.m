@@ -40,7 +40,9 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
-        
+        if (self.dataSource.count == 0) {
+            _tableView.tableFooterView = [self createTableFootView];
+        }
         
     }
     return _tableView;
@@ -119,6 +121,60 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+- (UIView *)createTableFootView{
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 500)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    
+    UIView *clickView = [[UIView alloc]init];
+    clickView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(emptyClick)];
+    [clickView addGestureRecognizer:tapGest];
+    [footView addSubview:clickView];
+    [clickView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(footView).with.offset(125);
+        make.centerX.equalTo(footView);
+        make.size.mas_equalTo(CGSizeMake(160, 230));
+    }];
+    
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nofamily"]];
+    [clickView addSubview:imageV];
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(clickView);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 160));
+    }];
+    
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"还没添加家人哦！";
+    titleLabel.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imageV.mas_bottom).with.offset(15);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    
+    UILabel *titleLabel2 = [[UILabel alloc]init];
+    titleLabel2.text = @"去添加吧！";
+    titleLabel2.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel2.font = [UIFont systemFontOfSize:13];
+    titleLabel2.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel2];
+    [titleLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).with.offset(10);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    return footView;
+    
+}
+- (void)emptyClick{
+
 }
 /*
  #pragma mark - Navigation

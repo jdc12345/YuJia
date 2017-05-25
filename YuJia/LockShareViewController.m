@@ -9,10 +9,17 @@
 #import "LockShareViewController.h"
 #import "YYPersonalTableViewCell.h"
 #import "LockShareTableViewCell.h"
+#import "PersonalModel.h"
+#import <UIImageView+WebCache.h>
+#import "PickViewController.h"
 @interface LockShareViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSArray *iconList;
+@property (nonatomic, weak) UIButton *timeBtn;
+
+
+@property (nonatomic, assign) NSInteger index;
 
 @end
 
@@ -41,6 +48,7 @@
         [self.view sendSubviewToBack:_tableView];
         _tableView.tableHeaderView = [self personInfomation];
         _tableView.tableFooterView = [self footSelection];
+        self.index = 0;
         
     }
     return _tableView;
@@ -50,9 +58,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"自动",@"制冷",@"制热",@"除湿",@"送风"]];
-    self.iconList =@[@"self-motion_small",@"cold_small",@"hot_small",@"wet_small",@"wind_small"];
-    [self tableView];
+//    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"自动",@"制冷",@"制热",@"除湿",@"送风"]];
+//    self.iconList =@[@"self-motion_small",@"cold_small",@"hot_small",@"wet_small",@"wind_small"];
+//    [self tableView];
     
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -61,7 +69,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -71,7 +79,7 @@
         make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(kScreenW, 44));
     }];
-    
+    [self httpRequestHomeInfo];
     // Do any additional setup after loading the view.
 }
 
@@ -139,7 +147,7 @@
     selectBtn.clipsToBounds = YES;
     selectBtn.layer.borderColor = [UIColor colorWithHexString:@"f1f1f1"].CGColor;
     selectBtn.layer.borderWidth = 1;
-
+    self.timeBtn = selectBtn;
     [headerView addSubview:selectBtn];
     [selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(headerView).with.offset(0);
@@ -154,7 +162,7 @@
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+    self.index = indexPath.row;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             //            NSString *nameStr = @"salkjdklasjdklajslk";
@@ -180,7 +188,7 @@
         
         
     }
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     //    [self.navigationController popToRootViewControllerAnimated:YES];
     //    self.tabBarController.selectedIndex = 4;
 }
@@ -202,15 +210,74 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    PersonalModel *persenalModel = self.dataSource[indexPath.row];
     LockShareTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"LockShareTableViewCell" forIndexPath:indexPath];
     
-    homeTableViewCell.titleLabel.text = self.dataSource[indexPath.row];
-    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.row]];
+    homeTableViewCell.titleLabel.text = persenalModel.userName;
+    [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,persenalModel.avatar]]];
+    homeTableViewCell.idCardLabel.text = persenalModel.comment;
     
     return homeTableViewCell;
 }
 - (void)action:(UIButton *)sender{
+    NSMutableArray *array = [[NSMutableArray alloc]initWithCapacity:2];
+    for (int i = 1; i < 61;  i++) {
+        [array addObject:[NSString stringWithFormat:@"%d",i]];
+    }
+    PickViewController *alertVC = [[PickViewController alloc]init];
+    alertVC.count = 1;
+    alertVC.dataArr = array;
+    alertVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
+//    self.userType = alertVC;
+    [self presentViewController:alertVC animated:YES completion:nil];
+    alertVC.blocksureBtn = ^(id arr) {
+//        self.myIsLabel.text = arr[0];
+        [self.timeBtn setTitle:arr[0] forState:UIControlStateNormal];
+        NSLog(@"%@",arr[0]);
+    };
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *personalList= responseObject[@"personalList"];
+        for(NSDictionary *eDict in personalList){
+            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
+            [self.dataSource addObject:personalModel];
+        }
+        [self tableView];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+- (void)httpRequestInfo{
+    PersonalModel *persenalModel = self.dataSource[_index];
     
+    NSString *str = self.timeBtn.currentTitle;
+    
+    
+    NSDictionary *dict = @{
+                           //                           @"id":self.roomModel.info_id,
+                           @"token":mDefineToken,
+                           @"equipmentId":@"6",
+                           @"targetId":persenalModel.info_id,
+                           @"expires":self.timeBtn.currentTitle
+                           //                           @"oid":self.roomModel.oid,
+                           //                           @"familyId":self.roomModel.familyId,
+                           //                           @"file":picData
+                           };
+        NSLog(@"id == %@",dict);
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mShareLock] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 /*
  #pragma mark - Navigation

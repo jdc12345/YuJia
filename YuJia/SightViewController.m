@@ -34,6 +34,7 @@
 @property (nonatomic, assign) NSInteger loadTableV;
 @property (nonatomic, strong) NSMutableArray *tableViews;
 @property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, strong) UIButton *startBtn;
 @end
 
 @implementation SightViewController
@@ -75,7 +76,7 @@
     [starBtn addTarget:self action:@selector(buttonClick_Start:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:starBtn];
-    
+    self.startBtn = starBtn;
     WS(ws);
     [starBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(ws.view).with.offset(-15 -49);
@@ -393,6 +394,8 @@
         [segment didChengeToIndex:index];
     }
     
+    [self.view bringSubviewToFront:self.startBtn];
+    
 }
 - (UIView *)createTableFootView{
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 500)];
@@ -450,14 +453,5 @@
     sightVC.sightModel = self.dataSource[segment.selectedIndex];
     [self.navigationController pushViewController:sightVC animated:YES];
 }
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end
