@@ -218,7 +218,7 @@ static NSString* tablecell = @"table_cell";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YJActivitesCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tablecell forIndexPath:indexPath];
     WS(ws);
-    cell.clickForReplyBlock = ^(NSString *str){
+    cell.clickForReplyBlock = ^(NSString *str,long coverPersonalId){
         YJPostActivitesCommentVC *vc = [[YJPostActivitesCommentVC alloc]init];
         vc.replyType = [NSString stringWithFormat:@"%@",str];
         [ws.navigationController pushViewController:vc animated:true];

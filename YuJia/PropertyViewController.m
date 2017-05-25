@@ -22,6 +22,8 @@
 #import "YJNearbyShopViewController.h"
 #import "YJRenovationViewController.h"
 #import "YJHouseSearchListVC.h"
+#import "YJExpressReceiveModel.h"
+#import "YJExpressDeliveryVC.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -29,7 +31,9 @@ static NSString* collectionCellid = @"collection_cell";
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSArray *imagesURLStrings;
 @property (nonatomic, strong) NSArray* functionListData;//功能列表
+@property (nonatomic, strong) NSArray* items;//初始化事项列表
 @property (nonatomic, strong) NSArray* itemsData;//事项列表
+@property(nonatomic,strong)NSArray *personalExpresss;//未收取快递
 @end
 
 @implementation PropertyViewController
@@ -53,11 +57,51 @@ static NSString* collectionCellid = @"collection_cell";
                                   @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
                                   ];
     self.imagesURLStrings = imagesURLStrings;
-    NSArray *items = @[@[@{@"item":@"2017年5月物业费",@"event":@"立即缴费"}],@[@{@"item":@"您有2个快递",@"event":@"查看"}]
+    self.items = @[@[@{@"item":@"2017年5月物业费",@"event":@"立即缴费"}],@[@{@"item":@"您没有快递",@"event":@""}]
                        ,@[@{@"item":@"您预约了今天上午9：00上门维修",@"event":@"查看"}]];
+http://192.168.1.55:8080/smarthome/mobileapi/takeExpress/findListNot.do?token=ACDCE729BCE6FABC50881A867CAFC1BC 查询个人快递
+    [SVProgressHUD show];// 动画开始
+    NSString *expressPersonalUrlStr = [NSString stringWithFormat:@"%@/mobileapi/takeExpress/findListNot.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:expressPersonalUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJExpressReceiveModel *infoModel = [YJExpressReceiveModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.personalExpresss = mArr;
+            if (mArr.count>0) {
+                NSString *expressItem = [NSString stringWithFormat:@"您有%ld个快递",mArr.count];
+                self.items = @[@[@{@"item":@"2017年5月物业费",@"event":@"立即缴费"}],@[@{@"item":expressItem,@"event":@"查看"}]
+                                   ,@[@{@"item":@"您预约了今天上午9：00上门维修",@"event":@"查看"}]];
+                NSMutableArray* arrayItem = [NSMutableArray array];
+                for (NSArray *itemArr in self.items) {
+                    NSMutableArray* arrayM = [NSMutableArray array];
+                    for (NSDictionary* dict in itemArr) {
+                        YYPropertyItemModel *model = [YYPropertyItemModel itemWithDict:dict];
+                        [arrayM addObject:model];
+                    }
+                    [arrayItem addObject:arrayM];
+                }
+                self.itemsData = arrayItem;
+                [self.tableView reloadData];
+            }
+            
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+    
     
     NSMutableArray* arrayItem = [NSMutableArray array];
-    for (NSArray *itemArr in items) {
+    for (NSArray *itemArr in self.items) {
         NSMutableArray* arrayM = [NSMutableArray array];
         for (NSDictionary* dict in itemArr) {
             YYPropertyItemModel *model = [YYPropertyItemModel itemWithDict:dict];
@@ -163,6 +207,7 @@ static NSString* collectionCellid = @"collection_cell";
         case 5:{
             YJRenovationViewController *vc = [[YJRenovationViewController alloc] init];
             vc.title = @"家政服务";
+            vc.businessId = 11;
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
@@ -174,6 +219,7 @@ static NSString* collectionCellid = @"collection_cell";
         case 7:{
             YJRenovationViewController *vc = [[YJRenovationViewController alloc] init];
             vc.title = @"装修服务";
+            vc.businessId = 12;
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
@@ -203,12 +249,20 @@ static NSString* collectionCellid = @"collection_cell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YYPropertyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-    cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-//                    NSLog(@">>>>>  %ld", (long)index);
-        UIViewController* vc = [[UIViewController alloc] init];
-        vc.view.backgroundColor = [UIColor redColor];
-        [self.navigationController pushViewController:vc animated:YES];
-                 };
+    if (indexPath.section == 1) {
+        cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
+            //                    NSLog(@">>>>>  %ld", (long)index);
+            YJExpressDeliveryVC* vc = [[YJExpressDeliveryVC alloc] init];
+            vc.personalExpresss = self.personalExpresss;
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+    }
+//    cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
+////                    NSLog(@">>>>>  %ld", (long)index);
+//        UIViewController* vc = [[UIViewController alloc] init];
+//        vc.view.backgroundColor = [UIColor redColor];
+//        [self.navigationController pushViewController:vc animated:YES];
+//                 };
     cell.model = self.itemsData[indexPath.section][indexPath.row];
     return cell;
 }

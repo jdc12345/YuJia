@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJExpressReceiveModel.h"
 
 @interface YJExpressReceiveTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJExpressReceiveModel *model;
 @end

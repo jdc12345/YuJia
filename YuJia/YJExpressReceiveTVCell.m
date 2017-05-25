@@ -31,11 +31,25 @@
     [self setupUI];
 }
 //-----根据活动状态和已参加人数来确定活动是否还可以参加-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setModel:(YJExpressReceiveModel *)model{
+    _model = model;
+    if (model.propertyType == 1) {
+        self.stateContentLabel.text = @"服务站已签收";
+    }else if (model.propertyType == 2) {
+        self.stateContentLabel.text = @"服务站未签收";
+    }
+    self.timeLabel.text = model.signTimeString;
+    self.boxAddressLabel.text = model.cabinet;
+    self.codeContentLabel.text = model.deliveryCode;
+    self.acceptContentLabel.text = model.ename;
+    self.numberContentLabel.text = [NSString stringWithFormat:@"%ld",model.expressId];
+    if (model.personalType == 1) {
+        self.acceptStateLabel.text = @"未收取";
+    }else if (model.personalType == 2) {
+        self.acceptStateLabel.text = @"已收取";
+    }
+    
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -44,7 +58,7 @@
     [self.contentView addSubview:headerView];
     [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
-        make.height.offset(181*kiphone6);
+        make.height.offset(195*kiphone6);
     }];
     UILabel *stateLabel = [UILabel labelWithText:@"物流状态" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//物流状态
     [headerView addSubview:stateLabel];
@@ -126,10 +140,10 @@
         make.right.offset(-10*kiphone6);
     }];
 
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(headerView.mas_bottom).offset(5*kiphone6);
-        make.width.offset(kScreenW);
-    }];
+//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(headerView.mas_bottom).offset(5*kiphone6);
+//        make.width.offset(kScreenW);
+//    }];
     self.stateContentLabel = stateContentLabel;
     self.timeLabel = timeLabel;
     self.boxAddressLabel = boxAddressLabel;

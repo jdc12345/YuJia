@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "YJFriendStateCommentModel.h"
+#import "YJActiviesAddPersonModel.h"
 
 @interface YJSelfReplyTableViewCell : UITableViewCell
 @property (nonatomic, strong) YJFriendStateCommentModel *model;
+@property (nonatomic, strong) YJActiviesAddPersonModel *activiesModel;//活动model，可以考虑用友邻圈的model替代
 @property (nonatomic, weak) UIImageView* iconView;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickBtnBlock)(NSString *name);

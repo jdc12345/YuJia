@@ -40,7 +40,7 @@ static NSString* tableCellid = @"table_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"友邻圈";
+    self.title = @"发布活动";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
@@ -54,7 +54,7 @@ static NSString* tableCellid = @"table_cell";
     postBtn.titleLabel.textAlignment = NSTextAlignmentRight;
     postBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
     postBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [postBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [postBtn addTarget:self action:@selector(postBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 104*kiphone6)];
@@ -195,7 +195,7 @@ static NSString* tableCellid = @"table_cell";
         dateFormatter.dateFormat = @"ee";
         NSString *weekDayStr = [dateFormatter stringFromDate:curDate];
         NSInteger w = [weekDayStr integerValue];
-        dateFormatter.dateFormat = @"MM.dd";
+        dateFormatter.dateFormat = @"MM-dd";
         NSString *dayStr = [dateFormatter stringFromDate:curDate];
         switch (w) {
             case 01:
@@ -224,7 +224,8 @@ static NSString* tableCellid = @"table_cell";
                 break;
         }
         
-        NSString *dayTitle = [NSString stringWithFormat:@"%@ %@",dayStr,weekDayStr];
+//        NSString *dayTitle = [NSString stringWithFormat:@"%@ %@",dayStr,weekDayStr];
+        NSString *dayTitle = [NSString stringWithFormat:@"%@ ",dayStr];
         [self.dayArr addObject:dayTitle];
         curDate = [NSDate dateWithTimeInterval:86400 sinceDate:curDate];
     }
@@ -439,24 +440,24 @@ static NSString* tableCellid = @"table_cell";
         make.bottom.equalTo(titleView.mas_bottom);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    UISwitch *switchButton = [[UISwitch alloc]init];
-    switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
-    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
-    // 控件大小，不能设置frame，只能用缩放比例
-    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
-    [backView addSubview:switchButton];
-    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(line.mas_bottom).offset(19*kiphone6);
-        make.right.offset(-10 *kiphone6);
-    }];
-    [switchButton setOn:NO];
-    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
-    [backView addSubview:itemLabel];
-    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
-        make.centerY.equalTo(switchButton);
-    }];
+//    UISwitch *switchButton = [[UISwitch alloc]init];
+//    switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
+//    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
+//    // 控件大小，不能设置frame，只能用缩放比例
+//    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
+//    [backView addSubview:switchButton];
+//    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(line.mas_bottom).offset(19*kiphone6);
+//        make.right.offset(-10 *kiphone6);
+//    }];
+//    [switchButton setOn:NO];
+//    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+//    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
+//    [backView addSubview:itemLabel];
+//    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
+//        make.centerY.equalTo(switchButton);
+//    }];
     return backView;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -475,86 +476,69 @@ static NSString* tableCellid = @"table_cell";
 //    }];
     
 }
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    
-    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
-    
-    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
-    
-    NSUInteger location = replacementTextRange.location;
-    
-    if (textView.text.length + text.length > 500){
-        
-        if (location != NSNotFound){
+//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+//    
+//    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
+//    
+//    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
+//    
+//    NSUInteger location = replacementTextRange.location;
+//    
+//    if (textView.text.length + text.length > 500){
+//        
+//        if (location != NSNotFound){
+//            
+//            [textView resignFirstResponder];
+//        }
+//        return NO;
+//        
+//    }  else if (location != NSNotFound){
+//        
+//        [textView resignFirstResponder];
+//                return NO;
+//    }
+//    return YES;
+//}
+- (void)postBtnClick:(UIButton*)sender {
+
+    YJCreateActivitieTVCell *nameCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *title = [nameCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *addressCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    NSString *address = [addressCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *numberCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    NSString *number = [numberCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *telCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+//    NSString *telN = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSInteger telNum = [telCell.contentField.text integerValue];
+    NSString *content = [self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *starttimeString = [self.begainTimeBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *endtimeString = [self.endTimeBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+http://localhost:8080/smarthome/mobileapi/activity/PublishActivity.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &activityTheme=%E5%94%B1%E6%AD%8C
+//    &activityContent=%E7%BA%A6%E5%A5%B3%E6%9C%8B%E5%8F%8B%E5%8E%BB%E5%94%B1%E6%AD%8C
+//    &activityAddress=KTV
+//    &activityNumber=3
+//    &starttimeString=2017-5-31%2011:11:11
+//    &endtimeString=2017-5-31%2018:30:30
+    [SVProgressHUD show];// 动画开始
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/PublishActivity.do?token=%@&activityTheme=%@&activityContent=%@&activityAddress=%@&activityNumber=%@&starttimeString=%@&endtimeString=%@&activityTelephone=%ld",mPrefixUrl,mDefineToken1,title,content,address,number,starttimeString,endtimeString,telNum];
+    [[HttpClient defaultClient]requestWithPath:postUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
             
-            [textView resignFirstResponder];
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
-        return NO;
         
-    }  else if (location != NSNotFound){
-        
-        [textView resignFirstResponder];
-        //        if (textView.text!=nil&&![textView.text isEqualToString:@""]) {
-        //            CcUserModel *userModel = [CcUserModel defaultClient];
-        //            NSString *telePhoneNumber = userModel.telephoneNum;
-        //            //            http://192.168.1.55:8080/yuyi/comment/AddConment.do?telephone=18782931355&content_id=1&Content=haha
-        //            NSString *urlStr = [NSString stringWithFormat:@"%@/comment/AddConment.do?telephone=%@&content_id=%@&Content=%@",mPrefixUrl,telePhoneNumber,self.info_id,[textView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
-        //            [SVProgressHUD show];// 动画开始
-        //            [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
-        //
-        //            } success:^(NSURLSessionDataTask *task, id responseObject) {
-        //                if ([responseObject[@"code"] isEqualToString:@"0"]) {
-        //                    //更新评论数据源
-        //                    NSString *urlStr = [NSString stringWithFormat:@"%@/comment/getConmentAll.do?id=%@&start=0&limit=6",mPrefixUrl,self.info_id];
-        //                    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
-        //
-        //                    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        //                        [SVProgressHUD dismiss];//结束动画
-        //                        NSArray *arr = responseObject[@"result"];
-        //                        NSMutableArray *mArr = [NSMutableArray array];
-        //                        for (NSDictionary *dic in arr) {
-        //                            YYCommentInfoModel *infoModel = [YYCommentInfoModel mj_objectWithKeyValues:dic];
-        //                            [mArr addObject:infoModel];
-        //                        }
-        //                        self.commentInfoModels  = mArr;
-        //                        if (self.commentInfoModels.count>0) {
-        //                            start = self.commentInfoModels.count;
-        //                        }//更新加载起始位置
-        //                        NSInteger count = [self.commentCountLabel.text integerValue];
-        //                        count += 1;
-        //                        self.commentCountLabel.text = [NSString stringWithFormat:@"%ld",count];//评论数加一
-        //                        [self.tableView reloadData];
-        //                        self.commentField.text = nil;
-        //                        self.commentField.placeholder = @"说点什么吧";
-        //                        self.commentField.imagePlaceholder = @"writing";
-        //                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        //                        [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
-        //                        return ;
-        //                    }];
-        //                }else{
-        //                    [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
-        //                }
-        //            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        //                [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
-        //                return ;
-        //            }];
-        //            
-        //        }else{
-        //            [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
-        //        }
-        return NO;
-    }
-    return YES;
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
-- (void)postBtn:(UIButton*)sender {
-    //    YJPostFriendStateVC *vc = [[YJPostFriendStateVC alloc]init];
-    //    [self.navigationController pushViewController:vc animated:true];
-}
--(void)switchAction:(id)sender{
-    
-    //    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    //    [self.navigationController pushViewController:vc animated:true];
-}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

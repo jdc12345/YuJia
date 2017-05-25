@@ -125,7 +125,8 @@ static NSString* tableCellid = @"table_cell";
     [self.view addSubview:tableView];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+        make.top.left.right.offset(0);
+         make.bottom.offset(-55*kiphone6);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:tableCellid];

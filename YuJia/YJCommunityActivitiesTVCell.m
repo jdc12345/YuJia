@@ -8,11 +8,12 @@
 
 #import "YJCommunityActivitiesTVCell.h"
 #import "UILabel+Addition.h"
+#import <UIImageView+WebCache.h>
 
 @interface YJCommunityActivitiesTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
-@property (nonatomic, weak) UILabel* begainTimeLabel;
+@property (nonatomic, weak) UILabel* creatTimeLabel;
 @property (nonatomic, weak) UILabel* typeLabel;
 @property (nonatomic, weak) UILabel* addressLabel;
 @property (nonatomic, weak) UILabel* timeLabel;
@@ -21,6 +22,7 @@
 @property (nonatomic, weak) UILabel* likeNumberLabel;
 @property (nonatomic, weak) UIButton* addBtn;
 @property (nonatomic, weak) UILabel* addNumberLabel;
+@property (nonatomic, weak) UILabel* activitieStateLabel;
 @property (nonatomic, assign) BOOL isLike;
 @end
 @implementation YJCommunityActivitiesTVCell
@@ -36,11 +38,46 @@
     [self setupUI];
 }
 //-----根据活动状态和已参加人数来确定活动是否还可以参加-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setModel:(YJActivitiesDetailModel *)model{
+    _model = model;
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.nameLabel.text = model.user_name;
+    self.creatTimeLabel.text = model.createTimeString;
+    self.typeLabel.text = model.activityTheme;
+    self.timeLabel.text = [NSString stringWithFormat:@"%@-%@",model.starttimeString,model.endtimeString];
+    self.addressLabel.text = model.activityAddress;
+    self.limiteNumberLabel.text = [NSString stringWithFormat:@"%ld人",model.activityNumber];
+    self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld人感兴趣",model.likeNum];
+    self.addNumberLabel.text = [NSString stringWithFormat:@"%ld人",model.participateNumber];
+    if (model.islike) {
+        [self.likeBtn setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+    }else{
+        [self.likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+    }
+  
+    if (model.over == 1) {
+        self.activitieStateLabel.text = @"正在进行";
+        self.likeBtn.userInteractionEnabled = true;
+        if (model.joined) {//参加过不能参加
+            [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            self.addBtn.userInteractionEnabled = false;
+        }else{
+            if (model.participateNumber<model.activityNumber) {
+                [self.addBtn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
+                self.addBtn.userInteractionEnabled = true;
+            }else{//没参加过但是人数满了也不能参加
+                [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                self.addBtn.userInteractionEnabled = false;
+            }
+        }
+    }else if (model.over == 2) {
+        self.activitieStateLabel.text = @"活动结束";
+        [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+        self.addBtn.userInteractionEnabled = false;
+        self.likeBtn.userInteractionEnabled = false;
+    }
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -164,30 +201,95 @@
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(footerView.mas_bottom).offset(13.5*kiphone6);
-        make.width.offset(kScreenW);
-    }];
+//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(footerView.mas_bottom).offset(13.5*kiphone6);
+//        make.width.offset(kScreenW);
+//    }];
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     self.typeLabel = typeLabel;
-    self.begainTimeLabel = begainTimeLabel;
+    self.creatTimeLabel = begainTimeLabel;
     self.timeLabel = timeLabel;
     self.limiteNumberLabel = limiteNumberLabel;
     self.likeBtn = likeBtn;
     self.likeNumberLabel = likeNumberLabel;
     self.addBtn = addBtn;
     self.addNumberLabel = addNumberLabel;
+    self.activitieStateLabel = activitieStateLabel;
     [likeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn addTarget:self action:@selector(addBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)addBtnClick:(UIButton*)sender{
+//http://localhost:8080/smarthome/mobileapi/activityLog/updateActivityparticipateNumber.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &ActivityId=3
+//    NSInteger addNumber = [self.addNumberLabel.text integerValue];
+//    if (!self.model.joined) {
+//        [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//        sender.userInteractionEnabled = false;
+//
+//            self.addNumberLabel.text = [NSString stringWithFormat:@"%ld",addNumber+1];
+//            self.model.participateNumber +=1;
+//
+//        self.model.joined = true;
+//    }
+    [SVProgressHUD show];// 动画开始
+    NSString *likeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activityLog/updateActivityparticipateNumber.do?token=%@&ActivityId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:likeUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            sender.userInteractionEnabled = false;
+            NSInteger addNumber = [self.addNumberLabel.text integerValue];
+            self.addNumberLabel.text = [NSString stringWithFormat:@"%ld",addNumber+1];
+            self.model.participateNumber +=1;
+            self.model.joined = true;
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        //        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+ 
 }
 -(void)btnClick:(UIButton*)sender{
-    if (self.isLike) {
+
+    NSInteger likeNumber = [self.likeNumberLabel.text integerValue];
+    if (self.model.islike) {
         [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-        self.isLike = false;
+        if (likeNumber>0) {
+            self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld人感兴趣",likeNumber-1];
+            self.model.likeNum -=1;
+        }
+        self.model.islike = false;
     }else{
         [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
-        self.isLike = true;
+        self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld人感兴趣",likeNumber+1];
+        self.model.likeNum +=1;
+        self.model.islike = true;
     }
+//http://localhost:8080/smarthome/mobileapi/upVote/updateActivityLikeNum.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &ActivityId=5
+    //    [SVProgressHUD show];// 动画开始
+    NSString *likeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/upVote/updateActivityLikeNum.do?token=%@&ActivityId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:likeUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        //        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+        }else if ([responseObject[@"code"] isEqualToString:@"1"]){
+            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        //        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
 }
 
 @end

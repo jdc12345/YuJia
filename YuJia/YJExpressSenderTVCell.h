@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJExpressCompanyModel.h"
 
 @interface YJExpressSenderTVCell : UITableViewCell
-/** block方式监听点击 */
-@property (nonatomic, copy) void (^clickBtnBlock)(NSInteger tag);
+@property (nonatomic, strong) YJExpressCompanyModel *model;
+
 @end

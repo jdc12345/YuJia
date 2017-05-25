@@ -15,6 +15,10 @@
 #import "YJPhotoDisplayCollectionViewCell.h"
 #import "YJActivitesPhotoFlowLayout.h"
 #import "YJImageDisplayCollectionViewCell.h"
+#import "YJActiviesPictureModel.h"
+#import <UIImageView+WebCache.h>
+#import <AFNetworking.h>
+
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
 static NSString* imageCellid = @"image_cell";
@@ -37,25 +41,38 @@ static NSString* imageCellid = @"image_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-//----------根据评论内容计算tableView的高度，从新布局tableView的高度-------------------
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
-//-(void)setImage:(NSString *)image{
-//    _image = image;
-//    [self.heartView setImage:[UIImage imageNamed:image]];
-//}
+-(void)setActivitypicturelist:(NSArray *)activitypicturelist{
+    _activitypicturelist = activitypicturelist;
+    if (activitypicturelist.count==0) {
+        return;
+    }
+    for (int i=0;i < activitypicturelist.count; i++) {
+        YJActiviesPictureModel *model = activitypicturelist[i];
+        if (![model.picture isEqualToString:@""]) {
+            NSArray *array = [model.picture componentsSeparatedByString:@";"];
+            NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+            [arr removeLastObject];
+            [self.otherImageArr addObjectsFromArray:arr];
+     }
+}
+        [self.totleImagesArr addObjectsFromArray:self.otherImageArr];
+        if (self.totleImagesArr.count<4&&self.totleImagesArr.count>0) {
+            [self.photoCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(130*kiphone6);
+            }];
+        }else if (self.totleImagesArr.count>3){
+            [self.photoCollectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(160*kiphone6);
+            }];
+        }
+        
+        [self.photoCollectionView reloadData];
+ 
+}
 -(void)setupUI{
 
-    UIImage *image = [UIImage imageNamed:@"icon"];
-    [self.otherImageArr addObject:image];
-    [self.otherImageArr addObject:image];
     [self.totleImagesArr addObjectsFromArray:self.otherImageArr];
-//-------------------------------需要传值-------------------------------
-    
-    
+
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIView *backView = [[UIView alloc]init];
@@ -87,7 +104,7 @@ static NSString* imageCellid = @"image_cell";
     photoCollectionView.delegate = self;
     // 注册单元格
     [photoCollectionView registerClass:[YJPhotoAddBtnCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];
-    [photoCollectionView registerClass:[YJPhotoDisplayCollectionViewCell class] forCellWithReuseIdentifier:photoCellid];
+//    [photoCollectionView registerClass:[YJPhotoDisplayCollectionViewCell class] forCellWithReuseIdentifier:photoCellid];
     [photoCollectionView registerClass:[YJImageDisplayCollectionViewCell class] forCellWithReuseIdentifier:imageCellid];
     photoCollectionView.showsHorizontalScrollIndicator = false;
     photoCollectionView.showsVerticalScrollIndicator = false;
@@ -98,10 +115,10 @@ static NSString* imageCellid = @"image_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
-        make.width.offset(kScreenW);
-    }];
+//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
+//        make.width.offset(kScreenW);
+//    }];
     
     
 }
@@ -126,18 +143,35 @@ static NSString* imageCellid = @"image_cell";
         // 去缓存池找
         YJPhotoAddBtnCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
         cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-//            if (<#condition#>) {根据是否参加活动+是否已上传过+已上传的图片数量来判断是否可以上传以及上传数量
-//                <#statements#>别人上传的图片不能删除
-//            }
-            if (self.selfImageArr.count<2) {
-                HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
-                picker.delegate = ws;
-                picker.maxAllowedCount = 2-ws.selfImageArr.count;
-                picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
-                ws.clickAddBlock(picker);
+            if (self.isJoined) {//根据是否参加活动+是否已上传过+已上传的图片数量来判断是否可以上传以及上传数量
+                //上传图片(根据isnumber判断上传的数量)
+                if (self.isnumber==0) {
+                    HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+                    picker.delegate = ws;
+                    picker.maxAllowedCount = 2-ws.selfImageArr.count;
+                    picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+                    ws.clickAddBlock(picker);
+                }else if (self.isnumber==1) {
+                    HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+                    picker.delegate = ws;
+                    picker.maxAllowedCount = 1-ws.selfImageArr.count;
+                    picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+                    ws.clickAddBlock(picker);
+                }else if (self.isnumber==2) {
+                    [SVProgressHUD showInfoWithStatus:@"你最多可以上传两张图片"];
+                }
             }else{
-                //提示：每个人最多上传两张图片
+                [SVProgressHUD showInfoWithStatus:@"你还没有参加该活动，不能上传图片"];
             }
+//            if (self.selfImageArr.count<2) {
+//                HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+//                picker.delegate = ws;
+//                picker.maxAllowedCount = 2-ws.selfImageArr.count;
+//                picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+//                ws.clickAddBlock(picker);
+//            }else{
+//                //提示：每个人最多上传两张图片
+//            }
             
         };
         return cell;
@@ -146,75 +180,137 @@ static NSString* imageCellid = @"image_cell";
             // 去缓存池找
             YJPhotoAddBtnCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
             cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-                if (self.selfImageArr.count<2) {
-                    HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
-                    picker.delegate = ws;
-                    picker.maxAllowedCount = 2-ws.selfImageArr.count;
-                    picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
-                    ws.clickAddBlock(picker);
-                    
+                if (self.isJoined) {//根据是否参加活动+是否已上传过+已上传的图片数量来判断是否可以上传以及上传数量
+                    //上传图片(根据isnumber判断上传的数量)
+                    if (self.isnumber==0) {
+                        if (self.totleImagesArr.count==19) {//已经19张，用户最多传1张
+                            HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+                            picker.delegate = ws;
+                            picker.maxAllowedCount = 1-ws.selfImageArr.count;
+                            picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+                            ws.clickAddBlock(picker);
+                        }else{
+                            HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+                            picker.delegate = ws;
+                            picker.maxAllowedCount = 2-ws.selfImageArr.count;
+                            picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+                            ws.clickAddBlock(picker);
+                        }
+                        
+                    }else if (self.isnumber==1) {
+                        HUImagePickerViewController *picker = [[HUImagePickerViewController alloc] init];
+                        picker.delegate = ws;
+                        picker.maxAllowedCount = 1-ws.selfImageArr.count;
+                        picker.originalImageAllowed = YES; //想要获取高清图设置为YES,默认为NO
+                        ws.clickAddBlock(picker);
+                    }else if (self.isnumber==2) {
+                        [SVProgressHUD showInfoWithStatus:@"你最多可以上传两张图片"];
+                    }
                 }else{
-                    //提示：每个人最多上传两张图片
+                    [SVProgressHUD showInfoWithStatus:@"你还没有参加该活动，不能上传图片"];
                 }
             };
             return cell;
         }else{
             if (indexPath.row<self.otherImageArr.count) {
                 YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:imageCellid forIndexPath:indexPath];
-                cell.photo = self.totleImagesArr[indexPath.row];
+                NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.totleImagesArr[indexPath.row]];
+                [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+//                cell.photo = self.totleImagesArr[indexPath.row];
                 return cell;
             }
             // 去缓存池找
-            YJPhotoDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
-            cell.imageView.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-                [ws.totleImagesArr removeObjectAtIndex:indexPath.row];
-                if (ws.selfImageArr.count>0) {
-                    [ws.selfImageArr removeObjectAtIndex:(indexPath.row-ws.otherImageArr.count)];
-                }
-                [ws.photoCollectionView reloadData];
-            };
-            cell.photo = self.totleImagesArr[indexPath.row];
+            YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:imageCellid forIndexPath:indexPath];
+//            cell.imageView.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
+//                [ws.totleImagesArr removeObjectAtIndex:indexPath.row];
+//                if (ws.selfImageArr.count>0) {
+//                    [ws.selfImageArr removeObjectAtIndex:(indexPath.row-ws.otherImageArr.count)];
+//                }
+//                [ws.photoCollectionView reloadData];
+//            };
+//            cell.photo = self.totleImagesArr[indexPath.row];
+            NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.totleImagesArr[indexPath.row]];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+
             return cell;
         }
     }
     // 去缓存池找
     YJPhotoDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     
-    cell.imageView.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-        [ws.totleImagesArr removeObjectAtIndex:indexPath.row];
-        [ws.selfImageArr removeObjectAtIndex:(indexPath.row-ws.otherImageArr.count)];
-        [ws.photoCollectionView reloadData];
-    };
+//    cell.imageView.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
+//        [ws.totleImagesArr removeObjectAtIndex:indexPath.row];
+//        [ws.selfImageArr removeObjectAtIndex:(indexPath.row-ws.otherImageArr.count)];
+//        [ws.photoCollectionView reloadData];
+//    };
     cell.photo = self.totleImagesArr[indexPath.row];
     return cell;
 }
 
 //当选择一张图片后进入这里
 - (void)imagePickerController:(HUImagePickerViewController *)picker didFinishPickingImagesWithInfo:(NSDictionary *)info{
-    NSInteger count=0;
+//    NSInteger count=0;
     //    self.imageArr = info[kHUImagePickerThumbnailImage];//缩小图
     NSMutableArray *arr = info[kHUImagePickerOriginalImage];//源图
-    for (int i = 0; i<arr.count; i++) {
-        [self.selfImageArr addObject:arr[i]];
-        count+=1;//可确定这次选了几张图片
-    }
-    if (count==1&&self.selfImageArr.count==2){
-        [self.totleImagesArr addObject:self.selfImageArr.lastObject];
-    }else{
-        [self.totleImagesArr addObjectsFromArray:self.selfImageArr];
-    }
+//http://192.168.1.55:8080/smarthome/mobileapi/activity/AddactivityPictrue.do？
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/AddactivityPictrue.do?&token=%@&activity_id=%ld&number=%ld",mPrefixUrl,mDefineToken1,self.activity_id,arr.count];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:postUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //  图片上传
+        for (NSInteger i = 0; i < arr.count; i ++) {
+            UIImage *images = arr[i];
+            NSData *picData = UIImageJPEGRepresentation(images, 0.5);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *fileName = [NSString stringWithFormat:@"%@%ld.png", [formatter stringFromDate:[NSDate date]], (long)i];
+            [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [SVProgressHUD dismiss];
+        NSString *message = responseObject[@"message"];
+        [message stringByRemovingPercentEncoding];
+        NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功!"];
+            self.isnumber += arr.count;//本地修改已上传图片数，确保当前页面上传两张以后不会再调起图片选择器
+
+        }else if ([responseObject[@"code"] isEqualToString:@"1"]){
+            [SVProgressHUD showErrorWithStatus:@"你已经上传过1张照片，现在只能再添加1张"];
+        }else if ([responseObject[@"code"] isEqualToString:@"2"]){
+            [SVProgressHUD showErrorWithStatus:@"你已经上传过2张照片，不能再上传了"];
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:@"你还没参加该活动"];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误信息=====%@", error.description);
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"上传失败!"];
+    }];
+
+    [self.selfImageArr addObjectsFromArray:arr];
+    [self.totleImagesArr addObjectsFromArray:self.selfImageArr];
     [self.photoCollectionView reloadData];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (indexPath.row<self.otherImageArr.count) {
+    if (indexPath.row<self.otherImageArr.count) {//别人的图片(网络请求的照片)
         YJImageDisplayCollectionViewCell*cell = (YJImageDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.totleImagesArr atIndex:indexPath.row];
+        NSMutableArray *urlStrs = [NSMutableArray array];
+        for (int i = 0; i<self.otherImageArr.count; i++) {
+            NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.otherImageArr[i]];
+            [urlStrs addObject:urlStr];
+        }
+        [HUPhotoBrowser showFromImageView:cell.imageView withURLStrings:urlStrs atIndex:indexPath.row];
     }else{
-        YJPhotoDisplayCollectionViewCell *cell = (YJPhotoDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.totleImagesArr atIndex:indexPath.row];
+        if (self.totleImagesArr.count>0) {
+            YJPhotoDisplayCollectionViewCell *cell = (YJPhotoDisplayCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+            [HUPhotoBrowser showFromImageView:cell.imageView withImages:self.totleImagesArr atIndex:indexPath.row];
+        }
+        
     }
  
 }

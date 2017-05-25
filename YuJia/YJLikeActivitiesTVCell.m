@@ -11,6 +11,7 @@
 #import "YJFriendLikeFlowLayout.h"
 #import "YJFriendLikeCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
+#import <UIImageView+WebCache.h>
 
 static NSString* photoCellid = @"photo_cell";
 @interface YJLikeActivitiesTVCell()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -31,12 +32,10 @@ static NSString* photoCellid = @"photo_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-//----------根据评论内容计算tableView的高度，从新布局tableView的高度-------------------
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setLikeList:(NSArray *)likeList{
+    _likeList = likeList;
+    [self.likeCollectionView reloadData];
+}
 -(void)setImage:(NSString *)image{
     _image = image;
     [self.heartView setImage:[UIImage imageNamed:image]];
@@ -93,7 +92,7 @@ static NSString* photoCellid = @"photo_cell";
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 5;
+    return self.likeList.count;
 }
 
 // cell内容
@@ -101,18 +100,19 @@ static NSString* photoCellid = @"photo_cell";
 {
     // 去缓存池找
     YJFriendLikeCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
-    
-    cell.photo = [UIImage imageNamed:@"icon"];
+    YJActiviesLikeModel *model = self.likeList[indexPath.row];
+    NSString *picUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:picUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
     return cell;
     
 }
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    YJFriendLikeCollectionViewCell *cell = (YJFriendLikeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    UIImage *image = [UIImage imageNamed:@"icon"];
-    NSArray *imageArr = @[image,image,image,image,image];
-    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
+//    YJFriendLikeCollectionViewCell *cell = (YJFriendLikeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//    UIImage *image = [UIImage imageNamed:@"icon"];
+//    NSArray *imageArr = @[image,image,image,image,image];
+//    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
     
 }
 

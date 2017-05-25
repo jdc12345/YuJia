@@ -8,6 +8,7 @@
 
 #import "YJExpressSenderTVCell.h"
 #import "UILabel+Addition.h"
+#import <UIImageView+WebCache.h>
 
 @interface YJExpressSenderTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
@@ -27,12 +28,13 @@
     [super awakeFromNib];
     [self setupUI];
 }
-//-----根据活动状态和已参加人数来确定活动是否还可以参加-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+//----------
+-(void)setModel:(YJExpressCompanyModel *)model{
+    _model = model;
+    self.nameLabel.text = model.expressName;
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.logo];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"sf"]];
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -42,7 +44,7 @@
     [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(5*kiphone6);
         make.left.right.offset(0);
-        make.height.offset(66*kiphone6);
+        make.bottom.offset(0);
     }];
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.image = [UIImage imageNamed:@"sf"];
@@ -73,18 +75,16 @@
         make.centerX.equalTo(headerView.mas_right).offset(-32*kiphone6);
     }];
     [phoneBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(headerView.mas_bottom);
-        make.width.offset(kScreenW);
-    }];
+
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     
 }
 - (void)btnClick:(UIButton *)sender{
-    if (self.clickBtnBlock) {
-        self.clickBtnBlock(sender.tag);
-    }
+
+   NSString *str=[[NSMutableString alloc] initWithFormat:@"tel:%ld",self.model.telephone];
+    // NSLog(@"str======%@",str);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 }
 
 @end

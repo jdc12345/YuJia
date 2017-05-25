@@ -53,6 +53,24 @@
     
     self.textview.attributedText = attStr;
 }
+-(void)setActiviesModel:(YJActiviesAddPersonModel *)activiesModel{
+    _activiesModel = activiesModel;
+    NSString *content = [NSString stringWithFormat:@"%@回复%@: %@",activiesModel.userName,activiesModel.coverPersonalName,activiesModel.content];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:content];
+    [attStr addAttribute:NSLinkAttributeName value:@"me://" range:NSMakeRange(0, activiesModel.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, activiesModel.userName.length)];
+    [attStr addAttribute:NSForegroundColorAttributeName
+                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   range:NSMakeRange(0, activiesModel.userName.length)];
+    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
+    [attStr addAttribute:NSLinkAttributeName value:@"user://" range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
+    [attStr addAttribute:NSForegroundColorAttributeName
+                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
+    
+    self.textview.attributedText = attStr;
+}
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
     
     if ([[URL scheme] isEqualToString:@"me"]) {

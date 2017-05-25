@@ -10,4 +10,5 @@
 
 @interface YJCreateActivitieTVCell : UITableViewCell
 @property(nonatomic,strong)NSString *item;
+@property(nonatomic,weak)UITextField *contentField;//发布活动的基本信息
 @end

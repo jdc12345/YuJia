@@ -10,7 +10,7 @@
 #import "UILabel+Addition.h"
 
 @interface YJCreateActivitieTVCell()<UITextFieldDelegate>
-@property(nonatomic,weak)UITextField *contentField;
+
 @property (nonatomic, weak) UILabel* itemLabel;
 @end
 @implementation YJCreateActivitieTVCell

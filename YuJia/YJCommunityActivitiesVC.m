@@ -11,14 +11,18 @@
 #import "YJCommunityActivitiesTVCell.h"
 #import "YJCreatActivitiesVC.h"
 #import "YJActivitiesDetailsVC.h"
+#import "YJActivitiesDetailModel.h"
 
+static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
 @interface YJCommunityActivitiesVC ()<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic,weak)UIButton *underwayBtn;
-@property(nonatomic,weak)UIButton *endBtn;
+@property(nonatomic,weak)UIButton *underwayBtn;//正在进行
+@property(nonatomic,weak)UIButton *endBtn;//结束
 //@property(nonatomic,weak)UIView *blueView;
 @property(nonatomic,weak)UITableView *tableView;
-
+@property(nonatomic,assign)long userId;//当前用户Id
+@property(nonatomic,strong)NSMutableArray *activiesArr;//数据源
+@property(nonatomic,assign)NSInteger over;//当前页面显示的活动状态
 @end
 
 @implementation YJCommunityActivitiesVC
@@ -58,6 +62,40 @@ static NSString* tableCellid = @"table_cell";
     [self loadData];
 }
 -(void)loadData{
+//http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &over=1
+//    &start=0&limit=10
+    self.over = 1;
+    [SVProgressHUD show];// 动画开始
+    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=1&start=0&limit=10",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *userId = responseObject[@"userid"];
+            self.userId = [userId integerValue];
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                infoModel.over = self.over;//传入活动状态
+                [mArr addObject:infoModel];
+            }
+            self.activiesArr = mArr;
+            start = self.activiesArr.count;
+            [self setupTableView];
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+
+    
+}
+-(void)setupTableView{
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -70,8 +108,7 @@ static NSString* tableCellid = @"table_cell";
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJCommunityActivitiesTVCell class] forCellReuseIdentifier:tableCellid];
-    tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight =  235*kiphone6;
+    tableView.rowHeight = 235*kiphone6;
     tableView.delegate =self;
     tableView.dataSource = self;
     UIButton *postBtn = [[UIButton alloc]init];
@@ -88,7 +125,7 @@ static NSString* tableCellid = @"table_cell";
         make.right.equalTo(ws.view).with.offset(-12*kiphone6);
         make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
     }];
-    
+
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
@@ -112,35 +149,93 @@ static NSString* tableCellid = @"table_cell";
         self.endBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.endBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
         //更新数据源
+        //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+        //    &over=1
+        //    &start=0&limit=10
+        self.over = 1;
+        [SVProgressHUD show];// 动画开始
+        NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=1&start=0&limit=10",mPrefixUrl,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;//传入活动状态
+                    [mArr addObject:infoModel];
+                }
+                self.activiesArr = mArr;
+                start = self.activiesArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
         
-        [self.tableView reloadData];
     }else{
         self.underwayBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.underwayBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
         //更新数据源
-        
-        [self.tableView reloadData];
+        //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+        //    &over=1
+        //    &start=0&limit=10
+        self.over = 2;
+        [SVProgressHUD show];// 动画开始
+        NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=2&start=0&limit=10",mPrefixUrl,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;//传入活动状态
+                    [mArr addObject:infoModel];
+                }
+                self.activiesArr = mArr;
+                start = self.activiesArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+
     }
 }
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 2;//根据请求回来的数据定
+    return self.activiesArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJCommunityActivitiesTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-    
+    cell.model = self.activiesArr[indexPath.row];
     return cell;
     
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return UITableViewAutomaticDimension;
-}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJActivitiesDetailsVC *detailVc = [[YJActivitiesDetailsVC alloc]init];
+    YJCommunityActivitiesTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    detailVc.model = cell.model;
+    detailVc.userId = self.userId;
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
@@ -148,6 +243,40 @@ static NSString* tableCellid = @"table_cell";
 - (void)postBtn:(UIButton*)sender {
     YJCreatActivitiesVC *vc = [[YJCreatActivitiesVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
+}
+//删除状态返回该页面调用刷新
+-(void)deleRefresh{
+    //更新数据源
+    //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+    //    &over=1
+    //    &start=0&limit=10
+    [SVProgressHUD show];// 动画开始
+    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=%ld&start=0&limit=10",mPrefixUrl,mDefineToken1,self.over];
+    [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *userId = responseObject[@"userid"];
+            self.userId = [userId integerValue];
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                infoModel.over = self.over;//传入活动状态
+                [mArr addObject:infoModel];
+            }
+            self.activiesArr = mArr;
+            start = self.activiesArr.count;
+            [self.tableView reloadData];
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+ 
 }
 -(void)informationBtnClick:(UIButton*)sender{
     
