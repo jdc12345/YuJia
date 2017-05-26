@@ -8,6 +8,7 @@
 
 #import "YJActivitiesDetailsTVCell.h"
 #import "UILabel+Addition.h"
+#import <UIImageView+WebCache.h>
 
 @interface YJActivitiesDetailsTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
@@ -19,7 +20,7 @@
 @property (nonatomic, weak) UILabel* limiteNumberLabel;
 @property (nonatomic, weak) UILabel* teleNumberLabel;
 @property (nonatomic, weak) UILabel* conentLabel;
-
+@property (nonatomic, weak) UILabel* stateLabel;
 @end
 @implementation YJActivitiesDetailsTVCell
 
@@ -34,11 +35,55 @@
     [self setupUI];
 }
 //-----根据活动状态和已参加人数来确定活动是否还可以参加-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setModel:(YJActivitiesDetailModel *)model{
+    _model = model;
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.nameLabel.text = model.user_name;
+    self.begainTimeLabel.text = model.starttimeString;
+    self.typeLabel.text = model.activityTheme;
+    self.timeLabel.text = [NSString stringWithFormat:@"%@-%@",model.starttimeString,model.endtimeString];
+    self.addressLabel.text = model.activityAddress;
+    self.limiteNumberLabel.text = [NSString stringWithFormat:@"%ld人",model.activityNumber];
+    self.teleNumberLabel.text = [NSString stringWithFormat:@"%ld",model.activityTelephone];
+    self.conentLabel.text = model.activityContent;
+    if (model.over == 1) {
+        self.stateLabel.text = @"正在进行";
+    }else if (model.over == 2) {
+        self.stateLabel.text = @"已经结束";
+    }
+    
+//    self.likeNumberLabel.text = [NSString stringWithFormat:@"%ld人感兴趣",model.likeNum];
+//    self.addNumberLabel.text = [NSString stringWithFormat:@"%ld人",model.participateNumber];
+//    if (model.islike) {
+//        [self.likeBtn setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+//    }else{
+//        [self.likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+//    }
+//    
+//    if (model.over == 1) {
+//        self.activitieStateLabel.text = @"正在进行";
+//        self.likeBtn.userInteractionEnabled = true;
+//        if (model.joined) {//参加过不能参加
+//            [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//            self.addBtn.userInteractionEnabled = false;
+//        }else{
+//            if (model.participateNumber<model.activityNumber) {
+//                [self.addBtn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
+//                self.addBtn.userInteractionEnabled = true;
+//            }else{//没参加过但是人数满了也不能参加
+//                [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//                self.addBtn.userInteractionEnabled = false;
+//            }
+//        }
+//    }else if (model.over == 2) {
+//        self.activitieStateLabel.text = @"活动结束";
+//        [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//        self.addBtn.userInteractionEnabled = false;
+//        self.likeBtn.userInteractionEnabled = false;
+//    }
+}
+
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -149,10 +194,6 @@
         make.right.offset(-10*kiphone6);
     }];
     
-    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(conentLabel.mas_bottom).offset(15*kiphone6);
-        make.width.offset(kScreenW);
-    }];
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     self.typeLabel = typeLabel;
@@ -161,7 +202,7 @@
     self.limiteNumberLabel = limiteNumberLabel;
     self.teleNumberLabel = teleNumberLabel;
     self.conentLabel = conentLabel;
-    
+    self.stateLabel = stateLabel;
 }
 
 

@@ -23,6 +23,14 @@
 		163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */; };
 		163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */; };
 		1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */; };
+		163E96091ED537B000C20B42 /* YJExpressCompanyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E96081ED537B000C20B42 /* YJExpressCompanyModel.m */; };
+		163E960C1ED5474F00C20B42 /* YJExpressReceiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E960B1ED5474F00C20B42 /* YJExpressReceiveModel.m */; };
+		163E960F1ED5756300C20B42 /* YJBussinessDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E960E1ED5756300C20B42 /* YJBussinessDetailModel.m */; };
+		163E96121ED577C500C20B42 /* YJBussinessServeDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */; };
+		163E96151ED597E100C20B42 /* YJActivitiesDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E96141ED597E100C20B42 /* YJActivitiesDetailModel.m */; };
+		164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */; };
+		164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */; };
+		164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */; };
 		164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */; };
 		164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F91EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m */; };
 		165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */; };
@@ -264,6 +272,22 @@
 		163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoFlowLayout.m; sourceTree = "<group>"; };
 		1639CFE71ECBE7C80015F8AA /* YJFriendNeighborStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborStateModel.h; sourceTree = "<group>"; };
 		1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborStateModel.m; sourceTree = "<group>"; };
+		163E96071ED537B000C20B42 /* YJExpressCompanyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJExpressCompanyModel.h; sourceTree = "<group>"; };
+		163E96081ED537B000C20B42 /* YJExpressCompanyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJExpressCompanyModel.m; sourceTree = "<group>"; };
+		163E960A1ED5474F00C20B42 /* YJExpressReceiveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJExpressReceiveModel.h; sourceTree = "<group>"; };
+		163E960B1ED5474F00C20B42 /* YJExpressReceiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJExpressReceiveModel.m; sourceTree = "<group>"; };
+		163E960D1ED5756300C20B42 /* YJBussinessDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJBussinessDetailModel.h; sourceTree = "<group>"; };
+		163E960E1ED5756300C20B42 /* YJBussinessDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBussinessDetailModel.m; sourceTree = "<group>"; };
+		163E96101ED577C500C20B42 /* YJBussinessServeDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJBussinessServeDetailModel.h; sourceTree = "<group>"; };
+		163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBussinessServeDetailModel.m; sourceTree = "<group>"; };
+		163E96131ED597E100C20B42 /* YJActivitiesDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitiesDetailModel.h; sourceTree = "<group>"; };
+		163E96141ED597E100C20B42 /* YJActivitiesDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitiesDetailModel.m; sourceTree = "<group>"; };
+		164275BD1ED66C4300F39E40 /* YJActiviesLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesLikeModel.h; sourceTree = "<group>"; };
+		164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesLikeModel.m; sourceTree = "<group>"; };
+		164275C01ED66CC100F39E40 /* YJActiviesAddPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesAddPersonModel.h; sourceTree = "<group>"; };
+		164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesAddPersonModel.m; sourceTree = "<group>"; };
+		164275C31ED6728800F39E40 /* YJActiviesPictureModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesPictureModel.h; sourceTree = "<group>"; };
+		164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesPictureModel.m; sourceTree = "<group>"; };
 		164F83F51EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoAddBtnCollectionViewCell.h; sourceTree = "<group>"; };
 		164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPhotoAddBtnCollectionViewCell.m; sourceTree = "<group>"; };
 		164F83F81EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoDisplayCollectionViewCell.h; sourceTree = "<group>"; };
@@ -757,6 +781,14 @@
 				166B425B1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m */,
 				169519801ED42F6E00C2C380 /* YJHouseConfigurePicModel.h */,
 				169519811ED42F6E00C2C380 /* YJHouseConfigurePicModel.m */,
+				163E96071ED537B000C20B42 /* YJExpressCompanyModel.h */,
+				163E96081ED537B000C20B42 /* YJExpressCompanyModel.m */,
+				163E960A1ED5474F00C20B42 /* YJExpressReceiveModel.h */,
+				163E960B1ED5474F00C20B42 /* YJExpressReceiveModel.m */,
+				163E960D1ED5756300C20B42 /* YJBussinessDetailModel.h */,
+				163E960E1ED5756300C20B42 /* YJBussinessDetailModel.m */,
+				163E96101ED577C500C20B42 /* YJBussinessServeDetailModel.h */,
+				163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -819,6 +851,14 @@
 				16239DC11ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m */,
 				16239DC31ECD9DCB00CF6F4C /* YJFriendStateCommentModel.h */,
 				16239DC41ECD9DCB00CF6F4C /* YJFriendStateCommentModel.m */,
+				163E96131ED597E100C20B42 /* YJActivitiesDetailModel.h */,
+				163E96141ED597E100C20B42 /* YJActivitiesDetailModel.m */,
+				164275BD1ED66C4300F39E40 /* YJActiviesLikeModel.h */,
+				164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */,
+				164275C01ED66CC100F39E40 /* YJActiviesAddPersonModel.h */,
+				164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */,
+				164275C31ED6728800F39E40 /* YJActiviesPictureModel.h */,
+				164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1638,6 +1678,9 @@
 				3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */,
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
+				163E960C1ED5474F00C20B42 /* YJExpressReceiveModel.m in Sources */,
+				163E960F1ED5756300C20B42 /* YJBussinessDetailModel.m in Sources */,
+				164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */,
 				1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */,
 				166BDCB31ECA972B00441DB5 /* YJExpressReceiveTVCell.m in Sources */,
 				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
@@ -1699,6 +1742,8 @@
 				3E90B7331EC2E7BB00CC49D7 /* AirConditioningViewController.m in Sources */,
 				166FF4A51EBC4B6B00846A59 /* YJCityTableViewCell.m in Sources */,
 				16742BF31EC1CEF80016DDD9 /* UIButton+Badge.m in Sources */,
+				164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */,
+				163E96091ED537B000C20B42 /* YJExpressCompanyModel.m in Sources */,
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
@@ -1716,10 +1761,12 @@
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */,
+				164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
+				163E96151ED597E100C20B42 /* YJActivitiesDetailModel.m in Sources */,
 				3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */,
@@ -1742,6 +1789,7 @@
 				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,
 				1672D79A1EC2A3CA00F5970C /* YJFriendLikeFlowLayout.m in Sources */,
 				1671302A1EB9745500CC2394 /* YJHeaderTitleBtn.m in Sources */,
+				163E96121ED577C500C20B42 /* YJBussinessServeDetailModel.m in Sources */,
 				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
 				3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */,
 				1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */,

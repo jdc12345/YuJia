@@ -10,5 +10,6 @@
 
 @interface YJActivitesCommentTVCell : UITableViewCell
 /** block方式监听点击 */
-@property (nonatomic, copy) void (^clickForReplyBlock)(NSString *name);
+@property (nonatomic, copy) void (^clickForReplyBlock)(NSString *name,long coverPersonalId);//参数1指被回复人的名字，参数2指被回复人的id(0指的是直接评论)
+@property(nonatomic,strong) NSArray *commentList;
 @end

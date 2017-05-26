@@ -29,6 +29,12 @@
     _model = model;
     self.itemLabel.text = model.item;
     [self.btn setTitle:model.event forState:UIControlStateNormal];
+    if ([model.event isEqualToString:@""]) {
+        self.btn.hidden = true;
+    }else{
+        self.btn.hidden = false;
+    }
+    
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果

@@ -9,6 +9,7 @@
 #import "YJActivitesCommentTVCell.h"
 #import "YJFriendCommentTableViewCell.h"
 #import "YJSelfReplyTableViewCell.h"
+#import "YJActiviesAddPersonModel.h"
 
 static NSString* friendCommentCellid = @"friendComment_cell";
 static NSString* selfReplyCellid = @"selfReply_cell";
@@ -30,12 +31,10 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     [super awakeFromNib];
     [self setupUI];
 }
-//-----根据评论内容计算tableView的高度，从新布局tableView的高度-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+-(void)setCommentList:(NSArray *)commentList{
+    _commentList = commentList;
+    [self.tableView reloadData];
+}
 
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
@@ -80,18 +79,23 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 #pragma mark - UITableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 4;//根据请求回来的数据定
+    return self.commentList.count;//根据请求回来的数据定
     
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *listArr = @[@0,@1,@0,@1];//判断是用户评论还是自己回复评论
-    if (![listArr[indexPath.row] integerValue]) {
+    WS(ws);
+    YJActiviesAddPersonModel *model = self.commentList[indexPath.row];
+    if (model.coverPersonalId == 0) {//判断是用户评论还是自己回复评论
         YJFriendCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
-        cell.model = @"用户";
-        WS(ws);
+        cell.activiesModel = model;
         cell.clickBtnBlock = ^(NSString *str){
-            NSLog(@"%@",str);
-            ws.clickForReplyBlock(str);
+//            NSRange range = [str rangeOfString:@"{"];
+//            NSString *strs = [str substringToIndex:range.location];
+            ws.clickForReplyBlock(str,model.personalId);//第二个参数用来在评论时候传给后台确认被回复人的id
+//            [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+//            ws.coverPersonalId = model.coverPersonalId;
+//            [ws.commentField becomeFirstResponder];
+            
         };
         if (indexPath.row==0) {
             cell.iconView.hidden = false;
@@ -99,14 +103,44 @@ static NSString* selfReplyCellid = @"selfReply_cell";
         return cell;
     }else{
         YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];
-        cell.model = @[@"TIAN",@"用户"];
-        WS(ws);
+        cell.activiesModel = model;
         cell.clickBtnBlock = ^(NSString *str){
-            //NSLog(@"%@",str);
-            ws.clickForReplyBlock(str);
+            NSRange range = [str rangeOfString:@"{"];
+            NSString *strs = [str substringToIndex:range.location];
+
+            if ([model.userName isEqualToString:strs]) {//当点击的是当前用户的名字
+                ws.clickForReplyBlock(str,0);
+            }else{
+                ws.clickForReplyBlock(str,model.coverPersonalId);
+            }
+
         };
         return cell;
     }
+
+//    NSArray *listArr = @[@0,@1,@0,@1];//判断是用户评论还是自己回复评论
+//    if (![listArr[indexPath.row] integerValue]) {
+//        YJFriendCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
+//        cell.model = @"用户";
+//        WS(ws);
+//        cell.clickBtnBlock = ^(NSString *str){
+//            NSLog(@"%@",str);
+//            ws.clickForReplyBlock(str);
+//        };
+//        if (indexPath.row==0) {
+//            cell.iconView.hidden = false;
+//        }
+//        return cell;
+//    }else{
+//        YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];
+//        cell.model = @[@"TIAN",@"用户"];
+//        WS(ws);
+//        cell.clickBtnBlock = ^(NSString *str){
+//            //NSLog(@"%@",str);
+//            ws.clickForReplyBlock(str);
+//        };
+//        return cell;
+//    }
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

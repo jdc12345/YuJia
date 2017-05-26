@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJRenovationViewController : UIViewController
-
+@property(nonatomic,assign)long businessId;
 @end

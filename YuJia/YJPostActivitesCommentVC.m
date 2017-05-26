@@ -8,6 +8,7 @@
 
 #import "YJPostActivitesCommentVC.h"
 #import "BRPlaceholderTextView.h"
+#import "YJActivitiesDetailsVC.h"
 
 @interface YJPostActivitesCommentVC ()<UITextViewDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *contentView;
@@ -34,7 +35,7 @@
         deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
         //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
         deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [deleateBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [deleateBtn addTarget:self action:@selector(postBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
         self.navigationItem.rightBarButtonItem = rightBarItem;
     
@@ -91,19 +92,42 @@
     NSString *str = [replyType substringToIndex:range.location];
     [self setupUIWithType:[NSString stringWithFormat:@"回复 %@:",str]];
 }
+-(void)setModel:(YJActivitiesDetailModel *)model{
+    _model = model;
+    
+}
+-(void)postBtnClick:(UIButton*)sender{
+//http://localhost:8080/smarthome/mobileapi/activity/addcomment.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &ActivityId=2
+//    &coverPersonalId=10
+//    &content=%E6%88%91%E6%83%B3%E6%89%93%E4%BD%A0评论内容
+    if (self.coverPersonalId == self.userId) {//当点击评论名字进来时候需要判断名字人的id和用户是否一样
+        self.coverPersonalId = 0;//0指的直接评论，其他指回复某个人
+    }
+    NSString *urlStr = [NSString stringWithFormat:@"%@//mobileapi/activity/addcomment.do?token=%@&ActivityId=%ld&coverPersonalId=%ld&content=%@",mPrefixUrl,mDefineToken1,self.model.info_id,self.coverPersonalId,[self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+    [SVProgressHUD show];// 动画开始
+    [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[YJActivitiesDetailsVC class]]) {
+                    YJActivitiesDetailsVC *revise =(YJActivitiesDetailsVC *)controller;
+                    [revise refrish];
+                    [self.navigationController popToViewController:revise animated:YES];
+                }
+            }
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+        return ;
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

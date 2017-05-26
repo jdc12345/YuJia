@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJActivitiesDetailModel.h"
 
 @interface YJActivitiesDetailsTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJActivitiesDetailModel *model;
 @end

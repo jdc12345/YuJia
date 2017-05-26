@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJExpressDeliveryVC : UIViewController
-
+@property(nonatomic,strong)NSArray *personalExpresss;//个人快递
 @end

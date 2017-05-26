@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJActivitiesDetailModel.h"
 
 @interface YJPostActivitesCommentVC : UIViewController
-@property(nonatomic,strong)NSString *replyType;
+@property(nonatomic,strong)NSString *replyType;//回复人类型
+@property (nonatomic, strong) YJActivitiesDetailModel *model;//传过来的活动详情
+@property(nonatomic,assign)long userId;//当前用户Id
+@property(nonatomic,assign)long coverPersonalId;//被回复人的Id
 @end

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJActiviesLikeModel.h"
 
 @interface YJLikeActivitiesTVCell : UITableViewCell
 @property(nonatomic,strong) NSString *image;
+@property(nonatomic,strong) NSArray *likeList;
 @end

@@ -48,6 +48,28 @@
     
     self.textview.attributedText = attStr;
 }
+-(void)setActiviesModel:(YJActiviesAddPersonModel *)activiesModel{
+    _activiesModel = activiesModel;
+    NSString *content = [NSString stringWithFormat:@"%@: %@",activiesModel.userName,activiesModel.content];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:content];
+    //    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    //    // 行间距
+    //    paragraphStyle.lineSpacing = 5;
+    //    // 对齐方式
+    //    paragraphStyle.alignment = NSTextAlignmentLeft;
+    //    [attStr addAttribute:NSParagraphStyleAttributeName
+    //                    value:paragraphStyle
+    //                    range:NSMakeRange(0, attStr.length)];
+    [attStr addAttribute:NSLinkAttributeName value:@"click://" range:NSMakeRange(0, activiesModel.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, activiesModel.userName.length)];
+    [attStr addAttribute:NSForegroundColorAttributeName
+                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   range:NSMakeRange(0, activiesModel.userName.length)];
+    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
+    
+    
+    self.textview.attributedText = attStr;
+}
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
     
     if ([[URL scheme] isEqualToString:@"click"]) {

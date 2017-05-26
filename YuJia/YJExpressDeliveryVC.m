@@ -10,6 +10,8 @@
 #import "UILabel+Addition.h"
 #import "YJExpressReceiveTVCell.h"
 #import "YJExpressSenderTVCell.h"
+#import "YJExpressCompanyModel.h"
+#import "YJExpressReceiveModel.h"
 
 static NSString* receiveCellid = @"receive_cell";
 static NSString* senderCellid = @"sender_cell";
@@ -19,6 +21,8 @@ static NSString* senderCellid = @"sender_cell";
 //
 @property(nonatomic,weak)UITableView *senderTableView;
 @property(nonatomic,weak)UITableView *receiveTableView;
+@property(nonatomic,strong)NSArray *expressCompanys;
+
 @end
 
 @implementation YJExpressDeliveryVC
@@ -71,8 +75,27 @@ static NSString* senderCellid = @"sender_cell";
         self.senderTableView.hidden = true;
         self.senderdBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.senderdBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        http://192.168.1.55:8080/smarthome/mobileapi/takeExpress/findList.do?token=ACDCE729BCE6FABC50881A867CAFC1BC 查询个人快递
+        [SVProgressHUD show];// 动画开始
+        NSString *expressPersonalUrlStr = [NSString stringWithFormat:@"%@/mobileapi/takeExpress/findList.do?token=%@",mPrefixUrl,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:expressPersonalUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJExpressReceiveModel *infoModel = [YJExpressReceiveModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                if (self.personalExpresss.count==0) {//判断当从首页进来不刷新数据源
+                    self.personalExpresss = mArr;
+                }
+                
+
         if (self.receiveTableView) {
             self.receiveTableView.hidden = false;
+            
         }else{
             //添加tableView
             UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
@@ -87,8 +110,7 @@ static NSString* senderCellid = @"sender_cell";
          [tableView registerClass:[YJExpressReceiveTVCell class] forCellReuseIdentifier:receiveCellid];
             tableView.delegate =self;
             tableView.dataSource = self;
-            tableView.estimatedRowHeight = 186*kiphone6;
-            tableView.rowHeight = UITableViewAutomaticDimension;
+            tableView.rowHeight = 200*kiphone6;
             UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 38*kiphone6)];
             headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
             UILabel *noticeLabel = [UILabel labelWithText:@"提货码有效期为三天，失效后请到物业办公室处理。" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];
@@ -106,65 +128,90 @@ static NSString* senderCellid = @"sender_cell";
 
             tableView.tableHeaderView = headerView;
         }
+            }else{
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            return ;
+        }];
+
    
     }else{
         self.receiveTableView.hidden = true;
         self.senderTableView.hidden = false;
         self.receiveBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.receiveBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-        if (self.senderTableView) {
-            self.senderTableView.hidden = false;
-            [self.senderTableView reloadData];
-        }else{
-            //添加tableView
-            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-            self.senderTableView = tableView;
-            [self.view addSubview:tableView];
-            self.senderTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-            [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.receiveBtn.mas_bottom);
-                make.left.right.bottom.offset(0);
-            }];
-            tableView.estimatedRowHeight = 71*kiphone6;
-            tableView.rowHeight = UITableViewAutomaticDimension;
-            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-            [tableView registerClass:[YJExpressSenderTVCell class] forCellReuseIdentifier:senderCellid];
-            tableView.delegate =self;
-            tableView.dataSource = self;
-        }
-
+//        http://192.168.1.55:8080/smarthome/mobileapi/express/findList.do?token=EC9CDB5177C01F016403DFAAEE3C1182  快递公司列表
+        [SVProgressHUD show];// 动画开始
+        NSString *expressCompanyUrlStr = [NSString stringWithFormat:@"%@/mobileapi/express/findList.do?token=%@",mPrefixUrl,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:expressCompanyUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJExpressCompanyModel *infoModel = [YJExpressCompanyModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                self.expressCompanys = mArr;
+                if (self.senderTableView) {
+                    self.senderTableView.hidden = false;
+                    [self.senderTableView reloadData];
+                }else{
+                    //添加tableView
+                    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+                    self.senderTableView = tableView;
+                    [self.view addSubview:tableView];
+                    self.senderTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+                    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                        make.top.equalTo(self.receiveBtn.mas_bottom);
+                        make.left.right.bottom.offset(0);
+                    }];
+                    tableView.rowHeight = 71*kiphone6;
+                    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                    [tableView registerClass:[YJExpressSenderTVCell class] forCellReuseIdentifier:senderCellid];
+                    tableView.delegate =self;
+                    tableView.dataSource = self;
+                }
+                
+            }else{
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            return ;
+        }];
     }
-    
 }
 
 #pragma mark - UITableView
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-   
-        return 1;
-    
-}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == self.receiveTableView) {
         
-        return 3;
+        return self.personalExpresss.count;
     }else{
-        return 4;//根据请求回来的数据定
+        return self.expressCompanys.count;//根据请求回来的数据定
     }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.receiveTableView) {
         YJExpressReceiveTVCell *cell = [tableView dequeueReusableCellWithIdentifier:receiveCellid forIndexPath:indexPath];
-        if (indexPath.row==0) {
-//            cell.item = @"已收取";
-        }else{
-//            cell.item = @"未收取";
-        }
+        cell.model = self.personalExpresss[indexPath.row];
         return cell;
     }else{
         YJExpressSenderTVCell *cell = [tableView dequeueReusableCellWithIdentifier:senderCellid forIndexPath:indexPath];
-        
+        cell.model = self.expressCompanys[indexPath.row];
         return cell;
     }
+}
+-(void)setPersonalExpresss:(NSArray *)personalExpresss{
+    _personalExpresss = personalExpresss;
+    [self.receiveTableView reloadData];//从首页进来刷新
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
