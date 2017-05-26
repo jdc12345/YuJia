@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YJBussinessDetailModel.h"
 @interface YJNearByShopTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJBussinessDetailModel *model;
 @end

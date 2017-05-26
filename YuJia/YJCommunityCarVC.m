@@ -12,7 +12,9 @@
 #import "YJCommunityCarDetailVC.h"
 #import "YJPostCommunityCarVC.h"
 #import "YJNoticeListTableVC.h"
+#import "YJCommunityCarListModel.h"
 
+static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
 @interface YJCommunityCarVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UIButton *underwayBtn;
@@ -20,7 +22,9 @@ static NSString* tableCellid = @"table_cell";
 //@property(nonatomic,weak)UIView *blueView;
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIButton *informationBtn;
-
+@property(nonatomic,assign)NSInteger over;//当前页面显示的拼车活动状态
+@property(nonatomic,assign)long userId;//当前用户Id
+@property(nonatomic,strong)NSMutableArray *carsArr;//数据源
 @end
 
 @implementation YJCommunityCarVC
@@ -62,6 +66,40 @@ static NSString* tableCellid = @"table_cell";
 
 }
 -(void)loadData{
+http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &over=2
+//    &limit=4
+//    &start=0
+    self.over = 1;
+    [SVProgressHUD show];// 动画开始
+    NSString *carsUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findcarpoolingAll.do?token=%@&over=%ld&limit=9&start=0",mPrefixUrl,mDefineToken1,self.over];
+    [[HttpClient defaultClient]requestWithPath:carsUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *userId = responseObject[@"userid"];
+            self.userId = [userId integerValue];
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJCommunityCarListModel *infoModel = [YJCommunityCarListModel mj_objectWithKeyValues:dic];
+                infoModel.over = self.over;
+                [mArr addObject:infoModel];
+            }
+            self.carsArr = mArr;
+            start = self.carsArr.count;
+            [self setupUI];
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+
+}
+-(void)setupUI{
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -116,30 +154,77 @@ static NSString* tableCellid = @"table_cell";
         self.endBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.endBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
         //更新数据源
-        
-        [self.tableView reloadData];
+        self.over = 1;
+        [SVProgressHUD show];// 动画开始
+        NSString *carsUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findcarpoolingAll.do?token=%@&over=%ld&limit=9&start=0",mPrefixUrl,mDefineToken1,self.over];
+        [[HttpClient defaultClient]requestWithPath:carsUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJCommunityCarListModel *infoModel = [YJCommunityCarListModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;
+                    [mArr addObject:infoModel];
+                }
+                self.carsArr = mArr;
+                start = self.carsArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+
     }else{
         self.underwayBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.underwayBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
         //更新数据源
-        
-        [self.tableView reloadData];
+        self.over = 2;
+        [SVProgressHUD show];// 动画开始
+        NSString *carsUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findcarpoolingAll.do?token=%@&over=%ld&limit=9&start=0",mPrefixUrl,mDefineToken1,self.over];
+        [[HttpClient defaultClient]requestWithPath:carsUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJCommunityCarListModel *infoModel = [YJCommunityCarListModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;
+                    [mArr addObject:infoModel];
+                }
+                self.carsArr = mArr;
+                start = self.carsArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
     }
 }
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 2;//根据请求回来的数据定
+    return self.carsArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJCommunityCarTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-    if (indexPath.row==0) {
-        cell.type = @"司机";
-    }else{
-       cell.type = @"乘客"; 
-    }
+    cell.model = self.carsArr[indexPath.row];
     WS(ws);
     cell.clickForAddBlock = ^(UIButton *sender){
         ws.informationBtn.badgeValue = @" ";
@@ -159,6 +244,9 @@ static NSString* tableCellid = @"table_cell";
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJCommunityCarDetailVC *detailVc = [[YJCommunityCarDetailVC alloc]init];
+    YJCommunityCarTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    detailVc.model = cell.model;
+    detailVc.userId = self.userId;
     [self.navigationController pushViewController:detailVc animated:true];
     
 }

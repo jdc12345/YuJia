@@ -1,22 +1,24 @@
 //
-//  YJAddPropertyBillAddressVC.m
+//  YJChangePropertyBillAddressVC.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/5/5.
+//  Created by 万宇 on 2017/5/26.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJAddPropertyBillAddressVC.h"
+#import "YJChangePropertyBillAddressVC.h"
 #import "YJCityTableViewCell.h"
 #import "YJBillInfoTableViewCell.h"
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
 #import "YJCityDetailModel.h"
 #import "YJAreaDetailModel.h"
+#import "YJPropertyDetailAddressModel.h"
+#import "YJModifyAddressVC.h"
 
 static NSString* cityCellid = @"city_cell";
 static NSString* detailInfoCellid = @"detailInfo_cell";
-@interface YJAddPropertyBillAddressVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJChangePropertyBillAddressVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIView *selectView;
 @property(nonatomic,weak)UIView *selectAreaView;
@@ -24,18 +26,51 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 @property(nonatomic, strong)NSString *yardName;
 @property(nonatomic, strong)NSString *areaCode;
 @property(nonatomic, strong)NSString *yardid;
+@property(nonatomic, strong)YJPropertyDetailAddressModel *addressModel;//要修改的地址数据
 @end
 
-@implementation YJAddPropertyBillAddressVC
+@implementation YJChangePropertyBillAddressVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"添加地址";
+    self.title = @"修改地址";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self setupUI];
+    
+}
+-(void)setInfo_id:(long)info_id{
+    _info_id = info_id;
+    [self loadAddressData];
+}
+-(void)loadAddressData{
+ http://localhost:8080/smarthome//mobileapi/detailHome/get.do?token=EC9CDB5177C01F016403DFAAEE3C1182&AddressId=3   
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/get.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,self.info_id];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSDictionary *dic = responseObject[@"result"];
+            YJPropertyDetailAddressModel *addressModel = [YJPropertyDetailAddressModel mj_objectWithKeyValues:dic];
+            self.addressModel = addressModel;
+            self.areaCode = addressModel.areaCode;
+            self.cityName = addressModel.city;
+            self.yardName = addressModel.residentialQuarters;
+            [self setupUI];
+            [SVProgressHUD dismiss];// 动画结束
+            
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [SVProgressHUD showInfoWithStatus:responseObject[@"message"]];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+  
 }
 -(void)loadCityData{
-    http://192.168.1.55:8080/smarthome/mobilepub/baseArea/findList.do 获取城市列表
+http://192.168.1.55:8080/smarthome/mobilepub/baseArea/findList.do 获取城市列表
     [SVProgressHUD show];// 动画开始
     NSString *getCityUrlStr = [NSString stringWithFormat:@"%@/mobilepub/baseArea/findList.do",mPrefixUrl];
     [[HttpClient defaultClient]requestWithPath:getCityUrlStr method:0 parameters:nil prepareExecute:^{
@@ -59,13 +94,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-
+    
 }
 -(void)selectViewWithNames:(NSArray*)names and:(NSInteger)tag{
     if (self.selectView) {
         if (self.selectView.hidden==false) {
             self.selectView.hidden=true;
         }else{
+            
             self.selectView.hidden=false;
         }
         
@@ -102,6 +138,8 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     YJCityTableViewCell *cell =[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.city = sender.titleLabel.text;
     self.cityName = sender.titleLabel.text;
+    
+    [self.selectView removeFromSuperview];
 }
 -(void)loadAreaData{
 http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?AreaCode=130681 获取小区列表
@@ -117,10 +155,12 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
+            if (arr.count>0) {
             for (NSDictionary *dic in arr) {
                 YJAreaDetailModel *infoModel = [YJAreaDetailModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
+        }
             [self selectViewWithAreaNames:mArr and:20];
             
         }else{
@@ -175,6 +215,11 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
     YJCityTableViewCell *cell =[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     cell.city = sender.titleLabel.text;
     self.yardName = sender.titleLabel.text;
+    
+    for (UIView *subView in self.selectView.subviews) {
+        [subView removeFromSuperview];
+    }
+    [self.selectView removeFromSuperview];
 }
 - (void)setupUI {
     //添加tableView
@@ -212,46 +257,73 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
     [btn addTarget:self action:@selector(submitAddress) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:btn];
     tableView.tableFooterView = footerView;
-  
+    
 }
 - (void)submitAddress{
-    NSString *city = [self.cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *yard = [self.yardName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJPropertyDetailAddressModel *addressModel = [[YJPropertyDetailAddressModel alloc]init];//pop时候回传
+    addressModel.info_id = self.info_id;
+    YJCityTableViewCell *cityCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *city = [cityCell.city stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    addressModel.city = cityCell.city;
+    YJCityTableViewCell *yardCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    NSString *yard = [yardCell.city stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    addressModel.residentialQuarters = yardCell.city;
     YJBillInfoTableViewCell *nameCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
     NSString *name = [nameCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    addressModel.ownerName = nameCell.contentField.text;
     YJBillInfoTableViewCell *telCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
-//    NSString *telNum = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    //    NSString *telNum = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *buildCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
     NSString *buildNumber = [NSString stringWithFormat:@"%@",buildCell.contentField.text];
+    addressModel.buildingNumber = [NSString stringWithFormat:@"%@号楼",buildCell.contentField.text];
     NSString *buildingNumber = [buildNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *floorCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
-     NSString *floorNumber = [NSString stringWithFormat:@"%@",floorCell.contentField.text];
+    NSString *floorNumber = [NSString stringWithFormat:@"%@",floorCell.contentField.text];
+    addressModel.floor = [NSString stringWithFormat:@"%@层",floorCell.contentField.text];
     NSString *floor = [floorNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *unitNumberCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
     NSString *unit = [NSString stringWithFormat:@"%@",unitNumberCell.contentField.text];
+    addressModel.unitNumber = [NSString stringWithFormat:@"%@单元",unitNumberCell.contentField.text];;
     NSString *unitNumber = [unit stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *roomCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
     NSString *room = [NSString stringWithFormat:@"%@",roomCell.contentField.text];
+    addressModel.roomNumber = [NSString stringWithFormat:@"%@室",roomCell.contentField.text];
     NSString *roomNumber = [room stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
-//    &city=%E5%8C%97%E4%BA%AC
-//    &yard=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81
-//    &yarid=1&ownerName=%E6%B5%81%E5%B0%8F%E8%99%BE
-//    &ownerTelephone=18782918821&buildingNumber=1%E5%8F%B7%E6%A5%BC
-//    &unitNumber=5
-//    &floor=3
-//    &roomNumber=301
+//http://localhost:8080/smarthome/mobileapi/detailHome/UpdateDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
+//    &AddressId=3&city=%E6%B6%BF%E5%B7%9E%E5%B8%82
+//    &residentialQuarters=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA
+//    &ownerName=%E5%88%98%E5%A4%A7%E4%B8%9C
+//    &buildingNumber=2
+//    &unitNumber=3
+//    &floor=5
+//    &roomNumber=1502
     //此处接提交地址接口！！！！！
     [SVProgressHUD show];// 动画开始
-    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/addAddress.do?token=%@&city=%@&yard=%@&yarid=%@&ownerName=%@&ownertelephone=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@&areaCode=%@",mPrefixUrl,mDefineToken1,city,yard,self.yardid,name,telCell.contentField.text,buildingNumber,unitNumber,floor,roomNumber,self.areaCode];
+    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/UpdateDetailHomeAddress.do?token=%@&AddressId=%ld&city=%@&residentialQuarters=%@&ownerName=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@&ownertelephone=%@&areaCode=%@",mPrefixUrl,mDefineToken1,self.info_id,city,yard,name,buildingNumber,unitNumber,floor,roomNumber,telCell.contentField.text,self.areaCode];
     [[HttpClient defaultClient]requestWithPath:reportUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-            
+            [SVProgressHUD showSuccessWithStatus:@"修改成功"];
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                        if ([controller isKindOfClass:[YJModifyAddressVC class]]) {
+                            YJModifyAddressVC *revise =(YJModifyAddressVC *)controller;
+                            //            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
+                            revise.addressModel = addressModel;
+                            [self.navigationController popToViewController:revise animated:YES];
+                        }
+                        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+                            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+                            //            revise.clickBtnBlock(cell.textLabel.text);
+                            [self.navigationController popToViewController:revise animated:YES];
+                        }
+                    }
+//           self.navigationController pop回去，根据最新内容改变修改cell的内容
         }else{
-            
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [SVProgressHUD showSuccessWithStatus:responseObject[@"message"]];
+            }
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -259,19 +331,19 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-
-    for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
-            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
-//            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
-            [self.navigationController popToViewController:revise animated:YES];
-        }
-        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
-            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
-//            revise.clickBtnBlock(cell.textLabel.text);
-            [self.navigationController popToViewController:revise animated:YES];
-        }
-    }
+    
+//    for (UIViewController *controller in self.navigationController.viewControllers) {
+//        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
+//            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
+//            //            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
+//            [self.navigationController popToViewController:revise animated:YES];
+//        }
+//        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+//            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+//            //            revise.clickBtnBlock(cell.textLabel.text);
+//            [self.navigationController popToViewController:revise animated:YES];
+//        }
+//    }
 }
 #pragma mark - UITableView
 
@@ -283,12 +355,37 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
     if (indexPath.row<2) {
         YJCityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cityCellid forIndexPath:indexPath];
         cell.item = itemArr[indexPath.row];
+        if (indexPath.row==0) {
+            cell.city = self.addressModel.city;
+        }
+        if (indexPath.row==1) {
+            cell.city = self.addressModel.residentialQuarters;
+        }
         return cell;
     }else{
         YJBillInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
+        
         if (indexPath.row>2) {
             cell.contentField.keyboardType = UIKeyboardTypeNumberPad;
-            [self addToolSender:cell.contentField];
+            [self addToolSender:cell.contentField];//添加完成工具栏
+        }
+        if (indexPath.row==2) {
+            cell.contentField.text = self.addressModel.ownerName;
+        }
+        if (indexPath.row==3) {
+            cell.contentField.text = [NSString stringWithFormat:@"%ld",self.addressModel.rqtelephone];
+        }
+        if (indexPath.row==4) {
+            cell.contentField.text = self.addressModel.buildingNumber;
+        }
+        if (indexPath.row==5) {
+            cell.contentField.text = self.addressModel.floor;
+        }
+        if (indexPath.row==6) {
+            cell.contentField.text = self.addressModel.unitNumber;
+        }
+        if (indexPath.row==7) {
+            cell.contentField.text = self.addressModel.roomNumber;
         }
         cell.item = itemArr[indexPath.row];
         return cell;
@@ -326,6 +423,7 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
     [self.view endEditing:true];
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

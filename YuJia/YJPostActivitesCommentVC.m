@@ -9,6 +9,7 @@
 #import "YJPostActivitesCommentVC.h"
 #import "BRPlaceholderTextView.h"
 #import "YJActivitiesDetailsVC.h"
+#import "YJCommunityCarDetailVC.h"
 
 @interface YJPostActivitesCommentVC ()<UITextViewDelegate>
 @property(nonatomic,weak)BRPlaceholderTextView *contentView;
@@ -97,6 +98,7 @@
     
 }
 -(void)postBtnClick:(UIButton*)sender{
+    if (self.model) {//添加活动评论
 //http://localhost:8080/smarthome/mobileapi/activity/addcomment.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &ActivityId=2
 //    &coverPersonalId=10
@@ -104,7 +106,7 @@
     if (self.coverPersonalId == self.userId) {//当点击评论名字进来时候需要判断名字人的id和用户是否一样
         self.coverPersonalId = 0;//0指的直接评论，其他指回复某个人
     }
-    NSString *urlStr = [NSString stringWithFormat:@"%@//mobileapi/activity/addcomment.do?token=%@&ActivityId=%ld&coverPersonalId=%ld&content=%@",mPrefixUrl,mDefineToken1,self.model.info_id,self.coverPersonalId,[self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/addcomment.do?token=%@&ActivityId=%ld&coverPersonalId=%ld&content=%@",mPrefixUrl,mDefineToken1,self.model.info_id,self.coverPersonalId,[self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     [SVProgressHUD show];// 动画开始
     [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
         
@@ -122,6 +124,36 @@
         [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
         return ;
     }];
+        
+}
+    if (self.carModel) {//添加社区拼车评论
+    http://localhost:8080/smarthome/mobileapi/carpooling/addcommentCarpooling.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//        &carpoolingId=1
+//        &coverPersonalId=10
+//        &content=%E6%97%A9%E4%B8%8A%E6%97%A9%E7%82%B9%E8%B5%B0%EF%BC%8C%E4%B8%8D%E7%84%B6%E8%B5%B6%E4%B8%8D%E4%B8%8A%E9%A3%9E%E6%9C%BA
+        if (self.coverPersonalId == self.userId) {//当点击评论名字进来时候需要判断名字人的id和用户是否一样
+            self.coverPersonalId = 0;//0指的直接评论，其他指回复某个人
+        }
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/addcommentCarpooling.do?token=%@&carpoolingId=%ld&coverPersonalId=%ld&content=%@",mPrefixUrl,mDefineToken1,self.carModel.info_id,self.coverPersonalId,[self.contentView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+        [SVProgressHUD show];// 动画开始
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                for (UIViewController *controller in self.navigationController.viewControllers) {
+                    if ([controller isKindOfClass:[YJCommunityCarDetailVC class]]) {
+                        YJCommunityCarDetailVC *revise =(YJCommunityCarDetailVC *)controller;
+                        [revise refrish];
+                        [self.navigationController popToViewController:revise animated:YES];
+                    }
+                }
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+            return ;
+        }];
+
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

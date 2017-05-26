@@ -8,22 +8,25 @@
 
 #import "YJCommunityCarTVCell.h"
 #import "UILabel+Addition.h"
+#import <UIImageView+WebCache.h>
 
 @interface YJCommunityCarTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
 @property (nonatomic, weak) UILabel* begainTimeLabel;
 @property (nonatomic, weak) UILabel* typeLabel;
-@property (nonatomic, weak) UILabel* addressLabel;
+@property (nonatomic, weak) UILabel* startAddressLabel;
 @property (nonatomic, weak) UILabel* timeLabel;
-@property (nonatomic, weak) UILabel* limiteNumberLabel;
-@property (nonatomic, weak) UIButton* likeBtn;
-@property (nonatomic, weak) UILabel* likeNumberLabel;
+@property (nonatomic, weak) UILabel* endAddressLabel;
+@property (nonatomic, weak) UIButton* commentBtn;
+@property (nonatomic, weak) UILabel* commentNumberLabel;
 @property (nonatomic, weak) UIButton* addBtn;
-@property (nonatomic, weak) UILabel* addNumberLabel;
-@property (nonatomic, weak) UIView* footerView;
+@property (nonatomic, weak) UILabel* addNumberLabel;//已参加的人数
 @property (nonatomic, weak) UILabel *typeContentLabel;
+@property (nonatomic, weak) UILabel *stateLabel;
 @property (nonatomic, assign) BOOL isLike;
+@property (nonatomic, weak) UIView *footerView;
+@property (nonatomic, weak) UILabel* numberLabel;//限定可以参加人数
 @end
 @implementation YJCommunityCarTVCell
 
@@ -39,15 +42,86 @@
 }
 //-----------根据传递的数据中的乘客类型改变右下角的按钮样式--------------
 //-----------根据传递的数据中的单子进行状态改变右下角的按钮样式--------------
--(void)setType:(NSString *)type{
-    _type = type;
-    self.typeContentLabel.text = type;
-    if ([type isEqualToString:@"乘客"]) {
+-(void)setModel:(YJCommunityCarListModel *)model{
+    _model = model;
+    NSString *iconUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrlStr] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.nameLabel.text = model.user_name;
+    self.begainTimeLabel.text = model.createTimeString;
+    if (model.over==2) {//已结束
+        if (model.ctype==2) {
+            self.typeContentLabel.text = @"司机";
+            self.addBtn.layer.cornerRadius = 0;
+            self.addNumberLabel.hidden = false;
+            self.addNumberLabel.text = [NSString stringWithFormat:@"%ld人参加",model.participateNumber];
+            [self.addBtn setTitle:@"" forState:UIControlStateNormal];
+            [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            self.addBtn.backgroundColor = [UIColor clearColor];
+            self.addBtn.userInteractionEnabled = false;
+            [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self.footerView);
+                make.right.equalTo(self.addNumberLabel.mas_left).offset(-10*kiphone6);
+            }];
+        }else if (model.ctype==1) {
+            self.typeContentLabel.text = @"乘客";
+            [self.addBtn setImage:nil forState:UIControlStateNormal];
+            [self.addBtn setTitle:@"接单" forState:UIControlStateNormal];
+            self.addBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+            [self.addBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+            self.addBtn.layer.cornerRadius = 2;
+            self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+            self.addBtn.userInteractionEnabled = false;
+            [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(self.footerView);
+                make.right.offset(-10*kiphone6);
+                make.height.offset(25*kiphone6);
+                make.width.offset(79*kiphone6);
+            }];
+            self.addNumberLabel.hidden = true;
+
+        }
+    }else if (model.over==1){
+    if (model.ctype==2) {
+        self.typeContentLabel.text = @"司机";
+        self.addBtn.layer.cornerRadius = 0;
+        if (model.islike) {//司机发的单子，乘客参加过就不能参加
+            [self.addBtn setTitle:@"" forState:UIControlStateNormal];
+            [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            self.addBtn.userInteractionEnabled = false;
+        }else{//司机发的单子，乘客没有参加过
+            if (model.cnumber>model.participateNumber) {//人数没满可以参加
+                [self.addBtn setTitle:@"" forState:UIControlStateNormal];
+                [self.addBtn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
+                self.addBtn.backgroundColor = [UIColor clearColor];
+                self.addBtn.userInteractionEnabled = true;
+            }else{//人数已满不可以参加
+                [self.addBtn setTitle:@"" forState:UIControlStateNormal];
+                [self.addBtn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                self.addBtn.backgroundColor = [UIColor clearColor];
+                self.addBtn.userInteractionEnabled = false;
+            }
+
+        }
+        [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.footerView);
+            make.right.equalTo(self.addNumberLabel.mas_left).offset(-10*kiphone6);
+        }];
+        [self.addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
+        self.addNumberLabel.hidden = false;
+    }else if (model.ctype==1) {
+        self.typeContentLabel.text = @"乘客";
+        [self.addBtn setImage:nil forState:UIControlStateNormal];
         [self.addBtn setTitle:@"接单" forState:UIControlStateNormal];
         self.addBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [self.addBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         self.addBtn.layer.cornerRadius = 2;
-        self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+        if (model.isOrders) {//乘客发的单子，已接过单子不能再接
+            self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+            self.addBtn.userInteractionEnabled = false;
+        }else{//乘客发的单子，没接过单子可以接
+            self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+            self.addBtn.userInteractionEnabled = true;
+        }
         [self.addBtn setImage:nil forState:UIControlStateNormal];
         [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.footerView);
@@ -57,25 +131,22 @@
         }];
         self.addNumberLabel.hidden = true;
         [self.addBtn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
+      }
     }
-    if ([type isEqualToString:@"司机"]) {
-        self.addBtn.layer.cornerRadius = 0;
-        [self.addBtn setImage:[UIImage imageNamed:@"click-add"] forState:UIControlStateNormal];
-        [self.addBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.footerView);
-            make.right.equalTo(self.addNumberLabel.mas_left).offset(-10*kiphone6);
-        }];
-        [self.addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
-        self.addNumberLabel.hidden = false;
+    self.timeLabel.text = model.departureTimeString;
+    self.startAddressLabel.text = model.departurePlace;
+    self.endAddressLabel.text = model.end;
+    if (model.over == 1) {
+        self.stateLabel.text = @"正在进行";
+    }else if (model.over == 2) {
+        self.stateLabel.text = @"已完成";
     }
+    self.commentNumberLabel.text = [NSString stringWithFormat:@"%ld",model.comment];
+    self.numberLabel.text = [NSString stringWithFormat:@"%ld人",model.cnumber];
+    self.addNumberLabel.text = [NSString stringWithFormat:@"%ld人参加",model.participateNumber];
     
 }
-//-----根据活动状态和已参加人数来确定活动是否还可以参加-----
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//}
+
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
@@ -150,11 +221,23 @@
         make.left.offset(10*kiphone6);
         make.top.equalTo(AddressItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *limiteNumberLabel = [UILabel labelWithText:@"风景区公园" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
-    [self.contentView addSubview:limiteNumberLabel];
-    [limiteNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    UILabel *endAddressLabel = [UILabel labelWithText:@"风景区公园" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
+    [self.contentView addSubview:endAddressLabel];
+    [endAddressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(destinationItemLabel.mas_right).offset(10*kiphone6);
         make.centerY.equalTo(destinationItemLabel);
+    }];
+    UILabel *numberItemLabel = [UILabel labelWithText:@"乘坐人数" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];//目的地标题
+    [self.contentView addSubview:numberItemLabel];
+    [numberItemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10*kiphone6);
+        make.top.equalTo(destinationItemLabel.mas_bottom).offset(10*kiphone6);
+    }];
+    UILabel *numberLabel = [UILabel labelWithText:@"2" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
+    [self.contentView addSubview:numberLabel];
+    [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(numberItemLabel.mas_right).offset(10*kiphone6);
+        make.centerY.equalTo(numberItemLabel);
     }];
     UIView *footerView = [[UIView alloc]init];//添加尾部视图
     footerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -162,13 +245,13 @@
     [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
         make.height.offset(37*kiphone6);
-        make.top.equalTo(destinationItemLabel.mas_bottom).offset(10*kiphone6);
-        make.bottom.offset(13.5*kiphone6);
+        make.top.equalTo(numberItemLabel.mas_bottom).offset(10*kiphone6);
+        make.bottom.offset(-13.5*kiphone6);
     }];
     self.footerView =footerView;
-    UILabel *activitieStateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
-    [footerView addSubview:activitieStateLabel];
-    [activitieStateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
+    [footerView addSubview:stateLabel];
+    [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(footerView);
         make.left.offset(10*kiphone6);
     }];
@@ -180,7 +263,7 @@
         make.right.offset(-10*kiphone6);
     }];
     UIButton *addBtn = [[UIButton alloc]init];//参加按钮
-    [addBtn setImage:[UIImage imageNamed:@"click-add"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
     [footerView addSubview:addBtn];
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(footerView);
@@ -214,12 +297,14 @@
     self.typeLabel = typeLabel;
     self.begainTimeLabel = begainTimeLabel;
     self.timeLabel = timeLabel;
-    self.limiteNumberLabel = limiteNumberLabel;
-    self.likeBtn = commentBtn;
-    self.likeNumberLabel = commentNumberLabel;
+    self.endAddressLabel = endAddressLabel;
+    self.commentBtn = commentBtn;
+    self.commentNumberLabel = commentNumberLabel;
     self.addBtn = addBtn;
     self.addNumberLabel = addNumberLabel;
     self.typeContentLabel = typeContentLabel;
+    self.stateLabel = stateLabel;
+    self.numberLabel = numberLabel;
     [commentBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)btnClick:(UIButton*)sender{
@@ -232,11 +317,60 @@
 //    }
 }
 -(void)orderClick:(UIButton*)sender{
-    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccccc"]];
-    self.clickForAddBlock(sender);
+//    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccccc"]];
+//    self.clickForAddBlock(sender);
+//http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &carpoolingId=4
+    [sender setImage:nil forState:UIControlStateNormal];
+    [SVProgressHUD show];// 动画开始
+    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [sender setImage:nil forState:UIControlStateNormal];
+            sender.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+            sender.userInteractionEnabled = false;
+            self.model.isOrders = true;
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
 }
 -(void)addCar:(UIButton*)sender{
-    self.clickForAddBlock(sender);
+//    self.clickForAddBlock(sender);
+    //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+    //    &carpoolingId=4
+    sender.backgroundColor = [UIColor clearColor];
+    NSInteger addNumber = [self.addNumberLabel.text integerValue];    
+    [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+    self.addNumberLabel.text = [NSString stringWithFormat:@"%ld参加",addNumber+1];
+    self.model.participateNumber +=1;
+    self.model.islike = true;
+    [SVProgressHUD show];// 动画开始
+    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            sender.backgroundColor = [UIColor clearColor];
+            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            sender.userInteractionEnabled = false;
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+
 }
 
 @end

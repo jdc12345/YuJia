@@ -10,6 +10,7 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJNearByShopTVCell.h"
 #import "YJNearbyShopDetailVC.h"
+#import "YJBussinessDetailModel.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -28,10 +29,11 @@ static NSString* tableCellid = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    [self loadData];
+    [self setLocationAddress];
     
 }
-- (void)loadData {
+- (void)setLocationAddress {
+
     UIView *LocationView = [[UIView alloc]init];
     LocationView.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
     [self.view addSubview:LocationView];
@@ -62,6 +64,37 @@ static NSString* tableCellid = @"table_cell";
     self.locationAddressBtn = btn;
     
     [btn addTarget:self action:@selector(selectAddressItem:) forControlEvents:UIControlEventTouchUpInside];
+    //根据地址请求数据
+    //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
+    //    &rqid=1
+    //    &start=0
+    //    &limit=10
+    //    &lat2=115.984108
+    //    &lng2=39.484636
+    [SVProgressHUD show];// 动画开始
+    NSString *rname = @"名流一品小区";
+    rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/business/findBusinessList.do?token=%@&rname=%@&start=0&limit=10&lat2=115.984108&lng2=39.484636",mPrefixUrl,mDefineToken1,rname];
+    [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJBussinessDetailModel *infoModel = [YJBussinessDetailModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.shopsArr = mArr;
+            [self.tableView reloadData];
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
@@ -79,21 +112,31 @@ static NSString* tableCellid = @"table_cell";
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 180*kiphone6;
 }
+-(void)selectAddressItem:(UIButton*)sender{
+    //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
+    //    &rqid=1
+    //    &start=0
+    //    &limit=10
+    //    &lat2=115.984108
+    //    &lng2=39.484636
+}
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-        return 3;//根据请求回来的数据定
+        return self.shopsArr.count;//根据请求回来的数据定
     
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-            YJNearByShopTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-//        cell.model = self.recordArr[indexPath.row];
+    YJNearByShopTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
+        cell.model = self.shopsArr[indexPath.row];
         return cell;
     
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJNearbyShopDetailVC *vc = [[YJNearbyShopDetailVC alloc]init];
+    YJNearByShopTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    vc.info_id = cell.model.info_id;
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)didReceiveMemoryWarning {
@@ -103,7 +146,8 @@ static NSString* tableCellid = @"table_cell";
 
 /*
 #pragma mark - Navigation
-
+ 
+ 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].

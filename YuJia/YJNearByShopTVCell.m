@@ -9,12 +9,14 @@
 #import "YJNearByShopTVCell.h"
 #import "UILabel+Addition.h"
 #import "ZFBLevelView.h"
+#import <UIImageView+WebCache.h>
 
 @interface YJNearByShopTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
-
-
+@property (nonatomic, weak) ZFBLevelView* starView;
+@property (nonatomic, weak) UILabel *priceLabel;
+@property (nonatomic, weak) UILabel *distanceLabel;
 @end
 @implementation YJNearByShopTVCell
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -26,6 +28,15 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self setupUI];
+}
+-(void)setModel:(YJBussinessDetailModel *)model{
+    _model = model;
+    NSString *iconUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.nameLabel.text = model.businessName;
+    self.starView.level = model.star;
+    self.priceLabel.text = [NSString stringWithFormat:@"人均：¥%.f/人",model.average];
+    self.distanceLabel.text = [NSString stringWithFormat:@"%.fm",model.average];
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
@@ -54,7 +65,7 @@
 //        make.height.offset(12*kiphone6);
 //        make.width.offset(60*kiphone6);
     }];
-    
+    self.starView = starView;
     UILabel *priceLabel = [UILabel labelWithText:@"人均： ¥ 20/人" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
     [self.contentView addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -79,7 +90,8 @@
    
     self.iconView = iconView;
     self.nameLabel = nameLabel;
-    
+    self.distanceLabel = distanceLabel;
+    self.priceLabel = priceLabel;
 }
 
 @end
