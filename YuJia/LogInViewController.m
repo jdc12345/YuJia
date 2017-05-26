@@ -7,7 +7,8 @@
 //
 
 #import "LogInViewController.h"
-
+#import "CcUserModel.h"
+#import "YYTabBarController.h"
 @interface LogInViewController ()
 
 
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) UIButton *loginBtn;
 @property (nonatomic, strong) UIView *loginView;
 
+@property(nonatomic, weak) UITextField *phoneTF_login;
 // 密码
 @property (nonatomic, strong) UILabel *passWordLabel;
 @property (nonatomic, strong) UITextField *passWordTextF;
@@ -24,12 +26,20 @@
 @property (nonatomic, strong) UILabel *vcodeLabel;
 @property (nonatomic, strong) UITextField *vcodeTextF;
 @property (nonatomic, strong) UIButton *postBtn;
+
+
+@property (nonatomic, assign) BOOL isPSW;
 /**
  注册页面
  */
 @property (nonatomic, strong) UIButton *resignBtn;
 @property (nonatomic, strong) UIView *resignView;
 
+@property(nonatomic, weak) UITextField *phoneTF_resign;
+@property(nonatomic, weak) UITextField *vcodeTF_resign;
+
+@property(nonatomic, weak) UITextField *psw_resign;
+@property(nonatomic, weak) UITextField *repsw_resign;
 
 
 
@@ -47,6 +57,7 @@
     self.navigationController.navigationBar.hidden = YES;
     
     
+    self.isPSW = YES;
     [self setSubView];
     // Do any additional setup after loading the view.
 }
@@ -230,7 +241,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(httpRequestForLogin) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -317,6 +328,8 @@
 
     
     
+    
+    self.phoneTF_login = newNumberTextF;
     self.passWordLabel = passwordLabel;
     self.passWordTextF = passwordTextF;
     
@@ -540,7 +553,7 @@
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    [sureBtn addTarget:self action:@selector(clickResign) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
     
@@ -550,6 +563,17 @@
         make.centerX.equalTo(self.resignView);
         make.size.mas_equalTo(CGSizeMake(150, 44));
     }];
+    
+//    @property(nonatomic, weak) UITextField *phoneTF_resign;
+//    @property(nonatomic, weak) UITextField *vcodeTF_resign;
+//    
+//    @property(nonatomic, weak) UITextField *psw_resign;
+//    @property(nonatomic, weak) UITextField *repsw_resign;
+    self.phoneTF_resign = newNumberTextF;
+    self.vcodeTF_resign = yanLabelTextF;
+    self.psw_resign = passwordTextF;
+    self.repsw_resign = fistPWTextF;
+
     
 }
 
@@ -582,6 +606,8 @@
         self.vcodeLabel.hidden = NO;
         self.vcodeTextF.hidden = NO;
         self.postBtn.hidden = NO;
+        
+        self.isPSW = NO;
     }else{
         self.passWordLabel.hidden = NO;
         self.passWordTextF.hidden = NO;
@@ -589,6 +615,8 @@
         self.vcodeLabel.hidden = YES;
         self.vcodeTextF.hidden = YES;
         self.postBtn.hidden = YES;
+        
+        self.isPSW = YES;
     }
     self.isPassWord = sender.selected;
     sender.selected = !sender.selected;
@@ -598,6 +626,107 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)clickResign{
+    [self httpRequestInfo];
+}
+
+- (void)httpRequestInfo{
+    NSDictionary *dict2 = @{
+                            @"telephone":self.phoneTF_resign.text,
+                            };
+    NSLog(@"%@",dict2);
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobilepub/personal/vcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        self.vcodeTF_resign.text = responseObject[@"result"];
+        NSDictionary *dict = @{
+                               @"password":self.psw_resign.text,
+                               @"telephone":self.phoneTF_resign.text,
+                               @"vcode":self.vcodeTF_resign.text
+                               };
+        NSLog(@"%@",dict);
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mResign] method:1 parameters:dict prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            //保存token
+            CcUserModel *userModel = [CcUserModel defaultClient];
+            userModel.userToken = responseObject[@"token"];
+            userModel.telephoneNum = self.phoneTF_resign.text;
+            [userModel saveAllInfo];
+            
+            
+            YYTabBarController *firstVC = [[YYTabBarController alloc]init];
+            [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+    
+}
+- (void)httpRequestForLogin{
+    if (self.isPSW) {
+        NSLog(@"密码登录");
+        NSDictionary *dict = @{
+                               @"password":self.passWordTextF.text,
+                               @"telephone":self.phoneTF_login.text,
+//                               @"vcode":self.vcodeTF_resign.text
+                               };
+        NSLog(@"%@",dict);
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLogin] method:1 parameters:dict prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            //            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
+            //            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
+            //            fInfo.personalModel = personalModel;
+            //            [self.navigationController pushViewController:fInfo animated:YES];
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }else{
+        NSLog(@"验证码登录");
+        NSDictionary *dict2 = @{
+                                @"telephone":self.phoneTF_login.text,
+                                };
+        NSLog(@"%@",dict2);
+        
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobilepub/personal/loginvcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            
+            self.vcodeTF_resign.text = responseObject[@"result"];
+            NSDictionary *dict = @{
+//                                   @"password":self.passWordTextF.text,
+                                   @"telephone":self.phoneTF_login.text,
+                                   @"password":self.vcodeTF_resign.text
+                                   };
+            NSLog(@"%@",dict);
+            [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLogin] method:1 parameters:dict prepareExecute:^{
+                
+            } success:^(NSURLSessionDataTask *task, id responseObject) {
+                NSLog(@"%@",responseObject);
+                //            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
+                //            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
+                //            fInfo.personalModel = personalModel;
+                //            [self.navigationController pushViewController:fInfo animated:YES];
+                
+            } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                NSLog(@"%@",error);
+            }];
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
 }
 /*
 #pragma mark - Navigation

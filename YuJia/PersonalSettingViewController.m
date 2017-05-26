@@ -11,6 +11,7 @@
 #import "YYSettingTableViewCell.h"
 #import "ChangePhoneNumberViewController.h"
 #import "ChangePassWordViewController.h"
+#import "LogInViewController.h"
 @interface PersonalSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -161,8 +162,8 @@
         CcUserModel *userModel = [CcUserModel defaultClient];
         [userModel removeUserInfo];//清除本地存储
         [CcUserModel defaultClient];//清除缓存
-//        YYLogInVC *logVC = [[YYLogInVC alloc]init];
-//        [self.navigationController presentViewController:logVC animated:true completion:nil];
+        LogInViewController *logVC = [[LogInViewController alloc]init];
+        [self.navigationController presentViewController:logVC animated:YES completion:nil];
     }];
     
     [alert addAction:cancelAction];

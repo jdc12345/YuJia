@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "YYTabBarController.h"
+#import "CcUserModel.h"
+#import "LogInViewController.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) YYTabBarController *yyTabBar;
@@ -18,17 +20,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    //创建Window
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+    CcUserModel *userModel = [CcUserModel defaultClient];
+    NSString *userToken = userModel.userToken;
     
-    
-    YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
-    self.window.rootViewController = tabbarVC;
-    self.yyTabBar = tabbarVC;
-    
-    
-    
-    [self.window makeKeyAndVisible];
+    if (userToken) {
+        //初始化一个tabBar控制器
+        YYTabBarController *tabbarVC = [[YYTabBarController alloc]init];
+        self.window.rootViewController = tabbarVC;
+        [self.window makeKeyAndVisible];
+        self.yyTabBar = tabbarVC;
+    }else{
+        LogInViewController *logInVC = [[LogInViewController alloc]init];
+        self.window.rootViewController = logInVC;
+        [self.window makeKeyAndVisible];
+    }
     
     // Override point for customization after application launch.
     return YES;

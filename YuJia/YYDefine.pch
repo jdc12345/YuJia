@@ -190,5 +190,17 @@
 //门锁——修改密码接口 门锁暂时没有其它状态控制，所以扩展状态控制字段就用来保存密码 默认密码为：000000
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/doorPasswd.do?
 #define mLockChangePSW [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/doorPasswd.do?"]
+
+//注册
+//http://192.168.1.55:8080/smarthome/mobilepub/personal/register.do?password=q&telephone=17743516381&vcode=338825
+#define mResign [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobilepub/personal/register.do?"]
+//注册 验证码
+//http://192.168.1.55:8080/smarthome/mobilepub/personal/vcode.do?telephone=17743516381
+
+//3登陆
+//http://localhost:8080/smarthome/mobilepub/personal/login.do?telephone=18782931356&password=123
+#define mLogin [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobilepub/personal/login.do?"]
+//4登陆发送验证码
+//http://localhost:8080/smarthome/mobilepub/personal/loginvcode.do?telephone=18782931356
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */
