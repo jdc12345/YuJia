@@ -104,15 +104,30 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     }else{
         YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];
         cell.activiesModel = model;
+        
         cell.clickBtnBlock = ^(NSString *str){
-            NSRange range = [str rangeOfString:@"{"];
-            NSString *strs = [str substringToIndex:range.location];
-
-            if ([model.userName isEqualToString:strs]) {//当点击的是当前用户的名字
-                ws.clickForReplyBlock(str,0);
-            }else{
-                ws.clickForReplyBlock(str,model.coverPersonalId);
+//            NSRange range = [str rangeOfString:@"{"];
+//            NSString *strs = [str substringToIndex:range.location];
+            if ([str containsString:@"me://"]) {//代表点击了第一个名字，这个名字的id是personalId
+                if (model.personalId == self.userId) {
+                    ws.clickForReplyBlock(str,0);
+                }else{
+                    ws.clickForReplyBlock(str,model.personalId);
+                }
             }
+            if ([str containsString:@"user://"]) {//代表点击了第二个名字，这个名字的id是coverPersonalId
+                if (model.coverPersonalId == self.userId) {
+                    ws.clickForReplyBlock(str,0);
+                }else{
+                    ws.clickForReplyBlock(str,model.coverPersonalId);
+                }
+            }
+
+//            if ([model.userName isEqualToString:strs]) {//当点击的是当前用户的名字
+//                ws.clickForReplyBlock(str,0);
+//            }else{
+//                ws.clickForReplyBlock(str,model.coverPersonalId);
+//            }
 
         };
         return cell;

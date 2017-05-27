@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJCommunityCarListModel.h"
 
 @interface YJCommunityCarTVCell : UITableViewCell
-@property(nonatomic,strong)NSString *type;
+@property(nonatomic,strong)YJCommunityCarListModel *model;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickForAddBlock)(UIButton *btn);
 @end

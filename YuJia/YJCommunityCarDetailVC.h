@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJCommunityCarListModel.h"
 
 @interface YJCommunityCarDetailVC : UIViewController
-
+@property(nonatomic,strong)YJCommunityCarListModel *model;
+@property(nonatomic,assign)long userId;//当前用户Id
+-(void)refrish;
 @end

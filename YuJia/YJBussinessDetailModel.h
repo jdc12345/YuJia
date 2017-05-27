@@ -14,8 +14,10 @@
 //picture    String      商家图片
 //businessType  int      商家类型
 //contacts    String      商家联系人
-
-
+//附近商家里属性
+//"distance": 0,距离
+//"rname": "",小区名
+//"id": 11
 #import <Foundation/Foundation.h>
 
 @interface YJBussinessDetailModel : NSObject
@@ -28,4 +30,7 @@
 @property (nonatomic, assign) int businessType;
 @property (nonatomic, copy) NSString *contacts;
 
+@property (nonatomic, copy) NSString *distance;
+@property (nonatomic, copy) NSString *rname;
+@property (nonatomic, assign) long info_id;
 @end

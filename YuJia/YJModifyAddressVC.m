@@ -11,6 +11,7 @@
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
 #import "YJPropertyAddressModel.h"
+#import "YJChangePropertyBillAddressVC.h"
 
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -121,19 +122,50 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
  */
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-//        NSLog(@"点击了修改");
-//        
-//        // 收回左滑出现的按钮(退出编辑模式)
-//        tableView.editing = NO;
-//    }];
+    YJPropertyAddressModel *model = self.addresses[indexPath.row];
+    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSLog(@"点击了修改");
+        // 收回左滑出现的按钮(退出编辑模式)
+        tableView.editing = NO;
+        YJChangePropertyBillAddressVC *chanceVC = [[YJChangePropertyBillAddressVC alloc]init];
+        chanceVC.info_id = model.info_id;//传给修改页面要修改地址的id
+        [self.navigationController pushViewController:chanceVC animated:true];
+    }];
     UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        [self.addresses removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        http://localhost:8080/smarthome/mobileapi/family/deleteDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&AddressId=2
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/family/deleteDetailHomeAddress.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
+//        [SVProgressHUD show];// 动画开始
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [self.addresses removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }else{
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+            return ;
+        }];
+
+        
     }];
     
-//    return @[action1, action0];
-    return @[action1];
+    return @[action1, action0];
+//    return @[action1];
+}
+-(void)setAddressModel:(YJPropertyDetailAddressModel *)addressModel{
+    _addressModel = addressModel;
+    for (int i = 0; i<self.addresses.count; i++) {
+        YJPropertyAddressModel *model = self.addresses[i];
+        if (model.info_id == self.addressModel.info_id) {
+            model.city = addressModel.city;
+            model.detailAddress = [NSString stringWithFormat:@"%@%@%@%@%@",self.addressModel.residentialQuarters,self.addressModel.buildingNumber,self.addressModel.unitNumber,self.addressModel.floor,self.addressModel.roomNumber];
+            [self.tableView reloadData];
+        }
+    }
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

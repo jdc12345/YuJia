@@ -11,4 +11,5 @@
 @interface YJPropertyAddressModel : NSObject
 @property (nonatomic, copy) NSString *detailAddress;
 @property (nonatomic, copy) NSString *city;
+@property (nonatomic, assign) long info_id;
 @end

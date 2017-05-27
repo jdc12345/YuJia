@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJNearbyShopDetailVC : UIViewController
-
+@property (nonatomic, assign) long info_id;//商家id
 @end

@@ -16,7 +16,6 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIButton *driverBtn;
 @property(nonatomic,weak)UIButton *passionBtn;
-@property(nonatomic,weak)UIImage *chioceImage;
 
 @property(nonatomic,weak)UIButton *displayTimeBtn;
 @property(nonatomic,strong)NSArray *minusArr;
@@ -52,7 +51,7 @@ static NSString* tableCellid = @"table_cell";
     deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
     //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
     deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [deleateBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [deleateBtn addTarget:self action:@selector(postBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
 
@@ -97,9 +96,10 @@ static NSString* tableCellid = @"table_cell";
         make.centerY.equalTo(line1.mas_bottom).offset(25*kiphone6);
         make.left.offset(10*kiphone6);
     }];
-    self.chioceImage = [UIImage imageNamed:@"type_Choice"];
     UIButton *driverTypeBtn = [[UIButton alloc]init];//司机类型选择
-    [driverTypeBtn setImage:self.chioceImage forState:UIControlStateNormal];
+    [driverTypeBtn setImage:[UIImage imageNamed:@"type_Choice"] forState:UIControlStateNormal];
+    [driverTypeBtn setImage:[UIImage imageNamed:@"type_Choiced"] forState:UIControlStateSelected];
+    driverTypeBtn.tag = 101;
     driverTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     driverTypeBtn.layer.masksToBounds = true;
     driverTypeBtn.layer.cornerRadius = 20*kiphone6;
@@ -119,7 +119,9 @@ static NSString* tableCellid = @"table_cell";
     }];
     
     UIButton *passengerTypeBtn = [[UIButton alloc]init];//乘客类型选择
-    [passengerTypeBtn setImage:self.chioceImage forState:UIControlStateNormal];
+    [passengerTypeBtn setImage:[UIImage imageNamed:@"type_Choice"] forState:UIControlStateNormal];
+    [passengerTypeBtn setImage:[UIImage imageNamed:@"type_Choiced"] forState:UIControlStateSelected];
+    passengerTypeBtn.tag = 102;
     passengerTypeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     passengerTypeBtn.layer.masksToBounds = true;
     passengerTypeBtn.layer.cornerRadius = 20*kiphone6;
@@ -131,7 +133,7 @@ static NSString* tableCellid = @"table_cell";
     }];
     self.passionBtn = passengerTypeBtn;
     [passengerTypeBtn addTarget:self action:@selector(typeChioce:) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *passengerContentLabel = [UILabel labelWithText:@"司机" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//司机
+    UILabel *passengerContentLabel = [UILabel labelWithText:@"乘客" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//司机
     [headerView addSubview:passengerContentLabel];
     [passengerContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(line1.mas_bottom).offset(25*kiphone6);
@@ -159,7 +161,7 @@ static NSString* tableCellid = @"table_cell";
         make.width.offset(140*kiphone6);
     }];
     displayTimeBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [displayTimeBtn setTitle:@"5月6日 6:30" forState:UIControlStateNormal];
+    [displayTimeBtn setTitle:@"0月0日 00:00" forState:UIControlStateNormal];
     [displayTimeBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     displayTimeBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     displayTimeBtn.layer.borderWidth = 1.5;
@@ -186,10 +188,10 @@ static NSString* tableCellid = @"table_cell";
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3;//根据请求回来的数据定
+    return 4;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *itemArr = @[@"出 发 地",@"目 的 地",@"联系电话"];
+    NSArray *itemArr = @[@"出 发 地",@"目 的 地",@"联系电话",@"乘坐人数"];
     YJCreateActivitieTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.item = itemArr[indexPath.row];
     return cell;
@@ -208,24 +210,24 @@ static NSString* tableCellid = @"table_cell";
     backView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
 //    self.backView = backView;
     
-    UISwitch *switchButton = [[UISwitch alloc]init];
-    switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
-    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
-    // 控件大小，不能设置frame，只能用缩放比例
-    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
-    [backView addSubview:switchButton];
-    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(backView);
-        make.right.offset(-10 *kiphone6);
-    }];
-    [switchButton setOn:NO];
-    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
-    [backView addSubview:itemLabel];
-    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
-        make.centerY.equalTo(switchButton);
-    }];
+//    UISwitch *switchButton = [[UISwitch alloc]init];
+//    switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
+//    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
+//    // 控件大小，不能设置frame，只能用缩放比例
+//    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
+//    [backView addSubview:switchButton];
+//    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(backView);
+//        make.right.offset(-10 *kiphone6);
+//    }];
+//    [switchButton setOn:NO];
+//    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+//    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
+//    [backView addSubview:itemLabel];
+//    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
+//        make.centerY.equalTo(switchButton);
+//    }];
     UIView *line = [[UIView alloc]init];
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [backView addSubview:line];
@@ -240,22 +242,19 @@ static NSString* tableCellid = @"table_cell";
 }
 #pragma mark - BtnClick
 - (void)typeChioce:(UIButton*)sender{
-    UIImage *chiocedImage = [UIImage imageNamed:@"type_Choiced"];
-    if (sender.imageView.image == self.chioceImage) {
-        [sender setImage:chiocedImage forState:UIControlStateNormal];
-        if (sender == self.driverBtn) {
-            [self.passionBtn setImage:self.chioceImage forState:UIControlStateNormal];
-        }else{
-            [self.driverBtn setImage:self.chioceImage forState:UIControlStateNormal];
+
+    sender.selected = !sender.isSelected;
+    if (sender.selected) {
+        if (sender.tag == 101) {
+            self.passionBtn.selected = false;
+        }else if (sender.tag == 102){
+            self.driverBtn.selected = false;
         }
-    }else{
-        [sender setImage:self.chioceImage forState:UIControlStateNormal];
-        
     }
 }
-- (void)switchAction:(id)sender{
-    
-}
+//- (void)switchAction:(id)sender{
+//    
+//}
 - (void)pickerView:(id)sender{
     NSDate *now = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -289,7 +288,7 @@ static NSString* tableCellid = @"table_cell";
         dateFormatter.dateFormat = @"ee";
         NSString *weekDayStr = [dateFormatter stringFromDate:curDate];
         NSInteger w = [weekDayStr integerValue];
-        dateFormatter.dateFormat = @"MM.dd";
+        dateFormatter.dateFormat = @"MM-dd";
         NSString *dayStr = [dateFormatter stringFromDate:curDate];
         switch (w) {
             case 01:
@@ -318,7 +317,9 @@ static NSString* tableCellid = @"table_cell";
                 break;
         }
         
-        NSString *dayTitle = [NSString stringWithFormat:@"%@ %@",dayStr,weekDayStr];
+//        NSString *dayTitle = [NSString stringWithFormat:@"%@ %@",dayStr,weekDayStr];
+//        [self.dayArr addObject:dayTitle];//加星期天的格式
+        NSString *dayTitle = [NSString stringWithFormat:@"%@",dayStr];
         [self.dayArr addObject:dayTitle];
         curDate = [NSDate dateWithTimeInterval:86400 sinceDate:curDate];
     }
@@ -411,7 +412,7 @@ static NSString* tableCellid = @"table_cell";
     }else if (component == 2){
         self.minus = [NSString stringWithFormat:@"%@",self.minusArr[row]];
     }
-    NSString *selectTime = [NSString stringWithFormat:@"%@%@:%@",self.day,self.hour,self.minus];
+    NSString *selectTime = [NSString stringWithFormat:@"%@ %@:%@",self.day,self.hour,self.minus];
     self.selectTime = selectTime;
     [self.displayTimeBtn setTitle:selectTime forState:UIControlStateNormal];
     
@@ -456,6 +457,51 @@ static NSString* tableCellid = @"table_cell";
     label.textAlignment = NSTextAlignmentCenter;
     return label;
 }
+- (void)postBtnClick:(UIButton*)sender {
+    
+    YJCreateActivitieTVCell *startCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    NSString *startAddress = [startCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *addressCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    NSString *endAddress = [addressCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *numberCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
+    NSString *number = [numberCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    YJCreateActivitieTVCell *telCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    //    NSString *telN = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSInteger telNum = [telCell.contentField.text integerValue];
+    NSString *timeString = [self.displayTimeBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSInteger type = 0;
+    if (self.driverBtn.selected) {
+        type = 2;
+    }else if (self.passionBtn.selected){
+        type = 1;
+    }
+    
+http://localhost:8080/smarthome/mobileapi/carpooling/PublishCarpooling.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &ctype=2
+//    &startTime=2017-05-25%2017:20:00
+//    &departurePlace=%E6%B6%BF%E5%B7%9E%E5%B9%BF%E5%9C%BA%E8%BF%99%E5%84%BF
+//    &end=%E5%8C%97%E4%BA%AC%E5%85%AD%E9%87%8C%E6%A1%A5
+//    &cnumber=3
+//    &telephone=18909898987
+    [SVProgressHUD show];// 动画开始
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/PublishCarpooling.do?token=%@&ctype=%ld&startTime=%@&departurePlace=%@&end=%@&cnumber=%@&telephone=%ld",mPrefixUrl,mDefineToken1,type,timeString,startAddress,endAddress,number,telNum];
+    [[HttpClient defaultClient]requestWithPath:postUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"发布成功"];
+            
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD showErrorWithStatus:@"发布失败"];
+        return ;
+    }];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
