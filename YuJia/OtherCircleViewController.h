@@ -1,5 +1,5 @@
 //
-//  MyActiveTableViewCell.h
+//  OtherCircleViewController.h
 //  YuJia
 //
 //  Created by wylt_ios_1 on 2017/5/27.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyActiveTableViewCell : UITableViewCell
+@interface OtherCircleViewController : UIViewController
 
 @end

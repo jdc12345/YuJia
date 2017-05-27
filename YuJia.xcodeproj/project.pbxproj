@@ -132,6 +132,7 @@
 		3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */; };
 		3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */; };
 		3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */; };
+		3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */; };
 		3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */; };
 		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
@@ -493,6 +494,8 @@
 		3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherPeopleInfoViewController.m; sourceTree = "<group>"; };
 		3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotficViewController.h; sourceTree = "<group>"; };
 		3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficViewController.m; sourceTree = "<group>"; };
+		3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherCircleViewController.h; sourceTree = "<group>"; };
+		3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherCircleViewController.m; sourceTree = "<group>"; };
 		3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRoomViewController.h; sourceTree = "<group>"; };
 		3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRoomViewController.m; sourceTree = "<group>"; };
 		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
@@ -1416,6 +1419,8 @@
 				3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */,
 				3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */,
 				3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */,
+				3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */,
+				3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */,
 				3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */,
 				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
@@ -1736,6 +1741,7 @@
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
 				169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
+				3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */,
 				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */,

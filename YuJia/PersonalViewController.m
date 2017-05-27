@@ -18,7 +18,9 @@
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
 #import "CirleAndActiveViewController.h"
-#import "NotficViewController.h"
+//#import "NotficViewController.h"
+#import "YJNoticeListTableVC.h"
+
 
 @interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -392,7 +394,7 @@
     }];
 }
 - (void)pushNotficVC{
-    NotficViewController *notficVC = [[NotficViewController alloc]init];
+    YJNoticeListTableVC *notficVC = [[YJNoticeListTableVC alloc]init];
     [self.navigationController pushViewController:notficVC animated:YES];
 }
 - (void)viewWillAppear:(BOOL)animated{

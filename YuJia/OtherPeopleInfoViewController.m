@@ -18,6 +18,8 @@
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
 #import "CirleAndActiveViewController.h"
+#import "MyActiveViewController.h"
+#import "OtherCircleViewController.h"
 @interface OtherPeopleInfoViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
     UIImageView *tabBarHairlineImageView;
@@ -26,9 +28,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSArray *iconList;
-
 @property (nonatomic, strong) UILabel *nameLabel;
-
 @property (nonatomic, strong) UILabel *idLabel;
 @property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) UIImageView *genderV;
@@ -37,6 +37,18 @@
 
 @property (nonatomic, weak) UIButton *rightNotBtn;
 @property (nonatomic, strong) PersonalModel *personalModel;
+
+@property (nonatomic, weak) MMButton *circleBtn;
+@property (nonatomic, weak) MMButton *activeBtn;
+
+
+@property (nonatomic, assign) BOOL isCircle;
+@property (nonatomic, weak) UILabel *titleLabel;
+
+@property (nonatomic, weak) MyActiveViewController *myActiveVC;
+@property (nonatomic, weak) OtherCircleViewController *mycircleVC;
+@property (nonatomic, weak) UIView *myActiveView;
+@property (nonatomic, weak) UIView *myCircleView;
 
 @end
 
@@ -65,6 +77,7 @@
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
         _tableView.tableHeaderView = [self personInfomation];
+        _tableView.tableFooterView = [self createFootView];
         
     }
     return _tableView;
@@ -76,88 +89,23 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self httpRequestHomeInfo];
-    self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"关于宇家",@"意见反馈"]];
-    self.iconList =@[@"about",@"opinion"];
-    // 左侧地址按钮   测
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftButton setFrame:CGRectMake(0,0,20, 20)];
-    
-    [leftButton setBackgroundImage:[UIImage imageNamed:@"settings"] forState:UIControlStateNormal];
-    
-    [leftButton addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
-    
-    self.navigationItem.leftBarButtonItem = leftItem;
-    
-    [leftButton sizeToFit];
-    
-    // 右侧通知按钮
-    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [rightButton setFrame:CGRectMake(0,0,20, 20)];
-    
-    [rightButton setBackgroundImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-    
-    [rightButton addTarget:self action:@selector(pushNotficVC) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
-    
-    self.navigationItem.rightBarButtonItem = rightItem;
-    
-    [rightButton sizeToFit];
-    
-    
-    
-    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    // 改变navBar 下面的线
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    navBarHairlineImageView = [self findHairlineImageViewUnder:navigationBar];
-    UILabel *coverView = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 1)];
-    coverView.backgroundColor = [UIColor colorWithHexString:@"e9e9e9"];
-    [navBarHairlineImageView removeFromSuperview];
-    [navBarHairlineImageView addSubview:coverView];
     
     [self tableView];
-    
-    //    self.rightNotBtn = rightButton;
-    
-    // Do any additional setup after loading the view.
-}
-/**
- * PS:navigation  下面的线
- */
-- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
-    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
-        return (UIImageView *)view;
-    }
-    for (UIView *subview in view.subviews) {
-        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
-        if (imageView) {
-            return imageView;
-        }
-    }
-    return nil;
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (UIView *)personInfomation{
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 230)];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 220)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
     
     UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 120)];
     personV.backgroundColor = [UIColor whiteColor];
     personV.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"personal_color"]];
-    
-    
     [headerView addSubview:personV];
-    
-    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-    ;
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
     iconV.layer.cornerRadius = 32.5 *kiphone6;
@@ -234,35 +182,32 @@
     }];
     self.genderV = imageV;
     
-    UIButton *editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [editBtn setImage:[UIImage imageNamed:@"compile"] forState:UIControlStateNormal];
-    [editBtn sizeToFit];
-    editBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [editBtn addTarget:self action:@selector(editPersonal) forControlEvents:UIControlEventTouchUpInside];
-    [personV addSubview:editBtn];
     
-    [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(personV);
-        make.left.equalTo(imageV.mas_right).with.offset(10 *kiphone6);
-    }];
-    
-    NSArray *nameList = @[@"我的家",@"我的圈子",@"我的订单",@"我的收藏"];
-    NSArray *iconList = @[@"myhome",@"mycircle",@"MyOrder",@"collect"];
+    NSArray *nameList = @[@"ta的圈子",@"ta的活动",@"我的订单",@"我的收藏"];
+    NSArray *iconList = @[@"mycircle",@"activity_other",@"MyOrder",@"collect"];
     
     
     CGFloat btnW = kScreenW/2.0;
     for (int i = 0 ; i<2 ;  i++) {
         MMButton *leftNavBtn = [MMButton buttonWithType:UIButtonTypeCustom];
-        leftNavBtn.frame = CGRectMake(i *btnW, 130, btnW, 100);
+        leftNavBtn.frame = CGRectMake(i *btnW, 120, btnW, 100);
         leftNavBtn.tag = 800 +i;
         leftNavBtn.backgroundColor = [UIColor whiteColor];
         [leftNavBtn setTitle:nameList[i] forState:UIControlStateNormal];
         [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
         [leftNavBtn setImage:[UIImage imageNamed:iconList[i]] forState:UIControlStateNormal];
         leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-        [leftNavBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+        [leftNavBtn addTarget:self action:@selector(changeVCType:) forControlEvents:UIControlEventTouchUpInside];
         [headerView addSubview:leftNavBtn];
+        leftNavBtn.layer.borderColor = [UIColor colorWithHexString:@"f1f1f1"].CGColor;
+        leftNavBtn.layer.borderWidth = 0.5;
         
+        if (i == 0) {
+            leftNavBtn.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+            self.circleBtn = leftNavBtn;
+        }else{
+            self.activeBtn = leftNavBtn;
+        }
     }
     
     
@@ -281,21 +226,6 @@
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    //    if (indexPath.section == 1) {
-    //        if (indexPath.row == 0) {
-    ////            NSString *nameStr = @"salkjdklasjdklajslk";
-    ////            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-    ////            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-    ////                                                options:NSStringDrawingUsesLineFragmentOrigin
-    ////                                             attributes:attributes
-    ////                                                context:nil];
-    ////            self.nameLabel.text = nameStr;
-    ////            self.nameLabel.frame = rect;
-    //        }else{
-    //        }
-    //
-    //    }else if(indexPath.section == 0){
     if (indexPath.row == 0) {
         [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
     }else if(indexPath.row == 1){
@@ -317,11 +247,10 @@
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 0;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    //    NSArray *list = self.dataSource[section];
-    return self.dataSource.count;
+    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -393,6 +322,47 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [self httpRequestHomeInfo];
+}
+- (UIView *)createFootView{
+    // 120 +100
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64 -220)];
+    footView.backgroundColor = [UIColor colorWithHexString:@"000000"];
+    OtherCircleViewController *sightVC = [[OtherCircleViewController alloc]init];
+    //    sightVC.dataSource = self.sightDataSource;
+    sightVC.view.frame = CGRectMake(0, 0, kScreenW, kScreenH -64 -220);
+    
+    self.myCircleView = sightVC.view;
+    self.mycircleVC = sightVC;
+//    [self.view addSubview:sightVC.view];
+    [self addChildViewController:sightVC];
+    
+    
+    MyActiveViewController *equipmentVC = [[MyActiveViewController alloc]init];
+    equipmentVC.view.frame = CGRectMake(0, 0, kScreenW, kScreenH -64 -220);
+    equipmentVC.view.hidden = YES;
+    self.myActiveVC = equipmentVC;
+    self.myActiveView = equipmentVC.view;
+//    [self.view addSubview:equipmentVC.view];
+    [self addChildViewController:equipmentVC];
+    
+    [footView addSubview:sightVC.view];
+    [footView addSubview:equipmentVC.view];
+    
+    return footView;
+
+}
+- (void)changeVCType:(UIButton *)sender{
+    if (sender.tag - 800 == 1) {
+        self.myActiveView.hidden = NO;
+        self.myCircleView.hidden = YES;
+        self.circleBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+    }else
+    {
+        self.myActiveView.hidden = YES;
+        self.myCircleView.hidden = NO;
+        self.activeBtn.backgroundColor = [UIColor colorWithHexString:@"ffffff"];
+    }
+    sender.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
 }
 /*
  #pragma mark - Navigation
