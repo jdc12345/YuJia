@@ -11,11 +11,15 @@
 #import "UILabel+Addition.h"
 #import "YJHouseConfigurePicModel.h"
 #import "NSArray+Addition.h"
-
+#import "YJHouseListModel.h"
 
 @interface YJHouseDetailVC ()<SDCycleScrollViewDelegate>
-@property(nonatomic,strong)NSArray *imagesURLStrings;
+@property(nonatomic,strong)NSMutableArray *imagesURLStrings;
 @property(nonatomic,weak)UILabel *numberLabel;
+@property(nonatomic,strong)YJHouseListModel *houseModel;//房屋数据
+@property(nonatomic,weak)UIView *noticeView;
+@property(nonatomic,weak)UIView *backView;
+@property (nonatomic, assign) long recodeNum;//每天已联系房源的记录次数
 @end
 
 @implementation YJHouseDetailVC
@@ -25,17 +29,52 @@
     self.navigationController.navigationBar.translucent = false;
     self.title = @"详情";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [self setupUI];
-    
+ 
+}
+-(void)setInfo_id:(long)info_id{
+    _info_id = info_id;
+    //   http://localhost:8080/smarthome/mobileapi/rental/get.do?token=EC9CDB5177C01F016403DFAAEE3C1182&rentalID=1
+    [SVProgressHUD show];// 动画开始
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/get.do?token=%@&rentalID=%ld",mPrefixUrl,mDefineToken1,info_id];
+    [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+       
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+             NSDictionary *dic = responseObject[@"result"];
+             YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
+            self.houseModel = infoModel;
+            NSString *recodNum = responseObject[@"Recordnumber"];
+            self.recodeNum = [recodNum integerValue];//赋值今天已联系次数
+            [self setupUI];
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
 - (void)setupUI{
+    if (![self.houseModel.picture isEqualToString:@""]) {
+        
+        NSArray *array = [self.houseModel.picture componentsSeparatedByString:@";"];
+        NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+        [arr removeLastObject];
+        
+        for (int i = 0; i<arr.count; i++) {
+            NSString *picUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,array[i]];
+            [self.imagesURLStrings addObject:picUrl];
+        }
+    }
     // 轮播器
-    NSArray *imagesURLStrings = @[
-                                  @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-                                  @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-                                  @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
-                                  ];
-    self.imagesURLStrings = imagesURLStrings;
+//    NSArray *imagesURLStrings = @[
+//                                  @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
+//                                  @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
+//                                  @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
+//                                  ];
+//    self.imagesURLStrings = imagesURLStrings;
     SDCycleScrollView *cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, kScreenW, 273*kiphone6) delegate:self placeholderImage:[UIImage imageNamed:@"placeholder"]];
     [self.view addSubview:cycleScrollView];
     UILabel *numberLabel = [UILabel labelWithText:[NSString stringWithFormat:@"1 / %ld",self.imagesURLStrings.count] andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:12];
@@ -50,13 +89,14 @@
     cycleScrollView.showPageControl = false;
     cycleScrollView.imageURLStringsGroup = self.imagesURLStrings;
     
-    UILabel *addressLabel = [UILabel labelWithText:@"涿州名流一品" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
+    UILabel *addressLabel = [UILabel labelWithText:self.houseModel.residentialQuarters?self.houseModel.residentialQuarters:@"涿州名流一品" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
     [self.view addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
         make.bottom.equalTo(cycleScrollView.mas_bottom).offset(23*kiphone6);
     }];
-    UILabel *timeLabel = [UILabel labelWithText:@"发布： 1天前" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:12];
+    NSString *postTime = [NSString stringWithFormat:@"发布：%@",self.houseModel.createTimeString];
+    UILabel *timeLabel = [UILabel labelWithText:postTime andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:12];
     [self.view addSubview:timeLabel];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
@@ -76,7 +116,9 @@
         make.centerX.equalTo(self.view.mas_left).offset(kScreenW/3/2);
         make.bottom.equalTo(line1.mas_bottom).offset(29*kiphone6);
     }];
-    UILabel *priceLabel = [UILabel labelWithText:@"1000元/月" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    NSString *price = [NSString stringWithFormat:@"%ld元/月",self.houseModel.rent];
+ 
+    UILabel *priceLabel = [UILabel labelWithText:price andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
     [self.view addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(priceItemLabel);
@@ -97,7 +139,7 @@
         make.centerX.equalTo(vline1.mas_left).offset(kScreenW/3/2);
         make.bottom.equalTo(line1.mas_bottom).offset(29*kiphone6);
     }];
-    UILabel *typeLabel = [UILabel labelWithText:@"1室1厅1卫" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    UILabel *typeLabel = [UILabel labelWithText:self.houseModel.apartmentLayout andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
     [self.view addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(typeItemLabel);
@@ -118,7 +160,8 @@
         make.centerX.equalTo(vline2.mas_left).offset(kScreenW/3/2);
         make.bottom.equalTo(line1.mas_bottom).offset(29*kiphone6);
     }];
-    UILabel *areaLabel = [UILabel labelWithText:@"40.0㎡" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    NSString *area = [NSString stringWithFormat:@"%ld㎡",self.houseModel.housingArea];
+    UILabel *areaLabel = [UILabel labelWithText:area andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
     [self.view addSubview:areaLabel];
     [areaLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(areaItemLabel);
@@ -138,7 +181,8 @@
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(line2.mas_bottom).offset(22*kiphone6);
     }];
-    UILabel *curruntFloorLabel = [UILabel labelWithText:@"3层/共6层" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
+    NSString *floor = [NSString stringWithFormat:@"%@/%@",self.houseModel.floor,self.houseModel.floord];
+    UILabel *curruntFloorLabel = [UILabel labelWithText:floor andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
     [self.view addSubview:curruntFloorLabel];
     [curruntFloorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(floorLabel.mas_right);
@@ -150,7 +194,7 @@
         make.left.equalTo(curruntFloorLabel.mas_right).offset(63*kiphone6);
         make.centerY.equalTo(floorLabel);
     }];
-    UILabel *curruntDirectionLabel = [UILabel labelWithText:@"南北" andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
+    UILabel *curruntDirectionLabel = [UILabel labelWithText:self.houseModel.direction andTextColor:[UIColor colorWithHexString:@"333333"] andFontSize:15];
     [self.view addSubview:curruntDirectionLabel];
     [curruntDirectionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(directionLabel.mas_right);
@@ -201,6 +245,16 @@
         btn.frame=CGRectMake(appX, appY, appW, appH);
         
         [self.view addSubview:btn];
+        if (![self.houseModel.houseAllocation isEqualToString:@""]) {
+            NSArray *array = [self.houseModel.houseAllocation componentsSeparatedByString:@"；"];
+            NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
+//            [arr removeLastObject];
+            for (NSString *str in arr) {//当条件匹配时候改变按钮的选中状态
+                if ([str isEqualToString:model.name]) {
+                    btn.selected = !btn.isSelected;
+                }
+            }
+        }
         //添加button的点击事件
 //        btn.tag = [model.id intValue];
 //        [btn addTarget:self action:@selector(medicinalClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -237,7 +291,7 @@
         backView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
         backView.alpha = 0.3;
         [self.view addSubview:backView];
-//        self.backView = backView;
+        self.backView = backView;
         [backView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.bottom.right.offset(0);
         }];
@@ -251,7 +305,7 @@
         UIView *noticeView = [[UIView alloc]init];
         noticeView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:noticeView];
-//        self.noticeView = noticeView;
+        self.noticeView = noticeView;
         [noticeView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(backView);
             make.width.offset(300*kiphone6);
@@ -259,16 +313,22 @@
         }];
         //contentLabel
         UILabel *contentLabel = [[UILabel alloc]init];
+    contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
         //提示内容
-    NSInteger i = 6;
-    NSString *str = [NSString stringWithFormat:@"您今日还有%ld次房源机会，联系房东将扣除1次，确认联系房东",i];
-    NSMutableAttributedString *strF = [[NSMutableAttributedString alloc] initWithString:str];
-    //颜色 设置
-    [strF addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#00bfff"] range:NSMakeRange(5, 1)];
-    contentLabel.attributedText = strF;
+     NSString *str = @"";
+    if (self.recodeNum<6) {
+        str = [NSString stringWithFormat:@"您今日还有%ld次房源机会，联系房东将扣除1次，确认联系房东",6-self.recodeNum];
+        NSMutableAttributedString *strF = [[NSMutableAttributedString alloc] initWithString:str];
+        //颜色 设置
+        [strF addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#00bfff"] range:NSMakeRange(5, 1)];
+        contentLabel.attributedText = strF;
+        
+    }else{
+        str = @"您今日6次房源机会已经用完，请明天再联系房东";
+        contentLabel.text =str;
+    }
         contentLabel.numberOfLines = 2;
         contentLabel.font = [UIFont systemFontOfSize:17];
-        contentLabel.textColor = [UIColor colorWithHexString:@"333333"];
         [noticeView addSubview:contentLabel];
         [contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(18*kiphone6);
@@ -276,22 +336,29 @@
             make.right.offset(-18*kiphone6);
         }];
         //confirmButton
-        UIButton *confirmButton = [[UIButton alloc]init];
-        [confirmButton setTitle:@"马上联系" forState:UIControlStateNormal];
-        [confirmButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-        confirmButton.titleLabel.font = [UIFont systemFontOfSize:17];
-        confirmButton.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
-        [noticeView addSubview:confirmButton];
-        [confirmButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        UIButton *contactButton = [[UIButton alloc]init];
+    contactButton.tag = 31;
+        [contactButton setTitle:@"马上联系" forState:UIControlStateNormal];
+        [contactButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+        contactButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    if (self.recodeNum<6) {
+        contactButton.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+    }else{
+        contactButton.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    }
+    
+        [noticeView addSubview:contactButton];
+        [contactButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.offset(-18*kiphone6);
             make.top.equalTo(contentLabel.mas_bottom).offset(26*kiphone6);
             make.height.offset(45*kiphone6);
             make.width.offset(120*kiphone6);
         }];
         //添加关闭提示框按钮的点击事件
-        [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
+        [contactButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
     //confirmButton
     UIButton *closeButton = [[UIButton alloc]init];
+    closeButton.tag = 32;
     [closeButton setTitle:@"再考虑下" forState:UIControlStateNormal];
     [closeButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     closeButton.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -304,16 +371,41 @@
         make.width.offset(120*kiphone6);
     }];
     //添加关闭提示框按钮的点击事件
-    [confirmButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
+    [closeButton addTarget:self action:@selector(closeNoticeView:) forControlEvents:UIControlEventTouchUpInside];
     
     }
+
 -(void)closeNoticeView:(UIButton*)sender{
-    
-//        for (UIView *view in self.noticeView.subviews) {
-//            [view removeFromSuperview];
-//        }
-//        [self.noticeView removeFromSuperview];
-//        [self.backView removeFromSuperview];
+    if (sender.tag==31) {//联系一次记录加一次
+        
+        NSString *str=[[NSMutableString alloc] initWithFormat:@"tel:%ld",self.houseModel.telephone];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//        http://localhost:8080/smarthome//mobileapi/contactrecord/addContactrecord.do?token=EC9CDB5177C01F016403DFAAEE3C1182&RentalId=1
+//        [SVProgressHUD show];// 动画开始
+        NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/contactrecord/addContactrecord.do?token=%@&RentalId=%ld",mPrefixUrl,mDefineToken1,self.info_id];
+        [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+//            [SVProgressHUD dismiss];// 动画结束
+            
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                self.recodeNum+=1;
+//                if (self.recodeNum==6) {
+//                    sender.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+//                }
+            }else{
+                
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            
+            return ;
+        }];
+    }
+        for (UIView *view in self.noticeView.subviews) {//移除阴影
+            [view removeFromSuperview];
+        }
+        [self.noticeView removeFromSuperview];
+        [self.backView removeFromSuperview];
     }
 
 /** 图片滚动回调 */
@@ -324,7 +416,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(NSMutableArray *)imagesURLStrings{
+    if (_imagesURLStrings==nil) {
+        _imagesURLStrings = [NSMutableArray array];
+    }
+    return _imagesURLStrings;
+}
 /*
 #pragma mark - Navigation
 

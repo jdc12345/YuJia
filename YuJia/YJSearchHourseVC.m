@@ -7,6 +7,7 @@
 //
 
 #import "YJSearchHourseVC.h"
+#import "YJSearchHouseDetailResultModel.h"
 
 static NSString *dentifier=@"cellforappliancelist";
 @interface YJSearchHourseVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -122,13 +123,13 @@ static NSString *dentifier=@"cellforappliancelist";
     if (self.active) {//处于搜索出新数据状态
         
         if (indexPath.row<self.searchingList.count) {
-//            if (self.searchCayegory==0) {
+            if (self.searchCayegory==0) {
 //                YYMedinicalDetailModel *model = self.searchingList[indexPath.row];
 //                [cell.textLabel setText:model.drugsName];
-//            }else if (self.searchCayegory==1){
-//                YYInfomationModel *ingModel = self.searchingList[indexPath.row];
-//                [cell.textLabel setText:ingModel.hospitalName];
-//            }
+            }else if (self.searchCayegory==1){
+                YJSearchHouseDetailResultModel *ingModel = self.searchingList[indexPath.row];
+                [cell.textLabel setText:ingModel.rname];
+            }
         }
         
     }
@@ -256,62 +257,72 @@ static NSString *dentifier=@"cellforappliancelist";
     if (self.searchingList!= nil) {
         [self.searchingList removeAllObjects];
     }
-//    //向数据库请求搜索结果
-//    NSString *urlStr = [NSString string];
-//    if (self.searchCayegory==1) {
-//        urlStr = [hospitalSearchInfo stringByAppendingString:searchString];
-//    }else if(self.searchCayegory==0){
+//    http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findRname.do?city=涿州市&rname=名流
+    //向数据库请求搜索结果
+    NSString *urlStr = [NSString string];
+    if (self.searchCayegory==1) {//输入小区
+        urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,searchString];
+    }else if(self.searchCayegory==0){
 //        urlStr = [medicinalSearchInfo stringByAppendingString:searchString];
-//    }
-//    //把搜索中文转义
-//    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    HttpClient *client = [HttpClient defaultClient];
-//    [client requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-//        NSDictionary *responseDic = (NSDictionary*)responseObject;
-//        NSArray *responseArr = responseDic[@"result"];
-//        NSArray *resultArr = [NSArray array];
-//        if (self.searchCayegory==1) {
-//            resultArr = [NSArray yy_modelArrayWithClass:[YYInfomationModel class] json:responseArr];
-//        }else if (self.searchCayegory==0){
-//            resultArr = [NSArray yy_modelArrayWithClass:[YYMedinicalDetailModel class] json:responseArr];
-//        }
-//        self.searchingList = [NSMutableArray arrayWithArray:resultArr];
-//        if (self.searchingList.count==0) {
-//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"什么也没有,请重新搜索" preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
-//            [alert addAction:okAction];
-//            [self presentViewController:alert animated:YES completion:nil];
-//            [self textFieldShouldClear:self.searchField];
-//        }else{
-//            //刷新表格
-//            self.active = true;//开启数据源为搜索出来的新数据的开关
-//            [self.tableView reloadData];
-//            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-//        }
-//        //记录搜索过的内容
-//        if (self.searchingList.count>0) {//只有搜索结果不为空才本地保存
-//            
-//            NSArray *arr = [NSArray arrayWithArray: self.searchedList];
-//            for (NSString *recodeName in arr) {
-//                if ([recodeName isEqualToString:self.searchField.text] ) {
-//                    [self.searchedList removeObject:recodeName];
-//                }
-//                
-//            }
-//            [self.searchedList insertObject:self.searchField.text atIndex:0];//记录写入内存
-//            NSData *encodeList = [NSKeyedArchiver archivedDataWithRootObject:self.searchedList];
-//            if (self.searchCayegory==0) {
-//                [self.defaults setObject:encodeList forKey:@"searchedList"];
-//                
-//            }else if (self.searchCayegory==1){
-//                [self.defaults setObject:encodeList forKey:@"searchedHospitalList"];
-//            }
-//            [self.defaults synchronize];//记录写入缓存
-//        }
-//        
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        return ;
-//    }];
+    }
+    [SVProgressHUD show];// 动画开始
+    //把搜索中文转义
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    HttpClient *client = [HttpClient defaultClient];
+    [client requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *resultArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                if (self.searchCayegory==1) {
+                    YJSearchHouseDetailResultModel *infoModel = [YJSearchHouseDetailResultModel mj_objectWithKeyValues:dic];
+                    [resultArr addObject:infoModel];
+                }else if (self.searchCayegory==0){
+                    //            resultArr = [NSArray yy_modelArrayWithClass:[YYMedinicalDetailModel class] json:responseArr];
+                }
+                
+            }
+            self.searchingList  = resultArr;
+            if (self.searchingList.count==0) {
+                
+                [SVProgressHUD showInfoWithStatus:@"什么也没有,请重新搜索"];
+                [self textFieldShouldClear:self.searchField];
+            }else{
+                //刷新表格
+                self.active = true;//开启数据源为搜索出来的新数据的开关
+                [self.tableView reloadData];
+                self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            }
+            //记录搜索过的内容
+            if (self.searchingList.count>0) {//只有搜索结果不为空才本地保存
+                
+                NSArray *arr = [NSArray arrayWithArray: self.searchedList];
+                for (NSString *recodeName in arr) {
+                    if ([recodeName isEqualToString:self.searchField.text] ) {
+                        [self.searchedList removeObject:recodeName];
+                    }
+                    
+                }
+                [self.searchedList insertObject:self.searchField.text atIndex:0];//记录写入内存
+                NSData *encodeList = [NSKeyedArchiver archivedDataWithRootObject:self.searchedList];
+                if (self.searchCayegory==0) {
+                    [self.defaults setObject:encodeList forKey:@"searchedList"];
+                    
+                }else if (self.searchCayegory==1){
+                    [self.defaults setObject:encodeList forKey:@"searchedHouseDetailList"];
+                }
+                [self.defaults synchronize];//记录写入缓存
+            }
+
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
     
     
     
@@ -343,8 +354,8 @@ static NSString *dentifier=@"cellforappliancelist";
         }
         
     }else if (self.searchCayegory==1){
-        [self.defaults removeObjectForKey:@"searchedHospitalList"];
-        NSData *saveSearchedListData = [self.defaults objectForKey:@"searchedHospitalList"];
+        [self.defaults removeObjectForKey:@"searchedHouseDetailList"];
+        NSData *saveSearchedListData = [self.defaults objectForKey:@"searchedHouseDetailList"];
         if (saveSearchedListData == nil) {
             self.searchedList = [NSMutableArray array];
         }else{
@@ -377,7 +388,7 @@ static NSString *dentifier=@"cellforappliancelist";
         }
     }else if(self.searchCayegory==1){
         self.defaults = [NSUserDefaults standardUserDefaults];
-        NSData *saveSearchedListData = [self.defaults objectForKey:@"searchedHospitalList"];
+        NSData *saveSearchedListData = [self.defaults objectForKey:@"searchedHouseDetailList"];
         if (saveSearchedListData == nil) {
             self.searchedList = [NSMutableArray array];
         }else{

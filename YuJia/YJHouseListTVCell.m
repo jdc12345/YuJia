@@ -8,12 +8,12 @@
 
 #import "YJHouseListTVCell.h"
 #import "UILabel+Addition.h"
-
+#import <UIImageView+WebCache.h>
 
 @interface YJHouseListTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
-@property (nonatomic, weak) UILabel* nameLabel;
-
+@property (nonatomic, weak) UILabel* detailLabel;
+@property (nonatomic, weak) UILabel* priceLabel;
 
 @end
 @implementation YJHouseListTVCell
@@ -27,6 +27,13 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self setupUI];
+}
+-(void)setModel:(YJHouseListModel *)model{
+    _model = model;
+    NSString *iconUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.picture];
+    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
+    self.detailLabel.text = [NSString stringWithFormat:@"%@ %@ %ld㎡ %@ %@",model.residentialQuarters,model.apartmentLayout,model.housingArea,model.paymentMethod,model.direction];
+    self.priceLabel.text = [NSString stringWithFormat:@"%ld元/月",model.rent];
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
@@ -76,8 +83,8 @@
     }];
     
     self.iconView = iconView;
-    self.nameLabel = detailLabel;
-    
+    self.detailLabel = detailLabel;
+    self.priceLabel = priceLabel;
 }
 
 @end

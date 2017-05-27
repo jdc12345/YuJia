@@ -31,6 +31,9 @@
 		163E960F1ED5756300C20B42 /* YJBussinessDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E960E1ED5756300C20B42 /* YJBussinessDetailModel.m */; };
 		163E96121ED577C500C20B42 /* YJBussinessServeDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */; };
 		163E96151ED597E100C20B42 /* YJActivitiesDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163E96141ED597E100C20B42 /* YJActivitiesDetailModel.m */; };
+		1640BE941ED9123C00E3AE00 /* YJCityListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE931ED9123C00E3AE00 /* YJCityListModel.m */; };
+		1640BE971ED915A400E3AE00 /* YJHouseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE961ED915A400E3AE00 /* YJHouseListModel.m */; };
+		1640BE9A1ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */; };
 		164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */; };
 		164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */; };
 		164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */; };
@@ -291,6 +294,12 @@
 		163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBussinessServeDetailModel.m; sourceTree = "<group>"; };
 		163E96131ED597E100C20B42 /* YJActivitiesDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitiesDetailModel.h; sourceTree = "<group>"; };
 		163E96141ED597E100C20B42 /* YJActivitiesDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitiesDetailModel.m; sourceTree = "<group>"; };
+		1640BE921ED9123C00E3AE00 /* YJCityListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCityListModel.h; sourceTree = "<group>"; };
+		1640BE931ED9123C00E3AE00 /* YJCityListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCityListModel.m; sourceTree = "<group>"; };
+		1640BE951ED915A400E3AE00 /* YJHouseListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseListModel.h; sourceTree = "<group>"; };
+		1640BE961ED915A400E3AE00 /* YJHouseListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseListModel.m; sourceTree = "<group>"; };
+		1640BE981ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSearchHouseDetailResultModel.h; sourceTree = "<group>"; };
+		1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSearchHouseDetailResultModel.m; sourceTree = "<group>"; };
 		164275BD1ED66C4300F39E40 /* YJActiviesLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesLikeModel.h; sourceTree = "<group>"; };
 		164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesLikeModel.m; sourceTree = "<group>"; };
 		164275C01ED66CC100F39E40 /* YJActiviesAddPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesAddPersonModel.h; sourceTree = "<group>"; };
@@ -800,6 +809,12 @@
 				163E960E1ED5756300C20B42 /* YJBussinessDetailModel.m */,
 				163E96101ED577C500C20B42 /* YJBussinessServeDetailModel.h */,
 				163E96111ED577C500C20B42 /* YJBussinessServeDetailModel.m */,
+				1640BE921ED9123C00E3AE00 /* YJCityListModel.h */,
+				1640BE931ED9123C00E3AE00 /* YJCityListModel.m */,
+				1640BE951ED915A400E3AE00 /* YJHouseListModel.h */,
+				1640BE961ED915A400E3AE00 /* YJHouseListModel.m */,
+				1640BE981ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.h */,
+				1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1763,6 +1778,7 @@
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
+				1640BE971ED915A400E3AE00 /* YJHouseListModel.m in Sources */,
 				3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */,
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
 				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,
@@ -1818,6 +1834,7 @@
 				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
 				3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */,
 				3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */,
+				1640BE941ED9123C00E3AE00 /* YJCityListModel.m in Sources */,
 				16239DC51ECD9DCB00CF6F4C /* YJFriendStateCommentModel.m in Sources */,
 				1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */,
 				1661FE2D1EB880BF00583A7F /* YYPropertyTableViewCell.m in Sources */,
@@ -1829,6 +1846,7 @@
 				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
 				3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
+				1640BE9A1ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m in Sources */,
 				3E8970E01ED3C97000C9DEB1 /* LockRecardViewController.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
 				3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */,

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJHouseDetailVC : UIViewController
-
+@property (nonatomic, assign) long info_id;//租房信息id
 @end

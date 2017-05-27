@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJHouseListModel.h"
 
 @interface YJHouseListTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJHouseListModel *model;
 @end
