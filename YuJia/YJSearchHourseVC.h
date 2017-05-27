@@ -10,4 +10,5 @@
 
 @interface YJSearchHourseVC : UIViewController
 @property(nonatomic,assign)NSInteger searchCayegory;
+@property(nonatomic,assign)NSString *city;//已显示要搜索的城市
 @end

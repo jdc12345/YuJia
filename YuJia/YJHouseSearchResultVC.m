@@ -1,12 +1,12 @@
 //
-//  YJHouseSearchListVC.m
+//  YJHouseSearchResultVC.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/5/23.
+//  Created by 万宇 on 2017/5/27.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJHouseSearchListVC.h"
+#import "YJHouseSearchResultVC.h"
 #import "YJHouseListTVCell.h"
 #import "YJRentalHouseVC.h"
 #import "YJHouseDetailVC.h"
@@ -14,13 +14,14 @@
 #import "YJHouseListModel.h"
 
 static NSString* tableCellid = @"table_cell";
-@interface YJHouseSearchListVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJHouseSearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *houseArr;
-@property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
+//@property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
+
 @end
 
-@implementation YJHouseSearchListVC
+@implementation YJHouseSearchResultVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,20 +37,20 @@ static NSString* tableCellid = @"table_cell";
     [backBtn addTarget:self action:@selector(backBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * leftItem1 = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     [itemArr addObject:leftItem1];
-    UIButton *localBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 81*kiphone6, 30)];
-    self.LocationBtn = localBtn;
-    localBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [localBtn setImage:[UIImage imageNamed:@"Location_rent"] forState:UIControlStateNormal];
-    [localBtn setTitle:@"涿州市" forState:UIControlStateNormal];
-    localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [localBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-    localBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-//    localBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-    localBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
-    localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [localBtn addTarget:self action:@selector(localBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem * leftItem2 = [[UIBarButtonItem alloc] initWithCustomView:localBtn];
-    [itemArr addObject:leftItem2];
+//    UIButton *localBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 81*kiphone6, 30)];
+//    self.LocationBtn = localBtn;
+//    localBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+//    [localBtn setImage:[UIImage imageNamed:@"Location_rent"] forState:UIControlStateNormal];
+//    [localBtn setTitle:@"涿州市" forState:UIControlStateNormal];
+//    localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    [localBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//    localBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+//    //    localBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+//    localBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
+//    localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    [localBtn addTarget:self action:@selector(localBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem * leftItem2 = [[UIBarButtonItem alloc] initWithCustomView:localBtn];
+//    [itemArr addObject:leftItem2];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = 5;
     [itemArr addObject:negativeSpacer];
@@ -68,20 +69,22 @@ static NSString* tableCellid = @"table_cell";
     [searchBtn addTarget:self action:@selector(searchBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * leftItem3 = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     [itemArr addObject:leftItem3];
-     self.navigationItem.leftBarButtonItems = itemArr;
-    [self loadData];
+    self.navigationItem.leftBarButtonItems = itemArr;
     
 }
+-(void)setModel:(YJSearchHouseDetailResultModel *)model{
+    _model = model;
+    [self loadData];
+}
 - (void)loadData{
-//http://localhost:8080/smarthome/mobileapi/rental/findPage.do?token=EC9CDB5177C01F016403DFAAEE3C1182
-//    &cyty=%E6%B6%BF%E5%B7%9E
-//    &residentialQuarters=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA  小区可不传,此处不传
-//    &lstart=0
-//    &limit=1
+    //http://localhost:8080/smarthome/mobileapi/rental/findPage.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+    //    &cyty=%E6%B6%BF%E5%B7%9E
+    //    &residentialQuarters=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA  小区可不传,此处不传
+    //    &lstart=0
+    //    &limit=1
     [SVProgressHUD show];// 动画开始
-    NSString *rname = self.LocationBtn.titleLabel.text;
-    rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&lstart=0&limit=10",mPrefixUrl,mDefineToken1,rname];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&residentialQuarters=%@&lstart=0&limit=10",mPrefixUrl,mDefineToken1,self.model.city,self.model.rname];
+    bussinessUrlStr = [bussinessUrlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
@@ -102,19 +105,19 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-  
+    
 }
 - (void)backBtnClick:(UIButton*)sender {
     [self.navigationController popViewControllerAnimated:true];
 }
-- (void)localBtnClick:(UIButton*)sender {
-//   http://localhost:8080/smarthome/mobilepub/baseArea/getList.do?areaName=%E5%8C%97
-    
-}
+//- (void)localBtnClick:(UIButton*)sender {
+//    //   http://localhost:8080/smarthome/mobilepub/baseArea/getList.do?areaName=%E5%8C%97
+//    
+//}
 - (void)searchBtnClick:(UIButton*)sender {
     YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
     vc.searchCayegory = 1;
-    vc.city = self.LocationBtn.titleLabel.text;
+    vc.city = self.model.city;
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)setupUI {
@@ -147,7 +150,7 @@ static NSString* tableCellid = @"table_cell";
         make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
     }];
     
-
+    
 }
 - (void)postBtn:(UIButton*)sender {
     YJRentalHouseVC *vc = [[YJRentalHouseVC alloc]init];

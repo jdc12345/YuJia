@@ -8,6 +8,7 @@
 
 #import "YJSearchHourseVC.h"
 #import "YJSearchHouseDetailResultModel.h"
+#import "YJHouseSearchResultVC.h"
 
 static NSString *dentifier=@"cellforappliancelist";
 @interface YJSearchHourseVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -144,12 +145,12 @@ static NSString *dentifier=@"cellforappliancelist";
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //持续持久化
-//    self.flag = 0;
-//    //去重复
-//    if (self.searchedList.count>0) {
-//        if (self.searchingList.count>0) {//判断是处于显示新搜索数据状态下的点击
-//            if (self.searchCayegory==0) {
+//    持续持久化
+    self.flag = 0;
+    //去重复
+    if (self.searchedList.count>0) {
+        if (self.searchingList.count>0) {//判断是处于显示新搜索数据状态下的点击
+            if (self.searchCayegory==0) {
 //                YYMedinicalDetailModel *ingModel = self.searchingList[indexPath.row];
 //                NSArray *arr = [NSArray arrayWithArray: self.searchedList];
 //                for (NSString *recodeName in arr) {
@@ -159,50 +160,50 @@ static NSString *dentifier=@"cellforappliancelist";
 //                    
 //                }
 //                [self.searchedList insertObject:ingModel.drugsName atIndex:0];
-//            }else if (self.searchCayegory==1){
-//                YYInfomationModel *ingModel = self.searchingList[indexPath.row];
-//                NSArray *arr = [NSArray arrayWithArray: self.searchedList];
-//                for (NSString *recodeName in arr) {
-//                    if ([recodeName isEqualToString:ingModel.hospitalName] ) {
-//                        [self.searchedList removeObject:recodeName];
-//                    }
-//                    
-//                }
-//                [self.searchedList insertObject:ingModel.hospitalName atIndex:0];
-//            }
-//            
-//            //数组转化为data持久化
-//            NSData *encodeList = [NSKeyedArchiver archivedDataWithRootObject:self.searchedList];
-//            if (self.searchCayegory==0) {
-//                [self.defaults setObject:encodeList forKey:@"searchedList"];
-//            }else if (self.searchCayegory==1){
-//                [self.defaults setObject:encodeList forKey:@"searchedHospitalList"];
-//            }
-//            
-//            [self.defaults synchronize];
-//        }else{//判断是处于显示搜索记录状态下的点击
-//            NSString *recodeName = self.searchedList[indexPath.row];
-//            self.searchField.text = recodeName;
-//            self.active = true;
-//            [self textFieldShouldReturn:self.searchField];
-//            self.flag = 1;
-//            
-//        }
-//    }
-//    if (self.searchCayegory==0 && self.flag == 0) {//跳转医药详情页面
+            }else if (self.searchCayegory==1){
+                YJSearchHouseDetailResultModel *ingModel = self.searchingList[indexPath.row];
+                NSArray *arr = [NSArray arrayWithArray: self.searchedList];
+                for (NSString *recodeName in arr) {
+                    if ([recodeName isEqualToString:ingModel.rname] ) {
+                        [self.searchedList removeObject:recodeName];
+                    }
+                    
+                }
+                [self.searchedList insertObject:ingModel.rname atIndex:0];
+            }
+            
+            //数组转化为data持久化
+            NSData *encodeList = [NSKeyedArchiver archivedDataWithRootObject:self.searchedList];
+            if (self.searchCayegory==0) {
+                [self.defaults setObject:encodeList forKey:@"searchedList"];
+            }else if (self.searchCayegory==1){
+                [self.defaults setObject:encodeList forKey:@"searchedHouseDetailList"];
+            }
+            
+            [self.defaults synchronize];
+        }else{//判断是处于显示搜索记录状态下的点击
+            NSString *recodeName = self.searchedList[indexPath.row];
+            self.searchField.text = recodeName;
+            self.active = true;
+            [self textFieldShouldReturn:self.searchField];
+            self.flag = 1;
+            
+        }
+    }
+    if (self.searchCayegory==0 && self.flag == 0) {//跳转医药详情页面
 //        YYMedicinalDetailVC *detailVC = [[YYMedicinalDetailVC alloc]init];
 //        
 //        YYMedinicalDetailModel *model = self.searchingList[indexPath.row];
 //        detailVC.id = model.id;
 //        [self.navigationController pushViewController:detailVC animated:true];
-//        
-//    }else if (self.searchCayegory == 1 && self.flag == 0){//跳转医院详情页面
-//        YYHospitalInfoViewController *hospitaiVC = [[YYHospitalInfoViewController alloc]init];
-//        //传递model---------------------
-//        hospitaiVC.yyInfomationModel = self.searchingList[indexPath.row];
-//        [self.navigationController pushViewController:hospitaiVC animated:true];
-//        
-//    }
+        
+    }else if (self.searchCayegory == 1 && self.flag == 0){//跳转搜索小区列表详情页面
+        YJHouseSearchResultVC *hospitaiVC = [[YJHouseSearchResultVC alloc]init];
+        //传递model---------------------
+        hospitaiVC.model = self.searchingList[indexPath.row];
+        [self.navigationController pushViewController:hospitaiVC animated:true];
+        
+    }
     
     
 }
@@ -261,7 +262,7 @@ static NSString *dentifier=@"cellforappliancelist";
     //向数据库请求搜索结果
     NSString *urlStr = [NSString string];
     if (self.searchCayegory==1) {//输入小区
-        urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,searchString];
+        urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findRname.do?city=%@&rname=%@",mPrefixUrl,self.city,searchString];
     }else if(self.searchCayegory==0){
 //        urlStr = [medicinalSearchInfo stringByAppendingString:searchString];
     }

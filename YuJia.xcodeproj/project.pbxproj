@@ -34,6 +34,7 @@
 		1640BE941ED9123C00E3AE00 /* YJCityListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE931ED9123C00E3AE00 /* YJCityListModel.m */; };
 		1640BE971ED915A400E3AE00 /* YJHouseListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE961ED915A400E3AE00 /* YJHouseListModel.m */; };
 		1640BE9A1ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */; };
+		1640BE9D1ED9887B00E3AE00 /* YJHouseSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1640BE9C1ED9887B00E3AE00 /* YJHouseSearchResultVC.m */; };
 		164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */; };
 		164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */; };
 		164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */; };
@@ -305,6 +306,8 @@
 		1640BE961ED915A400E3AE00 /* YJHouseListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseListModel.m; sourceTree = "<group>"; };
 		1640BE981ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSearchHouseDetailResultModel.h; sourceTree = "<group>"; };
 		1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSearchHouseDetailResultModel.m; sourceTree = "<group>"; };
+		1640BE9B1ED9887B00E3AE00 /* YJHouseSearchResultVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseSearchResultVC.h; sourceTree = "<group>"; };
+		1640BE9C1ED9887B00E3AE00 /* YJHouseSearchResultVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchResultVC.m; sourceTree = "<group>"; };
 		164275BD1ED66C4300F39E40 /* YJActiviesLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesLikeModel.h; sourceTree = "<group>"; };
 		164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesLikeModel.m; sourceTree = "<group>"; };
 		164275C01ED66CC100F39E40 /* YJActiviesAddPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesAddPersonModel.h; sourceTree = "<group>"; };
@@ -993,6 +996,8 @@
 				1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */,
 				169519831ED4498F00C2C380 /* YJSearchHourseVC.h */,
 				169519841ED4498F00C2C380 /* YJSearchHourseVC.m */,
+				1640BE9B1ED9887B00E3AE00 /* YJHouseSearchResultVC.h */,
+				1640BE9C1ED9887B00E3AE00 /* YJHouseSearchResultVC.m */,
 			);
 			name = "Rental house";
 			sourceTree = "<group>";
@@ -1804,6 +1809,7 @@
 				16742BF31EC1CEF80016DDD9 /* UIButton+Badge.m in Sources */,
 				164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */,
 				163E96091ED537B000C20B42 /* YJExpressCompanyModel.m in Sources */,
+				1640BE9D1ED9887B00E3AE00 /* YJHouseSearchResultVC.m in Sources */,
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
