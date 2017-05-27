@@ -126,6 +126,11 @@
 		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
 		3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3481EC5874800C77B58 /* MYHomeViewController.m */; };
 		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
+		3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */; };
+		3E2CD8271ED920F200C8FD56 /* MyActiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */; };
+		3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */; };
+		3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */; };
+		3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */; };
 		3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */; };
 		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
@@ -475,6 +480,16 @@
 		3E20B3481EC5874800C77B58 /* MYHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeViewController.m; sourceTree = "<group>"; };
 		3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeTableViewCell.h; sourceTree = "<group>"; };
 		3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeTableViewCell.m; sourceTree = "<group>"; };
+		3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveViewController.h; sourceTree = "<group>"; };
+		3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveViewController.m; sourceTree = "<group>"; };
+		3E2CD8251ED920F200C8FD56 /* MyActiveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveTableViewCell.h; sourceTree = "<group>"; };
+		3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveTableViewCell.m; sourceTree = "<group>"; };
+		3E2CD8281ED921EF00C8FD56 /* CirleAndActiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirleAndActiveViewController.h; sourceTree = "<group>"; };
+		3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirleAndActiveViewController.m; sourceTree = "<group>"; };
+		3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherPeopleInfoViewController.h; sourceTree = "<group>"; };
+		3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherPeopleInfoViewController.m; sourceTree = "<group>"; };
+		3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotficViewController.h; sourceTree = "<group>"; };
+		3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficViewController.m; sourceTree = "<group>"; };
 		3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRoomViewController.h; sourceTree = "<group>"; };
 		3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRoomViewController.m; sourceTree = "<group>"; };
 		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
@@ -1384,10 +1399,20 @@
 				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
 				3E9439991ECD8013001FE471 /* AboutYuJiaViewController.h */,
 				3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */,
+				3E2CD8281ED921EF00C8FD56 /* CirleAndActiveViewController.h */,
+				3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */,
 				3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */,
 				3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */,
 				3E10BE031ED4033800FAF87C /* MyCircleTableViewCell.h */,
 				3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */,
+				3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */,
+				3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */,
+				3E2CD8251ED920F200C8FD56 /* MyActiveTableViewCell.h */,
+				3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */,
+				3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */,
+				3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */,
+				3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */,
+				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1678,6 +1703,7 @@
 				3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */,
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
+				3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
 				169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */,
 				3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */,
@@ -1694,6 +1720,7 @@
 				16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */,
 				3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
+				3E2CD8271ED920F200C8FD56 /* MyActiveTableViewCell.m in Sources */,
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
 				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
@@ -1710,6 +1737,7 @@
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
 				163E960C1ED5474F00C20B42 /* YJExpressReceiveModel.m in Sources */,
+				3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */,
 				163E960F1ED5756300C20B42 /* YJBussinessDetailModel.m in Sources */,
 				164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */,
 				1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */,
@@ -1722,6 +1750,7 @@
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
+				3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */,
 				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
 				3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */,
 				3E90B7401EC3F54000CC49D7 /* AirDirectionViewController.m in Sources */,
@@ -1794,6 +1823,7 @@
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */,
+				3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */,
 				164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
