@@ -52,7 +52,7 @@
 
 #pragma mark -
 #pragma mark ---------------Dev - Url------------------
-#define mPrefixUrl @"http://192.168.1.33:8080/smarthome"
+#define mPrefixUrl @"http://192.168.1.55:8080/smarthome"
 #pragma mark -
 #pragma mark ---------------Dis - Url------------------
 //#define mPrefixUrl @"http://59.110.169.148:8080"

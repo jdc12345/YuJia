@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL isCircle;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, weak) UILabel *titleLabel;
 @end
 @implementation MyCircleViewController
 - (NSMutableArray *)dataSource{
@@ -50,25 +51,35 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    UIView *titleView = [[UIView alloc]init];
-
+    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 20)];
     
-    
+    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeVCType)];
+    [titleView addGestureRecognizer:tapGest];
     
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.text = @"我的圈子";
     titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
     titleLabel.font = [UIFont systemFontOfSize:17];
-    
+    self.titleLabel = titleLabel;
     [titleView addSubview:titleLabel];
     
     
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(titleView).with.offset(0);
         make.left.equalTo(titleView).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(64, 17));
+        make.size.mas_equalTo(CGSizeMake(70, 17));
+    }];
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"v"]];
+    [imageV sizeToFit];
+    [titleView addSubview:imageV];
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(titleView).with.offset(0);
+        make.left.equalTo(titleLabel.mas_right).with.offset(10);
+//        make.size.mas_equalTo(CGSizeMake(17, 15));
     }];
     
+    
+    self.navigationItem.titleView = titleView;
     
     [self updateAreaType:nil];
     // Do any additional setup after loading the view.
@@ -143,11 +154,19 @@
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD dismiss];// 动画结束
+        [SVProgressHUD dismiss];// 动画
         return ;
     }];
     
     
+}
+- (void)changeVCType{
+    if ([self.titleLabel.text isEqualToString:@"我的圈子"]) {
+        self.titleLabel.text = @"我的活动";
+    }else
+    {
+        self.titleLabel.text = @"我的圈子";
+    }
 }
 /*
 #pragma mark - Navigation
