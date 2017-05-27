@@ -11,12 +11,12 @@
 #import "UILabel+Addition.h"
 #import "YJSelectView.h"
 #import "YJRentPersonInfoTVCell.h"
-
 #import "YJPhotoFlowLayout.h"
 #import "YJPhotoAddBtnCollectionViewCell.h"
 #import <HUImagePickerViewController.h>
 #import "YJPhotoDisplayCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
+#import <AFNetworking.h>
 
 static NSString* tableCell = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -31,6 +31,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,weak)UIButton *shareBtn;
 @property(nonatomic,weak)UIView *line2;
 @property(nonatomic,weak)UIView *shareView;
+@property(nonatomic,weak)UIButton *roomType;//合租类型的户型选择Btn
 @property (nonatomic, strong) NSMutableArray *imageArr;
 @property(nonatomic,weak)UICollectionView *collectionView;
 @property(nonatomic,weak)UIView *coverView;
@@ -43,6 +44,7 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,strong)NSString *twoLevelArea;
 @property(nonatomic,assign)NSInteger pickFlag;
 @property(nonatomic,weak)UIToolbar * topView;
+@property (nonatomic, strong)NSString *houseAllocation;//房屋配置
 @end
 
 @implementation YJRentalHouseVC
@@ -142,6 +144,7 @@ static NSString* photoCellid = @"photo_cell";
     [selectView.areaBtn addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *payType=(UIButton *)[selectView viewWithTag:24];
     [payType addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+    //房屋配置按钮点击事件
 
     //添加大tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
@@ -177,7 +180,7 @@ static NSString* photoCellid = @"photo_cell";
         make.width.offset(325*kiphone6);
         make.height.offset(45*kiphone6);
     }];
-    [btn addTarget:self action:@selector(submitAddress) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(submitAddress:) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:btn];
     tableView.tableFooterView = footerView;
 
@@ -185,7 +188,7 @@ static NSString* photoCellid = @"photo_cell";
 -(void)pickerView:(UIButton*)sender{
     if (sender.tag==101) {
         self.pickFlag = 101;
-        self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
+        self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安市"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
         self.oneLevelArr = [self.areaDic allKeys];
         self.twoLevelArr = self.areaDic[@"北京市"];
 
@@ -312,8 +315,8 @@ static NSString* photoCellid = @"photo_cell";
             self.twoLevelArea = self.twoLevelArr[row];
             
         }
-        NSString *allArea = [NSString stringWithFormat:@"%@%@",self.oneLevelArea,self.twoLevelArea];
-        [self.selectView.areaBtn setTitle:allArea forState:UIControlStateNormal];
+//    NSString *allArea = [NSString stringWithFormat:@"%@%@",self.oneLevelArea,self.twoLevelArea];
+        [self.selectView.areaBtn setTitle:self.twoLevelArea forState:UIControlStateNormal];
     }else if (self.pickFlag==102) {
         [self.selectView.directionBtn setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
     }else if (self.pickFlag==103) {
@@ -368,8 +371,114 @@ static NSString* photoCellid = @"photo_cell";
     self.coverView.hidden = true;
     
 }
--(void)submitAddress{
+-(void)submitAddress:(UIButton*)sender{
+
+//localhost:8080/smarthome/mobileapi/rental/PublishRental.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    参数：       参数名    参数类型    备注
+//    token         String    令牌
+//    rentalTyoe        Integer    出租方式1=整租2=合租
+//    cyty        String    城市
+//    residentialQuarters     String    小区
+//    apartmentLayout       String    户型（格式如：1室1厅1厨1卫，带上单位）
+//    housingArea   Integer    面积
+//    floor        String    楼层（第几层）
+//    floord        String    楼层（共几层）
+//    direction       String    朝向
+//    houseAllocation      String    房屋配置（格式：电视；冰箱；宽带；分号隔
+//    开）
+//    rent         Double    租金
+//    paymentMethod      String    付款方式
+//    contacts       String    联系人姓名
+//    telephone       Long      联系人电话
+//    返回值：    返回值名称  返回值类型    备注
+//    code           0添加成功-1表示添加失败
+    //此处接提交地址接口！！！！！
+    [SVProgressHUD show];// 动画开始
+    NSString *cyty = [self.selectView.areaBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
+    NSString *residentialQuarters = [self.selectView.villageField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
+    NSString *apartmentLayout = [NSString string];
+    if (self.flag==1) {
+        apartmentLayout = [NSString stringWithFormat:@"%@室%@厅%@卫",self.selectView.roomField.text,self.selectView.hallField.text,self.selectView.guardsField.text];
+        apartmentLayout = [apartmentLayout stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//户型
+        
+    }else if (self.flag==2){
+        apartmentLayout = [self.roomType.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//户型
+        
+    }
     
+    NSString *direction = [self.selectView.directionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//方向
+    NSString *houseAllocation = [NSString string];//房屋配置
+    if (self.selectView.tvBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.tvBtn.titleLabel.text];
+    }
+    if (self.selectView.broadbandBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.broadbandBtn.titleLabel.text];
+    }
+    if (self.selectView.AirConditioningBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.AirConditioningBtn.titleLabel.text];
+    }
+    if (self.selectView.waterBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.waterBtn.titleLabel.text];
+    }
+    if (self.selectView.bedBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.bedBtn.titleLabel.text];
+    }
+    if (self.selectView.supHeatingBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.supHeatingBtn.titleLabel.text];
+    }
+    if (self.selectView.washerBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.washerBtn.titleLabel.text];
+    }
+    if (self.selectView.iceBoxBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.iceBoxBtn.titleLabel.text];
+    }
+    if (self.selectView.boxBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.boxBtn.titleLabel.text];
+    }
+    if (self.selectView.sofaBtn.selected) {
+        houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.sofaBtn.titleLabel.text];
+    }
+     houseAllocation = [houseAllocation stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+   NSString *paymentMethod = [self.selectView.conditionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+    YJRentPersonInfoTVCell *contactsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    NSString *contacts = [contactsCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系人
+    YJRentPersonInfoTVCell *telephoneCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+    NSString *telephone = [telephoneCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系电话
+    
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/PublishRental.do?token=%@&rentalTyoe=%ld&cyty=%@&residentialQuarters=%@&apartmentLayout=%@&housingArea=%@&floor=%@&floord=%@&direction=%@&houseAllocation=%@&rent=%@&paymentMethod=%@&contacts=%@&telephone=%@",mPrefixUrl,mDefineToken1,self.flag,cyty,residentialQuarters,apartmentLayout,self.selectView.houseArea.text,self.selectView.floor.text,self.selectView.allFloor.text,direction,houseAllocation,self.selectView.rentMoney.text,paymentMethod,contacts,telephone];
+
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager POST:postUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        //  图片上传
+        for (NSInteger i = 0; i < self.imageArr.count; i ++) {
+            UIImage *images = self.imageArr[i];
+            NSData *picData = UIImageJPEGRepresentation(images, 0.5);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *fileName = [NSString stringWithFormat:@"%@%ld.png", [formatter stringFromDate:[NSDate date]], (long)i];
+            [formData appendPartWithFileData:picData name:[NSString stringWithFormat:@"uploadFile%ld",(long)i] fileName:fileName mimeType:@"image/png"];
+        }
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+        [SVProgressHUD dismiss];
+        NSString *message = responseObject[@"message"];
+        [message stringByRemovingPercentEncoding];
+        NSLog(@"宝宝头像上传== %@,%@", responseObject,message);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"发布成功!"];
+            sender.enabled = true;
+        }else{
+            [SVProgressHUD showErrorWithStatus:message];
+            sender.enabled = true;
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误信息=====%@", error.description);
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:@"发布失败!"];
+        sender.enabled = true;
+    }];
+
+ 
 }
 
 #pragma mark - UITableView
@@ -568,12 +677,13 @@ static NSString* photoCellid = @"photo_cell";
                 self.shareView = shareView;
  
             }
-            UIButton *roomType=(UIButton *)[self.shareView viewWithTag:103];
+            UIButton *roomType = (UIButton *)[self.shareView viewWithTag:103];
+            self.roomType = roomType;
             [roomType addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
-    
         }
     }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

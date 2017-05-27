@@ -11,11 +11,13 @@
 #import "YJRentalHouseVC.h"
 #import "YJHouseDetailVC.h"
 #import "YJSearchHourseVC.h"
+#import "YJHouseListModel.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJHouseSearchListVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *houseArr;
+@property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
 @end
 
 @implementation YJHouseSearchListVC
@@ -35,9 +37,10 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem * leftItem1 = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     [itemArr addObject:leftItem1];
     UIButton *localBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 81*kiphone6, 30)];
+    self.LocationBtn = localBtn;
     localBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [localBtn setImage:[UIImage imageNamed:@"Location_rent"] forState:UIControlStateNormal];
-    [localBtn setTitle:@"涿州" forState:UIControlStateNormal];
+    [localBtn setTitle:@"涿州市" forState:UIControlStateNormal];
     localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [localBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     localBtn.titleLabel.textAlignment = NSTextAlignmentRight;
@@ -66,18 +69,51 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem * leftItem3 = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     [itemArr addObject:leftItem3];
      self.navigationItem.leftBarButtonItems = itemArr;
+    [self loadData];
     
-    [self setupUI];
+}
+- (void)loadData{
+//http://localhost:8080/smarthome/mobileapi/rental/findPage.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    &cyty=%E6%B6%BF%E5%B7%9E
+//    &residentialQuarters=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA  小区可不传,此处不传
+//    &lstart=0
+//    &limit=1
+    [SVProgressHUD show];// 动画开始
+    NSString *rname = self.LocationBtn.titleLabel.text;
+    rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&lstart=0&limit=10",mPrefixUrl,mDefineToken1,rname];
+    [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        NSArray *arr = responseObject[@"rows"];
+        if (arr.count>0) {
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.houseArr = mArr;
+            [self setupUI];
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+  
 }
 - (void)backBtnClick:(UIButton*)sender {
     [self.navigationController popViewControllerAnimated:true];
 }
 - (void)localBtnClick:(UIButton*)sender {
+//   http://localhost:8080/smarthome/mobilepub/baseArea/getList.do?areaName=%E5%8C%97
     
 }
 - (void)searchBtnClick:(UIButton*)sender {
     YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
-    vc.searchCayegory = 2;
+    vc.searchCayegory = 1;
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)setupUI {
@@ -117,20 +153,20 @@ static NSString* tableCellid = @"table_cell";
     [self.navigationController pushViewController:vc animated:true];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
-//    return self.statesArr.count;//根据请求回来的数据定
+    return self.houseArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJHouseListTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-//    cell.model = self.statesArr[indexPath.row];
+    cell.model = self.houseArr[indexPath.row];
     return cell;
     
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJHouseDetailVC *detailVc = [[YJHouseDetailVC alloc]init];
-    
+    YJHouseListTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    detailVc.info_id = cell.model.info_id;
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
