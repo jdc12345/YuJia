@@ -14,12 +14,9 @@
 #import <UIImageView+WebCache.h>
 #import "AddFamilyViewController.h"
 @interface MYFamilyViewController ()<UITableViewDataSource, UITableViewDelegate>
-
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) NSInteger currentRow;
-
-
 @end
 
 @implementation MYFamilyViewController
