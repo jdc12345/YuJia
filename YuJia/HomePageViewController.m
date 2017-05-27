@@ -19,7 +19,8 @@
 #import "SightModel.h"
 #import "EquipmentModel.h"
 #import "RoomModel.h"
-#import "LogInViewController.h"
+//#import "LogInViewController.h"
+#import "OtherPeopleInfoViewController.h"
 #import "PopListTableViewController.h"
 #import "AddSightViewController.h"
 #import "AddRoomViewController.h"
@@ -317,7 +318,7 @@
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
-    [self.navigationController pushViewController:[[LogInViewController alloc]init] animated:YES];
+    [self.navigationController pushViewController:[[OtherPeopleInfoViewController alloc]init] animated:YES];
 }
 - (void)segmentAction:(UISegmentedControl *)action{
     NSLog(@"  %ld",action.selectedSegmentIndex);
