@@ -1,21 +1,24 @@
 //
-//  MyCircleViewController.m
+//  MyActiveViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/22.
+//  Created by wylt_ios_1 on 2017/5/27.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "MyCircleViewController.h"
+#import "MyActiveViewController.h"
 #import "MyCircleTableViewCell.h"
 #import "YJFriendStateDetailVC.h"
-@interface MyCircleViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface MyActiveViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, assign) BOOL isCircle;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, weak) UILabel *titleLabel;
+
 @end
-@implementation MyCircleViewController
+
+@implementation MyActiveViewController
+
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -40,7 +43,7 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
-//        _tableView.tableHeaderView = [self personInfomation];
+        //        _tableView.tableHeaderView = [self personInfomation];
         
     }
     return _tableView;
@@ -75,7 +78,7 @@
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(titleView).with.offset(0);
         make.left.equalTo(titleLabel.mas_right).with.offset(10);
-//        make.size.mas_equalTo(CGSizeMake(17, 15));
+        //        make.size.mas_equalTo(CGSizeMake(17, 15));
     }];
     
     
@@ -92,7 +95,7 @@
 #pragma mark -
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 #pragma mark -
@@ -122,7 +125,7 @@
     WS(ws);
     cell.commentBtnBlock = ^(YJFriendNeighborStateModel *model){
         YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
-//        detailVc.userId = ws.userId;
+        //        detailVc.userId = ws.userId;
         detailVc.model = model;
         [ws.navigationController pushViewController:detailVc animated:true];
         [detailVc.commentField becomeFirstResponder];
@@ -131,7 +134,7 @@
 }
 -(void)updateAreaType:(UIButton*)sender{
     
-//    self.rqId = [NSString stringWithFormat:@"%ld",sender.tag-50];
+    //    self.rqId = [NSString stringWithFormat:@"%ld",sender.tag-50];
     [SVProgressHUD show];// 动画开始
     NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=1&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,@"3",@"1"];
     [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
@@ -169,13 +172,12 @@
     }
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 @end

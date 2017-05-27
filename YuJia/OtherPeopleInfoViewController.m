@@ -1,12 +1,12 @@
 //
-//  PersonalViewController.m
+//  OtherPeopleInfoViewController.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/2.
+//  Created by wylt_ios_1 on 2017/5/27.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "PersonalViewController.h"
+#import "OtherPeopleInfoViewController.h"
 #import "UIColor+Extension.h"
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
@@ -18,9 +18,7 @@
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
 #import "CirleAndActiveViewController.h"
-#import "NotficViewController.h"
-
-@interface PersonalViewController ()<UITableViewDataSource, UITableViewDelegate>{
+@interface OtherPeopleInfoViewController ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
     UIImageView *tabBarHairlineImageView;
 }
@@ -39,9 +37,11 @@
 
 @property (nonatomic, weak) UIButton *rightNotBtn;
 @property (nonatomic, strong) PersonalModel *personalModel;
+
 @end
 
-@implementation PersonalViewController
+@implementation OtherPeopleInfoViewController
+
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -71,7 +71,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-//        self.title = @"家";
+    //        self.title = @"家";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -121,7 +121,7 @@
     
     [self tableView];
     
-//    self.rightNotBtn = rightButton;
+    //    self.rightNotBtn = rightButton;
     
     // Do any additional setup after loading the view.
 }
@@ -157,7 +157,7 @@
     [headerView addSubview:personV];
     
     UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-;
+    ;
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
     iconV.layer.cornerRadius = 32.5 *kiphone6;
@@ -170,7 +170,7 @@
     nameLabel.textAlignment = NSTextAlignmentCenter;
     //
     UILabel *idName = [[UILabel alloc]init];
-//    idName.text = @"涿州市中医院  检验科";
+    //    idName.text = @"涿州市中医院  检验科";
     idName.textColor = [UIColor colorWithHexString:@"6a6a6a"];
     idName.font = [UIFont systemFontOfSize:12];
     idName.textAlignment = NSTextAlignmentCenter;
@@ -198,13 +198,13 @@
         make.centerY.equalTo(personV);
         make.size.mas_equalTo(CGSizeMake(65 , 65 ));
     }];
-
+    
     NSString * nameStr = @"赵启平";
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
     CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-                                              options:NSStringDrawingUsesLineFragmentOrigin
-                                           attributes:attributes
-                                              context:nil];
+                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                     attributes:attributes
+                                        context:nil];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(personV);
         make.left.equalTo(iconV.mas_right).with.offset(10);
@@ -264,7 +264,7 @@
         [headerView addSubview:leftNavBtn];
         
     }
-
+    
     
     
     
@@ -282,34 +282,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-//    if (indexPath.section == 1) {
-//        if (indexPath.row == 0) {
-////            NSString *nameStr = @"salkjdklasjdklajslk";
-////            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-////            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-////                                                options:NSStringDrawingUsesLineFragmentOrigin
-////                                             attributes:attributes
-////                                                context:nil];
-////            self.nameLabel.text = nameStr;
-////            self.nameLabel.frame = rect;
-//        }else{
-//        }
-//        
-//    }else if(indexPath.section == 0){
-        if (indexPath.row == 0) {
-            [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
-        }else if(indexPath.row == 1){
-            
-            YYFeedbackViewController *feedBackVC = [[YYFeedbackViewController alloc]init];
-            feedBackVC.personalModel = self.personalModel;
-            [self.navigationController pushViewController:feedBackVC animated:YES];
-        }else{
-
-        }
+    //    if (indexPath.section == 1) {
+    //        if (indexPath.row == 0) {
+    ////            NSString *nameStr = @"salkjdklasjdklajslk";
+    ////            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
+    ////            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
+    ////                                                options:NSStringDrawingUsesLineFragmentOrigin
+    ////                                             attributes:attributes
+    ////                                                context:nil];
+    ////            self.nameLabel.text = nameStr;
+    ////            self.nameLabel.frame = rect;
+    //        }else{
+    //        }
+    //
+    //    }else if(indexPath.section == 0){
+    if (indexPath.row == 0) {
+        [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
+    }else if(indexPath.row == 1){
+        
+        YYFeedbackViewController *feedBackVC = [[YYFeedbackViewController alloc]init];
+        feedBackVC.personalModel = self.personalModel;
+        [self.navigationController pushViewController:feedBackVC animated:YES];
+    }else{
+        
+    }
     
-        
-        
-//    }
+    
+    
+    //    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     //    [self.navigationController popToRootViewControllerAnimated:YES];
     //    self.tabBarController.selectedIndex = 4;
@@ -320,7 +320,7 @@
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    NSArray *list = self.dataSource[section];
+    //    NSArray *list = self.dataSource[section];
     return self.dataSource.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -391,21 +391,18 @@
         NSLog(@"%@",error);
     }];
 }
-- (void)pushNotficVC{
-    NotficViewController *notficVC = [[NotficViewController alloc]init];
-    [self.navigationController pushViewController:notficVC animated:YES];
-}
 - (void)viewWillAppear:(BOOL)animated{
     [self httpRequestHomeInfo];
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+
