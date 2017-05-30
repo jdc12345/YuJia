@@ -29,7 +29,7 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.bounces = NO;
-        _tableView.indicatorStyle =
+        _tableView.indicatorStyle =UIScrollViewIndicatorStyleDefault;
         _tableView.rowHeight = kScreenW *77/320.0 +10;
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

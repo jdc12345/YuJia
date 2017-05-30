@@ -114,6 +114,13 @@
 		169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519841ED4498F00C2C380 /* YJSearchHourseVC.m */; };
 		169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */; };
 		169E04A41ED301570002FDB2 /* YJRentPersonInfoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */; };
+		16AD9E711EDD5D1B00F52A7A /* AMapFoundationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E6F1EDD5D1B00F52A7A /* AMapFoundationKit.framework */; };
+		16AD9E721EDD5D1B00F52A7A /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E701EDD5D1B00F52A7A /* AMapSearchKit.framework */; };
+		16AD9E761EDD5E5700F52A7A /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E751EDD5E5700F52A7A /* MAMapKit.framework */; };
+		16AD9E961EDD716200F52A7A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E951EDD716200F52A7A /* OpenGLES.framework */; };
+		16AD9E9A1EDD719C00F52A7A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E991EDD719C00F52A7A /* libz.tbd */; };
+		16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9B1EDD71A900F52A7A /* libc++.tbd */; };
+		16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9D1EDD71C600F52A7A /* GLKit.framework */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
@@ -457,6 +464,14 @@
 		169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YJShareRentView.xib; sourceTree = "<group>"; };
 		169E04A21ED301570002FDB2 /* YJRentPersonInfoTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRentPersonInfoTVCell.h; sourceTree = "<group>"; };
 		169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRentPersonInfoTVCell.m; sourceTree = "<group>"; };
+		16AD9E6F1EDD5D1B00F52A7A /* AMapFoundationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapFoundationKit.framework; sourceTree = "<group>"; };
+		16AD9E701EDD5D1B00F52A7A /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
+		16AD9E751EDD5E5700F52A7A /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
+		16AD9E951EDD716200F52A7A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		16AD9E971EDD717A00F52A7A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		16AD9E991EDD719C00F52A7A /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		16AD9E9B1EDD71A900F52A7A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		16AD9E9D1EDD71C600F52A7A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
 		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
@@ -686,7 +701,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */,
+				16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */,
+				16AD9E9A1EDD719C00F52A7A /* libz.tbd in Frameworks */,
+				16AD9E961EDD716200F52A7A /* OpenGLES.framework in Frameworks */,
 				A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */,
+				16AD9E711EDD5D1B00F52A7A /* AMapFoundationKit.framework in Frameworks */,
+				16AD9E761EDD5E5700F52A7A /* MAMapKit.framework in Frameworks */,
+				16AD9E721EDD5D1B00F52A7A /* AMapSearchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1080,6 +1102,16 @@
 			name = "Community Car";
 			sourceTree = "<group>";
 		};
+		16AD9E6E1EDD5CF300F52A7A /* GDLocation */ = {
+			isa = PBXGroup;
+			children = (
+				16AD9E751EDD5E5700F52A7A /* MAMapKit.framework */,
+				16AD9E6F1EDD5D1B00F52A7A /* AMapFoundationKit.framework */,
+				16AD9E701EDD5D1B00F52A7A /* AMapSearchKit.framework */,
+			);
+			name = GDLocation;
+			sourceTree = "<group>";
+		};
 		3E90B7371EC3F41300CC49D7 /* SubController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1343,6 +1375,7 @@
 		3E984F211EB829B80094CBE4 /* PropertyPage */ = {
 			isa = PBXGroup;
 			children = (
+				16AD9E6E1EDD5CF300F52A7A /* GDLocation */,
 				1661FE101EB8646B00583A7F /* tools */,
 				1661FE131EB8649100583A7F /* C */,
 				1661FE121EB8648500583A7F /* V */,
@@ -1494,6 +1527,11 @@
 		FA9530CEF4F09046F856354B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				16AD9E9D1EDD71C600F52A7A /* GLKit.framework */,
+				16AD9E9B1EDD71A900F52A7A /* libc++.tbd */,
+				16AD9E991EDD719C00F52A7A /* libz.tbd */,
+				16AD9E971EDD717A00F52A7A /* UIKit.framework */,
+				16AD9E951EDD716200F52A7A /* OpenGLES.framework */,
 				31C7631CFB80932FA44BD479 /* libPods-YuJia.a */,
 			);
 			name = Frameworks;
@@ -2050,6 +2088,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/YuJia",
+				);
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuJia/YYDefine.pch";
 				INFOPLIST_FILE = YuJia/Info.plist;
@@ -2066,6 +2109,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/YuJia",
+				);
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/YuJia/YYDefine.pch";
 				INFOPLIST_FILE = YuJia/Info.plist;

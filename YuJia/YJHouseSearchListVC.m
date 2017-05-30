@@ -12,12 +12,16 @@
 #import "YJHouseDetailVC.h"
 #import "YJSearchHourseVC.h"
 #import "YJHouseListModel.h"
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
 
 static NSString* tableCellid = @"table_cell";
-@interface YJHouseSearchListVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJHouseSearchListVC ()<UITableViewDelegate,UITableViewDataSource,AMapSearchDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *houseArr;
 @property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
+@property (nonatomic, strong) AMapLocationManager *locationManager;//定位实体类
 @end
 
 @implementation YJHouseSearchListVC
@@ -40,13 +44,47 @@ static NSString* tableCellid = @"table_cell";
     self.LocationBtn = localBtn;
     localBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [localBtn setImage:[UIImage imageNamed:@"Location_rent"] forState:UIControlStateNormal];
-    [localBtn setTitle:@"涿州市" forState:UIControlStateNormal];
+    [localBtn setTitle:@"涿" forState:UIControlStateNormal];
     localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [localBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     localBtn.titleLabel.textAlignment = NSTextAlignmentRight;
 //    localBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
     localBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
     localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    //    -------------------------先用locationKit定位，再根据定位的坐标用searchKit查询
+    [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
+    
+    self.locationManager = [[AMapLocationManager alloc]init];
+    // 带逆地理信息的一次定位（返回坐标和地址信息）
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    //   定位超时时间，最低2s，此处设置为2s
+    self.locationManager.locationTimeout =2;
+    //   逆地理请求超时时间，最低2s，此处设置为2s
+    self.locationManager.reGeocodeTimeout = 2;
+    
+    [self.locationManager requestLocationWithReGeocode:YES completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
+        if (error)
+        {
+            NSLog(@"locError:{%ld - %@};", (long)error.code, error.localizedDescription);
+            
+            if (error.code == AMapLocationErrorLocateFailed)
+            {
+                return;
+            }
+        }
+        NSLog(@"location:%@", location);
+                //定位结果
+                NSLog(@"location:{lat:%f; lon:%f; accuracy:%f}", location.coordinate.latitude, location.coordinate.longitude, location.horizontalAccuracy);
+                if (regeocode)//定位只返回到城市级别的信息，此处刚好只需要城市的名字
+                {
+                    NSLog(@"reGeocode:%@", regeocode.district);
+                    if(!regeocode.district){
+                        [localBtn setTitle:@"无定位" forState:UIControlStateNormal];
+                    }else{
+                        [localBtn setTitle:regeocode.district forState:UIControlStateNormal];
+                    }
+                }        
+    }];
     [localBtn addTarget:self action:@selector(localBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * leftItem2 = [[UIBarButtonItem alloc] initWithCustomView:localBtn];
     [itemArr addObject:leftItem2];

@@ -115,10 +115,11 @@ static NSString* tableCellid = @"table_cell";
 //    
 //}
 - (void)searchBtnClick:(UIButton*)sender {
-    YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
-    vc.searchCayegory = 1;
-    vc.city = self.model.city;
-    [self.navigationController pushViewController:vc animated:true];
+//    YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
+//    vc.searchCayegory = 1;
+//    vc.city = self.model.city;
+//    [self.navigationController pushViewController:vc animated:true];
+    [self.navigationController popViewControllerAnimated:true];
 }
 - (void)setupUI {
     //添加tableView

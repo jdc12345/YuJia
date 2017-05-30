@@ -11,12 +11,17 @@
 #import "YJNearByShopTVCell.h"
 #import "YJNearbyShopDetailVC.h"
 #import "YJBussinessDetailModel.h"
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
 
 static NSString* tableCellid = @"table_cell";
-@interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource,AMapSearchDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *shopsArr;
 @property(nonatomic,weak)YJHeaderTitleBtn *locationAddressBtn;
+@property (nonatomic, strong) AMapLocationManager *locationManager;//定位实体类
+@property (nonatomic, strong) AMapSearchAPI *search;//搜索实体类
 @end
 
 @implementation YJNearbyShopViewController
@@ -55,14 +60,55 @@ static NSString* tableCellid = @"table_cell";
         make.left.offset(142*kiphone6);
         make.centerY.equalTo(LocationView);
     }];
-    YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:CGRectZero and:@"名流一品"];
+    YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:CGRectZero and:@"名品"];
     [self.view addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageView.mas_right).offset(5*kiphone6);
         make.centerY.equalTo(LocationView);
     }];
     self.locationAddressBtn = btn;
+    //    -------------------------先用locationKit定位，再根据定位的坐标用searchKit查询
+    [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
     
+    self.locationManager = [[AMapLocationManager alloc]init];
+    // 带逆地理信息的一次定位（返回坐标和地址信息）
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    //   定位超时时间，最低2s，此处设置为2s
+    self.locationManager.locationTimeout =2;
+    //   逆地理请求超时时间，最低2s，此处设置为2s
+    self.locationManager.reGeocodeTimeout = 2;
+    
+    [self.locationManager requestLocationWithReGeocode:YES completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
+        if (error)
+        {
+            NSLog(@"locError:{%ld - %@};", (long)error.code, error.localizedDescription);
+            
+            if (error.code == AMapLocationErrorLocateFailed)
+            {
+                return;
+            }
+        }
+        NSLog(@"location:%@", location);
+        self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+        self.search.delegate = self;
+        AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
+        regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+        regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
+        [self.search AMapReGoecodeSearch:regeo];
+//        //定位结果
+//        NSLog(@"location:{lat:%f; lon:%f; accuracy:%f}", location.coordinate.latitude, location.coordinate.longitude, location.horizontalAccuracy);
+//        if (regeocode)//定位只返回到城市级别的信息，此处需要的是具体信息
+//        {
+//            NSLog(@"reGeocode:%@", regeocode.district);
+//            if(!regeocode.district){
+//                [btn setTitle:@"无定位" forState:UIControlStateNormal];
+//            }else{
+//                [btn setTitle:regeocode.district forState:UIControlStateNormal];
+//            }
+//        }
+        
+    }];
+
     [btn addTarget:self action:@selector(selectAddressItem:) forControlEvents:UIControlEventTouchUpInside];
     //根据地址请求数据
     //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
@@ -112,6 +158,7 @@ static NSString* tableCellid = @"table_cell";
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 180*kiphone6;
 }
+
 -(void)selectAddressItem:(UIButton*)sender{
     //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
     //    &rqid=1
@@ -120,6 +167,28 @@ static NSString* tableCellid = @"table_cell";
     //    &lat2=115.984108
     //    &lng2=39.484636
 }
+#pragma AMapSearchDelegate
+/* 逆地理编码回调. */
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+{
+    
+    if (response.regeocode != nil)
+    {
+        //解析response获取地址描述，具体解析见 Demo
+        NSLog(@"reGeocode:%@", response.regeocode.aois[0].name);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
+        
+        [self.locationAddressBtn setTitle:response.regeocode.aois[0].name forState:UIControlStateNormal];
+    }else{
+        [self.locationAddressBtn setTitle:@"无定位" forState:UIControlStateNormal];
+    }
+}
+//当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
+- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", error);
+    [SVProgressHUD showErrorWithStatus:error.description];
+}
+
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
