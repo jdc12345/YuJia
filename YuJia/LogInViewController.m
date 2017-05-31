@@ -684,10 +684,15 @@
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);
-            //            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
-            //            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
-            //            fInfo.personalModel = personalModel;
-            //            [self.navigationController pushViewController:fInfo animated:YES];
+            //保存token
+            CcUserModel *userModel = [CcUserModel defaultClient];
+            userModel.userToken = responseObject[@"token"];
+            userModel.telephoneNum = self.phoneTF_login.text;
+            [userModel saveAllInfo];
+            
+            
+            YYTabBarController *firstVC = [[YYTabBarController alloc]init];
+            [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;;
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
@@ -714,10 +719,15 @@
                 
             } success:^(NSURLSessionDataTask *task, id responseObject) {
                 NSLog(@"%@",responseObject);
-                //            PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:responseObject[@"homePersonal"]];
-                //            AddFamilyInfoViewController *fInfo = [[AddFamilyInfoViewController alloc]init];
-                //            fInfo.personalModel = personalModel;
-                //            [self.navigationController pushViewController:fInfo animated:YES];
+                //保存token
+                CcUserModel *userModel = [CcUserModel defaultClient];
+                userModel.userToken = responseObject[@"token"];
+                userModel.telephoneNum = self.phoneTF_login.text;
+                [userModel saveAllInfo];
+                
+                
+                YYTabBarController *firstVC = [[YYTabBarController alloc]init];
+                [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
                 
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"%@",error);
