@@ -82,6 +82,7 @@ static NSString* tableCellid = @"table_cell";
                         [localBtn setTitle:@"无定位" forState:UIControlStateNormal];
                     }else{
                         [localBtn setTitle:regeocode.district forState:UIControlStateNormal];
+                        [self loadData];
                     }
                 }        
     }];
@@ -107,7 +108,7 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem * leftItem3 = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     [itemArr addObject:leftItem3];
      self.navigationItem.leftBarButtonItems = itemArr;
-    [self loadData];
+    
     
 }
 - (void)loadData{

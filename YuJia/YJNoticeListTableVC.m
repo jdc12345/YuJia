@@ -20,7 +20,7 @@ static NSString* tableCell = @"table_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self.tableView registerClass:[YJNoticeListTVCell class] forCellReuseIdentifier:tableCell];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -60,6 +60,11 @@ static NSString* tableCell = @"table_cell";
         [self.navigationController pushViewController:vc animated:true];
     }
 
+    
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
     
 }
 

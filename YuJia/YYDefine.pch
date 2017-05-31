@@ -59,7 +59,7 @@
 
 
 #define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
-#define mDefineToken1 @"ACDCE729BCE6FABC50881A867CAFC1BC"
+#define mDefineToken1 @"C4D5B4E19A6D642DAEB38130C7D8A68A"
 
 // 首页数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
