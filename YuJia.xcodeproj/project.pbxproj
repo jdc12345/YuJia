@@ -121,6 +121,7 @@
 		16AD9E9A1EDD719C00F52A7A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E991EDD719C00F52A7A /* libz.tbd */; };
 		16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9B1EDD71A900F52A7A /* libc++.tbd */; };
 		16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9D1EDD71C600F52A7A /* GLKit.framework */; };
+		16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
@@ -472,6 +473,8 @@
 		16AD9E991EDD719C00F52A7A /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		16AD9E9B1EDD71A900F52A7A /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		16AD9E9D1EDD71C600F52A7A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		16AD9E9F1EDED75100F52A7A /* YJNearbyShopChangeAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopChangeAddressVC.h; sourceTree = "<group>"; };
+		16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopChangeAddressVC.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
 		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
@@ -743,6 +746,8 @@
 			children = (
 				1618C1DE1ECC46E6003BBA58 /* YJNearbyShopViewController.h */,
 				1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */,
+				16AD9E9F1EDED75100F52A7A /* YJNearbyShopChangeAddressVC.h */,
+				16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */,
 				1618C1E81ECC6F2D003BBA58 /* YJNearbyShopDetailVC.h */,
 				1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */,
 				166B42601ED03BF600E8FEF0 /* YJRenovationViewController.h */,
@@ -1876,6 +1881,7 @@
 				3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */,
 				164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
+				16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */,
 				16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */,
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,

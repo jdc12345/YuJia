@@ -10,5 +10,6 @@
 #import "YJSearchHouseDetailResultModel.h"
 
 @interface YJHouseSearchResultVC : UIViewController
+
 @property(nonatomic,strong)YJSearchHouseDetailResultModel *model;//传递过来的的搜索结果
 @end

@@ -22,6 +22,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,strong)NSMutableArray *houseArr;
 @property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
 @property (nonatomic, strong) AMapLocationManager *locationManager;//定位实体类
+//@property(nonatomic,strong)NSString *currentCity;//当前城市
 @end
 
 @implementation YJHouseSearchListVC
@@ -44,7 +45,7 @@ static NSString* tableCellid = @"table_cell";
     self.LocationBtn = localBtn;
     localBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [localBtn setImage:[UIImage imageNamed:@"Location_rent"] forState:UIControlStateNormal];
-    [localBtn setTitle:@"涿" forState:UIControlStateNormal];
+    [localBtn setTitle:@"定位中" forState:UIControlStateNormal];
     localBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [localBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     localBtn.titleLabel.textAlignment = NSTextAlignmentRight;
@@ -82,6 +83,7 @@ static NSString* tableCellid = @"table_cell";
                         [localBtn setTitle:@"无定位" forState:UIControlStateNormal];
                     }else{
                         [localBtn setTitle:regeocode.district forState:UIControlStateNormal];
+//                        self.currentCity = localBtn.titleLabel.text;
                         [self loadData];
                     }
                 }        
@@ -120,21 +122,23 @@ static NSString* tableCellid = @"table_cell";
     [SVProgressHUD show];// 动画开始
     NSString *rname = self.LocationBtn.titleLabel.text;
     rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&lstart=0&limit=10",mPrefixUrl,mDefineToken1,rname];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,rname];
     [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
-        NSArray *arr = responseObject[@"rows"];
-        if (arr.count>0) {
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
+        if ([responseObject[@"code"]isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            if (arr.count>0) {
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                self.houseArr = mArr;
+                [self setupUI];
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
             }
-            self.houseArr = mArr;
-            [self setupUI];
-        }else{
-            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -147,8 +151,39 @@ static NSString* tableCellid = @"table_cell";
     [self.navigationController popViewControllerAnimated:true];
 }
 - (void)localBtnClick:(UIButton*)sender {
-//   http://localhost:8080/smarthome/mobilepub/baseArea/getList.do?areaName=%E5%8C%97
-    
+    YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
+    vc.searchCayegory = 0;
+//    vc.city = self.currentCity;
+    vc.popVCBlock = ^(NSString *cityName){
+        [self.LocationBtn setTitle:cityName forState:UIControlStateNormal];
+        [SVProgressHUD show];// 动画开始
+        cityName = [cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,cityName];
+        [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"]isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                if (arr.count>0) {
+                    NSMutableArray *mArr = [NSMutableArray array];
+                    for (NSDictionary *dic in arr) {
+                        YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
+                        [mArr addObject:infoModel];
+                    }
+                    self.houseArr = mArr;
+                    [self setupUI];
+                }else{
+                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
+                }
+            }
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"加载失败"];
+            return ;
+        }];
+ 
+    };
+    [self.navigationController pushViewController:vc animated:true];
 }
 - (void)searchBtnClick:(UIButton*)sender {
     YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];

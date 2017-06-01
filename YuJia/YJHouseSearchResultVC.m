@@ -54,7 +54,7 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = 5;
     [itemArr addObject:negativeSpacer];
-    UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 242*kiphone6, 30)];
+    UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW-45*kiphone6, 30)];
     searchBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     searchBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [searchBtn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
@@ -83,22 +83,24 @@ static NSString* tableCellid = @"table_cell";
     //    &lstart=0
     //    &limit=1
     [SVProgressHUD show];// 动画开始
-    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&residentialQuarters=%@&lstart=0&limit=10",mPrefixUrl,mDefineToken1,self.model.city,self.model.rname];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&residentialQuarters=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,self.model.city,self.model.rname];
     bussinessUrlStr = [bussinessUrlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
-        NSArray *arr = responseObject[@"rows"];
-        if (arr.count>0) {
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
+        if ([responseObject[@"code"]isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            if (arr.count>0) {
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                self.houseArr = mArr;
+                [self setupUI];
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
             }
-            self.houseArr = mArr;
-            [self setupUI];
-        }else{
-            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

@@ -36,6 +36,7 @@
     //   http://localhost:8080/smarthome/mobileapi/rental/get.do?token=EC9CDB5177C01F016403DFAAEE3C1182&rentalID=1
     [SVProgressHUD show];// 动画开始
     NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/get.do?token=%@&rentalID=%ld",mPrefixUrl,mDefineToken1,info_id];
+    
     [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
