@@ -394,7 +394,7 @@
     }];
 }
 - (void)pushNotficVC{
-    YJNoticeListTableVC *notficVC = [[YJNoticeListTableVC alloc]init];
+    YJNoticeListTableVC *notficVC = [[YJNoticeListTableVC  alloc]init];
     [self.navigationController pushViewController:notficVC animated:YES];
 }
 - (void)viewWillAppear:(BOOL)animated{
@@ -403,7 +403,7 @@
 /*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+// In a storyboard-based application, you will often want to do a little preparation   navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.

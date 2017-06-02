@@ -15,6 +15,7 @@
 #import "UIColor+Extension.h"
 #import "HttpClient.h"
 #import <MJExtension.h>
+#import "CcUserModel.h"
 #pragma mark -
 #pragma mark  ------------Size----------------------
 
@@ -60,6 +61,7 @@
 
 #define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
 #define mDefineToken1 @"ACDCE729BCE6FABC50881A867CAFC1BC"
+#define mDefineToken2 [CcUserModel defaultClient].userToken
 
 // 首页数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
@@ -179,6 +181,7 @@
 //查询开锁记录列表接口
 //http://192.168.1.55:8080/smarthome/mobileapi/unlockRecords/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&equipmentId=6&row=15
 #define mOpenLock [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/unlockRecords/findList.do?"]
+
 //修改绑定手机号接口
 //http://192.168.1.55:8080/smarthome/mobileapi/personal/mdfTelephone.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&telephone=13717883005&pwd=123456
 #define mChangePhone [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/personal/mdfTelephone.do?"]
@@ -194,6 +197,7 @@
 //注册
 //http://192.168.1.55:8080/smarthome/mobilepub/personal/register.do?password=q&telephone=17743516381&vcode=338825
 #define mResign [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobilepub/personal/register.do?"]
+
 //注册 验证码
 //http://192.168.1.55:8080/smarthome/mobilepub/personal/vcode.do?telephone=17743516381
 
@@ -202,5 +206,6 @@
 #define mLogin [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobilepub/personal/login.do?"]
 //4登陆发送验证码
 //http://localhost:8080/smarthome/mobilepub/personal/loginvcode.do?telephone=18782931356
+
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */
