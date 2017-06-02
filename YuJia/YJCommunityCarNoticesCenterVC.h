@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YJNoticeListModel.h"
 @interface YJCommunityCarNoticesCenterVC : UIViewController
-
+@property(nonatomic,strong)YJNoticeListModel *model;
 @end

@@ -66,7 +66,7 @@ static NSString* otherCellid = @"other_cell";
 // 有多少行
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 // cell内容
@@ -75,7 +75,7 @@ static NSString* otherCellid = @"other_cell";
     
             // 获取other的cell
     YJCommunityCarNoticesCenterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:otherCellid forIndexPath:indexPath];
-        
+    cell.model = self.model;
         // 取消点击效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
         

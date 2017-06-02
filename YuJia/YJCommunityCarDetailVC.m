@@ -14,6 +14,8 @@
 #import "YJActivitesCommentTVCell.h"
 #import "YJPostActivitesCommentVC.h"
 #import <UIImageView+WebCache.h>
+#import "RKNotificationHub.h"
+#import "YJNoticeListTableVC.h"
 
 static NSString* tablecell = @"table_cell";
 @interface YJCommunityCarDetailVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -24,6 +26,8 @@ static NSString* tablecell = @"table_cell";
 @property(nonatomic,strong)NSString *type;
 @property(nonatomic,strong)NSMutableArray *commentList;//评论的人们
 @property(nonatomic,assign)long isLike;//用户是否参加
+@property(nonatomic,strong)RKNotificationHub *barHub;//bage
+@property(nonatomic,assign)Boolean isHasMessage;//是否有消息
 @end
 
 @implementation YJCommunityCarDetailVC
@@ -37,23 +41,42 @@ static NSString* tablecell = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    self.type = @"乘客";
-    if ([self.type isEqualToString:@"乘客"]) {
-        //添加右侧消息中心按钮
-        UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
-        [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-        informationBtn.badgeValue = @" ";
-        informationBtn.badgeBGColor = [UIColor redColor];
-        informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-        informationBtn.badgeOriginX = 16;
-        informationBtn.badgeOriginY = 1;
-        informationBtn.badgePadding = 0.1;
-        informationBtn.badgeMinSize = 5;
-        [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
-        self.navigationItem.rightBarButtonItem = rightBarItem;
-    }
+    [self checkHasMessade];
+
 }
+-(void)checkHasMessade{
+    //添加右侧消息中心按钮
+    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
+    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+    //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *isHasMessage = responseObject[@"hasMessage"];
+            self.isHasMessage = [isHasMessage boolValue];
+            if (self.isHasMessage) {
+                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItem];//初始化bageView
+                [self.barHub setCircleAtFrame:CGRectMake(15, 1, 5, 5)];//bage的frame
+                [self.barHub increment];//显示count+1
+                [self.barHub hideCount];//隐藏数字
+                
+            }
+        }else if ([responseObject[@"code"] isEqualToString:@"10000"]){
+            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+    
+}
+
 -(void)refrish{
     [SVProgressHUD show];// 动画开始
     NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findCarpoolingOne.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
@@ -63,6 +86,8 @@ static NSString* tablecell = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            NSDictionary *detailDic = bigDic[@"carpoolingEntity"];
+            self.model = [YJCommunityCarListModel mj_objectWithKeyValues:detailDic];
             NSArray *commentArr = bigDic[@"commentlist"];
             NSMutableArray *commentmArr = [NSMutableArray array];
             for (NSDictionary *dic in commentArr) {
@@ -87,13 +112,18 @@ static NSString* tablecell = @"table_cell";
 //http://localhost:8080/smarthome/mobileapi/carpooling/findCarpoolingOne.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &carpoolingId=1
     [SVProgressHUD show];// 动画开始
-    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findCarpoolingOne.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findCarpoolingOne.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.carpoolingId];
     [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            NSDictionary *detailDic = bigDic[@"carpoolingEntity"];
+            self.model = [YJCommunityCarListModel mj_objectWithKeyValues:detailDic];
+            if (!self.userId) {//第一次加载数据需要判断userId是否为空
+                self.userId = self.model.info_id;
+            }
             NSArray *commentArr = bigDic[@"commentlist"];
             NSMutableArray *commentmArr = [NSMutableArray array];
             for (NSDictionary *dic in commentArr) {
@@ -128,9 +158,9 @@ static NSString* tablecell = @"table_cell";
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 235*kiphone6;
+    tableView.estimatedRowHeight = 265*kiphone6;
     //添加大tb头部试图
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 230*kiphone6)];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 270*kiphone6)];
     headerView.backgroundColor = [UIColor whiteColor];
     UIImageView *iconView = [[UIImageView alloc]init];//头像图片
     NSString *iconUrlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.model.avatar];
@@ -211,9 +241,9 @@ static NSString* tablecell = @"table_cell";
         make.left.offset(10*kiphone6);
         make.top.equalTo(AddressItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *limiteNumberLabel = [UILabel labelWithText:self.model.end andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
-    [headerView addSubview:limiteNumberLabel];
-    [limiteNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    UILabel *destinationLabel = [UILabel labelWithText:self.model.end andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
+    [headerView addSubview:destinationLabel];
+    [destinationLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(destinationItemLabel.mas_right).offset(10*kiphone6);
         make.centerY.equalTo(destinationItemLabel);
     }];
@@ -223,7 +253,7 @@ static NSString* tablecell = @"table_cell";
         make.left.offset(10*kiphone6);
         make.top.equalTo(destinationItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *numberLabel = [UILabel labelWithText:@"2" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
+    UILabel *numberLabel = [UILabel labelWithText:[NSString stringWithFormat:@"%ld人",self.model.cnumber] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//目的地内容
     [headerView addSubview:numberLabel];
     [numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(numberItemLabel.mas_right).offset(10*kiphone6);
@@ -284,7 +314,7 @@ static NSString* tablecell = @"table_cell";
             }
         }else{//司机发的
             if (self.model.over==1) {
-                if (self.model.islike) {
+                if (self.model.islike||(self.model.participateNumber>=self.model.cnumber)) {
                     [btn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
                     btn.userInteractionEnabled = false;
                 }else{
@@ -339,10 +369,27 @@ static NSString* tablecell = @"table_cell";
     
 }
 
--(void)setModel:(YJCommunityCarListModel *)model{
-    _model = model;
+/**
+ 从消息列表传过来id
+
+ @param carpoolingId 从消息列表传过来id
+ */
+-(void)setCarpoolingId:(long)carpoolingId{
+    _carpoolingId = carpoolingId;
+//    self.model.info_id = carpoolingId;
     [self loadData];
 }
+
+/**
+ 从拼车活动列表传过来实体类
+
+ @param model <#model description#>
+ */
+//-(void)setModel:(YJCommunityCarListModel *)model{
+//    _model = model;
+////    self.carpoolingId = model.info_id;
+//}
+
 -(void)orderClick:(UIButton*)sender{
     //    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccccc"]];
     //    self.clickForAddBlock(sender);
@@ -399,7 +446,11 @@ static NSString* tablecell = @"table_cell";
     }];
     
 }
-
+-(void)informationBtnClick:(UIButton*)sender{
+    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
+    vc.noticeType = 3;
+    [self.navigationController pushViewController:vc animated:true];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

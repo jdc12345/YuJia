@@ -12,6 +12,8 @@
 #import "YJCreatActivitiesVC.h"
 #import "YJActivitiesDetailsVC.h"
 #import "YJActivitiesDetailModel.h"
+#import "RKNotificationHub.h"
+#import "YJNoticeListTableVC.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -23,6 +25,9 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,assign)long userId;//当前用户Id
 @property(nonatomic,strong)NSMutableArray *activiesArr;//数据源
 @property(nonatomic,assign)NSInteger over;//当前页面显示的活动状态
+
+@property(nonatomic,strong)RKNotificationHub *barHub;//bage
+@property(nonatomic,assign)Boolean isHasMessage;//是否有消息
 @end
 
 @implementation YJCommunityActivitiesVC
@@ -36,19 +41,6 @@ static NSString* tableCellid = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    //添加右侧消息中心按钮
-    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
-    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-    informationBtn.badgeValue = @" ";
-    informationBtn.badgeBGColor = [UIColor redColor];
-    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-    informationBtn.badgeOriginX = 16;
-    informationBtn.badgeOriginY = 1;
-    informationBtn.badgePadding = 0.1;
-    informationBtn.badgeMinSize = 5;
-    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
     [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"正在进行"andTag:101];
     [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"活动结束"andTag:102];
     UIView *line = [[UIView alloc]init];
@@ -59,8 +51,42 @@ static NSString* tableCellid = @"table_cell";
         make.right.left.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
+    [self checkHasMessade];
     [self loadData];
 }
+-(void)checkHasMessade{
+    //添加右侧消息中心按钮
+    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
+    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+    //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *isHasMessage = responseObject[@"hasMessage"];
+            self.isHasMessage = [isHasMessage boolValue];
+            if (self.isHasMessage) {
+                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItem];//初始化bageView
+                [self.barHub setCircleAtFrame:CGRectMake(15, 1, 5, 5)];//bage的frame
+                [self.barHub increment];//显示count+1
+                [self.barHub hideCount];//隐藏数字
+                
+            }
+        }else if ([responseObject[@"code"] isEqualToString:@"10000"]){
+            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+    
+}
+
 -(void)loadData{
 //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &over=1
@@ -234,7 +260,7 @@ static NSString* tableCellid = @"table_cell";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJActivitiesDetailsVC *detailVc = [[YJActivitiesDetailsVC alloc]init];
     YJCommunityActivitiesTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    detailVc.model = cell.model;
+    detailVc.activityId = cell.model.info_id;
     detailVc.userId = self.userId;
     [self.navigationController pushViewController:detailVc animated:true];
     
@@ -280,8 +306,9 @@ static NSString* tableCellid = @"table_cell";
 }
 -(void)informationBtnClick:(UIButton*)sender{
     
-//    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-//    [self.navigationController pushViewController:vc animated:true];
+    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
+    vc.noticeType = 2;
+    [self.navigationController pushViewController:vc animated:true];
 }
 
 - (void)didReceiveMemoryWarning {

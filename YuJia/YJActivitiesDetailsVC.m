@@ -238,20 +238,42 @@ static NSString* photoCellid = @"photo_cell";
 }
 
 #pragma mark - set属性
+-(void)setActivityId:(long)activityId{
+    _activityId = activityId;
+    [self loadData];
+}
 -(void)setModel:(YJActivitiesDetailModel *)model{
     _model = model;
-    [self loadData];
+    if (self.userId == self.model.personalId) {
+        //添加右侧发送按钮
+        UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
+        [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+        //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+        deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [deleateBtn addTarget:self action:@selector(deleateBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
+        self.navigationItem.rightBarButtonItem = rightBarItem;
+    }
 }
 -(void)loadData{
 //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivityOne.do?token=EC9CDB5177C01F016403DFAAEE3C1182&ActivityId=5
     [SVProgressHUD show];// 动画开始
-    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivityOne.do?token=%@&ActivityId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivityOne.do?token=%@&ActivityId=%ld",mPrefixUrl,mDefineToken1,self.activityId];
     [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            NSDictionary *detailDic = bigDic[@"activityEntity"];
+            YJActivitiesDetailModel *model = [YJActivitiesDetailModel mj_objectWithKeyValues:detailDic];
+            if (!self.userId) {//第一次加载数据需要判断userId是否为空,空的代表从消息列表点赞过来
+                self.userId = model.info_id;
+            }
+            self.model = model;//解析状态详情数据
             NSArray *likeArr = bigDic[@"upVptelist"];
             NSMutableArray *likemArr = [NSMutableArray array];
             for (NSDictionary *dic in likeArr) {
@@ -295,22 +317,22 @@ static NSString* photoCellid = @"photo_cell";
     
 }
 
--(void)setUserId:(long)userId{
-    _userId = userId;
-    if (userId == self.model.personalId) {
-            //添加右侧发送按钮
-            UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
-            [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
-            [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-            deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-            deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-            //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
-            deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-            [deleateBtn addTarget:self action:@selector(deleateBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-            UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
-            self.navigationItem.rightBarButtonItem = rightBarItem;
-    }
-}
+//-(void)setUserId:(long)userId{
+//    _userId = userId;
+//    if (userId == self.model.personalId) {
+//            //添加右侧发送按钮
+//            UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, 30)];
+//            [deleateBtn setTitle:@"删除" forState:UIControlStateNormal];
+//            [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//            deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+//            deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+//            //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+//            deleateBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//            [deleateBtn addTarget:self action:@selector(deleateBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//            UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
+//            self.navigationItem.rightBarButtonItem = rightBarItem;
+//    }
+//}
 -(void)deleateBtnClick:(UIButton *)sender{
     //http://localhost:8080/smarthome/mobileapi/activity/delete.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &PublisherPersonalId=11

@@ -37,7 +37,11 @@
     [self setupUI];
 }
 
-
+-(void)setModel:(YJNoticeListModel *)model{
+    _model = model;
+    self.timeLabel.text = model.createTimeString;
+    self.chatLabel.text = model.content;
+}
 // 初始化UI
 - (void)setupUI
 {

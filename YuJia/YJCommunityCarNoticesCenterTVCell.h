@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJNoticeListModel.h"
 
 @interface YJCommunityCarNoticesCenterTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJNoticeListModel *model;
 @end

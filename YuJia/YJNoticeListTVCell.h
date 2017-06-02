@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJNoticeListModel.h"
 
 @interface YJNoticeListTVCell : UITableViewCell
-@property(nonatomic,strong)NSArray *noticeArr;
+@property(nonatomic,strong)YJNoticeListModel *model;
 @end

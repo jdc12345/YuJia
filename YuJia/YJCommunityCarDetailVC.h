@@ -12,5 +12,6 @@
 @interface YJCommunityCarDetailVC : UIViewController
 @property(nonatomic,strong)YJCommunityCarListModel *model;
 @property(nonatomic,assign)long userId;//当前用户Id
+@property(nonatomic,assign)long carpoolingId;//拼车活动的id
 -(void)refrish;
 @end

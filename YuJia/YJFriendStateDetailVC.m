@@ -74,7 +74,10 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     tableView.estimatedRowHeight = 235*kiphone6;
 
 }
-
+-(void)setStateId:(long)stateId{
+    _stateId = stateId;
+    [self loadData];
+}
 -(void)setModel:(YJFriendNeighborStateModel *)model{
     _model = model;
     if (self.userId == model.personalId) {
@@ -90,21 +93,28 @@ static NSString* selfReplyCellid = @"selfReply_cell";
         UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
         self.navigationItem.rightBarButtonItem = rightBarItem;
     }
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self loadData];
+    
+//    [self loadData];
 }
+
 -(void)loadData{
 http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &stateId=1
     [SVProgressHUD show];// 动画开始
-    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-    [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
-        
+    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.stateId];
+    [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{        
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            NSDictionary *detailDic = bigDic[@"stateEntity"];
+            YJFriendNeighborStateModel *model = [YJFriendNeighborStateModel mj_objectWithKeyValues:detailDic];
+            if (!self.userId) {//第一次加载数据需要判断userId是否为空
+                self.userId = model.info_id;
+            }
+            self.model = model;//解析状态详情数据
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];//刷新状态数据
             NSArray *likeArr = bigDic[@"likeNum"];
             NSMutableArray *likemArr = [NSMutableArray array];
             for (NSDictionary *dic in likeArr) {

@@ -13,6 +13,7 @@
 #import "YJPostCommunityCarVC.h"
 #import "YJNoticeListTableVC.h"
 #import "YJCommunityCarListModel.h"
+#import "RKNotificationHub.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -25,6 +26,8 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,assign)NSInteger over;//当前页面显示的拼车活动状态
 @property(nonatomic,assign)long userId;//当前用户Id
 @property(nonatomic,strong)NSMutableArray *carsArr;//数据源
+@property(nonatomic,strong)RKNotificationHub *barHub;//bage
+@property(nonatomic,assign)Boolean isHasMessage;//是否有消息
 @end
 
 @implementation YJCommunityCarVC
@@ -38,20 +41,7 @@ static NSString* tableCellid = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    //添加右侧消息中心按钮
-    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
-    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-    self.informationBtn = informationBtn;
-//    informationBtn.badgeValue = @" ";
-//    informationBtn.badgeBGColor = [UIColor redColor];
-//    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-//    informationBtn.badgeOriginX = 16;
-//    informationBtn.badgeOriginY = 1;
-//    informationBtn.badgePadding = 0.1;
-//    informationBtn.badgeMinSize = 5;
-    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
+
     [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"正在进行"andTag:101];
     [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"已完成"andTag:102];
     UIView *line = [[UIView alloc]init];
@@ -62,9 +52,43 @@ static NSString* tableCellid = @"table_cell";
         make.right.left.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
+    [self checkHasMessade];
     [self loadData];
 
 }
+-(void)checkHasMessade{
+    //添加右侧消息中心按钮
+    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
+    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+    //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *isHasMessage = responseObject[@"hasMessage"];
+            self.isHasMessage = [isHasMessage boolValue];
+            if (self.isHasMessage) {
+                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItem];//初始化bageView
+                [self.barHub setCircleAtFrame:CGRectMake(15, 1, 5, 5)];//bage的frame
+                [self.barHub increment];//显示count+1
+                [self.barHub hideCount];//隐藏数字
+                
+            }
+        }else if ([responseObject[@"code"] isEqualToString:@"10000"]){
+            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+    
+}
+
 -(void)loadData{
 http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &over=2
@@ -225,15 +249,15 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
     
     YJCommunityCarTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.model = self.carsArr[indexPath.row];
-    WS(ws);
+    
     cell.clickForAddBlock = ^(UIButton *sender){
-        ws.informationBtn.badgeValue = @" ";
-        ws.informationBtn.badgeBGColor = [UIColor redColor];
-        ws.informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-        ws.informationBtn.badgeOriginX = 16;
-        ws.informationBtn.badgeOriginY = 1;
-        ws.informationBtn.badgePadding = 0.1;
-        ws.informationBtn.badgeMinSize = 5;
+//        ws.informationBtn.badgeValue = @" ";
+//        ws.informationBtn.badgeBGColor = [UIColor redColor];
+//        ws.informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
+//        ws.informationBtn.badgeOriginX = 16;
+//        ws.informationBtn.badgeOriginY = 1;
+//        ws.informationBtn.badgePadding = 0.1;
+//        ws.informationBtn.badgeMinSize = 5;
     };
     return cell;
     
@@ -245,8 +269,8 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJCommunityCarDetailVC *detailVc = [[YJCommunityCarDetailVC alloc]init];
     YJCommunityCarTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    detailVc.model = cell.model;
     detailVc.userId = self.userId;
+    detailVc.carpoolingId = cell.model.info_id;
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
@@ -256,9 +280,8 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-    NSArray *noticeArr = @[@"社区拼车消息",@"司机T接单了"];
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeArr = noticeArr;
+    vc.noticeType = 3;
     [self.navigationController pushViewController:vc animated:true];
 }
 
