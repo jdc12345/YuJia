@@ -66,7 +66,7 @@ static NSString* otherCellid = @"other_cell";
 // 有多少行
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 // cell内容
@@ -75,14 +75,22 @@ static NSString* otherCellid = @"other_cell";
     
             // 获取other的cell
     YJCommunityCarNoticesCenterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:otherCellid forIndexPath:indexPath];
-        
+    cell.model = self.model;
         // 取消点击效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     cell.backgroundColor = [UIColor clearColor];
         return cell;
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
+    
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.translucent = true;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -15,4 +15,5 @@
 //评论
 @property(weak, nonatomic)BRPlaceholderTextView *commentField;
 @property(nonatomic,assign)long userId;
+@property(nonatomic,assign)long stateId;//传过来的状态id
 @end

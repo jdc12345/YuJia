@@ -45,6 +45,8 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,assign)NSInteger pickFlag;
 @property(nonatomic,weak)UIToolbar * topView;
 @property (nonatomic, strong)NSString *houseAllocation;//房屋配置
+@property(nonatomic,weak)UILabel *noticeLabel;//本月可发布房源label
+@property(nonatomic,assign)NSInteger number;//本月已发布房源次数
 @end
 
 @implementation YJRentalHouseVC
@@ -55,6 +57,36 @@ static NSString* photoCellid = @"photo_cell";
     self.title = @"租房信息";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setupUI];
+    [self loadPostLimiteNumber];
+}
+-(void)loadPostLimiteNumber{
+//    http://192.168.1.55:8080/smarthome/mobileapi/rental/findNumber.do?token=C4D5B4E19A6D642DAEB38130C7D8A68A 带number的借口不能发起请求？？？
+//    http://192.168.1.55:8080/smarthome/mobileapi/rental/findcount.do?token=C4D5B4E19A6D642DAEB38130C7D8A68A
+//    [SVProgressHUD show];// 动画开始
+    NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findcount.do?token=%@",mPrefixUrl,mDefineToken1];
+    
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        //            [SVProgressHUD dismiss];// 动画结束
+        
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *number = responseObject[@"number"];
+            self.number = [number integerValue];
+            if (self.number<8) {
+                self.noticeLabel.text = [NSString stringWithFormat:@"您本月可发帖8条，当前还可以免费发帖%ld条",8-self.number];
+            }else{
+                self.noticeLabel.text = @"您本月可发帖8条，当前免费发帖次数已用完";
+            }
+            
+        }else{
+            
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error.description);
+        return ;
+    }];
+ 
 }
 - (void)setupUI {
     self.flag = 1;
@@ -67,12 +99,13 @@ static NSString* photoCellid = @"photo_cell";
     [scrollView addSubview:backView];
     self.backView = backView;
     backView.backgroundColor = [UIColor whiteColor];
-    UILabel *noticeLabel = [UILabel labelWithText:@"您本月可发帖8条，本月还可以免费发帖6条" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];
+    UILabel *noticeLabel = [UILabel labelWithText:@"您本月可发帖8条" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];
     [backView addSubview:noticeLabel];
     [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(backView.mas_top).offset(22.5*kiphone6);
     }];//
+    self.noticeLabel = noticeLabel;
     UIView *grayView1 = [[UIView alloc]init];
     grayView1.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [backView addSubview:grayView1];
@@ -466,6 +499,12 @@ static NSString* photoCellid = @"photo_cell";
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             [SVProgressHUD showSuccessWithStatus:@"发布成功!"];
             sender.enabled = true;
+            self.number+=1;
+            if (self.number<8) {
+                self.noticeLabel.text = [NSString stringWithFormat:@"您本月可发帖8条，当前还可以免费发帖%ld条",8-self.number];
+            }else{
+                self.noticeLabel.text = @"您本月可发帖8条，当前免费发帖次数已用完";
+            }
         }else{
             [SVProgressHUD showErrorWithStatus:message];
             sender.enabled = true;

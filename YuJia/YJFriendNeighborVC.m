@@ -16,6 +16,8 @@
 #import "YJNoticeListTableVC.h"
 #import "YJFriendNeighborStateModel.h"
 #import <MJRefresh.h>
+#import "RKNotificationHub.h"
+
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -31,6 +33,10 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *selectView;//选择自己小区
 @property(nonatomic,strong)NSString *visibleRange;//可见小区
 @property(nonatomic,assign)long userId;
+
+@property(nonatomic,strong)RKNotificationHub *barHub;//bage
+@property(nonatomic,assign)Boolean isHasMessage;//是否有消息
+
 @end
 
 @implementation YJFriendNeighborVC
@@ -44,21 +50,41 @@ static NSString* tableCellid = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    [self checkHasMessade];
+    [self loadData];
+    
+}
+-(void)checkHasMessade{
     //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
     [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
-    informationBtn.badgeValue = @" ";
-    informationBtn.badgeBGColor = [UIColor redColor];
-    informationBtn.badgeFont = [UIFont systemFontOfSize:0.1];
-    informationBtn.badgeOriginX = 16;
-    informationBtn.badgeOriginY = 1;
-    informationBtn.badgePadding = 0.1;
-    informationBtn.badgeMinSize = 5;
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
-    [self loadData];
-    
+//  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=31&msgTypeEnd=50",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];// 动画结束
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSString *isHasMessage = responseObject[@"hasMessage"];
+            self.isHasMessage = [isHasMessage boolValue];
+            if (self.isHasMessage) {
+                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItem];//初始化bageView
+                [self.barHub setCircleAtFrame:CGRectMake(15, 1, 5, 5)];//bage的frame
+                [self.barHub increment];//显示count+1
+                [self.barHub hideCount];//隐藏数字
+                
+            }
+        }else if ([responseObject[@"code"] isEqualToString:@"10000"]){
+            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD dismiss];// 动画结束
+        return ;
+    }];
+
 }
 -(void)loadData{
     [SVProgressHUD show];// 动画开始
@@ -476,7 +502,7 @@ static NSString* tableCellid = @"table_cell";
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
     YJFriendStateTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     detailVc.userId = self.userId;
-    detailVc.model = cell.model;    
+    detailVc.stateId = cell.model.info_id;
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
@@ -511,10 +537,11 @@ static NSString* tableCellid = @"table_cell";
     }];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-    NSArray *noticeArr = @[@"TIAN",@"用户TIAN给你点赞了"];
+
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeArr = noticeArr;
+    vc.noticeType = 1;
     [self.navigationController pushViewController:vc animated:true];
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

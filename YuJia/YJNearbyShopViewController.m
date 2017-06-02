@@ -14,6 +14,7 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
+#import "YJNearbyShopChangeAddressVC.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource,AMapSearchDelegate>
@@ -22,6 +23,8 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)YJHeaderTitleBtn *locationAddressBtn;
 @property (nonatomic, strong) AMapLocationManager *locationManager;//定位实体类
 @property (nonatomic, strong) AMapSearchAPI *search;//搜索实体类
+///中心点坐标。
+@property (nonatomic, copy)   AMapGeoPoint *location;
 @end
 
 @implementation YJNearbyShopViewController
@@ -46,21 +49,21 @@ static NSString* tableCellid = @"table_cell";
         make.top.left.right.offset(0);
         make.height.offset(45*kiphone6);
     }];
-    UIView *line = [[UIView alloc]init];//添加line
-    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    [LocationView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.offset(0);
-        make.top.offset(1);
-        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
-    }];
+//    UIView *line = [[UIView alloc]init];//添加line
+//    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+//    [LocationView addSubview:line];
+//    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.offset(0);
+//        make.top.offset(0);
+//        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
+//    }];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"location_address"]];
     [LocationView addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(142*kiphone6);
         make.centerY.equalTo(LocationView);
     }];
-    YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:CGRectZero and:@"名品"];
+    YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:CGRectZero and:@"定位中..."];
     [self.view addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(imageView.mas_right).offset(5*kiphone6);
@@ -78,6 +81,28 @@ static NSString* tableCellid = @"table_cell";
     //   逆地理请求超时时间，最低2s，此处设置为2s
     self.locationManager.reGeocodeTimeout = 2;
     
+    [self locationRequest];//定位请求
+    
+    [btn addTarget:self action:@selector(selectAddressItem:) forControlEvents:UIControlEventTouchUpInside];
+    //添加tableView
+    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+    self.tableView = tableView;
+    [self.view addSubview:tableView];
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(LocationView.mas_bottom).offset(1);
+        make.left.right.bottom.offset(0);
+    }];
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [tableView registerClass:[YJNearByShopTVCell class] forCellReuseIdentifier:tableCellid];
+    tableView.delegate =self;
+    tableView.dataSource = self;
+    tableView.rowHeight = UITableViewAutomaticDimension;
+    tableView.estimatedRowHeight = 180*kiphone6;
+}
+
+
+-(void)locationRequest{
     [self.locationManager requestLocationWithReGeocode:YES completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
         if (error)
         {
@@ -93,23 +118,25 @@ static NSString* tableCellid = @"table_cell";
         self.search.delegate = self;
         AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
         regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+        self.location = regeo.location;//请求数据时候需要坐标
         regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
         [self.search AMapReGoecodeSearch:regeo];
-//        //定位结果
-//        NSLog(@"location:{lat:%f; lon:%f; accuracy:%f}", location.coordinate.latitude, location.coordinate.longitude, location.horizontalAccuracy);
-//        if (regeocode)//定位只返回到城市级别的信息，此处需要的是具体信息
-//        {
-//            NSLog(@"reGeocode:%@", regeocode.district);
-//            if(!regeocode.district){
-//                [btn setTitle:@"无定位" forState:UIControlStateNormal];
-//            }else{
-//                [btn setTitle:regeocode.district forState:UIControlStateNormal];
-//            }
-//        }
+        //        //定位结果
+        //        NSLog(@"location:{lat:%f; lon:%f; accuracy:%f}", location.coordinate.latitude, location.coordinate.longitude, location.horizontalAccuracy);
+        //        if (regeocode)//定位只返回到城市级别的信息，此处需要的是具体信息
+        //        {
+        //            NSLog(@"reGeocode:%@", regeocode.district);
+        //            if(!regeocode.district){
+        //                [btn setTitle:@"无定位" forState:UIControlStateNormal];
+        //            }else{
+        //                [btn setTitle:regeocode.district forState:UIControlStateNormal];
+        //            }
+        //        }
         
     }];
-
-    [btn addTarget:self action:@selector(selectAddressItem:) forControlEvents:UIControlEventTouchUpInside];
+   
+}
+-(void)loaddata{
     //根据地址请求数据
     //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
     //    &rqid=1
@@ -118,9 +145,10 @@ static NSString* tableCellid = @"table_cell";
     //    &lat2=115.984108
     //    &lng2=39.484636
     [SVProgressHUD show];// 动画开始
-    NSString *rname = @"名流一品小区";
+    NSString *rname = self.locationAddressBtn.titleLabel.text;
+    //        NSString *rname = @"名流一品小区";
     rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/business/findBusinessList.do?token=%@&rname=%@&start=0&limit=10&lat2=115.984108&lng2=39.484636",mPrefixUrl,mDefineToken1,rname];
+    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/business/findBusinessList.do?token=%@&rname=%@&start=0&limit=10&lat2=%f&lng2=%f",mPrefixUrl,mDefineToken1,rname,self.location.latitude,self.location.longitude];
     [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
@@ -133,39 +161,35 @@ static NSString* tableCellid = @"table_cell";
             }
             self.shopsArr = mArr;
             [self.tableView reloadData];
+            if (self.shopsArr.count==0) {
+                [SVProgressHUD showInfoWithStatus:@"此小区暂无商户资源"];
+            }
         }else{
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-    //添加tableView
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-    self.tableView = tableView;
-    [self.view addSubview:tableView];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(LocationView.mas_bottom).offset(1);
-        make.left.right.bottom.offset(0);
-    }];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [tableView registerClass:[YJNearByShopTVCell class] forCellReuseIdentifier:tableCellid];
-    //        [tableView registerClass:[YJRepairSectionTwoTableViewCell class] forCellReuseIdentifier:tableCellid];
-    tableView.delegate =self;
-    tableView.dataSource = self;
-    tableView.rowHeight = UITableViewAutomaticDimension;
-    tableView.estimatedRowHeight = 180*kiphone6;
-}
 
+}
 -(void)selectAddressItem:(UIButton*)sender{
-    //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
-    //    &rqid=1
-    //    &start=0
-    //    &limit=10
-    //    &lat2=115.984108
-    //    &lng2=39.484636
+    YJNearbyShopChangeAddressVC *addressVC = [[YJNearbyShopChangeAddressVC alloc]init];
+    addressVC.popVCBlock = ^(NSString *sname){
+        [self.locationAddressBtn setTitle:sname forState:UIControlStateNormal];
+        [self loaddata];
+    };
+    addressVC.presentVCBlock = ^(){
+        self.locationAddressBtn.titleLabel.text = @"定位中...";
+        [self locationRequest];//定位请求
+    };
+    //在addressVC上用导航控制器包装，让弹出的模态窗口有一个导航栏可以放返回按钮
+    UINavigationController *nvc=[[UINavigationController alloc]initWithRootViewController:addressVC];
+    [self presentViewController:nvc animated:YES completion:^{
+//        NSLog(@"弹出一个模态窗口");
+    }];
 }
 #pragma AMapSearchDelegate
 /* 逆地理编码回调. */
@@ -178,6 +202,8 @@ static NSString* tableCellid = @"table_cell";
         NSLog(@"reGeocode:%@", response.regeocode.aois[0].name);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
         
         [self.locationAddressBtn setTitle:response.regeocode.aois[0].name forState:UIControlStateNormal];
+        [self loaddata];
+        
     }else{
         [self.locationAddressBtn setTitle:@"无定位" forState:UIControlStateNormal];
     }
@@ -188,7 +214,6 @@ static NSString* tableCellid = @"table_cell";
     NSLog(@"Error: %@", error);
     [SVProgressHUD showErrorWithStatus:error.description];
 }
-
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
