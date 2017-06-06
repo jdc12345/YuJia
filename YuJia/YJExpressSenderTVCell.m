@@ -52,6 +52,7 @@
     [iconView mas_makeConstraints:^(MASConstraintMaker* make) {
         make.centerY.equalTo(headerView);
         make.left.offset(10*kiphone6);
+        make.width.height.offset(46*kiphone6);
     }];
     UILabel *nameLabel = [UILabel labelWithText:@"顺丰快递" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//物流状态
     [headerView addSubview:nameLabel];

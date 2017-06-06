@@ -21,6 +21,7 @@
 #import "YJFriendStateCommentModel.h"
 #import <UIImageView+WebCache.h>
 #import "YJFriendNeighborVC.h"
+#import "OtherPeopleInfoViewController.h"
 
 static NSString* tableCell = @"table_cell";
 static NSString* commentCell = @"comment_cell";
@@ -327,11 +328,10 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-//    YJFriendLikeCollectionViewCell *cell = (YJFriendLikeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    UIImage *image = [UIImage imageNamed:@"house_repair"];
-//    NSArray *imageArr = @[image,image,image,image,image];
-//    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
-    
+    YJFriendStateLikeModel *model = self.likeList[indexPath.row];
+    OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+    vc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+    [self.navigationController pushViewController:[[OtherPeopleInfoViewController alloc]init] animated:YES];    
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)noti{

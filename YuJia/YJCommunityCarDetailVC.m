@@ -421,11 +421,6 @@ static NSString* tablecell = @"table_cell";
     //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
     //    &carpoolingId=4
     sender.backgroundColor = [UIColor clearColor];
-    NSInteger addNumber = [self.joinBtn.titleLabel.text integerValue];
-    [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
-    self.joinBtn.titleLabel.text = [NSString stringWithFormat:@"%ld参加",addNumber+1];
-    self.model.participateNumber +=1;
-    self.model.islike = true;
     [SVProgressHUD show];// 动画开始
     NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
     [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
@@ -435,6 +430,11 @@ static NSString* tablecell = @"table_cell";
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             sender.backgroundColor = [UIColor clearColor];
             [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            NSInteger addNumber = [self.joinBtn.titleLabel.text integerValue];
+            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            [self.joinBtn setTitle:[NSString stringWithFormat:@"%ld参加",addNumber+1] forState:UIControlStateNormal];
+            self.model.participateNumber +=1;
+            self.model.islike = true;
             sender.userInteractionEnabled = false;
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             

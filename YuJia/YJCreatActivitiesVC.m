@@ -10,7 +10,7 @@
 #import "UILabel+Addition.h"
 #import "YJCreateActivitieTVCell.h"
 #import "BRPlaceholderTextView.h"
-
+#import "sys/utsname.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJCreatActivitiesVC ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -92,6 +92,8 @@ static NSString* tableCellid = @"table_cell";
     tableView.dataSource = self;
     tableView.scrollEnabled = false;
     tableView.tableHeaderView = headerView;
+    //键盘的Frame改变的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
     self.minusArr = @[@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59"];
     
@@ -464,41 +466,44 @@ static NSString* tableCellid = @"table_cell";
     return 158*kiphone6;
 }
 - (void)keyboardWillChangeFrame:(NSNotification *)noti{
-    
-    //从userInfo里面取出来键盘最终的位置
-//    NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
-//    
-//    CGRect rect = [rectValue CGRectValue];
-//    CGRect rectField = self.fieldBackView.frame;
-//    CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-64*kiphone6, rectField.size.width, rectField.size.height) ;
-//    [UIView animateWithDuration:0.25 animations:^{
-//        self.fieldBackView.frame = newRect;
-//    }];
+//    if (self.contentView.isFirstResponder) {
+//        //从userInfo里面取出来键盘最终的位置
+//        NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
+//        
+//        CGRect rect = [rectValue CGRectValue];
+//        CGRect rectField = self.tableView.frame;
+////        CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - rectField.size.height-64, rectField.size.width, rectField.size.height) ;
+//        CGRect newRect = CGRectMake(rectField.origin.x, rect.origin.y - kScreenH+5, rectField.size.width, rectField.size.height) ;
+//        [UIView animateWithDuration:0.25 animations:^{
+//            self.tableView.frame = newRect;
+//        }];
+//
+//    }
     
 }
-//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-//    
-//    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
-//    
-//    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
-//    
-//    NSUInteger location = replacementTextRange.location;
-//    
-//    if (textView.text.length + text.length > 500){
-//        
-//        if (location != NSNotFound){
-//            
-//            [textView resignFirstResponder];
-//        }
-//        return NO;
-//        
-//    }  else if (location != NSNotFound){
-//        
-//        [textView resignFirstResponder];
-//                return NO;
-//    }
-//    return YES;
-//}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    NSCharacterSet *doneButtonCharacterSet = [NSCharacterSet newlineCharacterSet];
+    
+    NSRange replacementTextRange = [text rangeOfCharacterFromSet:doneButtonCharacterSet];
+    
+    NSUInteger location = replacementTextRange.location;
+    
+    if (textView.text.length + text.length > 500){
+        
+        if (location != NSNotFound){
+            
+            [textView resignFirstResponder];
+        }
+        return NO;
+        
+    }  else if (location != NSNotFound){
+        
+        [textView resignFirstResponder];
+                return NO;
+    }
+    return YES;
+}
 - (void)postBtnClick:(UIButton*)sender {
 
     YJCreateActivitieTVCell *nameCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -538,8 +543,85 @@ http://localhost:8080/smarthome/mobileapi/activity/PublishActivity.do?token=ACDC
         return ;
     }];
 }
+#pragma mark - 键盘通知
+- (void)addNoticeForKeyboard {
+    
+    //注册键盘出现的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    //注册键盘消失的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+///键盘显示事件
+- (void) keyboardWillShow:(NSNotification *)notification {
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGFloat height = rect.size.height;
+    if (height <667.f) {//判断设备型号是6以下情况(此处是因为固定了屏幕方向，其他情况要判定屏幕方向)
+        NSIndexPath *index2 = [NSIndexPath indexPathForRow:2 inSection:0];
+        NSIndexPath *index3 = [NSIndexPath indexPathForRow:3 inSection:0];
+        YJCreateActivitieTVCell *cell2 = [self.tableView cellForRowAtIndexPath:index2];
+        YJCreateActivitieTVCell *cell3 = [self.tableView cellForRowAtIndexPath:index3];
+        if (cell2.contentField.isFirstResponder||cell3.contentField.isFirstResponder||self.contentView.isFirstResponder) {
+            //将视图上移计算好的偏移
+            [UIView animateWithDuration:duration animations:^{
+                self.tableView.frame = CGRectMake(0.0f, -150, self.tableView.frame.size.width, self.tableView.frame.size.height);
+            }];
+        }
+    }else{
+        //将视图上移计算好的偏移
+        [UIView animateWithDuration:duration animations:^{
+            self.tableView.frame = CGRectMake(0.0f, -100, self.tableView.frame.size.width, self.tableView.frame.size.height);
+        }];
+    }
+}
 
+///键盘消失事件
+- (void) keyboardWillHide:(NSNotification *)notify {
+    // 键盘动画时间
+    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+        self.tableView.frame = CGRectMake(0, 5, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    }];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    //注册键盘通知
+    [self addNoticeForKeyboard];
+}
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //移除键盘监听
+    //移除键盘监听 直接按照通知名字去移除键盘通知, 这是正确方式
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+//- (NSString *)platform {//获取设备型号
+//    struct utsname systemInfo;
+//    uname(&systemInfo);
+//    
+//    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
+//    
+//    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
+//    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
+//    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5c";
+//    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5c";
+//    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5s";
+//    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5s";
+//    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
+//    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
+//    if ([platform isEqualToString:@"iPhone8,1"]) return @"iPhone 6s";
+//    if ([platform isEqualToString:@"iPhone8,2"]) return @"iPhone 6s Plus";
+//    if ([platform isEqualToString:@"iPhone8,4"]) return @"iPhone SE";
+//    return platform;
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
