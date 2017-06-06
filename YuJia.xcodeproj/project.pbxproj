@@ -57,7 +57,6 @@
 		1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE2F1EB88B4800583A7F /* YYPropertyItemModel.m */; };
 		1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */; };
 		166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166577AA1EBFF80D00FC812B /* YJLifepaymentVC.m */; };
-		1668FC9D1EE01F1B00374D7E /* RKNotificationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 1668FC9C1EE01F1B00374D7E /* RKNotificationHub.m */; };
 		1668FCA01EE02C6E00374D7E /* YJNoticeListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1668FC9F1EE02C6E00374D7E /* YJNoticeListModel.m */; };
 		166B40E51EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40E41EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m */; };
 		166B40E81EC99A7100CEFAE2 /* YJPropertyAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 166B40E71EC99A7100CEFAE2 /* YJPropertyAddressModel.m */; };
@@ -143,6 +142,8 @@
 		3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */; };
 		3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */; };
 		3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */; };
+		3E2CD8371EE52E3200C8FD56 /* RKNotificationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */; };
+		3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E2CD8381EE5473800C8FD56 /* 键盘.png */; };
 		3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */; };
 		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
@@ -366,8 +367,6 @@
 		1661FE351EB89D4000583A7F /* YYCircleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCircleTableViewCell.m; sourceTree = "<group>"; };
 		166577A91EBFF80D00FC812B /* YJLifepaymentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifepaymentVC.h; sourceTree = "<group>"; };
 		166577AA1EBFF80D00FC812B /* YJLifepaymentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifepaymentVC.m; sourceTree = "<group>"; };
-		1668FC9B1EE01F1B00374D7E /* RKNotificationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RKNotificationHub.h; path = "../../Downloads/RKNotificationHub-master/RKNotificationHub/RKNotificationHub.h"; sourceTree = "<group>"; };
-		1668FC9C1EE01F1B00374D7E /* RKNotificationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RKNotificationHub.m; path = "../../Downloads/RKNotificationHub-master/RKNotificationHub/RKNotificationHub.m"; sourceTree = "<group>"; };
 		1668FC9E1EE02C6E00374D7E /* YJNoticeListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNoticeListModel.h; sourceTree = "<group>"; };
 		1668FC9F1EE02C6E00374D7E /* YJNoticeListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNoticeListModel.m; sourceTree = "<group>"; };
 		166B40E31EC95E2A00CEFAE2 /* YJPostCommunityCarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPostCommunityCarVC.h; sourceTree = "<group>"; };
@@ -520,6 +519,9 @@
 		3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficViewController.m; sourceTree = "<group>"; };
 		3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherCircleViewController.h; sourceTree = "<group>"; };
 		3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherCircleViewController.m; sourceTree = "<group>"; };
+		3E2CD8351EE52E3200C8FD56 /* RKNotificationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKNotificationHub.h; sourceTree = "<group>"; };
+		3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKNotificationHub.m; sourceTree = "<group>"; };
+		3E2CD8381EE5473800C8FD56 /* 键盘.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "键盘.png"; sourceTree = "<group>"; };
 		3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRoomViewController.h; sourceTree = "<group>"; };
 		3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRoomViewController.m; sourceTree = "<group>"; };
 		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
@@ -810,8 +812,8 @@
 		1661FE101EB8646B00583A7F /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				1668FC9B1EE01F1B00374D7E /* RKNotificationHub.h */,
-				1668FC9C1EE01F1B00374D7E /* RKNotificationHub.m */,
+				3E2CD8351EE52E3200C8FD56 /* RKNotificationHub.h */,
+				3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */,
 				16742BF11EC1CEF80016DDD9 /* UIButton+Badge.h */,
 				16742BF21EC1CEF80016DDD9 /* UIButton+Badge.m */,
 				164F83FE1EBAC3DF002318A6 /* UIView+Extension.h */,
@@ -1490,6 +1492,7 @@
 				3E984EF71EB821EE0094CBE4 /* LaunchScreen.storyboard */,
 				3E984F7E1EB9AD110094CBE4 /* avatar.jpg */,
 				3E984EFA1EB821EE0094CBE4 /* Info.plist */,
+				3E2CD8381EE5473800C8FD56 /* 键盘.png */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -1665,6 +1668,7 @@
 				166CD9031ED28FE700CC4F11 /* YJSelectView.xib in Resources */,
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
 				3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */,
+				3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */,
 				3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
 				3E94395F1ECAA087001FE471 /* area.plist in Resources */,
@@ -1765,6 +1769,7 @@
 				165655CB1EC6F30300B99966 /* YJPostActivitesCommentVC.m in Sources */,
 				3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */,
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
+				3E2CD8371EE52E3200C8FD56 /* RKNotificationHub.m in Sources */,
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
 				3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
@@ -1919,7 +1924,6 @@
 				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,
 				1672D79A1EC2A3CA00F5970C /* YJFriendLikeFlowLayout.m in Sources */,
 				1671302A1EB9745500CC2394 /* YJHeaderTitleBtn.m in Sources */,
-				1668FC9D1EE01F1B00374D7E /* RKNotificationHub.m in Sources */,
 				163E96121ED577C500C20B42 /* YJBussinessServeDetailModel.m in Sources */,
 				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
 				3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */,

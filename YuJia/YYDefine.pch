@@ -207,5 +207,10 @@
 //4登陆发送验证码
 //http://localhost:8080/smarthome/mobilepub/personal/loginvcode.do?telephone=18782931356
 
+
+//获取他人的个人页个人信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/personal/gettata.do?tataId=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mOtherInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/smarthome/mobileapi/personal/gettata.do?"]
+
 #endif /* YYDefine.pch_pch */
 #endif /* YYDefine.pch_pch */

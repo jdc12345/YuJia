@@ -129,6 +129,32 @@
         make.top.equalTo(loginBtn.mas_bottom).with.offset(0);
         make.left.right.bottom.equalTo(self.view).with.offset(0);
     }];
+    
+    
+    UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
+    [topView setBarStyle:UIBarStyleBlackTranslucent];
+    
+    UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(2, 5, 30, 30);
+    [btn addTarget:self action:@selector(dismissKeyBoard) forControlEvents:UIControlEventTouchUpInside];
+    [btn setImage:[UIImage imageNamed:@"键盘"] forState:UIControlStateNormal];
+//    btn.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+    [topView setItems:buttonsArray];
+    
+    
+    
+    
+    [self.phoneTF_login setInputAccessoryView:topView];
+    [self.passWordTextF setInputAccessoryView:topView];
+    [self.vcodeTextF setInputAccessoryView:topView];
+    [self.phoneTF_resign setInputAccessoryView:topView];
+    [self.vcodeTF_resign setInputAccessoryView:topView];
+    [self.psw_resign setInputAccessoryView:topView];
+    [self.repsw_resign setInputAccessoryView:topView];
 }
 - (void)createLoginView{
     NSMutableParagraphStyle *paraStyle3 = [[NSMutableParagraphStyle alloc] init];
@@ -341,6 +367,8 @@
     self.vcodeLabel.hidden = YES;
     self.vcodeTextF.hidden = YES;
     self.postBtn.hidden = YES;
+    
+
 }
 
 // 注册页面
@@ -579,6 +607,7 @@
 
 
 - (void)btnClick:(UIButton *)sender{
+    [self dismissKeyBoard];
     if ([sender.currentTitle isEqualToString:@"登陆"]) {
         self.loginView.hidden = NO;
         self.resignView.hidden = YES;
@@ -737,6 +766,17 @@
             NSLog(@"%@",error);
         }];
     }
+}
+-(void)dismissKeyBoard
+{
+    
+    [self.phoneTF_login resignFirstResponder];
+    [self.passWordTextF resignFirstResponder];
+    [self.vcodeTextF resignFirstResponder];
+    [self.phoneTF_resign resignFirstResponder];
+    [self.vcodeTF_resign resignFirstResponder];
+    [self.psw_resign resignFirstResponder];
+    [self.repsw_resign resignFirstResponder];
 }
 /*
 #pragma mark - Navigation
