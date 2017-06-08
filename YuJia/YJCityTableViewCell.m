@@ -46,7 +46,7 @@
     UILabel *itemLabel = [UILabel labelWithText:@"城市" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:13];
     [self.contentView addSubview:itemLabel];
     self.itemLabel = itemLabel;
-    UILabel *contentLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+    UILabel *contentLabel = [UILabel labelWithText:@"请选择合适的地区" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
     [self.contentView addSubview:contentLabel];
     UIImageView *imageView = [[UIImageView alloc]init];
     imageView.image = [UIImage imageNamed:@"gray_forward"];

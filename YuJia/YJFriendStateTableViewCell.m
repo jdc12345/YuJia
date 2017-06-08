@@ -66,8 +66,7 @@ static NSString* photoCellid = @"photo_cell";
             [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.offset(140*kiphone6);
             }];
-        }
-        
+        }        
         [self.collectionView reloadData];
     }else{
         [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {

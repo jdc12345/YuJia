@@ -69,7 +69,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     }];
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCell];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.delegate =self;
+    tableView.delegate = self;
     tableView.dataSource = self;
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 235*kiphone6;
@@ -258,8 +258,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
             NSString *strs = [str substringToIndex:range.location];
             [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
             ws.coverPersonalId = model.coverPersonalId;
-            [ws.commentField becomeFirstResponder];
-            
+            [ws.commentField becomeFirstResponder];            
         };
         if (indexPath.row==0) {
             cell.iconView.hidden = false;

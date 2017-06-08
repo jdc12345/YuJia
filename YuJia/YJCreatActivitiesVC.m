@@ -607,7 +607,7 @@ http://localhost:8080/smarthome/mobileapi/activity/PublishActivity.do?token=ACDC
 //    struct utsname systemInfo;
 //    uname(&systemInfo);
 //    
-//    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
+//    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];  
 //    
 //    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
 //    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";

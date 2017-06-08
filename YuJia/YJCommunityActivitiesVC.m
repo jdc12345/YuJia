@@ -14,6 +14,7 @@
 #import "YJActivitiesDetailModel.h"
 #import "RKNotificationHub.h"
 #import "YJNoticeListTableVC.h"
+#import <MJRefresh.h>
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -62,7 +63,7 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
     //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
-    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=31&msgTypeEnd=50",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -137,6 +138,69 @@ static NSString* tableCellid = @"table_cell";
     tableView.rowHeight = 235*kiphone6;
     tableView.delegate =self;
     tableView.dataSource = self;
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        // 进入刷新状态后会自动调用这个block
+        NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=1&start=0&limit=10",mPrefixUrl,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;//传入活动状态
+                    [mArr addObject:infoModel];
+                }
+                self.activiesArr = mArr;
+                start = self.activiesArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+            [weakSelf.tableView.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_header endRefreshing];
+            return ;
+        }];        
+    }];
+    //设置上拉加载更多
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        // 进入加载状态后会自动调用这个block
+        if (self.activiesArr.count==0) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            return ;
+        }
+        NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/findActivity.do?token=%@&over=1&start=%ld&limit=5",mPrefixUrl,mDefineToken1,start];
+        [[HttpClient defaultClient]requestWithPath:activiesUrlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSString *userId = responseObject[@"userid"];
+                self.userId = [userId integerValue];
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                    infoModel.over = self.over;//传入活动状态
+                    [mArr addObject:infoModel];
+                }
+                [self.activiesArr addObjectsFromArray:mArr];
+                start = self.activiesArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+            [weakSelf.tableView.mj_footer endRefreshing];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [weakSelf.tableView.mj_footer endRefreshing];
+            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
+            return ;
+        }];
+    }];
+
     UIButton *postBtn = [[UIButton alloc]init];
     [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
     //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];

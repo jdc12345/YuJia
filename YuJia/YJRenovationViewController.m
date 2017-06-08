@@ -139,7 +139,9 @@ static NSString* tableCellid = @"table_cell";
 
 }
 -(void)queryBill{
-    
+    NSString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.detailModel.telephone];
+    // NSLog(@"str======%@",str);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 }
 #pragma mark - UITableView
 
