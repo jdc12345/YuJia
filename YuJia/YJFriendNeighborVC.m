@@ -17,7 +17,7 @@
 #import "YJFriendNeighborStateModel.h"
 #import <MJRefresh.h>
 #import "RKNotificationHub.h"
-
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -487,8 +487,19 @@ static NSString* tableCellid = @"table_cell";
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 235*kiphone6;
-    return UITableViewAutomaticDimension;
+    YJFriendNeighborStateModel *model = self.statesArr[indexPath.row];
+    return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
+        YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
+        
+        // 配置数据
+        [cell configCellWithModel:model indexPath:indexPath];
+    } cache:^NSDictionary *{
+        NSDictionary *cache = @{kHYBCacheUniqueKey :[NSString stringWithFormat:@"%ld",model.info_id],
+                                kHYBCacheStateKey  : @"",
+                                kHYBRecalculateForStateKey : @(model.shouldUpdateCache)};
+        model.shouldUpdateCache = NO;
+        return cache;
+    }];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];

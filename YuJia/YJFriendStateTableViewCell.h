@@ -13,4 +13,5 @@
 @property(nonatomic,strong)YJFriendNeighborStateModel *model;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^commentBtnBlock)(YJFriendNeighborStateModel *model);
+- (void)configCellWithModel:(YJFriendNeighborStateModel *)model indexPath:(NSIndexPath *)indexPath;
 @end

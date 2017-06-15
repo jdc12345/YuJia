@@ -7,7 +7,6 @@
 //
 
 #import "YJFriendStateDetailVC.h"
-
 #import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import "YJFriendStateTableViewCell.h"
@@ -22,6 +21,7 @@
 #import <UIImageView+WebCache.h>
 #import "YJFriendNeighborVC.h"
 #import "OtherPeopleInfoViewController.h"
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 static NSString* tableCell = @"table_cell";
 static NSString* commentCell = @"comment_cell";
@@ -256,9 +256,17 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
         cell.clickBtnBlock = ^(NSString *str){
             NSRange range = [str rangeOfString:@"{"];
             NSString *strs = [str substringToIndex:range.location];
-            [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
-            ws.coverPersonalId = model.coverPersonalId;
-            [ws.commentField becomeFirstResponder];            
+//            [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+//            ws.coverPersonalId = model.coverPersonalId;
+            if (model.personalId == self.userId) {
+                [ws.commentField setPlaceholder:@"评论"];
+                ws.coverPersonalId = 0;
+            }else{
+                [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+                ws.coverPersonalId = model.personalId;
+            }
+            [ws.commentField becomeFirstResponder];
+            
         };
         if (indexPath.row==0) {
             cell.iconView.hidden = false;
@@ -270,15 +278,34 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
         cell.clickBtnBlock = ^(NSString *str){
             NSRange range = [str rangeOfString:@"{"];
             NSString *strs = [str substringToIndex:range.location];
-            [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+//            [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
 //            YJSelfReplyTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 //            YJFriendStateCommentModel *model = cell.model;
-            if ([model.userName isEqualToString:strs]) {
-                [ws.commentField setPlaceholder:@"评论"];
-                ws.coverPersonalId = 0;
-            }else{
-                ws.coverPersonalId = model.coverPersonalId;
+//            if ([model.userName isEqualToString:strs]) {
+//                [ws.commentField setPlaceholder:@"评论"];
+//                ws.coverPersonalId = 0;
+//            }else{
+//                ws.coverPersonalId = model.coverPersonalId;
+//            }
+            if ([str containsString:@"me://"]) {//代表点击了第一个名字，这个名字的id是personalId
+                if (model.personalId == self.userId) {
+                    [ws.commentField setPlaceholder:@"评论"];
+                    ws.coverPersonalId = 0;
+                }else{
+                    [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+                    ws.coverPersonalId = model.personalId;
+                }
             }
+            if ([str containsString:@"user://"]) {//代表点击了第二个名字，这个名字的id是coverPersonalId
+                if (model.coverPersonalId == self.userId) {
+                    [ws.commentField setPlaceholder:@"评论"];
+                    ws.coverPersonalId = 0;
+                }else{
+                    [ws.commentField setPlaceholder:[NSString stringWithFormat:@"回复 %@:",strs]];
+                    ws.coverPersonalId = model.coverPersonalId;
+                }
+            }
+
             
             [ws.commentField becomeFirstResponder];
         };
@@ -287,7 +314,15 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
+    if (tableView == self.tableView) {
+        YJFriendNeighborStateModel *model = self.model;
+        return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
+            YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
+            
+            // 配置数据
+            [cell configCellWithModel:model indexPath:indexPath];
+        }];
+    }
     return UITableViewAutomaticDimension;
     
 }
