@@ -17,6 +17,7 @@
 #import "YJActiviesAddPersonModel.h"
 #import "YJActiviesPictureModel.h"
 #import "YJCommunityActivitiesVC.h"
+#import "OtherPeopleInfoViewController.h"
 
 static NSString* tableDetailsCell = @"tableDetailsCell_cell";
 static NSString* LikeCell = @"Like_cell";
@@ -167,6 +168,7 @@ static NSString* photoCellid = @"photo_cell";
     
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    WS(ws);
     if (indexPath.row == 0) {
         
         YJActivitiesDetailsTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableDetailsCell forIndexPath:indexPath];
@@ -177,12 +179,23 @@ static NSString* photoCellid = @"photo_cell";
         YJLikeActivitiesTVCell *cell = [tableView dequeueReusableCellWithIdentifier:LikeCell forIndexPath:indexPath];
         cell.image = @"blue-like";
         cell.likeList = self.likeList;
+        
+        cell.clickAddBlock = ^(NSString *personalId) {
+            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            vc.info_id = personalId;
+            [ws.navigationController pushViewController:vc animated:true];
+        };
         return cell;
     }else if (indexPath.row == 2) {
         
         YJLikeActivitiesTVCell *cell = [tableView dequeueReusableCellWithIdentifier:LikeCell forIndexPath:indexPath];
         cell.likeList = self.addList;
         cell.image = @"blue-add";
+        cell.clickAddBlock = ^(NSString *personalId) {
+            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            vc.info_id = personalId;
+            [ws.navigationController pushViewController:vc animated:true];
+        };
         return cell;
     }else if (indexPath.row == 3) {
         

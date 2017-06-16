@@ -12,6 +12,7 @@
 #import "YJFriendLikeCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
 #import <UIImageView+WebCache.h>
+#import "OtherPeopleInfoViewController.h"
 
 static NSString* photoCellid = @"photo_cell";
 @interface YJLikeActivitiesTVCell()<UICollectionViewDelegate,UICollectionViewDataSource>
@@ -109,11 +110,9 @@ static NSString* photoCellid = @"photo_cell";
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-//    YJFriendLikeCollectionViewCell *cell = (YJFriendLikeCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    UIImage *image = [UIImage imageNamed:@"icon"];
-//    NSArray *imageArr = @[image,image,image,image,image];
-//    [HUPhotoBrowser showFromImageView:cell.imageView withImages:imageArr atIndex:indexPath.row];
-    
+    YJActiviesLikeModel *model = self.likeList[indexPath.row];
+    NSString *personal_id = [NSString stringWithFormat:@"%ld",model.personalId];
+    self.clickAddBlock(personal_id);
 }
 
 @end

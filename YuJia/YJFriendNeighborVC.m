@@ -17,7 +17,7 @@
 #import "YJFriendNeighborStateModel.h"
 #import <MJRefresh.h>
 #import "RKNotificationHub.h"
-
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -62,7 +62,7 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
 //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
-    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=31&msgTypeEnd=50",mPrefixUrl,mDefineToken1];
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -91,7 +91,6 @@ static NSString* tableCellid = @"table_cell";
 //    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
     NSString *areaUrlStr = [NSString stringWithFormat:@"%@/mobileapi/residentialQuarters/findRQ.do?token=%@",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:areaUrlStr method:0 parameters:nil prepareExecute:^{
-        
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
@@ -106,8 +105,6 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
-    
-
 }
 -(void)setupUI{
     [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"我的小区"andTag:101];
@@ -127,7 +124,6 @@ static NSString* tableCellid = @"table_cell";
         make.right.left.top.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    
     NSArray *itemArr = @[@"全部",@"健康",@"居家",@"母婴",@"旅游",@"美食",@"宠物"];
     for (int i=0; i<itemArr.count; i++) {
         UIButton *btn = [[UIButton alloc]init];
@@ -228,7 +224,7 @@ static NSString* tableCellid = @"table_cell";
                 start = weakSelf.statesArr.count;
                 [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
             [weakSelf.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -256,7 +252,7 @@ static NSString* tableCellid = @"table_cell";
                 start = weakSelf.statesArr.count;
                 [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
 //            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
 //                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
@@ -404,7 +400,6 @@ static NSString* tableCellid = @"table_cell";
                 [SVProgressHUD dismiss];// 动画结束
                 return ;
             }];
-
         }
         }else{
         self.myCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -437,7 +432,6 @@ static NSString* tableCellid = @"table_cell";
                 [SVProgressHUD dismiss];// 动画结束
                 return ;
             }];
-
     }
 }
 -(void)updateAreaType:(UIButton*)sender{
@@ -470,8 +464,6 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
-
-    
 }
 #pragma mark - UITableView
 
@@ -495,8 +487,19 @@ static NSString* tableCellid = @"table_cell";
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 235*kiphone6;
-    return UITableViewAutomaticDimension;
+    YJFriendNeighborStateModel *model = self.statesArr[indexPath.row];
+    return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
+        YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
+        
+        // 配置数据
+        [cell configCellWithModel:model indexPath:indexPath];
+    } cache:^NSDictionary *{
+        NSDictionary *cache = @{kHYBCacheUniqueKey :[NSString stringWithFormat:@"%ld",model.info_id],
+                                kHYBCacheStateKey  : @"",
+                                kHYBRecalculateForStateKey : @(model.shouldUpdateCache)};
+        model.shouldUpdateCache = NO;
+        return cache;
+    }];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
@@ -504,7 +507,6 @@ static NSString* tableCellid = @"table_cell";
     detailVc.userId = self.userId;
     detailVc.stateId = cell.model.info_id;
     [self.navigationController pushViewController:detailVc animated:true];
-    
 }
 
 - (void)postBtn:(UIButton*)sender {

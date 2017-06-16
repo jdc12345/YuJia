@@ -115,6 +115,8 @@
 		169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519841ED4498F00C2C380 /* YJSearchHourseVC.m */; };
 		169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */; };
 		169E04A41ED301570002FDB2 /* YJRentPersonInfoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */; };
+		16A992E31EF272D80088774D /* UITableView+HYBCacheHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A992E01EF272D80088774D /* UITableView+HYBCacheHeight.m */; };
+		16A992E41EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A992E21EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.m */; };
 		16AD9E711EDD5D1B00F52A7A /* AMapFoundationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E6F1EDD5D1B00F52A7A /* AMapFoundationKit.framework */; };
 		16AD9E721EDD5D1B00F52A7A /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E701EDD5D1B00F52A7A /* AMapSearchKit.framework */; };
 		16AD9E761EDD5E5700F52A7A /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E751EDD5E5700F52A7A /* MAMapKit.framework */; };
@@ -472,6 +474,10 @@
 		169E04A01ED2EAD70002FDB2 /* YJShareRentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YJShareRentView.xib; sourceTree = "<group>"; };
 		169E04A21ED301570002FDB2 /* YJRentPersonInfoTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRentPersonInfoTVCell.h; sourceTree = "<group>"; };
 		169E04A31ED301570002FDB2 /* YJRentPersonInfoTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRentPersonInfoTVCell.m; sourceTree = "<group>"; };
+		16A992DF1EF272D80088774D /* UITableView+HYBCacheHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+HYBCacheHeight.h"; sourceTree = "<group>"; };
+		16A992E01EF272D80088774D /* UITableView+HYBCacheHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+HYBCacheHeight.m"; sourceTree = "<group>"; };
+		16A992E11EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+HYBMasonryAutoCellHeight.h"; sourceTree = "<group>"; };
+		16A992E21EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+HYBMasonryAutoCellHeight.m"; sourceTree = "<group>"; };
 		16AD9E6F1EDD5D1B00F52A7A /* AMapFoundationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapFoundationKit.framework; sourceTree = "<group>"; };
 		16AD9E701EDD5D1B00F52A7A /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
 		16AD9E751EDD5E5700F52A7A /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
@@ -818,6 +824,7 @@
 		1661FE101EB8646B00583A7F /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				16A992DE1EF272D80088774D /* HYBMasonryAutoCellHeight */,
 				3E2CD8351EE52E3200C8FD56 /* RKNotificationHub.h */,
 				3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */,
 				16742BF11EC1CEF80016DDD9 /* UIButton+Badge.h */,
@@ -1123,6 +1130,17 @@
 				166B40ED1EC9C0DE00CEFAE2 /* YJCommunityCarNoticesCenterTVCell.m */,
 			);
 			name = "Community Car";
+			sourceTree = "<group>";
+		};
+		16A992DE1EF272D80088774D /* HYBMasonryAutoCellHeight */ = {
+			isa = PBXGroup;
+			children = (
+				16A992DF1EF272D80088774D /* UITableView+HYBCacheHeight.h */,
+				16A992E01EF272D80088774D /* UITableView+HYBCacheHeight.m */,
+				16A992E11EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.h */,
+				16A992E21EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.m */,
+			);
+			path = HYBMasonryAutoCellHeight;
 			sourceTree = "<group>";
 		};
 		16AD9E6E1EDD5CF300F52A7A /* GDLocation */ = {
@@ -1886,6 +1904,7 @@
 				163E96091ED537B000C20B42 /* YJExpressCompanyModel.m in Sources */,
 				1640BE9D1ED9887B00E3AE00 /* YJHouseSearchResultVC.m in Sources */,
 				1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */,
+				16A992E41EF272D80088774D /* UITableViewCell+HYBMasonryAutoCellHeight.m in Sources */,
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
 				1640BE971ED915A400E3AE00 /* YJHouseListModel.m in Sources */,
@@ -1923,6 +1942,7 @@
 				166B40E81EC99A7100CEFAE2 /* YJPropertyAddressModel.m in Sources */,
 				3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */,
 				3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */,
+				16A992E31EF272D80088774D /* UITableView+HYBCacheHeight.m in Sources */,
 				3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */,
 				3E90B73A1EC3F4A600CC49D7 /* AirModelViewController.m in Sources */,
 				166FF49E1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m in Sources */,

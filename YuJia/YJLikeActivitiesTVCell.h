@@ -12,4 +12,6 @@
 @interface YJLikeActivitiesTVCell : UITableViewCell
 @property(nonatomic,strong) NSString *image;
 @property(nonatomic,strong) NSArray *likeList;
+///** block方式监听点击 */点赞跳转需要id
+@property (nonatomic, copy) void (^clickAddBlock)(NSString *personalId);
 @end

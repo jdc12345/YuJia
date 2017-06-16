@@ -216,21 +216,49 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
 }
 - (void)submitAddress{
     NSString *city = [self.cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    if (!self.cityName) {
+        [SVProgressHUD showInfoWithStatus:@"请选择你所在的城市"];
+        return;
+    }
     NSString *yard = [self.yardName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    if (!self.yardName) {
+        [SVProgressHUD showInfoWithStatus:@"请选择你所在的小区"];
+        return;
+    }
     YJBillInfoTableViewCell *nameCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    if (nameCell.contentField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写业主姓名"];
+        return;
+    }
     NSString *name = [nameCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *telCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:0]];
 //    NSString *telNum = [telCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *buildCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0]];
+    if (buildCell.contentField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写小区楼号"];
+        return;
+    }
     NSString *buildNumber = [NSString stringWithFormat:@"%@",buildCell.contentField.text];
     NSString *buildingNumber = [buildNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *floorCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:0]];
+    if (floorCell.contentField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你所在的楼层"];
+        return;
+    }
      NSString *floorNumber = [NSString stringWithFormat:@"%@",floorCell.contentField.text];
     NSString *floor = [floorNumber stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *unitNumberCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0]];
+    if (unitNumberCell.contentField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你所在的单元"];
+        return;
+    }
     NSString *unit = [NSString stringWithFormat:@"%@",unitNumberCell.contentField.text];
     NSString *unitNumber = [unit stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     YJBillInfoTableViewCell *roomCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:7 inSection:0]];
+    if (roomCell.contentField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你所在的房间号"];
+        return;
+    }
     NSString *room = [NSString stringWithFormat:@"%@",roomCell.contentField.text];
     NSString *roomNumber = [room stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
@@ -263,7 +291,7 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
             YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
-//            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
+//            revise.clickBtnBlock(cell.textLabel.text);//此处可根据新地址请求账单
             [self.navigationController popToViewController:revise animated:YES];
         }
         if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
@@ -325,6 +353,63 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
 -(void)resignFirstResponderText {
     [self.view endEditing:true];
     
+}
+#pragma mark - 键盘通知
+- (void)addNoticeForKeyboard {
+    
+    //注册键盘出现的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    //注册键盘消失的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+///键盘显示事件
+- (void) keyboardWillShow:(NSNotification *)notification {
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGFloat height = rect.size.height;
+    if (height <667.f) {//判断设备型号是6以下情况(此处是因为固定了屏幕方向，其他情况要判定屏幕方向)
+        NSIndexPath *index5 = [NSIndexPath indexPathForRow:5 inSection:0];
+        NSIndexPath *index6 = [NSIndexPath indexPathForRow:6 inSection:0];
+        NSIndexPath *index7 = [NSIndexPath indexPathForRow:7 inSection:0];
+        YJBillInfoTableViewCell *cell5 = [self.tableView cellForRowAtIndexPath:index5];
+        YJBillInfoTableViewCell *cell6 = [self.tableView cellForRowAtIndexPath:index6];
+        YJBillInfoTableViewCell *cell7 = [self.tableView cellForRowAtIndexPath:index7];
+        if (cell5.contentField.isFirstResponder||cell6.contentField.isFirstResponder||cell7.contentField.isFirstResponder) {
+            //将视图上移计算好的偏移
+            [UIView animateWithDuration:duration animations:^{
+                self.tableView.frame = CGRectMake(0.0f, -100, self.tableView.frame.size.width, self.tableView.frame.size.height);
+            }];
+        }
+    }
+}
+
+///键盘消失事件
+- (void) keyboardWillHide:(NSNotification *)notify {
+    // 键盘动画时间
+    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+        self.tableView.frame = CGRectMake(0, 5*kiphone6, self.tableView.frame.size.width, self.tableView.frame.size.height);
+    }];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    //注册键盘通知
+    [self addNoticeForKeyboard];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //移除键盘监听
+    //移除键盘监听 直接按照通知名字去移除键盘通知, 这是正确方式
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

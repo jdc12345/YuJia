@@ -145,7 +145,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+            [SVProgressHUD showErrorWithStatus:@"删除未成功，请稍后再试"];
             return ;
         }];
 

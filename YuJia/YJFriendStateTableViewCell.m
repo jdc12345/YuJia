@@ -13,6 +13,7 @@
 #import "YJRepairRecordFlowLayout.h"
 #import <HUPhotoBrowser.h>
 #import <UIImageView+WebCache.h>
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
@@ -59,20 +60,26 @@ static NSString* photoCellid = @"photo_cell";
         [arr removeLastObject];
         self.imagesArr = arr;
         if (self.imagesArr.count<5&&self.imagesArr.count>0) {
+            if (self.collectionView.frame.size.height != 70*kiphone6) {
             [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.offset(70*kiphone6);
             }];
+            }
         }else if (self.imagesArr.count>4){
-            [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.offset(140*kiphone6);
-            }];
-        }
-        
+            if (self.collectionView.frame.size.height != 140*kiphone6) {
+                [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.height.offset(140*kiphone6);
+                }];
+            }
+            
+        }        
         [self.collectionView reloadData];
     }else{
+        if (self.collectionView.frame.size.height != 0) {
         [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.offset(0);
         }];
+        }
         [self.collectionView reloadData];
     }
     if (self.model.islike) {
@@ -81,7 +88,9 @@ static NSString* photoCellid = @"photo_cell";
         [self.likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
     }
 }
-
+- (void)configCellWithModel:(YJFriendNeighborStateModel *)model indexPath:(NSIndexPath *)indexPath{
+    self.model = model;
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];//头像图片
@@ -150,7 +159,7 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
         make.right.offset(-10*kiphone6);
     }];
-    UIButton *commentBtn = [[UIButton alloc]init];//取消维修按钮
+    UIButton *commentBtn = [[UIButton alloc]init];//评论按钮
     [commentBtn setImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
     [self.contentView addSubview:commentBtn];
     [commentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -163,16 +172,17 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
         make.right.equalTo(commentBtn.mas_left).offset(-15*kiphone6);
     }];
-   
     [self.contentView addSubview:commentNumberLabel];
-    UIButton *likeBtn = [[UIButton alloc]init];//完成维修按钮
+    UIButton *likeBtn = [[UIButton alloc]init];//点赞按钮
     [likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
     [self.contentView addSubview:likeBtn];
     [likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(commentNumberLabel);
         make.right.equalTo(likeNumberLabel.mas_left).offset(-5*kiphone6);
-        make.bottom.offset(-15*kiphone6);
+//        make.bottom.offset(-15*kiphone6);
     }];
+    self.hyb_lastViewInCell = likeBtn;//从上到下最后一个控件
+    self.hyb_bottomOffsetToCell = 15*kiphone6;//最后一个控件到cell底部的距离
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line];
@@ -180,7 +190,6 @@ static NSString* photoCellid = @"photo_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     self.areaLabel = areaLabel;

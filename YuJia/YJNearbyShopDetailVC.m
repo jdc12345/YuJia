@@ -208,7 +208,12 @@ http://192.168.1.55:8080/smarthome/mobileapi/business/findbusinessOne.do?
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
+-(void)btnClick:(UIButton*)sender{
+    NSString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.detailModel.telephone];
+    // NSLog(@"str======%@",str);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
 
+};
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
