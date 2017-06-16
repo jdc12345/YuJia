@@ -278,9 +278,11 @@
 - (void)setMyChildController{
     AirModelViewController *modelVC = [[AirModelViewController alloc]init];
     modelVC.view.frame = CGRectMake(0, 352.25 , kScreenW, kScreenH -352.25);
+
     [self.view addSubview:modelVC.view];
     [self addChildViewController:modelVC];
     self.modelV = modelVC.view;
+
     
     
     AirSpeedViewController *speedVC = [[AirSpeedViewController alloc]init];

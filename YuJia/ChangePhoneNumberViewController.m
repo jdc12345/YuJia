@@ -8,11 +8,12 @@
 
 #import "ChangePhoneNumberViewController.h"
 #import "UIBarButtonItem+Helper.h"
+#import "MMTextField.h"
 
 @interface ChangePhoneNumberViewController ()
-@property  (nonatomic, strong) UITextField *phoneTF;
+@property  (nonatomic, strong) MMTextField *phoneTF;
 @property  (nonatomic, strong) UITextField *vcodeTF;
-@property  (nonatomic, strong) UITextField *pwTF;
+@property  (nonatomic, strong) MMTextField *pwTF;
 
 @end
 
@@ -142,7 +143,7 @@
         make.size.mas_equalTo(CGSizeMake(90, 14));
     }];
     
-    UITextField *newNumberTextF = [[UITextField alloc]init];
+    MMTextField *newNumberTextF = [[MMTextField alloc]init];
     newNumberTextF.font = [UIFont systemFontOfSize:15];
     newNumberTextF.textColor = [UIColor colorWithHexString:@"333333"];
     newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -161,7 +162,7 @@
     }];
     
     
-    UITextField *passwordTextF = [[UITextField alloc]init];
+    MMTextField *passwordTextF = [[MMTextField alloc]init];
     passwordTextF.font = [UIFont systemFontOfSize:15];
     passwordTextF.textColor = [UIColor colorWithHexString:@"333333"];
     passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -169,6 +170,7 @@
     passwordTextF.layer.cornerRadius = 2.5;
     passwordTextF.clipsToBounds = YES;
     passwordTextF.textAlignment = NSTextAlignmentLeft;
+    passwordTextF.secureTextEntry = YES;
     
     [footView addSubview:passwordTextF];
     

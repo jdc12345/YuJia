@@ -8,8 +8,11 @@
 
 #import "ChangePassWordViewController.h"
 #import "UIBarButtonItem+Helper.h"
+#import "MMTextField.h"
 @interface ChangePassWordViewController ()
-
+@property  (nonatomic, strong) MMTextField *phoneTF;
+@property  (nonatomic, strong) MMTextField *re_pwTF;
+@property  (nonatomic, strong) MMTextField *pwTF;
 @end
 
 @implementation ChangePassWordViewController
@@ -143,7 +146,7 @@
         make.size.mas_equalTo(CGSizeMake(90, 14));
     }];
     
-    UITextField *newNumberTextF = [[UITextField alloc]init];
+    MMTextField *newNumberTextF = [[MMTextField alloc]init];
     newNumberTextF.font = [UIFont systemFontOfSize:15];
     newNumberTextF.textColor = [UIColor colorWithHexString:@"333333"];
     newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -151,6 +154,7 @@
     newNumberTextF.layer.cornerRadius = 2.5;
     newNumberTextF.clipsToBounds = YES;
     newNumberTextF.textAlignment = NSTextAlignmentLeft;
+    newNumberTextF.secureTextEntry = YES;
     
     [footView addSubview:newNumberTextF];
     
@@ -162,7 +166,7 @@
     }];
     
     
-    UITextField *passwordTextF = [[UITextField alloc]init];
+    MMTextField *passwordTextF = [[MMTextField alloc]init];
     passwordTextF.font = [UIFont systemFontOfSize:15];
     passwordTextF.textColor = [UIColor colorWithHexString:@"333333"];
     passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -170,6 +174,7 @@
     passwordTextF.layer.cornerRadius = 2.5;
     passwordTextF.clipsToBounds = YES;
     passwordTextF.textAlignment = NSTextAlignmentLeft;
+    passwordTextF.secureTextEntry = YES;
     
     [footView addSubview:passwordTextF];
     
@@ -180,7 +185,7 @@
         make.size.height.mas_equalTo(30);
     }];
     
-    UITextField *yanLabelTextF = [[UITextField alloc]init];
+    MMTextField *yanLabelTextF = [[MMTextField alloc]init];
     yanLabelTextF.font = [UIFont systemFontOfSize:15];
     yanLabelTextF.textColor = [UIColor colorWithHexString:@"333333"];
     yanLabelTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
@@ -188,6 +193,7 @@
     yanLabelTextF.layer.cornerRadius = 2.5;
     yanLabelTextF.clipsToBounds = YES;
     yanLabelTextF.textAlignment = NSTextAlignmentLeft;
+    yanLabelTextF.secureTextEntry = YES;
     
     [footView addSubview:yanLabelTextF];
     
@@ -222,6 +228,11 @@
         make.bottom.equalTo(yanLabelTextF.mas_bottom).with.offset(10);
     }];
     
+    self.phoneTF = newNumberTextF;
+    self.pwTF = passwordTextF;
+    self.re_pwTF = yanLabelTextF;
+    
+    
 }
 - (void)surePost{
     
@@ -231,17 +242,17 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)httpRequestInfo{
+    
     NSDictionary *dict = @{
                            @"token":mDefineToken,
-                           @"oldPwd":@"123456",
-                           @"newPwd":@"123123"
+                           @"oldPwd":self.phoneTF.text,
+                           @"newPwd":self.pwTF.text
                            };
     
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mChangePSW] method:1 parameters:dict prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
-        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];

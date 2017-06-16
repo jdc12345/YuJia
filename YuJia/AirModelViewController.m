@@ -51,7 +51,7 @@
     self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"自动",@"制冷",@"制热",@"除湿",@"送风"]];
     self.iconList =@[@"self-motion_small",@"cold_small",@"hot_small",@"wet_small",@"wind_small"];
     [self tableView];
-    
+
     
     // Do any additional setup after loading the view.
 }
