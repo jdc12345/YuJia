@@ -72,6 +72,14 @@
     
     [self.view addSubview:keyBoardImageV];
     
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+    gradientLayer.locations = @[@0 ,@1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0 , kScreenW, kScreenH -272.25 +20);
+    [keyBoardImageV.layer addSublayer:gradientLayer];
+    
     [keyBoardImageV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(switch0.mas_bottom).with.offset(20);
         make.left.right.equalTo(self.view);

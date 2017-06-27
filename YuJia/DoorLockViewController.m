@@ -33,6 +33,7 @@
     [super viewDidLoad];
     self.title = @"智能门锁";
     self.view.backgroundColor = [UIColor whiteColor];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setSubView];
     // Do any additional setup after loading the view.
@@ -208,14 +209,23 @@
     [self.view addSubview:modelVC.view];
     [self addChildViewController:modelVC];
     self.modelV = modelVC.view;
+//    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+//    gradientLayer.locations = @[@0 ,@1.0];
+//    gradientLayer.startPoint = CGPointMake(0, 0);
+//    gradientLayer.endPoint = CGPointMake(0, 1.0);
+//    gradientLayer.frame = CGRectMake(0, 0 , kScreenW, kScreenH -352.25);
+//    [modelVC.view.layer addSublayer:gradientLayer];
     
     
     LockFigureViewController *speedVC = [[LockFigureViewController alloc]init];
+//    [speedVC.view.layer addSublayer:gradientLayer];
     speedVC.view.frame = CGRectMake(0, 352.25 , kScreenW, kScreenH -352.25);
     speedVC.view.hidden = YES;
     [self.view addSubview:speedVC.view];
     [self addChildViewController:speedVC];
     self.speedV = speedVC.view;
+    
     
     LockShareViewController *directionVC = [[LockShareViewController alloc]init];
     directionVC.view.frame = CGRectMake(0, 352.25 , kScreenW, kScreenH -352.25);

@@ -10,7 +10,8 @@
 #import "MYHomeTableViewCell.h"
 #import "MYFamilyViewController.h"
 #import "EquipmentManagerViewController.h"
-#import "MyRoomInfoViewController.h"
+//#import "MyRoomInfoViewController.h"
+#import "MMHomeInfoViewController.h"
 #import "PopListTableViewController.h"
 #import "AllHomeModel.h"
 #define inputW 20 // 输入框宽度
@@ -92,7 +93,7 @@
     }else if (indexPath.row == 2){
         [self.navigationController pushViewController:[[EquipmentManagerViewController alloc]init ] animated:YES];
     }else{
-        [self.navigationController pushViewController:[[MyRoomInfoViewController alloc]init ] animated:YES];
+        [self.navigationController pushViewController:[[MMHomeInfoViewController alloc]init ] animated:YES];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 

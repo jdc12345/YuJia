@@ -235,6 +235,8 @@
 		3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB61EC062850094CBE4 /* EquipmentModel.m */; };
 		3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB91EC062F20094CBE4 /* RoomModel.m */; };
 		3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */; };
+		3EBB7FE11EE8E3FA004D1B02 /* MMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7FE01EE8E3FA004D1B02 /* MMTextField.m */; };
+		3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */; };
 		3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468511ECE887B003E785B /* YYFeedbackViewController.m */; };
 		3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
@@ -707,6 +709,10 @@
 		3E984FB91EC062F20094CBE4 /* RoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomModel.m; sourceTree = "<group>"; };
 		3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSettingViewController.h; sourceTree = "<group>"; };
 		3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightSettingViewController.m; sourceTree = "<group>"; };
+		3EBB7FDF1EE8E3FA004D1B02 /* MMTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMTextField.h; sourceTree = "<group>"; };
+		3EBB7FE01EE8E3FA004D1B02 /* MMTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMTextField.m; sourceTree = "<group>"; };
+		3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMHomeInfoViewController.h; sourceTree = "<group>"; };
+		3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMHomeInfoViewController.m; sourceTree = "<group>"; };
 		3ED9F33E1ED2B3BC00AF7E0F /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
@@ -1357,6 +1363,8 @@
 				3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */,
 				3ED9F33E1ED2B3BC00AF7E0F /* LogInViewController.h */,
 				3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */,
+				3EBB7FDF1EE8E3FA004D1B02 /* MMTextField.h */,
+				3EBB7FE01EE8E3FA004D1B02 /* MMTextField.m */,
 			);
 			name = "Tab+Nav";
 			sourceTree = "<group>";
@@ -1491,6 +1499,8 @@
 				3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */,
 				3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */,
 				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
+				3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */,
+				3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F861EB9BF640094CBE4 /* MMButton.h */,
@@ -1858,6 +1868,7 @@
 				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,
 				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
 				1672D7A61EC32F8300F5970C /* YJNoticeListTableVC.m in Sources */,
+				3EBB7FE11EE8E3FA004D1B02 /* MMTextField.m in Sources */,
 				3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */,
 				167130331EB9F7DD00CC2394 /* YJPhotoFlowLayout.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
@@ -1937,6 +1948,7 @@
 				166FF49E1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m in Sources */,
 				3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */,
 				3E984F981EBB1C1B0094CBE4 /* SuccessConnectViewController.m in Sources */,
+				3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */,
 				3E9439611ECAA087001FE471 /* AreaModel.m in Sources */,

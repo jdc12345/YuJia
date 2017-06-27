@@ -16,13 +16,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+//    self.view.backgroundColor = [UIColor whiteColor];
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+    gradientLayer.locations = @[@0 ,@1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0 , kScreenW, kScreenH -352.25);
+    [self.view.layer addSublayer:gradientLayer];
     [self setSubViewInThis];
     // Do any additional setup after loading the view.
 }
 - (void)setSubViewInThis{
     UIImageView *keyBoardImageV = [[UIImageView alloc]init];
-    keyBoardImageV.backgroundColor = [UIColor colorWithHexString:@"38d5cf"];
+//    keyBoardImageV.backgroundColor = [UIColor colorWithHexString:@"38d5cf"];
     keyBoardImageV.userInteractionEnabled = YES;
     
     [self.view addSubview:keyBoardImageV];

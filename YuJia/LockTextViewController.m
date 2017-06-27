@@ -25,11 +25,20 @@
     self.btnText = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"*",@"0",@"清除"];
     self.pswStr = @"";
     [self setSubViewInThis];
+    
+    
     // Do any additional setup after loading the view.
 }
 - (void)setSubViewInThis{
     UIImageView *keyBoardImageV = [[UIImageView alloc]init];
-    keyBoardImageV.backgroundColor = [UIColor colorWithHexString:@"38d5cf"];
+//    keyBoardImageV.backgroundColor = [UIColor colorWithHexString:@"38d5cf"];
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+    gradientLayer.locations = @[@0 ,@1.0];
+    gradientLayer.startPoint = CGPointMake(0, 0);
+    gradientLayer.endPoint = CGPointMake(0, 1.0);
+    gradientLayer.frame = CGRectMake(0, 0 , kScreenW, kScreenH -352.25);
+    [keyBoardImageV.layer addSublayer:gradientLayer];
     keyBoardImageV.userInteractionEnabled = YES;
     
     [self.view addSubview:keyBoardImageV];
