@@ -18,6 +18,9 @@
 #import "YJActiviesPictureModel.h"
 #import "YJCommunityActivitiesVC.h"
 #import "OtherPeopleInfoViewController.h"
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
+#import "YJFriendCommentTableViewCell.h"
+#import "YJSelfReplyTableViewCell.h"
 
 static NSString* tableDetailsCell = @"tableDetailsCell_cell";
 static NSString* LikeCell = @"Like_cell";
@@ -231,7 +234,14 @@ static NSString* photoCellid = @"photo_cell";
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 280*kiphone6;
+        YJActivitiesDetailModel *model = self.model;
+        return[YJActivitiesDetailsTVCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
+            YJActivitiesDetailsTVCell *cell = (YJActivitiesDetailsTVCell *)sourceCell;
+            
+            // 配置数据
+            [cell configCellWithModel:model indexPath:indexPath];
+        }];
+
     }
     if (indexPath.row == 1||indexPath.row == 2) {
         if (self.likeList.count<8) {
@@ -244,6 +254,12 @@ static NSString* photoCellid = @"photo_cell";
         if (self.commentList.count==0) {
             return 0;
         }
+//        CGFloat cellHeight = [YJActivitesCommentTVCell hyb_heightForTableView:self.tableView config:^(UITableViewCell *sourceCell) {
+//            YJActivitesCommentTVCell *cell = (YJActivitesCommentTVCell *)sourceCell;
+//            [cell setCommentList:self.commentList];
+//            }];
+//        return cellHeight;
+
         return (self.commentList.count*38)*kiphone6>76?(self.commentList.count*38)*kiphone6:76;
     }
     return 200*kiphone6;

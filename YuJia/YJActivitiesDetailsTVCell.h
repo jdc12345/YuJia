@@ -11,4 +11,5 @@
 
 @interface YJActivitiesDetailsTVCell : UITableViewCell
 @property(nonatomic,strong)YJActivitiesDetailModel *model;
+- (void)configCellWithModel:(YJActivitiesDetailModel *)model indexPath:(NSIndexPath *)indexPath;
 @end

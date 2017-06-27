@@ -9,6 +9,7 @@
 #import "YJFriendCommentTableViewCell.h"
 #import "UILabel+Addition.h"
 #import "UIColor+colorValues.h"
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 @interface YJFriendCommentTableViewCell()<UITextViewDelegate>
 @property (nonatomic, weak) UITextView* textview;
@@ -48,6 +49,9 @@
     
     self.textview.attributedText = attStr;
 }
+-(void)configCellWithModel:(YJFriendStateCommentModel *)model{
+    [self setModel:model];
+}
 -(void)setActiviesModel:(YJActiviesAddPersonModel *)activiesModel{
     _activiesModel = activiesModel;
     NSString *content = [NSString stringWithFormat:@"%@: %@",activiesModel.userName,activiesModel.content];
@@ -69,6 +73,9 @@
     
     
     self.textview.attributedText = attStr;
+}
+-(void)configActiviesCellWithModel:(YJActiviesAddPersonModel *)model{
+    [self setActiviesModel:model];
 }
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
     
@@ -114,6 +121,8 @@
     textView.editable = NO;//必须禁止输入，否则点击将会弹出输入键盘
     textView.scrollEnabled = NO;//可选的，视具体情况而定
     self.textview = textView;
+//    self.hyb_lastViewInCell = textView;
+//    self.hyb_bottomOffsetToCell = 0;
 }
 
 @end

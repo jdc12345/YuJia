@@ -9,6 +9,7 @@
 #import "YJActivitiesDetailsTVCell.h"
 #import "UILabel+Addition.h"
 #import <UIImageView+WebCache.h>
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 @interface YJActivitiesDetailsTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
@@ -83,7 +84,9 @@
 //        self.likeBtn.userInteractionEnabled = false;
 //    }
 }
-
+- (void)configCellWithModel:(YJActivitiesDetailModel *)model indexPath:(NSIndexPath *)indexPath{
+    self.model = model;
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -193,7 +196,8 @@
         make.top.equalTo(contentItemLabel.mas_bottom).offset(15*kiphone6);
         make.right.offset(-10*kiphone6);
     }];
-    
+    self.hyb_lastViewInCell = conentLabel;
+    self.hyb_bottomOffsetToCell = 10*kiphone6;
     self.iconView = iconView;
     self.nameLabel = nameLabel;
     self.typeLabel = typeLabel;

@@ -62,7 +62,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
     [self.view addSubview:tableView];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
         make.bottom.offset(-45*kiphone6);
@@ -145,6 +145,14 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 
     //评论tableView中的头部试图
     UIView *commentHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, 45*kiphone6)];
+    if (self.likeList.count>7) {
+        commentHeaderView.frame = CGRectMake(0, 0, 354*kiphone6, 90*kiphone6);
+    }else if (self.likeList.count<7&&self.likeList.count>0){
+        commentHeaderView.frame = CGRectMake(0, 0, 354*kiphone6, 45*kiphone6);
+    }else{
+        commentHeaderView.frame = CGRectMake(0, 0, 354*kiphone6, 0);
+    }
+
     commentHeaderView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     UIImageView *heaterView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"blue-like"]];
     heaterView.frame = CGRectMake(27*kiphone6, 5*kiphone6, 11*kiphone6, 11*kiphone6);
@@ -152,7 +160,13 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 
     //photoCollectionView
     UICollectionView *likeCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJFriendLikeFlowLayout alloc]init]];
-    likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 45*kiphone6);
+    if (self.likeList.count>7) {
+        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 90*kiphone6);
+    }else if (self.likeList.count<7&&self.likeList.count>0){
+        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 45*kiphone6);
+    }else{
+        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 0);
+    }
     [commentHeaderView addSubview:likeCollectionView];
 
     self.collectionView = likeCollectionView;
@@ -165,11 +179,32 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     likeCollectionView.showsVerticalScrollIndicator = false;
     
     //添加大tb尾部视图中的评论tableView
-    UIView *footBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, kScreenH)];
+    CGFloat tableViewHeight = 0;
+    for (YJFriendStateCommentModel *commentModel in self.commentList) {
+        CGFloat cellHeight = 0;
+        if (commentModel.coverPersonalId == 0) {//判断是用户评论还是自己回复评论
+            cellHeight = [YJSelfReplyTableViewCell hyb_heightForTableView:self.tableView config:^(UITableViewCell *sourceCell) {
+                YJSelfReplyTableViewCell *cell = (YJSelfReplyTableViewCell *)sourceCell;
+                [cell configCellWithModel:commentModel];
+            }];
+            tableViewHeight += cellHeight;
+        }else{
+            cellHeight = [YJFriendCommentTableViewCell hyb_heightForTableView:self.tableView config:^(UITableViewCell *sourceCell) {
+                YJSelfReplyTableViewCell *cell = (YJSelfReplyTableViewCell *)sourceCell;
+                [cell configCellWithModel:commentModel];
+            }];
+            tableViewHeight += cellHeight;
+        }
+        
+    }
+    UIView *footBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, tableViewHeight+45*kiphone6)];
     footBackView.backgroundColor = [UIColor whiteColor];
-    UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectMake(10*kiphone6, 0, 354*kiphone6, kScreenH)];
+    UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectMake(10*kiphone6, 0, 354*kiphone6, tableViewHeight+45*kiphone6)];
     [footBackView addSubview:commentTableView];
-
+//    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.left.right.offset(0);
+//        make.height.mas_equalTo(tableViewHeight+45);
+//    }];
     self.commentTableView = commentTableView;
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
@@ -336,9 +371,11 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (self.commentTableView == tableView) {
-        
-        return 5*kiphone6;
-    }
+        if (self.commentList.count>0) {
+            return 5*kiphone6;
+
+        }
+           }
     return 0.0f;
 }
 #pragma mark - UICollectionView

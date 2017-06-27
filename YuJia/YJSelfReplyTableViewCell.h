@@ -16,4 +16,6 @@
 @property (nonatomic, weak) UIImageView* iconView;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickBtnBlock)(NSString *name);
+- (void)configCellWithModel:(YJFriendStateCommentModel *)model;//计算友邻圈评论行高
+-(void)configActiviesCellWithModel:(YJActiviesAddPersonModel *)model;//计算社区活动评论行高
 @end
