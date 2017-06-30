@@ -47,6 +47,11 @@
     UIImageView* iconView = [[UIImageView alloc] init];
     iconView.image = [UIImage imageNamed:@"housekeeping"];
     [self.contentView addSubview:iconView];
+//    CALayer *layer = [iconView layer];
+//    layer.shadowOffset = CGSizeMake(0, 3);
+//    layer.shadowRadius = 5.0;
+//    layer.shadowColor = [UIColor blackColor].CGColor;
+//    layer.shadowOpacity = 0.8;
     
     UILabel* nameLabel = [[UILabel alloc] init];
     nameLabel.font = [UIFont systemFontOfSize:12];

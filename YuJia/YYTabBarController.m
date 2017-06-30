@@ -51,7 +51,7 @@
 - (void)setupMainContents {
     // 首页
     HomePageViewController *homeVC = [[HomePageViewController alloc] init];
-    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"家" normalImage:@"HOME" selectedImage:@"HOME-Selected"];
+    [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"家" normalImage:@"home" selectedImage:@"homeselected"];
     
     // 物业管家
     PropertyViewController *measureVC = [[PropertyViewController alloc] init];

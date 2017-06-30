@@ -49,14 +49,15 @@ static NSUInteger kTag = 1000;
         CGFloat pointX = tabBarItemWidth * idx;
         /** 初始化一个btn */
         YYTabBarItem *btn = [YYTabBarItem buttonWithType:UIButtonTypeCustom];
+        btn.backgroundColor = [UIColor colorWithHexString:@"#363840"];
         /** 设置frame */
         btn.frame = CGRectMake(pointX, 0, tabBarItemWidth, CGRectGetHeight(tabBar.frame));
         btn.kImageScale = 0.72f;
         btn.titleLabelHigh = 8;
         
         /** 设置文字颜色 */
-        [btn setTitleColor:[UIColor colorWithHexString:@"656D78"] forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor colorWithHexString:@"B1B8C3"] forState:UIControlStateSelected];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#73747a"] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateSelected];
         
         /** 添加事件响应 */
         [btn addTarget:tabBar action:@selector(tabDidSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -96,8 +97,8 @@ static NSUInteger kTag = 1000;
     YYTabBarItem *tabBarItem = self.subviews[index];
     
     [tabBarItem setTitle:title forState:UIControlStateNormal];
-    [tabBarItem setTitleColor:[UIColor colorWithHexString:@"b2b2b2"] forState:UIControlStateNormal];
-    [tabBarItem setTitleColor:[UIColor colorWithHexString:@"00bfff"] forState:UIControlStateSelected];
+//    [tabBarItem setTitleColor:[UIColor colorWithHexString:@"b2b2b2"] forState:UIControlStateNormal];
+//    [tabBarItem setTitleColor:[UIColor colorWithHexString:@"00bfff"] forState:UIControlStateSelected];
 
     [tabBarItem setImage:[UIImage imageNamed:normalImage] forState:UIControlStateNormal];
     [tabBarItem setImage:[UIImage imageNamed:selectedImage] forState:UIControlStateSelected];
