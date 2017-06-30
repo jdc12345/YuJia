@@ -12,6 +12,7 @@
 #import "YJExpressSenderTVCell.h"
 #import "YJExpressCompanyModel.h"
 #import "YJExpressReceiveModel.h"
+#import "UIViewController+Cloudox.h"
 
 static NSString* receiveCellid = @"receive_cell";
 static NSString* senderCellid = @"sender_cell";
@@ -212,6 +213,10 @@ static NSString* senderCellid = @"sender_cell";
 -(void)setPersonalExpresss:(NSArray *)personalExpresss{
     _personalExpresss = personalExpresss;
     [self.receiveTableView reloadData];//从首页进来刷新
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

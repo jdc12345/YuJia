@@ -12,6 +12,7 @@
 #import "YJBussinessDetailModel.h"
 #import "YJBussinessServeDetailModel.h"
 #import <UIImageView+WebCache.h>
+#import "UIViewController+Cloudox.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJRenovationViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -211,7 +212,10 @@ http://192.168.1.55:8080/smarthome/mobileapi/business/findbusinessOne.do?
     }];
  
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

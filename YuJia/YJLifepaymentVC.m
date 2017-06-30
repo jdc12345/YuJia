@@ -15,6 +15,7 @@
 #import "YJPayItemModel.h"
 #import "YJEditNumberVC.h"
 #import "YJInputPayNumberVC.h"
+#import "UIViewController+Cloudox.h"
 
 static NSString* emptyCellid = @"empty_cell";
 static NSString* payCellid = @"pay_cell";
@@ -274,6 +275,7 @@ static NSString* payCellid = @"pay_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";
     if (self.emptyTableView&&self.isBill) {
         [self.emptyTableView removeFromSuperview];
         [self loadData];

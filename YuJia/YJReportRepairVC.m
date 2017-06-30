@@ -22,6 +22,7 @@
 #import "AFNetworking.h"
 #import "YJReportRepairRecordModel.h"
 #import <MJRefresh.h>
+#import "UIViewController+Cloudox.h"
 
 static NSInteger start = 0;//上拉加载起始位置
 static NSString* tableCellid = @"table_cell";
@@ -935,6 +936,10 @@ static NSString* photoCellid = @"photo_cell";
     }];
 
     
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

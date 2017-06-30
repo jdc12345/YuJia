@@ -16,19 +16,20 @@
     [super prepareLayout];
     
     // 计算cell的宽高
-    CGFloat w = self.collectionView.bounds.size.width  / 4;
-    CGFloat h = self.collectionView.bounds.size.height / 2;
+    CGFloat w = (self.collectionView.bounds.size.width-2)  / 3;
+    CGFloat h = (self.collectionView.bounds.size.height-2) / 3;
     
     // cell的大小
     self.itemSize = CGSizeMake(w, h);
     
     // cell间的间距
-    self.minimumInteritemSpacing = 0;
+    self.minimumInteritemSpacing = 1;
     // 行间距
-    self.minimumLineSpacing = 0;
-//
-//    // 组的内间距
-//    self.sectionInset = UIEdgeInsetsMake(0, 0, 16, 0);
+    self.minimumLineSpacing = 1;
+    //
+    //    // 组的内间距
+    //    self.sectionInset = UIEdgeInsetsMake(0, 0, 16, 0);
 }
 
 @end
+

@@ -50,5 +50,11 @@
 		<key>icon</key>
 		<string>renovation</string>
 	</dict>
+	<dict>
+		<key>name</key>
+		<string></string>
+		<key>icon</key>
+		<string></string>
+	</dict>
 </array>
 </plist>

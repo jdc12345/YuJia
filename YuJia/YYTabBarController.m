@@ -55,15 +55,15 @@
     
     // 物业管家
     PropertyViewController *measureVC = [[PropertyViewController alloc] init];
-    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"物业管家" normalImage:@"realestatemanagement" selectedImage:@"realestatemanagement-Selected"];
+    [self addChildViewControllerAtIndex:1 childViewController:measureVC title:@"物业管家" normalImage:@"realestatemanagement" selectedImage:@"realestatemanagementselected"];
     
     // 圈子
     CircleGroupViewController *consultVC = [[CircleGroupViewController alloc] init];
-    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"圈子" normalImage:@"circle" selectedImage:@"circle-Selected"];
+    [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"圈子" normalImage:@"circle" selectedImage:@"circleselected"];
     
     // 个人
     PersonalViewController *personalVC = [[PersonalViewController alloc] init];
-    [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"个人" normalImage:@"MyCenter" selectedImage:@"MyCenter-Selected"];
+    [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"个人" normalImage:@"myCenter" selectedImage:@"myCenterselected"];
 }
 
 /**

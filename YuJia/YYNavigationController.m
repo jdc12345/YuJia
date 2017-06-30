@@ -69,7 +69,9 @@
     return [self.viewControllers.lastObject preferredInterfaceOrientationForPresentation];
     
 }
-
+- (UIViewController *)childViewControllerForStatusBarStyle{
+    return self.topViewController;
+}//上面代码的意思就是说，不要调用我自己(就是UINavigationController)的preferredStatusBarStyle方法，而是去调用navigationController.topViewController的preferredStatusBarStyle方法，这样写的话，就能保证当前显示的UIViewController的preferredStatusBarStyle方法能影响statusBar的前景部分。
 /*
 #pragma mark - Navigation
 

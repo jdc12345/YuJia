@@ -15,6 +15,7 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 #import "YJNearbyShopChangeAddressVC.h"
+#import "UIViewController+Cloudox.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource,AMapSearchDelegate>
@@ -232,6 +233,10 @@ static NSString* tableCellid = @"table_cell";
     YJNearByShopTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     vc.info_id = cell.model.info_id;
     [self.navigationController pushViewController:vc animated:true];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

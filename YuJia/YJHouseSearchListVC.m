@@ -16,6 +16,7 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 #import <MJRefresh.h>
+#import "UIViewController+Cloudox.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -318,7 +319,10 @@ static NSString* tableCellid = @"table_cell";
     [self.navigationController pushViewController:detailVc animated:true];
     
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

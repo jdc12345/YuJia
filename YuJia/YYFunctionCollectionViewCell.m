@@ -54,20 +54,20 @@
 //    layer.shadowOpacity = 0.8;
     
     UILabel* nameLabel = [[UILabel alloc] init];
-    nameLabel.font = [UIFont systemFontOfSize:12];
-    nameLabel.textColor = [UIColor darkGrayColor];
+    nameLabel.font = [UIFont systemFontOfSize:14];
+    nameLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     nameLabel.text = @"家政服务";
     [self.contentView addSubview:nameLabel];
     
     // 自动布局
     [iconView mas_makeConstraints:^(MASConstraintMaker* make) {
         make.centerX.equalTo(self.contentView);
-        make.top.offset(10*kiphone6);
+        make.top.offset(31*kiphone6);
         make.width.height.offset(47*kiphone6);
     }];
     
     [nameLabel mas_makeConstraints:^(MASConstraintMaker* make) {
-        make.top.equalTo(iconView.mas_bottom).offset(6*kiphone6);
+        make.top.equalTo(iconView.mas_bottom).offset(10*kiphone6);
         make.centerX.equalTo(iconView);
     }];
     

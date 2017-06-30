@@ -43,7 +43,6 @@ static NSUInteger kTag = 1000;
     CGFloat tabBarItemWidth = kScreenW / count ;
     /** 设置背景颜色 */
     tabBar.backgroundColor = [UIColor clearColor];
-    
     for (NSUInteger idx = 0; idx < count; idx++) {
         /** 获取btn的X坐标 */
         CGFloat pointX = tabBarItemWidth * idx;

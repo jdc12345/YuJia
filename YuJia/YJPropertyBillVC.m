@@ -16,6 +16,8 @@
 #import "YJPropertyAddressModel.h"
 #import "YJMonthDetailItemModel.h"
 #import "YJMonthDetailSumModel.h"
+#import "UIViewController+Cloudox.h"
+#import "UINavigationController+Cloudox.h"
 
 static NSString* billCellid = @"bill_cell";
 @interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -465,7 +467,10 @@ static NSString* billCellid = @"bill_cell";
     vc.addresses = self.addresses;
     [self.navigationController pushViewController:vc animated:true];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
