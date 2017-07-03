@@ -6,6 +6,7 @@
 #import "YYTabBar.h"
 #import "YYNavigationController.h"
 #import "HomePageViewController.h"
+#import "YJHomePageVC.h"
 #import "PropertyViewController.h"
 #import "CircleGroupViewController.h"
 #import "PersonalViewController.h"
@@ -23,7 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.tabBarView = [YYTabBar initWithTabs:4 systemTabBarHeight:self.tabBar.bounds.size.height selected:^(NSUInteger index) {
         self.selectedIndex = index;
     }];
@@ -50,7 +51,7 @@
 
 - (void)setupMainContents {
     // 首页
-    HomePageViewController *homeVC = [[HomePageViewController alloc] init];
+    YJHomePageVC *homeVC = [[YJHomePageVC alloc] init];
     [self addChildViewControllerAtIndex:0 childViewController:homeVC title:@"家" normalImage:@"home" selectedImage:@"homeselected"];
     
     // 物业管家
