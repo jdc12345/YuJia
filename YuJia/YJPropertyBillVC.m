@@ -18,6 +18,7 @@
 #import "YJMonthDetailSumModel.h"
 #import "UIViewController+Cloudox.h"
 #import "UINavigationController+Cloudox.h"
+#import "YJBillHeaderViewTVCell.h"
 
 static NSString* billCellid = @"bill_cell";
 @interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -35,6 +36,10 @@ static NSString* billCellid = @"bill_cell";
 @property(nonatomic,strong)NSMutableArray *addresses;
 @property(nonatomic,strong)NSString *address;//当前显示的地址
 @property(nonatomic,strong)NSMutableArray *months;
+
+@property(nonatomic,weak)UIView *headerBackView;//作为tableview组头的视图
+@property(nonatomic,weak)UIView *backGrayView;//时间选择器半透明背景
+@property(nonatomic,weak)UIView *line;//时间选择滚动条
 @end
 
 @implementation YJPropertyBillVC
@@ -45,6 +50,7 @@ static NSString* billCellid = @"bill_cell";
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self loadData];
+//    [self setupBill];
 
 }
 - (void)loadData {
@@ -114,16 +120,14 @@ static NSString* billCellid = @"bill_cell";
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)setupBill{
-    [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"2017年"andTag:101];
-    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"全部"andTag:102];
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
     [self.view addSubview:tableView];
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.yearBtn.mas_bottom).offset(1*kiphone6);
-        make.left.right.bottom.offset(0);
+//        make.top.equalTo(self.yearBtn.mas_bottom).offset(1*kiphone6);
+        make.top.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJBillResultTableViewCell class] forCellReuseIdentifier:billCellid];
@@ -134,19 +138,42 @@ static NSString* billCellid = @"bill_cell";
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]initWithFrame:frame and:title];
-    [self.view addSubview:btn];
+    [self.headerBackView addSubview:btn];
     btn.tag = tag;
     if (btn.tag==101) {
         self.yearBtn = btn;
+        UIView *line = [[UIView alloc]init];
+        line.backgroundColor = [UIColor colorWithHexString:@"#eeeeee"];
+        [btn addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.right.offset(0);
+            make.width.offset(1);
+        }];
     }else{
         self.monthBtn = btn;
     }
-    [btn addTarget:self action:@selector(selectRepairItem:) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(selectTimeItem:) forControlEvents:UIControlEventTouchUpInside];
 }
--(void)selectRepairItem:(UIButton*)sender{
-    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+//执行手势触发的方法：
+- (void)event:(UITapGestureRecognizer *)gesture
+{
+    //移除view
+    [gesture.view removeFromSuperview];
+    [self.yearPickerView removeFromSuperview];
+    [self.monthPickerView removeFromSuperview];
+}
+-(void)selectTimeItem:(UIButton*)sender{
+//    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
     [sender setImage:[UIImage imageNamed:@"selected_open"] forState:UIControlStateNormal];
-    [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    [sender setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+//添加滚动线
+    [UIView animateWithDuration:0 animations:^{
+            [self.line mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.height.offset(2);
+                make.left.bottom.equalTo(sender);
+                make.width.offset(sender.bounds.size.width);
+            }];
+        }];
     NSDate *now = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
@@ -159,6 +186,23 @@ static NSString* billCellid = @"bill_cell";
 //    NSInteger day = [dateComponent day];
 //    NSInteger hour = [dateComponent hour];
     NSMutableArray *timeArr = [NSMutableArray array];
+    //大蒙布View
+    if (!self.backGrayView) {
+        UIView *backGrayView = [[UIView alloc]init];
+        self.backGrayView = backGrayView;
+        backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+        backGrayView.alpha = 0.2;
+        [self.view addSubview:backGrayView];
+        [backGrayView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(sender.mas_bottom);
+            make.left.bottom.right.offset(0);
+        }];
+        backGrayView.userInteractionEnabled = YES;
+        //添加tap手势：
+        UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+        //将手势添加至需要相应的view中
+        [backGrayView addGestureRecognizer:tapGesture];
+    }
         if (sender.tag == 101) {
         if (self.yearPickerView) {
             for (NSInteger i = year-9; i<=year; i++) {
@@ -167,11 +211,12 @@ static NSString* billCellid = @"bill_cell";
             }
             self.yearArr = timeArr;
             if (self.yearPickerView.hidden) {
+                self.backGrayView.hidden = false;
                 self.yearPickerView.hidden = false;
                 self.monthPickerView.hidden = true;
             }else{
                 self.yearPickerView.hidden = true;
-                
+                self.backGrayView.hidden = true;
             }
             
         }else{
@@ -182,7 +227,7 @@ static NSString* billCellid = @"bill_cell";
             self.yearArr = timeArr;
             UIPickerView *pickView = [[UIPickerView alloc]init];
             [self.view addSubview:pickView];
-            pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+            pickView.backgroundColor = [UIColor whiteColor];
             pickView.dataSource = self;
             pickView.delegate = self;
             pickView.showsSelectionIndicator = YES;
@@ -190,11 +235,11 @@ static NSString* billCellid = @"bill_cell";
             [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(sender.mas_bottom);
                 make.left.width.equalTo(sender);
-                make.height.offset(220*kiphone6);
+                make.height.offset(138*kiphone6);
             }];
-        }
             self.monthPickerView.hidden = true;
-        
+            self.backGrayView.hidden = false;
+        }
 
         self.monthBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [self.monthBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
@@ -219,11 +264,12 @@ static NSString* billCellid = @"bill_cell";
             [timeArr addObject:@"全部"];
             self.monthArr = timeArr;
             if (self.monthPickerView.hidden) {
+                self.backGrayView.hidden = false;
                 self.monthPickerView.hidden = false;
                 self.yearPickerView.hidden = true;
             }else{
                 self.monthPickerView.hidden = true;
-                
+                self.backGrayView.hidden = true;
             }
             
         }else{
@@ -243,7 +289,7 @@ static NSString* billCellid = @"bill_cell";
             self.monthArr = timeArr;
             UIPickerView *pickView = [[UIPickerView alloc]init];
             [self.view addSubview:pickView];
-            pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+            pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
             pickView.dataSource = self;
             pickView.delegate = self;
             pickView.showsSelectionIndicator = YES;
@@ -251,9 +297,10 @@ static NSString* billCellid = @"bill_cell";
             [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(sender.mas_bottom);
                 make.left.width.equalTo(sender);
-                make.height.offset(220*kiphone6);
+                make.height.offset(138*kiphone6);
             }];
             self.yearPickerView.hidden = true;
+            self.backGrayView.hidden = false;
         }
     }
 
@@ -333,25 +380,69 @@ static NSString* billCellid = @"bill_cell";
     }
   
 }
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [pickerView rowSizeForComponent:component].width, [pickerView rowSizeForComponent:component].height)];
+    if (pickerView==self.yearPickerView) {
+        if (row >= self.yearArr.count) {
+            return nil;
+        }else{
+            [label setText:[self.yearArr objectAtIndex:row]];
+        }
+    }else{
+        if (row >= self.monthArr.count) {
+            return nil;
+        }else{
+            [label setText:[self.monthArr objectAtIndex:row]];
+        }
+    }
+    label.backgroundColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor colorWithHexString:@"#00eac6"];
+    label.font = [UIFont systemFontOfSize:14];
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"#03c2a5"];
+    [label addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(2);
+        make.left.bottom.right.offset(0);
+    }];
 
+    return label;
+}
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.months.count;
+    if (self.months.count) {
+        return self.months.count+1;
+    }else{
+        return self.months.count;
+    }
+    
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (indexPath.row==0) {
+        YJBillHeaderViewTVCell *cell = [[YJBillHeaderViewTVCell alloc]init];
+        return cell;
+    }
     YJBillResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:billCellid forIndexPath:indexPath];
-    cell.sumModel = self.months[indexPath.row];
+    cell.sumModel = self.months[indexPath.row-1];
     return cell;
   
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 177*kiphone6;
+    if (indexPath.row==0) {
+        return 65*kiphone6;
+    }
+    return 184*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 68*kiphone6)];
-    headerBtn.backgroundColor = [UIColor whiteColor];
+    UIView *headerBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 124*kiphone6)];
+    headerBackView.backgroundColor = [UIColor whiteColor];
+    self.headerBackView = headerBackView;
+    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 76*kiphone6)];
+    [headerBtn setImage:[UIImage imageNamed:@"address_backPhoto"] forState:UIControlStateNormal];
+    [headerBackView addSubview:headerBtn];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"address_info"]];
     [headerBtn addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -359,12 +450,12 @@ static NSString* billCellid = @"bill_cell";
         make.centerY.equalTo(headerBtn);
     }];
     
-    UILabel *addressLabel = [UILabel labelWithText:self.address andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    UILabel *addressLabel = [UILabel labelWithText:self.address andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
     self.address = addressLabel.text;
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(imageView);
-        make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
+        make.left.equalTo(imageView.mas_right).offset(5*kiphone6);
     }];
     WS(ws);
     self.clickBtnBlock = ^(NSString *address) {
@@ -375,11 +466,11 @@ static NSString* billCellid = @"bill_cell";
                 
                  };
     YJPropertyAddressModel *model = self.addresses[0];
-    UILabel *cityLabel = [UILabel labelWithText:model.city andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
+    UILabel *cityLabel = [UILabel labelWithText:model.city andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
-        make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
+        make.left.equalTo(imageView.mas_right).offset(5*kiphone6);
     }];
     UIImageView *gray_forward = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_forward"]];
     [headerBtn addSubview:gray_forward];
@@ -388,27 +479,42 @@ static NSString* billCellid = @"bill_cell";
         make.centerY.equalTo(headerBtn);
     }];
     [headerBtn addTarget:self action:@selector(modifyAddress) forControlEvents:UIControlEventTouchUpInside];
-    return headerBtn;
+    [self setBtnWithFrame:CGRectMake(0, 76*kiphone6, kScreenW*0.5, 48*kiphone6) WithTitle:@"2017年"andTag:101];
+    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 76*kiphone6, kScreenW*0.5, 48*kiphone6) WithTitle:@"全部"andTag:102];
+//添加滚动线
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"#03c2a5"];
+    [headerBackView addSubview:line];
+    [headerBackView bringSubviewToFront:line];
+    self.line = line;
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(2);
+        make.left.bottom.equalTo(headerBackView);
+        make.width.offset(headerBackView.bounds.size.width/2);
+    }];
+    return headerBackView;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 68*kiphone6;
+    return 124*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100*kiphone6)];
-    footerView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    footerView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [btn setTitle:@"查询" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
     btn.layer.masksToBounds = true;
     btn.layer.cornerRadius = 3;
+    btn.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
+    btn.layer.borderWidth = 0.5;
     [footerView addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(40*kiphone6);
+        make.top.offset(30*kiphone6);
         make.centerX.equalTo(footerView);
-        make.width.offset(325*kiphone6);
-        make.height.offset(45*kiphone6);
+        make.width.offset(202*kiphone6);
+        make.height.offset(42*kiphone6);
     }];
     [btn addTarget:self action:@selector(queryBill) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:btn];

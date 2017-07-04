@@ -131,6 +131,7 @@
 		16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9B1EDD71A900F52A7A /* libc++.tbd */; };
 		16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9D1EDD71C600F52A7A /* GLKit.framework */; };
 		16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */; };
+		16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
@@ -505,6 +506,8 @@
 		16AD9E9D1EDD71C600F52A7A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		16AD9E9F1EDED75100F52A7A /* YJNearbyShopChangeAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopChangeAddressVC.h; sourceTree = "<group>"; };
 		16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopChangeAddressVC.m; sourceTree = "<group>"; };
+		16EBB5381F0B714C006D178C /* YJBillHeaderViewTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJBillHeaderViewTVCell.h; sourceTree = "<group>"; };
+		16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBillHeaderViewTVCell.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
 		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
@@ -1129,6 +1132,8 @@
 				166FF4A71EBC52EE00846A59 /* YJBillInfoTableViewCell.m */,
 				166FF4AB1EBC6BA600846A59 /* YJBillResultTableViewCell.h */,
 				166FF4AC1EBC6BA600846A59 /* YJBillResultTableViewCell.m */,
+				16EBB5381F0B714C006D178C /* YJBillHeaderViewTVCell.h */,
+				16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */,
 			);
 			name = preprotyBill;
 			sourceTree = "<group>";
@@ -2020,6 +2025,7 @@
 				167130271EB964BD00CC2394 /* YJReportRepairVC.m in Sources */,
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
+				16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */,
 				3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
 				1640BE9A1ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m in Sources */,

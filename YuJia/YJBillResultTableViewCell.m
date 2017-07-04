@@ -53,34 +53,40 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    UIView *headerView = [[UIView alloc]init];
-    headerView.backgroundColor = [UIColor colorWithHexString:@"#ecebeb"];
-    [self.contentView addSubview:headerView];
-    [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
-        make.height.offset(5*kiphone6);
-    }];
-//    //添加line
-//    UIView *line = [[UIView alloc]init];
-//    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-//    [self.contentView addSubview:line];
-//    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.left.right.offset(0);
-//        make.height.offset(1*kiphone6);
-//    }];
+    self.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     //添加tableView
+    UIView *backView = [[UIView alloc]init];
+    [self.contentView addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.offset(0);
+        make.left.offset(15*kiphone6);
+        make.right.offset(-15*kiphone6);
+    }];
+    [backView layoutIfNeeded];
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
-    [self.contentView addSubview:tableView];
+    [backView addSubview:tableView];
     self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(5*kiphone6);
-        make.bottom.left.right.offset(0);
+        make.left.right.top.bottom.offset(0);
     }];
+//    阴影的颜色
+    backView.layer.shadowColor = [UIColor colorWithHexString:@"#158070"].CGColor;
+//    阴影的透明度
+    backView.layer.shadowOpacity = 0.8f;
+//    阴影的圆角
+    backView.layer.shadowRadius = 6.f;
+//    阴影偏移量
+    backView.layer.shadowOffset = CGSizeMake(0,3);
+
+//    CALayer *layer = [tableView layer];//加阴影
+//        layer.shadowOffset = CGSizeMake(3, 6);
+//        layer.shadowRadius = 5.0;
+//        layer.shadowColor = [UIColor blackColor].CGColor;
+//        layer.shadowOpacity = 0.8;
     tableView.bounces = false;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:defaultRightCellid];
-
     tableView.delegate =self;
     tableView.dataSource = self;
     tableView.scrollEnabled = false;
@@ -94,7 +100,7 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
 //    NSArray *itemArr = @[@"城       市",@"小       区",@"业主姓名",@"手  机  号",@"小区楼号",@"楼       层",@"单       元",@"房       号"];
     UITableViewCell *cell = cell =[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:defaultRightCellid];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
-    cell.textLabel.font = [UIFont systemFontOfSize:13];
+    cell.textLabel.font = [UIFont systemFontOfSize:15];
     //添加line
     UIView *line = [[UIView alloc]init];
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
@@ -105,10 +111,12 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
     }];
 
     cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#333333"];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
     if (indexPath.row==0) {
        cell.textLabel.text = self.sumModel.time;
        cell.detailTextLabel.text = [NSString stringWithFormat:@"合计缴费：%ld元", self.sumModel.moneySum];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#00eac6"];
+        cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00eac6"];
     }else if(indexPath.row==1){
         cell.textLabel.text = @"水费";
         cell.detailTextLabel.text = self.waters?self.waters:@"0元";
@@ -124,10 +132,10 @@ static NSString* defaultRightCellid = @"defaultRight_cell";
 
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==0) {
-        return 37*kiphone6;
-    }
-    return 45*kiphone6;
+//    if (indexPath.row==0) {
+//        return 37*kiphone6;
+//    }
+    return 46*kiphone6;
 }
 
 
