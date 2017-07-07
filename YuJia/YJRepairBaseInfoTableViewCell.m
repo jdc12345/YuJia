@@ -84,7 +84,6 @@
     }];
     self.telNumberField = telNumberField;
     telNumberField.delegate = self;
-    
     //添加line2
     UIView *line2 = [[UIView alloc]init];
     line2.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
@@ -94,28 +93,28 @@
         make.top.equalTo(line1.mas_bottom).offset(44*kiphone6);
         make.height.offset(1*kiphone6);
     }];
-    //添加地址imageView图标
-    UIImageView *addressImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"address_repair"]];
-    [self.contentView addSubview:addressImageView];
-    [addressImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(10*kiphone6);
-        make.centerY.equalTo(line2.mas_bottom).offset(22*kiphone6);
-    }];
-    //添加地址textField
-    UITextField *addressField = [[UITextField alloc]init];
-    addressField.font = [UIFont boldSystemFontOfSize:13];
-    addressField.placeholder = @"地址";
-    [addressField setValue:[UIColor colorWithHexString:@"#999999"] forKeyPath:@"_placeholderLabel.textColor"];
-    [addressField setValue:[UIFont boldSystemFontOfSize:13] forKeyPath:@"_placeholderLabel.font"];
-    [self.contentView addSubview:addressField];
-    [addressField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(addressImageView.mas_right).offset(10*kiphone6);
-        make.centerY.equalTo(addressImageView);
-        make.width.offset(self.contentView.bounds.size.width-40*kiphone6);;
-        make.height.equalTo(addressImageView);
-    }];
-    self.addressField = addressField;
-    addressField.delegate = self;
+//    //添加地址imageView图标
+//    UIImageView *addressImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"address_repair"]];
+//    [self.contentView addSubview:addressImageView];
+//    [addressImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.offset(10*kiphone6);
+//        make.centerY.equalTo(line2.mas_bottom).offset(22*kiphone6);
+//    }];
+//    //添加地址textField
+//    UITextField *addressField = [[UITextField alloc]init];
+//    addressField.font = [UIFont boldSystemFontOfSize:13];
+//    addressField.placeholder = @"地址";
+//    [addressField setValue:[UIColor colorWithHexString:@"#999999"] forKeyPath:@"_placeholderLabel.textColor"];
+//    [addressField setValue:[UIFont boldSystemFontOfSize:13] forKeyPath:@"_placeholderLabel.font"];
+//    [self.contentView addSubview:addressField];
+//    [addressField mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(addressImageView.mas_right).offset(10*kiphone6);
+//        make.centerY.equalTo(addressImageView);
+//        make.width.offset(self.contentView.bounds.size.width-40*kiphone6);;
+//        make.height.equalTo(addressImageView);
+//    }];
+//    self.addressField = addressField;
+//    addressField.delegate = self;
 
 }
 #pragma UItextdelegate

@@ -100,6 +100,7 @@
 		1672D7A31EC2BE7500F5970C /* YJSelfReplyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1672D7A21EC2BE7500F5970C /* YJSelfReplyTableViewCell.m */; };
 		1672D7A61EC32F8300F5970C /* YJNoticeListTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1672D7A51EC32F8300F5970C /* YJNoticeListTableVC.m */; };
 		1672D7A91EC32FF500F5970C /* YJNoticeListTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1672D7A81EC32FF500F5970C /* YJNoticeListTVCell.m */; };
+		1672F9971F0DCB6E00019137 /* YJRepairRecoderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1672F9961F0DCB6E00019137 /* YJRepairRecoderVC.m */; };
 		16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16742BEC1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m */; };
 		16742BF01EC19ECA0016DDD9 /* YJPostFriendStateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16742BEF1EC19ECA0016DDD9 /* YJPostFriendStateVC.m */; };
 		16742BF31EC1CEF80016DDD9 /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 16742BF21EC1CEF80016DDD9 /* UIButton+Badge.m */; };
@@ -456,6 +457,8 @@
 		1672D7A51EC32F8300F5970C /* YJNoticeListTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNoticeListTableVC.m; sourceTree = "<group>"; };
 		1672D7A71EC32FF500F5970C /* YJNoticeListTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNoticeListTVCell.h; sourceTree = "<group>"; };
 		1672D7A81EC32FF500F5970C /* YJNoticeListTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNoticeListTVCell.m; sourceTree = "<group>"; };
+		1672F9951F0DCB6E00019137 /* YJRepairRecoderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRepairRecoderVC.h; sourceTree = "<group>"; };
+		1672F9961F0DCB6E00019137 /* YJRepairRecoderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecoderVC.m; sourceTree = "<group>"; };
 		16742BEB1EC1593D0016DDD9 /* YJFriendStateTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendStateTableViewCell.h; sourceTree = "<group>"; };
 		16742BEC1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendStateTableViewCell.m; sourceTree = "<group>"; };
 		16742BEE1EC19ECA0016DDD9 /* YJPostFriendStateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPostFriendStateVC.h; sourceTree = "<group>"; };
@@ -964,6 +967,8 @@
 				3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */,
 				167130251EB964BD00CC2394 /* YJReportRepairVC.h */,
 				167130261EB964BD00CC2394 /* YJReportRepairVC.m */,
+				1672F9951F0DCB6E00019137 /* YJRepairRecoderVC.h */,
+				1672F9961F0DCB6E00019137 /* YJRepairRecoderVC.m */,
 				166FF49B1EBC2A3B00846A59 /* PropertyBill */,
 				166BDCAF1ECA86CC00441DB5 /* Express delivery */,
 				166577A81EBFF75600FC812B /* Life payment */,
@@ -1954,6 +1959,7 @@
 				1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */,
 				3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */,
 				1640BE971ED915A400E3AE00 /* YJHouseListModel.m in Sources */,
+				1672F9971F0DCB6E00019137 /* YJRepairRecoderVC.m in Sources */,
 				3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */,
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
 				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,

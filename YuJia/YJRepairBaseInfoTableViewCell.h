@@ -11,5 +11,5 @@
 @interface YJRepairBaseInfoTableViewCell : UITableViewCell
 @property(nonatomic,weak)UITextField *nameField;
 @property(nonatomic,weak)UITextField *telNumberField;
-@property(nonatomic,weak)UITextField *addressField;
+//@property(nonatomic,weak)UITextField *addressField;
 @end
