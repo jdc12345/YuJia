@@ -26,14 +26,14 @@ static NSString* cellid = @"cell_id";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     //self.automaticallyAdjustsScrollViewInsets = NO;
-        self.title = @"圈子";
+    self.title = @"圈子";
     [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSFontAttributeName:[UIFont systemFontOfSize:15],
+     @{NSFontAttributeName:[UIFont systemFontOfSize:18],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     
     [self loadData];
-
+    
 }
 - (void)loadData{
     NSArray *items = @[@[@{@"name":@"友邻圈",@"icon":@"friends_circle"}],@[@{@"name":@"社区活动",@"icon":@"community_activities"}]
@@ -53,15 +53,13 @@ static NSString* cellid = @"cell_id";
 }
 - (void)setUpUI {
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     [self.view addSubview:tableView];
     self.tableView = tableView;
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YYCircleTableViewCell class] forCellReuseIdentifier:cellid];
-    // 轮播器
-    
 }
 #pragma mark - UITableView
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -77,14 +75,14 @@ static NSString* cellid = @"cell_id";
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5*kiphone6)];
-    backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     return backView;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 5*kiphone6;
+    return 15*kiphone6;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50*kiphone6;
+    return 115*kiphone6;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
@@ -109,13 +107,13 @@ static NSString* cellid = @"cell_id";
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -36,7 +36,7 @@
 - (void)setupUI
 {
     // 设置整个cell的背景颜色
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     
     // 创建子控件
     UIImageView* iconView = [[UIImageView alloc] init];
@@ -44,27 +44,19 @@
     [self.contentView addSubview:iconView];
     
     UILabel* nameLabel = [[UILabel alloc] init];
-    nameLabel.font = [UIFont systemFontOfSize:15];
-    nameLabel.textColor = [UIColor darkGrayColor];
+    nameLabel.font = [UIFont systemFontOfSize:24];
+    nameLabel.textColor = [UIColor colorWithHexString:@"#ffffff"];
     nameLabel.text = @"友邻圈";
-    [self.contentView addSubview:nameLabel];
-    UIButton *btn = [[UIButton alloc]init];
-    [btn setImage:[UIImage imageNamed:@"forward"] forState:UIControlStateNormal];
-    [self.contentView addSubview:btn];
+    [iconView addSubview:nameLabel];
     // 自动布局
     [iconView mas_makeConstraints:^(MASConstraintMaker* make) {
-        make.centerY.equalTo(self.contentView);
         make.left.offset(10*kiphone6);
-        make.width.height.offset(23*kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.top.bottom.offset(0);
     }];
     
     [nameLabel mas_makeConstraints:^(MASConstraintMaker* make) {
-        make.centerY.equalTo(self.contentView);
-        make.left.equalTo(iconView.mas_right).offset(5*kiphone6);
-    }];
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
-        make.right.offset(-10*kiphone6);
+        make.center.equalTo(iconView);
     }];
     self.iconView = iconView;
     self.nameLabel = nameLabel;
@@ -72,7 +64,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
