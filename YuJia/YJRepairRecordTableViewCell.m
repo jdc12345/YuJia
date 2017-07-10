@@ -100,7 +100,7 @@ static NSString* photoCellid = @"photo_cell";
     [self.contentView addSubview:typeLabel];
     UILabel *timeLabel = [UILabel labelWithText:@"期望处理时间:2017-5-2" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:12];//维修时间
     [self.contentView addSubview:timeLabel];
-    UILabel *stateLabel = [UILabel labelWithText:@"维修中" andTextColor:[UIColor colorWithHexString:@"#01c0ff"] andFontSize:12];//维修状态
+    UILabel *stateLabel = [UILabel labelWithText:@"维修中" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:12];//维修状态
     [self.contentView addSubview:stateLabel];
     UIView *line1 = [[UIView alloc]init];//添加line1
     line1.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];

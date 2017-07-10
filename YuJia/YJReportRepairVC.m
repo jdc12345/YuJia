@@ -23,6 +23,7 @@
 #import "YJReportRepairRecordModel.h"
 #import <MJRefresh.h>
 #import "UIViewController+Cloudox.h"
+#import "YJRepairRecoderVC.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -90,6 +91,22 @@ static NSString* photoCellid = @"photo_cell";
     tableView.dataSource = self;
     self.hourArr = @[@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20"];
     self.minusArr = @[@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59"];
+    //添加右侧报修记录按钮
+    UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 70, 30)];
+    [deleateBtn setTitle:@"报修记录" forState:UIControlStateNormal];
+    [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+    deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+    //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+    deleateBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [deleateBtn addTarget:self action:@selector(informationBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+
+}
+-(void)informationBtnClick{
+    YJRepairRecoderVC *vc = [[YJRepairRecoderVC alloc]init];
+    [self.navigationController pushViewController:vc animated:true];
 }
 -(void)addTypeViewWith:(NSArray*)typeArr{
     UIImageView *view = [[UIImageView alloc]init];

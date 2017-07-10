@@ -234,8 +234,7 @@ static NSString* collectionCellid = @"collection_cell";
         default:
             break;
     }
-    
-    
+        
 }
 
 // 解析数据
@@ -244,62 +243,6 @@ static NSString* collectionCellid = @"collection_cell";
     return [NSArray objectListWithPlistName:@"FunctionsList.plist" clsName:@"YYPropertyFunctionList"];
 }
 
-
-#pragma mark - UITableView
-//-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    return 3;
-//}
-//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return 1;
-//}
-//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    YYPropertyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
-//    if (indexPath.section == 1) {
-//        cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-//            //                    NSLog(@">>>>>  %ld", (long)index);
-//            YJExpressDeliveryVC* vc = [[YJExpressDeliveryVC alloc] init];
-//            vc.personalExpresss = self.personalExpresss;
-//            [self.navigationController pushViewController:vc animated:YES];
-//        };
-//    }
-////    cell.clickBtnBlock = ^(NSInteger tag) {//cell上按钮点击事件
-//////                    NSLog(@">>>>>  %ld", (long)index);
-////        UIViewController* vc = [[UIViewController alloc] init];
-////        vc.view.backgroundColor = [UIColor redColor];
-////        [self.navigationController pushViewController:vc animated:YES];
-////                 };
-//    cell.model = self.itemsData[indexPath.section][indexPath.row];
-//    return cell;
-//}
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    NSArray *items = @[@"需交费用",@"快递通知",@"报修通知"];
-//    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 24*kiphone6)];
-//    backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-//    UIImageView *rectView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rectangle"]];
-//    [backView addSubview:rectView];
-//    [rectView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.offset(10*kiphone6);
-//        make.centerY.equalTo(backView);
-//        make.width.offset(6*kiphone6);
-//        make.height.offset(15*kiphone6);
-//    }];
-//    UILabel *itemLabel = [UILabel labelWithText:items[section] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
-//    [backView addSubview:itemLabel];
-//    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(rectView.mas_right).offset(5*kiphone6);
-//        make.centerY.equalTo(backView);
-//    }];
-//    return backView;
-//}
-//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    return 24*kiphone6;
-//}
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 53*kiphone6;
-//}
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    [tableView deselectRowAtIndexPath:indexPath animated:true];
-//}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.automaticallyAdjustsScrollViewInsets = NO;
