@@ -10,6 +10,8 @@
 #import "YJFriendNeighborStateModel.h"
 
 @interface YJFriendStateTableViewCell : UITableViewCell
+@property(nonatomic,strong)NSMutableArray *urlStrs;
+
 @property(nonatomic,strong)YJFriendNeighborStateModel *model;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^commentBtnBlock)(YJFriendNeighborStateModel *model);

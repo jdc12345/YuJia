@@ -104,7 +104,7 @@
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     UIImageView *iconView = [[UIImageView alloc]init];//回复图片
     UIImage *image =[UIImage imageNamed:@"blue-opinion"];
     iconView.image = image;
@@ -117,7 +117,7 @@
     self.iconView = iconView;
     iconView.hidden = true;
     UITextView *textView= [[UITextView alloc]init];
-    textView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    textView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [self.contentView addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.offset(0);
@@ -132,9 +132,8 @@
     textView.editable = NO;//必须禁止输入，否则点击将会弹出输入键盘
     textView.scrollEnabled = NO;//可选的，视具体情况而定
     self.textview = textView;
-//    self.hyb_lastViewInCell = textView;
-//    self.hyb_bottomOffsetToCell = 0;
+    self.hyb_lastViewInCell = textView;
+    self.hyb_bottomOffsetToCell = 0;
 }
-
 
 @end

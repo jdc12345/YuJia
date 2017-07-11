@@ -160,7 +160,7 @@
         make.height.offset(37*kiphone6);
         make.top.equalTo(numberItemLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *activitieStateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
+    UILabel *activitieStateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];//活动状态
     [footerView addSubview:activitieStateLabel];
     [activitieStateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(footerView);

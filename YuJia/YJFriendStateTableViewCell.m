@@ -14,6 +14,7 @@
 #import <HUPhotoBrowser.h>
 #import <UIImageView+WebCache.h>
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
+#import "YJFriendStatesFlowLayout.h"
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
@@ -29,7 +30,7 @@ static NSString* photoCellid = @"photo_cell";
 @property (nonatomic, weak) UILabel* likeNumberLabel;
 @property (nonatomic, weak) UILabel* commentNumberLabel;
 @property(nonatomic,strong)NSArray *imagesArr;
-@property(nonatomic,strong)NSMutableArray *urlStrs;
+//@property(nonatomic,strong)NSMutableArray *urlStrs;
 @end
 @implementation YJFriendStateTableViewCell
 
@@ -59,19 +60,29 @@ static NSString* photoCellid = @"photo_cell";
         NSMutableArray *arr = [NSMutableArray arrayWithArray:array];
         [arr removeLastObject];
         self.imagesArr = arr;
-        if (self.imagesArr.count<5&&self.imagesArr.count>0) {
-            if (self.collectionView.frame.size.height != 70*kiphone6) {
+        for (int i=0; i<arr.count; i++) {
+            NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,arr[i]];
+            [self.urlStrs addObject:urlStr];
+        }
+        if (self.imagesArr.count<4&&self.imagesArr.count>0) {
+            if (self.collectionView.frame.size.height != 103*kiphone6) {
             [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.offset(70*kiphone6);
+                make.height.offset(103*kiphone6);
             }];
             }
-        }else if (self.imagesArr.count>4){
-            if (self.collectionView.frame.size.height != 140*kiphone6) {
+        }else if (self.imagesArr.count>3&&self.imagesArr.count<7){
+            if (self.collectionView.frame.size.height != 206*kiphone6) {
                 [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.height.offset(140*kiphone6);
+                    make.height.offset(206*kiphone6);
                 }];
             }            
-        }        
+        }else if (self.imagesArr.count>6){
+            if (self.collectionView.frame.size.height != 310*kiphone6) {
+                [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.height.offset(310*kiphone6);
+                }];
+            }
+        }
         [self.collectionView reloadData];
     }else{
         [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -126,7 +137,7 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(typeLabel.mas_bottom).offset(7*kiphone6);
     }];
     //photoCollectionView
-    UICollectionView *photoCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJRepairRecordFlowLayout alloc]init]];
+    UICollectionView *photoCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJFriendStatesFlowLayout alloc]init]];
     [self.contentView addSubview:photoCollectionView];
     self.collectionView = photoCollectionView;
     photoCollectionView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -142,18 +153,18 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(contentLabel.mas_bottom).offset(10*kiphone6);
         make.left.equalTo(nameLabel);
         make.right.offset(-10*kiphone6);
-        make.height.offset(65*kiphone6);
+        make.height.offset(93*kiphone6);
     }];
     UILabel *timeLabel = [UILabel labelWithText:@"1小时前" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:10];//维修时间
     [self.contentView addSubview:timeLabel];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(photoCollectionView.mas_bottom).offset(19*kiphone6);
+        make.top.equalTo(photoCollectionView.mas_bottom).offset(8*kiphone6);
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
     }];
     UILabel *commentNumberLabel = [UILabel labelWithText:@"1" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//维修类型
     [self.contentView addSubview:commentNumberLabel];
     [commentNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
+        make.top.equalTo(photoCollectionView.mas_bottom).offset(5*kiphone6);
         make.right.offset(-10*kiphone6);
     }];
     UIButton *commentBtn = [[UIButton alloc]init];//评论按钮
@@ -166,7 +177,7 @@ static NSString* photoCellid = @"photo_cell";
     UILabel *likeNumberLabel = [UILabel labelWithText:@"1" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//维修类型
     [self.contentView addSubview:likeNumberLabel];
     [likeNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(photoCollectionView.mas_bottom).offset(15*kiphone6);
+        make.top.equalTo(photoCollectionView.mas_bottom).offset(5*kiphone6);
         make.right.equalTo(commentBtn.mas_left).offset(-15*kiphone6);
     }];
     [self.contentView addSubview:commentNumberLabel];
@@ -253,7 +264,7 @@ static NSString* photoCellid = @"photo_cell";
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
-    [self.urlStrs addObject:urlStr];
+//    [self.urlStrs addObject:urlStr];
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
 //    cell.photo = [UIImage imageNamed:@"icon"];
     return cell;

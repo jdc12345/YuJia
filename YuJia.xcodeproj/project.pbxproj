@@ -114,6 +114,7 @@
 		1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E31ECC56CA003BBA58 /* YJNearByShopTVCell.m */; };
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
+		168900021F147ED10025F1E0 /* YJFriendStatesFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168900011F147ED10025F1E0 /* YJFriendStatesFlowLayout.m */; };
 		169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */; };
 		1695197A1ED405AB00C2C380 /* YJHouseListTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519791ED405AB00C2C380 /* YJHouseListTVCell.m */; };
 		1695197D1ED40ED900C2C380 /* YJHouseDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */; };
@@ -481,6 +482,8 @@
 		168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecordFlowLayout.m; sourceTree = "<group>"; };
 		168466A71EBB495E00A98295 /* YJImageDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJImageDisplayCollectionViewCell.h; sourceTree = "<group>"; };
 		168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJImageDisplayCollectionViewCell.m; sourceTree = "<group>"; };
+		168900001F147ED10025F1E0 /* YJFriendStatesFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendStatesFlowLayout.h; sourceTree = "<group>"; };
+		168900011F147ED10025F1E0 /* YJFriendStatesFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendStatesFlowLayout.m; sourceTree = "<group>"; };
 		169519751ED3E0EB00C2C380 /* YJHouseSearchListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseSearchListVC.h; sourceTree = "<group>"; };
 		169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchListVC.m; sourceTree = "<group>"; };
 		169519781ED405AB00C2C380 /* YJHouseListTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseListTVCell.h; sourceTree = "<group>"; };
@@ -1158,6 +1161,8 @@
 				1672D7A21EC2BE7500F5970C /* YJSelfReplyTableViewCell.m */,
 				1672D7A71EC32FF500F5970C /* YJNoticeListTVCell.h */,
 				1672D7A81EC32FF500F5970C /* YJNoticeListTVCell.m */,
+				168900001F147ED10025F1E0 /* YJFriendStatesFlowLayout.h */,
+				168900011F147ED10025F1E0 /* YJFriendStatesFlowLayout.m */,
 			);
 			name = friendNeighbor;
 			sourceTree = "<group>";
@@ -1938,6 +1943,7 @@
 				3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */,
 				166BDCB61ECAA64C00441DB5 /* YJExpressSenderTVCell.m in Sources */,
 				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
+				168900021F147ED10025F1E0 /* YJFriendStatesFlowLayout.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
 				16239DC21ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m in Sources */,
 				3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */,

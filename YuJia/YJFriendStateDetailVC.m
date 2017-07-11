@@ -153,7 +153,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
         commentHeaderView.frame = CGRectMake(0, 0, 354*kiphone6, 0);
     }
 
-    commentHeaderView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    commentHeaderView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     UIImageView *heaterView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"blue-like"]];
     heaterView.frame = CGRectMake(27*kiphone6, 5*kiphone6, 11*kiphone6, 11*kiphone6);
     [commentHeaderView addSubview:heaterView];
@@ -161,16 +161,19 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     //photoCollectionView
     UICollectionView *likeCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJFriendLikeFlowLayout alloc]init]];
     if (self.likeList.count>7) {
+        heaterView.hidden = false;
         likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 90*kiphone6);
     }else if (self.likeList.count<7&&self.likeList.count>0){
+        heaterView.hidden = false;
         likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 45*kiphone6);
     }else{
         likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 0);
+        heaterView.hidden = true;
     }
     [commentHeaderView addSubview:likeCollectionView];
 
     self.collectionView = likeCollectionView;
-    likeCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    likeCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     likeCollectionView.dataSource = self;
     likeCollectionView.delegate = self;
     // 注册单元格
@@ -199,14 +202,14 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     }
     UIView *footBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, tableViewHeight+45*kiphone6)];
     footBackView.backgroundColor = [UIColor whiteColor];
-    UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectMake(10*kiphone6, 0, 354*kiphone6, tableViewHeight+45*kiphone6)];
+    UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectMake(59*kiphone6, 0, 306*kiphone6, tableViewHeight+45*kiphone6)];
     [footBackView addSubview:commentTableView];
 //    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.left.right.offset(0);
 //        make.height.mas_equalTo(tableViewHeight+45);
 //    }];
     self.commentTableView = commentTableView;
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
     [commentTableView registerClass:[YJSelfReplyTableViewCell class] forCellReuseIdentifier:selfReplyCellid];
     commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -253,7 +256,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
     [commentField setPlaceholderOpacity:0.6];
     [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
-        [self.commentField endEditing:YES];
+    [self.commentField endEditing:YES];
         
         NSLog(@"----------");
     }];
@@ -278,7 +281,6 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.tableView == tableView) {
-    
     YJFriendStateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
         cell.model = self.model;
         return cell;
@@ -340,20 +342,16 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
                     ws.coverPersonalId = model.coverPersonalId;
                 }
             }
-
-            
             [ws.commentField becomeFirstResponder];
         };
         return cell;
     }
-    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.tableView) {
         YJFriendNeighborStateModel *model = self.model;
         return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
             YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
-            
             // 配置数据
             [cell configCellWithModel:model indexPath:indexPath];
         }];
@@ -364,7 +362,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (self.commentTableView == tableView) {
         UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, 5*kiphone6)];
-        footerView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+        footerView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
         return footerView;
     }
    return nil;
@@ -373,7 +371,6 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     if (self.commentTableView == tableView) {
         if (self.commentList.count>0) {
             return 5*kiphone6;
-
         }
            }
     return 0.0f;

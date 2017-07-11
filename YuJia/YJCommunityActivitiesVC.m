@@ -29,6 +29,9 @@ static NSString* tableCellid = @"table_cell";
 
 @property(nonatomic,strong)RKNotificationHub *barHub;//bage
 @property(nonatomic,assign)Boolean isHasMessage;//是否有消息
+//改动又添加的
+@property(nonatomic,weak)UIView *headerImageView;
+@property(nonatomic,weak)UIView *scrollowView;//滚动条
 @end
 
 @implementation YJCommunityActivitiesVC
@@ -42,26 +45,59 @@ static NSString* tableCellid = @"table_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"正在进行"andTag:101];
-    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"活动结束"andTag:102];
+    //添加头部视图
+    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 55*kiphone6)];
+    headerView.userInteractionEnabled = true;
+    [self.view addSubview:headerView];
+    UIImage *oldImage = [UIImage imageNamed:@"activites_header"];
+    headerView.image = oldImage;
+    self.headerImageView = headerView;
+    [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 55*kiphone6) WithTitle:@"正在进行"andTag:101];
+    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 55*kiphone6) WithTitle:@"活动结束"andTag:102];
     UIView *line = [[UIView alloc]init];
-    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    line.backgroundColor = [UIColor colorWithHexString:@"#373840"];
     [self.view addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.underwayBtn.mas_bottom).offset(-1*kiphone6/[UIScreen mainScreen].scale);
+        make.top.equalTo(headerView.mas_bottom);
         make.right.left.offset(0);
-        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
+        make.height.offset(2*kiphone6);
+    }];
+    UIView *scrollowView = [[UIView alloc]init];//添加滚动线
+    scrollowView.backgroundColor = [UIColor colorWithHexString:@"#03c2a5"];
+    [line addSubview:scrollowView];
+    self.scrollowView = scrollowView;
+    [scrollowView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.offset(0);
+        make.height.offset(2*kiphone6);
+        make.width.offset(kScreenW*0.5);
     }];
     [self checkHasMessade];
     [self loadData];
 }
 -(void)checkHasMessade{
     //添加右侧消息中心按钮
+//    UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
+//    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+//    [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
+//    self.navigationItem.rightBarButtonItem = rightBarItem;
+    NSMutableArray* itemArr = [NSMutableArray array];
+    UIButton *postBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
+    [postBtn setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
+    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem2 = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
+    [itemArr addObject:rightBarItem2];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = 15;
+    [itemArr addObject:negativeSpacer];
     UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
-    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+    [informationBtn setImage:[UIImage imageNamed:@"remind"] forState:UIControlStateNormal];
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
+    [itemArr addObject:rightBarItem];
+    
+    self.navigationItem.rightBarButtonItems = itemArr;
+
     //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
     NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=31&msgTypeEnd=50",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
@@ -72,7 +108,7 @@ static NSString* tableCellid = @"table_cell";
             NSString *isHasMessage = responseObject[@"hasMessage"];
             self.isHasMessage = [isHasMessage boolValue];
             if (self.isHasMessage) {
-                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItem];//初始化bageView
+                self.barHub = [[RKNotificationHub alloc] initWithBarButtonItem: self.navigationItem.rightBarButtonItems[2]];//初始化bageView
                 [self.barHub setCircleAtFrame:CGRectMake(15, 1, 5, 5)];//bage的frame
                 [self.barHub increment];//显示count+1
                 [self.barHub hideCount];//隐藏数字
@@ -119,8 +155,6 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
-
-    
 }
 -(void)setupTableView{
     //添加tableView
@@ -130,7 +164,7 @@ static NSString* tableCellid = @"table_cell";
     [self.view addSubview:tableView];
     //    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.underwayBtn.mas_bottom);
+        make.top.equalTo(self.underwayBtn.mas_bottom).offset(2*kiphone6);
         make.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -201,43 +235,49 @@ static NSString* tableCellid = @"table_cell";
         }];
     }];
 
-    UIButton *postBtn = [[UIButton alloc]init];
-    [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
-    //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    postBtn.layer.cornerRadius = 25*kiphone6;
-    postBtn.layer.masksToBounds = YES;
-    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:postBtn];
-    
-    WS(ws);
-    [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(ws.view).with.offset(-54*kiphone6);
-        make.right.equalTo(ws.view).with.offset(-12*kiphone6);
-        make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
-    }];
+//    UIButton *postBtn = [[UIButton alloc]init];
+//    [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
+//    //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+//    postBtn.layer.cornerRadius = 25*kiphone6;
+//    postBtn.layer.masksToBounds = YES;
+//    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:postBtn];
+//    
+//    WS(ws);
+//    [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.equalTo(ws.view).with.offset(-54*kiphone6);
+//        make.right.equalTo(ws.view).with.offset(-12*kiphone6);
+//        make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
+//    }];
 
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
-    [self.view addSubview:btn];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    [self.headerImageView addSubview:btn];
+    btn.backgroundColor = [UIColor clearColor];
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
     btn.tag = tag;
     if (btn.tag==101) {
         self.underwayBtn = btn;
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
     }else{
         self.endBtn = btn;
     }
     [btn addTarget:self action:@selector(selectRepairItem:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)selectRepairItem:(UIButton*)sender{
-    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-    [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+//    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    [sender setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+    [self.scrollowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(sender);
+        make.top.equalTo(sender.mas_bottom);
+        make.height.offset(2*kiphone6);
+    }];
     if (sender.tag == 101) {
-        self.endBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-        [self.endBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//        self.endBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        [self.endBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         //更新数据源
         //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
         //    &over=1
@@ -271,8 +311,8 @@ static NSString* tableCellid = @"table_cell";
         }];
         
     }else{
-        self.underwayBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-        [self.underwayBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//        self.underwayBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        [self.underwayBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         //更新数据源
         //http://192.168.1.55:8080/smarthome/mobileapi/activity/findActivity.do?token=EC9CDB5177C01F016403DFAAEE3C1182
         //    &over=1

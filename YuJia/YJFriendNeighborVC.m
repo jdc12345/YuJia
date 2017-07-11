@@ -546,6 +546,7 @@ static NSString* tableCellid = @"table_cell";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJFriendStateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
+    [cell.urlStrs removeAllObjects];//解决cell复用时候图片数组没有清空造成的图片放大显示错误问题
     cell.model = self.statesArr[indexPath.row];
     WS(ws);
     cell.commentBtnBlock = ^(YJFriendNeighborStateModel *model){
