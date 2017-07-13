@@ -16,4 +16,7 @@
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^commentBtnBlock)(YJFriendNeighborStateModel *model);
 - (void)configCellWithModel:(YJFriendNeighborStateModel *)model indexPath:(NSIndexPath *)indexPath;
+
+@property(nonatomic,assign)BOOL isDetailCell;//判断是否是详情页面的cell
+@property (nonatomic, copy) void (^detailCommentBtnBlock)(YJFriendNeighborStateModel *model);
 @end

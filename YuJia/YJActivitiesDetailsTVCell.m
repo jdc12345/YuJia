@@ -106,7 +106,7 @@
         make.centerY.equalTo(iconView);
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
     }];
-    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//状态
+    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];//状态
     [self.contentView addSubview:stateLabel];
     [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconView);

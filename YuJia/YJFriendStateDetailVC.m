@@ -43,7 +43,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 @property(nonatomic, strong)NSMutableArray *likeList;
 @property(nonatomic,weak)UIView *fieldBackView;
 @property(nonatomic,assign)long coverPersonalId;
-//@property(nonatomic,assign)long personalId;
+@property(nonatomic,weak)UIView *footBackView;//评论tableView的背景view
 @end
 
 @implementation YJFriendStateDetailVC
@@ -56,7 +56,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     self.coverPersonalId = 0;//设定默认是评论该状态
         //添加大tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
@@ -65,7 +65,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     self.tableView.backgroundColor = [UIColor whiteColor];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.offset(0);
-        make.bottom.offset(-45*kiphone6);
+        make.bottom.offset(0);
     }];
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCell];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -74,6 +74,60 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight = 235*kiphone6;
 
+    //评论框
+    UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenH-49*kiphone6, kScreenW, 49*kiphone6)];
+    fieldBackView.backgroundColor = [UIColor colorWithHexString:@"f2f1f1"];
+    self.fieldBackView = fieldBackView;
+    self.fieldBackView.hidden = true;
+    [self.view addSubview:fieldBackView];
+    [self.view bringSubviewToFront:fieldBackView];
+    //边框宽度
+    [fieldBackView.layer setBorderWidth:1];
+    fieldBackView.layer.borderColor=[UIColor colorWithHexString:@"#acb3bd"].CGColor;
+    //键盘的Frame改变的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    //输入框
+    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
+    commentField.frame = CGRectMake(15*kiphone6, 6.5*kiphone6, 288*kiphone6, 49*kiphone6);
+    [fieldBackView addSubview:commentField];
+    commentField.layer.masksToBounds = true;
+    commentField.layer.cornerRadius = 3;
+    commentField.delegate = self;
+    commentField.returnKeyType = UIReturnKeySend;
+    self.commentField = commentField;
+    commentField.placeholder = @"评论...";
+    commentField.font=[UIFont boldSystemFontOfSize:14];
+    [commentField setBackgroundColor:[UIColor whiteColor]];
+    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
+    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"#999999"]];
+    [commentField setPlaceholderOpacity:0.6];
+    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
+        [self.commentField endEditing:YES];
+        
+        NSLog(@"----------");
+    }];
+    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"begin");
+        [self textViewDidChange:self.commentField];
+    }];
+    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
+        NSLog(@"end");
+    }];
+    //添加发送按钮
+    UIButton *sendBtn = [[UIButton alloc]init];
+    [fieldBackView addSubview:sendBtn];
+    [sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(commentField.mas_right).offset(7*kiphone6);
+        make.right.offset(-15*kiphone6);
+        make.centerY.equalTo(fieldBackView);
+        make.height.offset(26*kiphone6);
+    }];
+    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
+    [sendBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    sendBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [sendBtn setBackgroundColor:[UIColor colorWithHexString:@"#373840"]];
+    [sendBtn addTarget:self action:@selector(sendBtnClick) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)setStateId:(long)stateId{
     _stateId = stateId;
@@ -154,20 +208,20 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     }
 
     commentHeaderView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
-    UIImageView *heaterView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"blue-like"]];
-    heaterView.frame = CGRectMake(27*kiphone6, 5*kiphone6, 11*kiphone6, 11*kiphone6);
+    UIImageView *heaterView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"like-blue"]];
+    heaterView.frame = CGRectMake(10*kiphone6, 5*kiphone6, 11*kiphone6, 11*kiphone6);
     [commentHeaderView addSubview:heaterView];
 
     //photoCollectionView
     UICollectionView *likeCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJFriendLikeFlowLayout alloc]init]];
     if (self.likeList.count>7) {
         heaterView.hidden = false;
-        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 90*kiphone6);
+        likeCollectionView.frame = CGRectMake(31*kiphone6, 0, 300*kiphone6, 90*kiphone6);
     }else if (self.likeList.count<7&&self.likeList.count>0){
         heaterView.hidden = false;
-        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 45*kiphone6);
+        likeCollectionView.frame = CGRectMake(31*kiphone6, 0, 300*kiphone6, 45*kiphone6);
     }else{
-        likeCollectionView.frame = CGRectMake(46*kiphone6, 0, 300*kiphone6, 0);
+        likeCollectionView.frame = CGRectMake(31*kiphone6, 0, 300*kiphone6, 0);
         heaterView.hidden = true;
     }
     [commentHeaderView addSubview:likeCollectionView];
@@ -182,6 +236,33 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     likeCollectionView.showsVerticalScrollIndicator = false;
     
     //添加大tb尾部视图中的评论tableView
+    UIView *footBackView = [[UIView alloc]init];
+    self.footBackView = footBackView;
+    footBackView.backgroundColor = [UIColor whiteColor];
+    UITableView *commentTableView = [[UITableView alloc]init];
+    [footBackView addSubview:commentTableView];
+//    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.left.right.offset(0);
+//        make.height.mas_equalTo(tableViewHeight+45);
+//    }];
+    self.commentTableView = commentTableView;
+    [self updateCommentTableViewHeight];
+    self.commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
+    [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
+    [commentTableView registerClass:[YJSelfReplyTableViewCell class] forCellReuseIdentifier:selfReplyCellid];
+    commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    commentTableView.delegate =self;
+    commentTableView.dataSource = self;
+    commentTableView.rowHeight = UITableViewAutomaticDimension;
+    commentTableView.estimatedRowHeight = 38*kiphone6;
+//    commentTableView.scrollEnabled = false;
+    commentTableView.showsHorizontalScrollIndicator = false;
+    commentTableView.showsVerticalScrollIndicator = false;
+    self.tableView.tableFooterView = footBackView;
+    commentTableView.tableHeaderView = commentHeaderView;
+    
+}
+-(void)updateCommentTableViewHeight{
     CGFloat tableViewHeight = 0;
     for (YJFriendStateCommentModel *commentModel in self.commentList) {
         CGFloat cellHeight = 0;
@@ -197,79 +278,19 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
                 [cell configCellWithModel:commentModel];
             }];
             tableViewHeight += cellHeight;
-        }
-        
+        }        
     }
-    UIView *footBackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 354*kiphone6, tableViewHeight+45*kiphone6)];
-    footBackView.backgroundColor = [UIColor whiteColor];
-    UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectMake(59*kiphone6, 0, 306*kiphone6, tableViewHeight+45*kiphone6)];
-    [footBackView addSubview:commentTableView];
-//    [commentTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.left.right.offset(0);
-//        make.height.mas_equalTo(tableViewHeight+45);
-//    }];
-    self.commentTableView = commentTableView;
-    self.commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
-    [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
-    [commentTableView registerClass:[YJSelfReplyTableViewCell class] forCellReuseIdentifier:selfReplyCellid];
-    commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    commentTableView.delegate =self;
-    commentTableView.dataSource = self;
-    commentTableView.rowHeight = UITableViewAutomaticDimension;
-    commentTableView.estimatedRowHeight = 38*kiphone6;
-//    commentTableView.scrollEnabled = false;
-    commentTableView.showsHorizontalScrollIndicator = false;
-    commentTableView.showsVerticalScrollIndicator = false;
-    self.tableView.tableFooterView = footBackView;
-    commentTableView.tableHeaderView = commentHeaderView;
+    if (self.likeList.count<7&&self.likeList.count>0) {
+        self.footBackView.frame = CGRectMake(0, 0, 354*kiphone6, tableViewHeight+50*kiphone6);
+        self.commentTableView.frame = CGRectMake(59*kiphone6, 0, 306*kiphone6, tableViewHeight+50*kiphone6);
+    }else if (self.likeList.count>7) {
+        self.footBackView.frame = CGRectMake(0, 0, 354*kiphone6, tableViewHeight+100*kiphone6);
+        self.commentTableView.frame = CGRectMake(59*kiphone6, 0, 306*kiphone6, tableViewHeight+100*kiphone6);
+    }else{
+        self.footBackView.frame = CGRectMake(0, 0, 354*kiphone6, tableViewHeight+10*kiphone6);
+        self.commentTableView.frame = CGRectMake(59*kiphone6, 0, 306*kiphone6, tableViewHeight+10*kiphone6);
+    }
     
-    //评论框
-//    UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(20,self.view.frame.size.height- 110*kiphone6, self.view.frame.size.width-40*kiphone6, 45*kiphone6)];
-    UIView *fieldBackView = [[UIView alloc]init];
-    self.fieldBackView = fieldBackView;
-    
-    [self.view addSubview:fieldBackView];
-    [self.view bringSubviewToFront:fieldBackView];
-    [fieldBackView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(20*kiphone6);
-        make.right.offset(-20*kiphone6);
-        make.bottom.offset(0);
-        make.height.offset(45*kiphone6);
-    }];
-    [fieldBackView layoutIfNeeded];
-    //键盘的Frame改变的通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-   
-    //输入框
-    BRPlaceholderTextView *commentField = [[BRPlaceholderTextView alloc]init];
-    [fieldBackView addSubview:commentField];
-    [commentField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.bottom.offset(0);
-    }];
-    commentField.delegate = self;
-    commentField.returnKeyType = UIReturnKeySend;
-    self.commentField = commentField;
-    commentField.placeholder = @"评论";
-    commentField.font=[UIFont boldSystemFontOfSize:14];
-    [commentField setBackgroundColor:[UIColor whiteColor]];
-    [commentField setPlaceholderFont:[UIFont systemFontOfSize:15]];
-    [commentField setPlaceholderColor:[UIColor colorWithHexString:@"999999"]];
-    [commentField setPlaceholderOpacity:0.6];
-    [commentField addMaxTextLengthWithMaxLength:200 andEvent:^(BRPlaceholderTextView *text) {
-    [self.commentField endEditing:YES];
-        
-        NSLog(@"----------");
-    }];
-    [commentField addTextViewBeginEvent:^(BRPlaceholderTextView *text) {
-        NSLog(@"begin");
-        [self textViewDidChange:self.commentField];
-    }];
-    [commentField addTextViewEndEvent:^(BRPlaceholderTextView *text) {
-        NSLog(@"end");
-    }];
-    //边框宽度
-    [commentField.layer setBorderWidth:1];
-    commentField.layer.borderColor=[UIColor colorWithHexString:@"#f3f3f3"].CGColor;
 }
 #pragma mark - UITableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -283,6 +304,11 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     if (self.tableView == tableView) {
     YJFriendStateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
         cell.model = self.model;
+        cell.isDetailCell = true;
+        cell.detailCommentBtnBlock = ^(YJFriendNeighborStateModel *model){
+            self.fieldBackView.hidden = false;
+            [self.commentField becomeFirstResponder];
+        };
         return cell;
     }
     WS(ws);
@@ -305,9 +331,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
             [ws.commentField becomeFirstResponder];
             
         };
-        if (indexPath.row==0) {
-            cell.iconView.hidden = false;
-        }
+//        if (indexPath.row==0) {
+//            cell.iconView.hidden = false;
+//        }
         return cell;
     }else{
         YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];
@@ -375,6 +401,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
            }
     return 0.0f;
 }
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self.commentField resignFirstResponder];
+}
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
@@ -408,10 +437,76 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     NSValue *rectValue = noti.userInfo[UIKeyboardFrameEndUserInfoKey];
     
     CGRect rect = [rectValue CGRectValue];
-    [self.fieldBackView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_top).offset(rect.origin.y);
-    }];
+    self.fieldBackView.frame = CGRectMake(0,rect.origin.y-49*kiphone6, kScreenW, 49*kiphone6);
+}
+-(void)sendBtnClick{
     
+    [self.commentField resignFirstResponder];
+    if (self.commentField.text!=nil&&![self.commentField.text isEqualToString:@""]) {
+        //http://192.168.1.55:8080/smarthome/mobileapi/state/commentStat.do?token=EC9CDB5177C01F016403DFAAEE3C1182&stateId=1&content=评论内容
+        if (self.coverPersonalId == self.userId) {
+            self.coverPersonalId = 0;
+        }
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/state/commentStat.do?token=%@&stateId=%ld&content=%@&coverPersonalId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id,[self.commentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],self.coverPersonalId];
+        [SVProgressHUD show];// 动画开始
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                //更新评论数据源
+                NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+                [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+                    
+                } success:^(NSURLSessionDataTask *task, id responseObject) {
+                    [SVProgressHUD dismiss];// 动画结束
+                    if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                        NSDictionary *bigDic = responseObject[@"result"];
+                        NSArray *likeArr = bigDic[@"likeNum"];
+                        NSMutableArray *likemArr = [NSMutableArray array];
+                        for (NSDictionary *dic in likeArr) {
+                            YJFriendStateLikeModel *infoModel = [YJFriendStateLikeModel mj_objectWithKeyValues:dic];
+                            [likemArr addObject:infoModel];
+                        }
+                        self.likeList = likemArr;//解析点赞数据
+                        NSArray *commentArr = bigDic[@"comment"];
+                        NSMutableArray *commentmArr = [NSMutableArray array];
+                        for (NSDictionary *dic in commentArr) {
+                            YJFriendStateCommentModel *infoModel = [YJFriendStateCommentModel mj_objectWithKeyValues:dic];
+                            [commentmArr addObject:infoModel];
+                        }
+                        self.commentList = commentmArr;//解析评论数据
+                        [self updateCommentTableViewHeight];
+                        [self.tableView reloadData];
+                        [self.commentTableView reloadData];
+                        
+                        self.commentField.text = nil;
+                        [self.commentField setPlaceholder:@"说点什么吧"];
+                        
+                    }
+                } failure:^(NSURLSessionDataTask *task, NSError *error) {
+                    [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
+                    return ;
+                }];
+            }else{
+                [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
+                self.commentField.text = nil;
+            }
+            self.coverPersonalId = 0;
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
+            return ;
+        }];
+        
+    }else{
+        [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
+    }
+}
+#pragma - UItextViewDelegate
+-(void)textViewDidBeginEditing:(UITextView *)textView{
+    self.fieldBackView.hidden = false;
+}
+-(void)textViewDidEndEditing:(UITextView *)textView{
+    self.fieldBackView.hidden = true;
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     
@@ -432,81 +527,29 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     }  else if (location != NSNotFound){
         
         [textView resignFirstResponder];
-        if (textView.text!=nil&&![textView.text isEqualToString:@""]) {
-//http://192.168.1.55:8080/smarthome/mobileapi/state/commentStat.do?token=EC9CDB5177C01F016403DFAAEE3C1182&stateId=1&content=评论内容
-            if (self.coverPersonalId == self.userId) {
-                self.coverPersonalId = 0;
-            }
-            NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/state/commentStat.do?token=%@&stateId=%ld&content=%@&coverPersonalId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id,[self.commentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],self.coverPersonalId];
-            [SVProgressHUD show];// 动画开始
-            [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
-                
-            } success:^(NSURLSessionDataTask *task, id responseObject) {
-                if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                    //更新评论数据源
-                    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-                    [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
-                        
-                    } success:^(NSURLSessionDataTask *task, id responseObject) {
-                        [SVProgressHUD dismiss];// 动画结束
-                        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                            NSDictionary *bigDic = responseObject[@"result"];
-                            NSArray *likeArr = bigDic[@"likeNum"];
-                            NSMutableArray *likemArr = [NSMutableArray array];
-                            for (NSDictionary *dic in likeArr) {
-                                YJFriendStateLikeModel *infoModel = [YJFriendStateLikeModel mj_objectWithKeyValues:dic];
-                                [likemArr addObject:infoModel];
-                            }
-                            self.likeList = likemArr;//解析点赞数据
-                            NSArray *commentArr = bigDic[@"comment"];
-                            NSMutableArray *commentmArr = [NSMutableArray array];
-                            for (NSDictionary *dic in commentArr) {
-                                YJFriendStateCommentModel *infoModel = [YJFriendStateCommentModel mj_objectWithKeyValues:dic];
-                                [commentmArr addObject:infoModel];
-                            }
-                            self.commentList = commentmArr;//解析评论数据
-                            [self.commentTableView reloadData];
-                            
-
-                        self.commentField.text = nil;
-                        [self.commentField setPlaceholder:@"说点什么吧"];
-    
-                     }
-                    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                        [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
-                        return ;
-                    }];
-                }else{
-                    [SVProgressHUD showErrorWithStatus:@"评论已上传,请下拉刷新"];
-                }
-                self.coverPersonalId = 0;
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [SVProgressHUD showErrorWithStatus:@"评论未成功，请稍后再试"];
-                return ;
-            }];
-        
-        }else{
-            [self showAlertWithMessage:@"评论内容不能为空，请重新输入"];
-        }
+        [self sendBtnClick];
         return NO;
     }
     return YES;
 }
 -(void)textViewDidChange:(UITextView *)textView{
+    CGRect fieldBackFrame = self.fieldBackView.frame;
     CGRect frame = textView.frame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
     CGSize size = [textView sizeThatFits:constraintSize];
-    if (size.height<45*kiphone6) {
-        size.height = 45*kiphone6;
+    if (size.height<36*kiphone6) {
+        size.height = 36*kiphone6;
     }
     if (size.height>85*kiphone6) {
         size.height = 85*kiphone6;
         textView.scrollEnabled = true;   // 允许滚动
-        textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
+        self.fieldBackView.frame = CGRectMake(0, fieldBackFrame.origin.y-(size.height-frame.size.height), kScreenW, size.height+13*kiphone6);
+        textView.frame = CGRectMake(15*kiphone6, 6.5*kiphone6, 288*kiphone6, size.height);
         return;
     }
     textView.scrollEnabled = false;   // 不允许滚动
-    textView.frame = CGRectMake(frame.origin.x, frame.origin.y-(size.height-frame.size.height), frame.size.width, size.height);
+    self.fieldBackView.frame = CGRectMake(0, fieldBackFrame.origin.y-(size.height-frame.size.height), kScreenW, size.height+13*kiphone6);
+    textView.frame = CGRectMake(15*kiphone6, 6.5*kiphone6, 288*kiphone6, size.height);
  
 }
 //弹出alert
@@ -546,6 +589,10 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/delteState.do?token=ACDCE729B
         return ;
     }];
   
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+    [self.commentField resignFirstResponder];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{

@@ -44,9 +44,9 @@ static NSString* photoCellid = @"photo_cell";
 -(void)setupUI{
     
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     UIView *backView = [[UIView alloc]init];
-    backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [self.contentView addSubview:backView];
     [backView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.offset(0);
@@ -58,7 +58,7 @@ static NSString* photoCellid = @"photo_cell";
     [backView addSubview:heaterView];
     [heaterView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(8*kiphone6);
-        make.left.offset(26*kiphone6);
+        make.left.offset(15*kiphone6);
     }];
     self.heartView = heaterView;
         //photoCollectionView
@@ -71,7 +71,7 @@ static NSString* photoCellid = @"photo_cell";
         make.right.offset(-10*kiphone6);
     }];
         self.likeCollectionView = likeCollectionView;
-        likeCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+        likeCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
         likeCollectionView.dataSource = self;
         likeCollectionView.delegate = self;
         // 注册单元格

@@ -76,7 +76,7 @@ static NSString* imageCellid = @"image_cell";
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIView *backView = [[UIView alloc]init];
-    backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [self.contentView addSubview:backView];
     [backView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.offset(0);
@@ -91,7 +91,7 @@ static NSString* imageCellid = @"image_cell";
 
     //photoCollectionView
     UICollectionView *photoCollectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJActivitesPhotoFlowLayout alloc]init]];
-    photoCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    photoCollectionView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [backView addSubview:photoCollectionView];
     [photoCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);

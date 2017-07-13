@@ -32,7 +32,7 @@
 - (void)setupUI
 {
     // 设置整个cell的背景颜色
-    self.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.image = [UIImage imageNamed:@"picture_add"];
     imageView.layer.masksToBounds = true;

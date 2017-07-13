@@ -111,10 +111,12 @@
         make.right.offset(-10*kiphone6);
     }];
     UILabel *typeLabel = [UILabel labelWithText:@"烧烤聚会" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//活动类型
+    typeLabel.numberOfLines = 0;
     [self.contentView addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headerView.mas_bottom).offset(10*kiphone6);
         make.left.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
     }];
     UILabel *timeItemLabel = [UILabel labelWithText:@"时间" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];//时间标题
     [self.contentView addSubview:timeItemLabel];

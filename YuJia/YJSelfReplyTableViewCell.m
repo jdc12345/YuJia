@@ -41,15 +41,15 @@
     //                    value:paragraphStyle
     //                    range:NSMakeRange(0, attStr.length)];
     [attStr addAttribute:NSLinkAttributeName value:@"me://" range:NSMakeRange(0, model.userName.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, model.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} range:NSMakeRange(0, content.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   value:[UIColor colorWithHexString:@"#5587bd"]
                    range:NSMakeRange(0, model.userName.length)];
-    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
+    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#5587bd"]};
     [attStr addAttribute:NSLinkAttributeName value:@"user://" range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
+//    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   value:[UIColor colorWithHexString:@"#5587bd"]
                    range:NSMakeRange(model.userName.length+2, model.coverPersonalName.length)];
     
     self.textview.attributedText = attStr;
@@ -62,15 +62,15 @@
     NSString *content = [NSString stringWithFormat:@"%@回复%@: %@",activiesModel.userName,activiesModel.coverPersonalName,activiesModel.content];
     NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc]initWithString:content];
     [attStr addAttribute:NSLinkAttributeName value:@"me://" range:NSMakeRange(0, activiesModel.userName.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(0, activiesModel.userName.length)];
+    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} range:NSMakeRange(0, content.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   value:[UIColor colorWithHexString:@"#5587bd"]
                    range:NSMakeRange(0, activiesModel.userName.length)];
-    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#00bfff"]};
+    _textview.linkTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#5587bd"]};
     [attStr addAttribute:NSLinkAttributeName value:@"user://" range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
-    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
+//    [attStr addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14]} range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
     [attStr addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithHexString:@"#00bfff"]
+                   value:[UIColor colorWithHexString:@"#5587bd"]
                    range:NSMakeRange(activiesModel.userName.length+2, activiesModel.coverPersonalName.length)];
     
     self.textview.attributedText = attStr;
@@ -105,27 +105,28 @@
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
-    UIImageView *iconView = [[UIImageView alloc]init];//回复图片
-    UIImage *image =[UIImage imageNamed:@"blue-opinion"];
-    iconView.image = image;
-    [self.contentView addSubview:iconView];
-    [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(5*kiphone6);
-        make.left.offset(27*kiphone6);
-        make.height.width.offset(11*kiphone6);
-    }];
-    self.iconView = iconView;
-    iconView.hidden = true;
+//    UIImageView *iconView = [[UIImageView alloc]init];//回复图片
+//    UIImage *image =[UIImage imageNamed:@"blue-opinion"];
+//    iconView.image = image;
+//    [self.contentView addSubview:iconView];
+//    [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.offset(5*kiphone6);
+//        make.left.offset(27*kiphone6);
+//        make.height.width.offset(11*kiphone6);
+//    }];
+//    self.iconView = iconView;
+//    iconView.hidden = true;
     UITextView *textView= [[UITextView alloc]init];
     textView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     [self.contentView addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.offset(0);
-        make.left.equalTo(iconView.mas_right).offset(2*kiphone6);
+        make.left.offset(10*kiphone6);
+//        make.left.equalTo(iconView.mas_right).offset(2*kiphone6);
         make.right.offset(0*kiphone6);
     }];
     textView.textColor = [UIColor colorWithHexString:@"#333333"];
-    textView.font = [UIFont systemFontOfSize:12];
+    textView.font = [UIFont systemFontOfSize:14];
 //    textView.contentInset = UIEdgeInsetsMake(-5, 0, 0, -10);
     textView.textContainerInset = UIEdgeInsetsMake(5,0, 0, 0);
     textView.delegate = self;
@@ -133,7 +134,7 @@
     textView.scrollEnabled = NO;//可选的，视具体情况而定
     self.textview = textView;
     self.hyb_lastViewInCell = textView;
-    self.hyb_bottomOffsetToCell = 0;
+    self.hyb_bottomOffsetToCell = 10;
 }
 
 @end

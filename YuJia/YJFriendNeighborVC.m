@@ -551,10 +551,14 @@ static NSString* tableCellid = @"table_cell";
     WS(ws);
     cell.commentBtnBlock = ^(YJFriendNeighborStateModel *model){
         YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
+        detailVc.commentField.hidden = false;
         detailVc.userId = ws.userId;
-        detailVc.model = model;
+        detailVc.stateId = model.info_id;
         [ws.navigationController pushViewController:detailVc animated:true];
-        [detailVc.commentField becomeFirstResponder];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [detailVc.commentField becomeFirstResponder];
+//
+//        });
     };
         return cell;
     

@@ -298,6 +298,7 @@ static NSString* photoCellid = @"photo_cell";
 //    [self.onePickerView selectRow:0 inComponent:0 animated:true];
 //    NSDateFormatter *format = [[NSDateFormatter alloc] init];
 }
+
 #pragma mark - pickView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{

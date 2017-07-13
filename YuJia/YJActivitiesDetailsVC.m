@@ -180,7 +180,7 @@ static NSString* photoCellid = @"photo_cell";
     }else if (indexPath.row == 1) {
         
         YJLikeActivitiesTVCell *cell = [tableView dequeueReusableCellWithIdentifier:LikeCell forIndexPath:indexPath];
-        cell.image = @"blue-like";
+        cell.image = @"like-blue";
         cell.likeList = self.likeList;
         
         cell.clickAddBlock = ^(NSString *personalId) {
@@ -200,8 +200,7 @@ static NSString* photoCellid = @"photo_cell";
             [ws.navigationController pushViewController:vc animated:true];
         };
         return cell;
-    }else if (indexPath.row == 3) {
-        
+    }else if (indexPath.row == 3) {        
         YJActivitesCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:friendCommentCellid forIndexPath:indexPath];
         cell.userId = self.userId;//传给cell用来判断当点击了A回复B类型的cell中的名字时候判断评论类型
         cell.commentList = self.commentList;

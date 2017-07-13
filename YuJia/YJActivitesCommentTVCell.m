@@ -40,12 +40,11 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIView *backView = [[UIView alloc]init];
-    backView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     
     UITableView *commentTableView = [[UITableView alloc]initWithFrame:CGRectZero];
-    commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    commentTableView.backgroundColor = [UIColor colorWithHexString:@"#f9f9f9"];
     self.tableView = commentTableView;
-    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [commentTableView registerClass:[YJFriendCommentTableViewCell class] forCellReuseIdentifier:friendCommentCellid];
     [commentTableView registerClass:[YJSelfReplyTableViewCell class] forCellReuseIdentifier:selfReplyCellid];
     commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -97,9 +96,9 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 //            [ws.commentField becomeFirstResponder];
             
         };
-        if (indexPath.row==0) {
-            cell.iconView.hidden = false;
-        }
+//        if (indexPath.row==0) {
+//            cell.iconView.hidden = false;
+//        }
         return cell;
     }else{
         YJSelfReplyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:selfReplyCellid forIndexPath:indexPath];

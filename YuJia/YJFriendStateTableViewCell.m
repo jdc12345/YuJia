@@ -248,8 +248,12 @@ static NSString* photoCellid = @"photo_cell";
     }];
 
 }
-- (void)commentClick:(UIButton *)sender{
-    self.commentBtnBlock(self.model);
+- (void)commentClick:(UIButton *)sender{//评论按钮点击事件
+    if (self.isDetailCell) {
+        self.detailCommentBtnBlock(self.model);//详情页面评论
+    }else{
+        self.commentBtnBlock(self.model);//列表页面评论
+    }
 }
 #pragma mark - UICollectionView
 // 有多少行
