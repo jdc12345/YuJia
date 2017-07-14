@@ -134,7 +134,7 @@
     textView.scrollEnabled = NO;//可选的，视具体情况而定
     self.textview = textView;
     self.hyb_lastViewInCell = textView;
-    self.hyb_bottomOffsetToCell = 10;
+    self.hyb_bottomOffsetToCell = 0;
 }
 
 @end

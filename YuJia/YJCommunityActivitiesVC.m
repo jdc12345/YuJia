@@ -344,7 +344,6 @@ static NSString* tableCellid = @"table_cell";
             [SVProgressHUD dismiss];// 动画结束
             return ;
         }];
-
     }
 }
 #pragma mark - UITableView

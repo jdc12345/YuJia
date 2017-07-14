@@ -10,7 +10,7 @@
 #import "YJFriendCommentTableViewCell.h"
 #import "YJSelfReplyTableViewCell.h"
 #import "YJActiviesAddPersonModel.h"
-
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 static NSString* friendCommentCellid = @"friendComment_cell";
 static NSString* selfReplyCellid = @"selfReply_cell";
 @interface YJActivitesCommentTVCell()<UITableViewDelegate,UITableViewDataSource>
@@ -72,9 +72,12 @@ static NSString* selfReplyCellid = @"selfReply_cell";
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
+    self.hyb_lastViewInCell = backView;
+    self.hyb_bottomOffsetToCell = 10;
 
         
 }
+
 #pragma mark - UITableView
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     

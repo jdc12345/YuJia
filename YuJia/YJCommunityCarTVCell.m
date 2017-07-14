@@ -106,7 +106,7 @@
             make.centerY.equalTo(self.footerView);
             make.right.equalTo(self.addNumberLabel.mas_left).offset(-10*kiphone6);
         }];
-        [self.addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
         self.addNumberLabel.hidden = false;
     }else if (model.ctype==1) {
         self.typeContentLabel.text = @"乘客";
@@ -119,7 +119,7 @@
             self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
             self.addBtn.userInteractionEnabled = false;
         }else{//乘客发的单子，没接过单子可以接
-            self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+            self.addBtn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
             self.addBtn.userInteractionEnabled = true;
         }
         [self.addBtn setImage:nil forState:UIControlStateNormal];
@@ -130,7 +130,7 @@
             make.width.offset(79*kiphone6);
         }];
         self.addNumberLabel.hidden = true;
-        [self.addBtn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.addBtn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
       }
     }
     self.timeLabel.text = model.departureTimeString;
@@ -249,13 +249,12 @@
         make.bottom.offset(-13.5*kiphone6);
     }];
     self.footerView =footerView;
-    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//活动状态
+    UILabel *stateLabel = [UILabel labelWithText:@"正在进行" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];//活动状态
     [footerView addSubview:stateLabel];
     [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(footerView);
         make.left.offset(10*kiphone6);
     }];
-
     UILabel *addNumberLabel = [UILabel labelWithText:@"1人参加" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//参加人数
     [footerView addSubview:addNumberLabel];
     [addNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -269,7 +268,7 @@
         make.centerY.equalTo(footerView);
         make.right.equalTo(addNumberLabel.mas_left).offset(-10*kiphone6);
     }];
-    [addBtn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *commentNumberLabel = [UILabel labelWithText:@"1" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:14];//感兴趣人数
     [footerView addSubview:commentNumberLabel];
     [commentNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -321,57 +320,86 @@
 //    self.clickForAddBlock(sender);
 //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &carpoolingId=4
-    [sender setImage:nil forState:UIControlStateNormal];
-    [SVProgressHUD show];// 动画开始
-    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-                [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            [sender setImage:nil forState:UIControlStateNormal];
-            sender.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-            sender.userInteractionEnabled = false;
-            self.model.isOrders = true;
-        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+    if (self.model.ctype==1) {
+        [sender setImage:nil forState:UIControlStateNormal];
+        [SVProgressHUD show];// 动画开始
+        NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+        [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
             
-            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [SVProgressHUD dismiss];// 动画结束
-        return ;
-    }];
-}
--(void)addCar:(UIButton*)sender{
-//    self.clickForAddBlock(sender);
-    //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
-    //    &carpoolingId=4
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [sender setImage:nil forState:UIControlStateNormal];
+                sender.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+                sender.userInteractionEnabled = false;
+                self.model.isOrders = true;
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+    }else if (self.model.ctype==2){
+        [SVProgressHUD show];// 动画开始
+        NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+        [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                //            sender.backgroundColor = [UIColor clearColor];
+                //            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                sender.backgroundColor = [UIColor clearColor];
+                NSInteger addNumber = [self.addNumberLabel.text integerValue];
+                [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                self.addNumberLabel.text = [NSString stringWithFormat:@"%ld参加",addNumber+1];
+                self.model.participateNumber +=1;
+                self.model.islike = true;
+                sender.userInteractionEnabled = false;
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+ 
+    }
     
-    [SVProgressHUD show];// 动画开始
-    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-                [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            sender.backgroundColor = [UIColor clearColor];
-            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
-            sender.backgroundColor = [UIColor clearColor];
-            NSInteger addNumber = [self.addNumberLabel.text integerValue];
-            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
-            self.addNumberLabel.text = [NSString stringWithFormat:@"%ld参加",addNumber+1];
-            self.model.participateNumber +=1;
-            self.model.islike = true;
-            sender.userInteractionEnabled = false;
-        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-
-            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [SVProgressHUD dismiss];// 动画结束
-        return ;
-    }];
-
 }
+//-(void)addCar:(UIButton*)sender{
+////    self.clickForAddBlock(sender);
+//    //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    //    &carpoolingId=4
+//    
+//    [SVProgressHUD show];// 动画开始
+//    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+//    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//                [SVProgressHUD dismiss];// 动画结束
+//        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+////            sender.backgroundColor = [UIColor clearColor];
+////            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//            sender.backgroundColor = [UIColor clearColor];
+//            NSInteger addNumber = [self.addNumberLabel.text integerValue];
+//            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//            self.addNumberLabel.text = [NSString stringWithFormat:@"%ld参加",addNumber+1];
+//            self.model.participateNumber +=1;
+//            self.model.islike = true;
+//            sender.userInteractionEnabled = false;
+//        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+//
+//            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+//        }
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//                [SVProgressHUD dismiss];// 动画结束
+//        return ;
+//    }];
+//
+//}
 
 @end

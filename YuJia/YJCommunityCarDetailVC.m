@@ -17,6 +17,11 @@
 #import "RKNotificationHub.h"
 #import "YJNoticeListTableVC.h"
 
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
+#import "OtherPeopleInfoViewController.h"
+#import "YJLikeActivitiesTVCell.h"
+
+
 static NSString* tablecell = @"table_cell";
 @interface YJCommunityCarDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
@@ -47,7 +52,7 @@ static NSString* tablecell = @"table_cell";
 -(void)checkHasMessade{
     //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
-    [informationBtn setImage:[UIImage imageNamed:@"news"] forState:UIControlStateNormal];
+    [informationBtn setImage:[UIImage imageNamed:@"remind"] forState:UIControlStateNormal];
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:informationBtn];
     self.navigationItem.rightBarButtonItem = rightBarItem;
@@ -179,7 +184,7 @@ static NSString* tablecell = @"table_cell";
         make.centerY.equalTo(headerView.mas_top).offset(31*kiphone6);
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
     }];
-    UILabel *stateLabel = [UILabel labelWithText:self.model.over==1?@"正在进行":@"已结束" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//开始时间
+    UILabel *stateLabel = [UILabel labelWithText:self.model.over==1?@"正在进行":@"已结束" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];//开始时间
     [headerView addSubview:stateLabel];
     [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(iconView);
@@ -303,7 +308,7 @@ static NSString* tablecell = @"table_cell";
                     btn.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
                     btn.userInteractionEnabled = false;
                 }else{
-                    btn.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+                    btn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
                     btn.userInteractionEnabled = true;
                     [btn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
                 }
@@ -320,7 +325,7 @@ static NSString* tablecell = @"table_cell";
                 }else{
                     [btn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
                     btn.userInteractionEnabled = true;
-                    [btn addTarget:self action:@selector(addCar:) forControlEvents:UIControlEventTouchUpInside];
+                    [btn addTarget:self action:@selector(orderClick:) forControlEvents:UIControlEventTouchUpInside];
                 }
             }else{
                 [btn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
@@ -343,9 +348,26 @@ static NSString* tablecell = @"table_cell";
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (self.model.ctype==2) {
+        return 2;
+    }
     return 1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.model.ctype==2) {
+        if (indexPath.row==0) {
+            YJLikeActivitiesTVCell *cell = [[YJLikeActivitiesTVCell alloc]init];
+            //        cell.likeList = self.addList;
+            cell.image = @"blue-add";
+            cell.clickAddBlock = ^(NSString *personalId) {
+                WS(ws);
+                OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+                vc.info_id = personalId;
+                [ws.navigationController pushViewController:vc animated:true];
+            };
+            return cell;
+        }        
+    }
     YJActivitesCommentTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tablecell forIndexPath:indexPath];
     cell.userId = self.userId;//传给cell用来判断当点击了A回复B类型的cell中的名字时候判断评论类型
     cell.commentList = self.commentList;
@@ -364,9 +386,41 @@ static NSString* tablecell = @"table_cell";
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.model.ctype==2) {
+        if (indexPath.row == 0) {
+            //        if (self.likeList.count<8) {
+            //            return 45*kiphone6;
+            //        }else{
+            //            return 90*kiphone6;
+            //        }
+            return 45*kiphone6;
+        }
+    }
     
-    return (self.commentList.count*38)*kiphone6>100?(self.commentList.count*38)*kiphone6:100;
+    return [self updateCommentTableViewHeight];
+//    return (self.commentList.count*38)*kiphone6>100?(self.commentList.count*38)*kiphone6:100;
     
+}
+-(CGFloat)updateCommentTableViewHeight{
+    CGFloat tableViewHeight = 0;
+    for (YJFriendStateCommentModel *commentModel in self.commentList) {
+        CGFloat cellHeight = 0;
+        if (commentModel.coverPersonalId == 0) {//判断是用户评论还是自己回复评论
+            cellHeight = [YJSelfReplyTableViewCell hyb_heightForTableView:self.tableView config:^(UITableViewCell *sourceCell) {
+                YJSelfReplyTableViewCell *cell = (YJSelfReplyTableViewCell *)sourceCell;
+                [cell configCellWithModel:commentModel];
+            }];
+            tableViewHeight += cellHeight;
+        }else{
+            cellHeight = [YJFriendCommentTableViewCell hyb_heightForTableView:self.tableView config:^(UITableViewCell *sourceCell) {
+                YJSelfReplyTableViewCell *cell = (YJSelfReplyTableViewCell *)sourceCell;
+                [cell configCellWithModel:commentModel];
+            }];
+            tableViewHeight += cellHeight;
+        }
+    }
+    
+    return tableViewHeight;
 }
 
 /**
@@ -395,57 +449,89 @@ static NSString* tablecell = @"table_cell";
     //    self.clickForAddBlock(sender);
     //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
     //    &carpoolingId=4
-    [sender setImage:nil forState:UIControlStateNormal];
-    [SVProgressHUD show];// 动画开始
-    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            [sender setImage:nil forState:UIControlStateNormal];
-            sender.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-            sender.userInteractionEnabled = false;
-            self.model.isOrders = true;
-        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+    if (self.model.ctype==1) {
+        [sender setImage:nil forState:UIControlStateNormal];
+        [SVProgressHUD show];// 动画开始
+        NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+        [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
             
-            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD dismiss];// 动画结束
-        return ;
-    }];
-}
--(void)addCar:(UIButton*)sender{
-    //    self.clickForAddBlock(sender);
-    //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
-    //    &carpoolingId=4
-    sender.backgroundColor = [UIColor clearColor];
-    [SVProgressHUD show];// 动画开始
-    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
-    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            sender.backgroundColor = [UIColor clearColor];
-            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
-            NSInteger addNumber = [self.joinBtn.titleLabel.text integerValue];
-            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
-            [self.joinBtn setTitle:[NSString stringWithFormat:@"%ld参加",addNumber+1] forState:UIControlStateNormal];
-            self.model.participateNumber +=1;
-            self.model.islike = true;
-            sender.userInteractionEnabled = false;
-        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [sender setImage:nil forState:UIControlStateNormal];
+                sender.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+                sender.userInteractionEnabled = false;
+                self.model.isOrders = true;
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+    }else if (self.model.ctype==2){
+        //    self.clickForAddBlock(sender);
+        //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+        //    &carpoolingId=4
+        sender.backgroundColor = [UIColor clearColor];
+        [SVProgressHUD show];// 动画开始
+        NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+        [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
             
-            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD dismiss];// 动画结束
-        return ;
-    }];
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                sender.backgroundColor = [UIColor clearColor];
+                [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                NSInteger addNumber = [self.joinBtn.titleLabel.text integerValue];
+                [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+                [self.joinBtn setTitle:[NSString stringWithFormat:@"%ld参加",addNumber+1] forState:UIControlStateNormal];
+                self.model.participateNumber +=1;
+                self.model.islike = true;
+                sender.userInteractionEnabled = false;
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
+ 
+    }
     
 }
+//-(void)addCar:(UIButton*)sender{
+//    //    self.clickForAddBlock(sender);
+//    //http://localhost:8080/smarthome/mobileapi/carpoolingLog/addCarpoolingLog.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    //    &carpoolingId=4
+//    sender.backgroundColor = [UIColor clearColor];
+//    [SVProgressHUD show];// 动画开始
+//    NSString *addUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpoolingLog/addCarpoolingLog.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+//    [[HttpClient defaultClient]requestWithPath:addUrlStr method:0 parameters:nil prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        [SVProgressHUD dismiss];// 动画结束
+//        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//            sender.backgroundColor = [UIColor clearColor];
+//            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//            NSInteger addNumber = [self.joinBtn.titleLabel.text integerValue];
+//            [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+//            [self.joinBtn setTitle:[NSString stringWithFormat:@"%ld参加",addNumber+1] forState:UIControlStateNormal];
+//            self.model.participateNumber +=1;
+//            self.model.islike = true;
+//            sender.userInteractionEnabled = false;
+//        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+//            
+//            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+//        }
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        [SVProgressHUD dismiss];// 动画结束
+//        return ;
+//    }];
+//    
+//}
 -(void)informationBtnClick:(UIButton*)sender{
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
     vc.noticeType = 3;

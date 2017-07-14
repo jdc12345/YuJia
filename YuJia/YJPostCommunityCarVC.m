@@ -29,6 +29,12 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,strong)NSString *minus;
 @property(nonatomic,strong)NSString *hour;
 @property(nonatomic,weak)UIPickerView *timePickerView;
+//改
+@property(nonatomic,weak)UIView *backView;
+@property(nonatomic,weak)UIToolbar * topView;//时间选择器工具栏
+@property(nonatomic,weak)UIView *coverView;//时间选择器背景蒙布
+@property(nonatomic,weak)UIButton *nowSelectBtn;//工具栏中间按钮
+@property(nonatomic,strong)NSString *nowTiltle;//工具栏中间按钮标题
 @end
 
 @implementation YJPostCommunityCarVC
@@ -209,41 +215,41 @@ static NSString* tableCellid = @"table_cell";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     
 }
-//-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-//    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5*kiphone6)];
-//    backView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-////    self.backView = backView;
-//    
-////    UISwitch *switchButton = [[UISwitch alloc]init];
-////    switchButton.onTintColor= [UIColor colorWithHexString:@"00bfff"];
-////    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
-////    // 控件大小，不能设置frame，只能用缩放比例
-////    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
-////    [backView addSubview:switchButton];
-////    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-////        make.centerY.equalTo(backView);
-////        make.right.offset(-10 *kiphone6);
-////    }];
-////    [switchButton setOn:NO];
-////    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-////    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
-////    [backView addSubview:itemLabel];
-////    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-////        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
-////        make.centerY.equalTo(switchButton);
-////    }];
-//    UIView *line = [[UIView alloc]init];
-//    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-//    [backView addSubview:line];
-//    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.right.left.offset(0);
-//        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
-//    }];
-//    return backView;
-//}
-//-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-//    return 37*kiphone6;
-//}
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5*kiphone6)];
+    backView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    self.backView = backView;
+    
+    UISwitch *switchButton = [[UISwitch alloc]init];
+    switchButton.onTintColor= [UIColor colorWithHexString:@"00eac6"];
+    switchButton.tintColor = [UIColor colorWithHexString:@"cccccc"];
+    // 控件大小，不能设置frame，只能用缩放比例
+    switchButton.transform= CGAffineTransformMakeScale(0.8,0.75);
+    [backView addSubview:switchButton];
+    [switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(backView);
+        make.right.offset(-10 *kiphone6);
+    }];
+    [switchButton setOn:NO];
+    [switchButton addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+    UILabel *itemLabel = [UILabel labelWithText:@"其他小区可看" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+    [backView addSubview:itemLabel];
+    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(switchButton.mas_left).offset(-5*kiphone6);
+        make.centerY.equalTo(switchButton);
+    }];
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    [backView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.right.left.offset(0);
+        make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
+    }];
+    return backView;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 37*kiphone6;
+}
 #pragma mark - BtnClick
 - (void)typeChioce:(UIButton*)sender{
 
@@ -256,10 +262,11 @@ static NSString* tableCellid = @"table_cell";
         }
     }
 }
-//- (void)switchAction:(id)sender{
-//    
-//}
+- (void)switchAction:(id)sender{
+    
+}
 - (void)pickerView:(id)sender{
+    [self.view endEditing:true];//收起键盘
     NSDate *now = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
@@ -328,22 +335,70 @@ static NSString* tableCellid = @"table_cell";
         curDate = [NSDate dateWithTimeInterval:86400 sinceDate:curDate];
     }
     if (!self.timePickerView) {
-        
-        UIPickerView *pickView = [[UIPickerView alloc]init];
-        [self.view addSubview:pickView];
-        [self.view bringSubviewToFront:pickView];
-        [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.displayTimeBtn.mas_bottom);
-            make.left.offset(10*kiphone6);
-            make.right.offset(-10*kiphone6);
-            make.height.offset(120*kiphone6);
+        //        大蒙布View
+        UIView *coverView = [[UIView alloc]init];
+        coverView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+        coverView.alpha = 0.3;
+        [self.view.window addSubview:coverView];
+        self.coverView = coverView;
+        [coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.bottom.right.offset(0);
         }];
-        pickView.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+        coverView.userInteractionEnabled = YES;
+        //添加tap手势：
+        //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+        //将手势添加至需要相应的view中
+        //    [backView addGestureRecognizer:tapGesture];
+        UIPickerView *pickView = [[UIPickerView alloc]init];
+        [self.view.window addSubview:pickView];
+        [self.view.window bringSubviewToFront:pickView];
+        [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.displayTimeBtn.mas_bottom);
+//            make.left.offset(10*kiphone6);
+//            make.right.offset(-10*kiphone6);
+//            make.height.offset(120*kiphone6);
+            make.left.right.bottom.offset(0);
+            make.height.offset(162*kiphone6);
+        }];
+        pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         pickView.dataSource = self;
         pickView.delegate = self;
         pickView.showsSelectionIndicator = YES;
         self.timePickerView = pickView;
-        
+        UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
+        [topView setBarStyle:UIBarStyleDefault];
+        UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeBtn.frame = CGRectMake(2, 5, 50, 25);
+        [closeBtn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+        [closeBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [closeBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        UIBarButtonItem *cancleBtn = [[UIBarButtonItem alloc]initWithCustomView:closeBtn];
+        UIBarButtonItem * btnSpace1 = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIButton *middelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        middelBtn.frame = CGRectMake(2, 5, 75, 25);
+        //        [middelBtn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+        [middelBtn setTitle:self.nowTiltle forState:UIControlStateNormal];
+        self.nowSelectBtn = middelBtn;
+        [middelBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        UIBarButtonItem *titleBtn = [[UIBarButtonItem alloc]initWithCustomView:middelBtn];
+        UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(2, 5, 50, 25);
+        [btn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitle:@"完成" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+        NSArray * buttonsArray = [NSArray arrayWithObjects:cancleBtn,btnSpace1,titleBtn,btnSpace,doneBtn,nil];
+        [topView setItems:buttonsArray];
+        [self.view.window addSubview:topView];
+        [self.view.window bringSubviewToFront:topView];
+        self.topView = topView;
+        [topView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.offset(0);
+            make.bottom.equalTo(pickView.mas_top);
+            //            make.height.offset(200*kiphone6);
+        }];
+
         //            设置初始默认值
         [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
         [self.timePickerView selectRow:0 inComponent:0 animated:true];
@@ -362,8 +417,12 @@ static NSString* tableCellid = @"table_cell";
     }else{
         if (self.timePickerView.hidden) {
             self.timePickerView.hidden = false;
+            self.coverView.hidden = false;
+            self.topView = false;
         }else{
             self.timePickerView.hidden = true;
+            self.coverView.hidden = true;
+            self.topView.hidden = true;
         }
     }
   
@@ -523,8 +582,16 @@ http://localhost:8080/smarthome/mobileapi/carpooling/PublishCarpooling.do?token=
 }
 -(void)resignFirstResponderText {
     [self.view endEditing:true];
-    
+    [self.timePickerView removeFromSuperview];
+    [self.coverView removeFromSuperview];
+    [self.topView removeFromSuperview];
 }
+//-(void)resignFirstResponderText {
+//    [self.view endEditing:true];
+//    [self.timePickerView removeFromSuperview];
+//    [self.coverView removeFromSuperview];
+//    [self.topView removeFromSuperview];
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

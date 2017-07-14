@@ -20,20 +20,20 @@ static NSString* otherCellid = @"other_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"消息详情";
+    self.title = @"拼车消息";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     [self setupUI];
 }
 // 初始化UI
 - (void)setupUI
 {
-    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-    
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     // 设置数据源和代理
     tableView.dataSource = self;
     tableView.delegate = self;
@@ -72,8 +72,7 @@ static NSString* otherCellid = @"other_cell";
 // cell内容
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    
-            // 获取other的cell
+        // 获取other的cell
     YJCommunityCarNoticesCenterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:otherCellid forIndexPath:indexPath];
     cell.model = self.model;
         // 取消点击效果

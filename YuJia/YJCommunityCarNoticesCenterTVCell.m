@@ -50,13 +50,13 @@
     // 时间的label
     UILabel* timeLabel = [[UILabel alloc] init];
     timeLabel.text = @"昨天";
-    timeLabel.font = [UIFont systemFontOfSize:10];
-    timeLabel.textColor = [UIColor lightGrayColor];
+    timeLabel.font = [UIFont systemFontOfSize:12];
+    timeLabel.textColor = [UIColor colorWithHexString:@"#999999"];
     [self.contentView addSubview:timeLabel];
     
     // 头像
     UIImageView* avatarView = [[UIImageView alloc] init];
-    avatarView.image = [UIImage imageNamed:@"Service"];
+    avatarView.image = [UIImage imageNamed:@"center_car"];
     [self.contentView addSubview:avatarView];
     
     // 聊天背景
@@ -71,31 +71,31 @@
     
     // 聊天内容
     UILabel* chatLabel = [[UILabel alloc] init];
-    chatLabel.textColor = [UIColor darkGrayColor];
+    chatLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     chatLabel.text = @"Tian您好，司机张接收了您从名流一品到风景公园的拼车。请您尽快与司机沟通。                     电话：18611439783";
     chatLabel.numberOfLines = 0;
-    chatLabel.font = [UIFont systemFontOfSize:14];
+    chatLabel.font = [UIFont systemFontOfSize:15];
     [self.contentView addSubview:chatLabel];
     
     // 自动布局
     // 时间
     [timeLabel mas_makeConstraints:^(MASConstraintMaker* make) {
-        make.top.offset(4);
+        make.top.offset(25*kiphone6);
         make.centerX.equalTo(self.contentView);
     }];
     
     // 头像
     [avatarView mas_makeConstraints:^(MASConstraintMaker* make) {
-        make.top.equalTo(timeLabel.mas_bottom).offset(8);
-        make.left.offset(8);
-        make.width.height.offset(40);
+        make.top.equalTo(timeLabel.mas_bottom).offset(25*kiphone6);
+        make.left.offset(10*kiphone6);
+        make.width.height.offset(40*kiphone6);
     }];
     
     // 聊天内容
     [chatLabel mas_makeConstraints:^(MASConstraintMaker* make) {
         make.top.equalTo(avatarView).offset(8);
-        make.left.equalTo(avatarView.mas_right).offset(20);
-        make.width.mas_lessThanOrEqualTo(200);
+        make.left.equalTo(avatarView.mas_right).offset(20*kiphone6);
+        make.width.mas_lessThanOrEqualTo(243*kiphone6);
     }];
     
     // 聊天背景
