@@ -9,6 +9,7 @@
 #import "YJHouseListTVCell.h"
 #import "UILabel+Addition.h"
 #import <UIImageView+WebCache.h>
+#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 @interface YJHouseListTVCell()
 @property (nonatomic, weak) UIImageView* iconView;
@@ -56,6 +57,7 @@
         make.right.offset(-10*kiphone6);
     }];
     UILabel *typeLabel = [UILabel labelWithText:@"整租" andTextColor:[UIColor colorWithHexString:@"#f98f40"] andFontSize:14];//整租
+    typeLabel.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
@@ -67,7 +69,7 @@
     typeLabel.layer.borderColor = [UIColor colorWithHexString:@"#f98f40"].CGColor;
     typeLabel.layer.masksToBounds = true;
     typeLabel.layer.cornerRadius = 2;
-    UILabel *priceLabel = [UILabel labelWithText:@"1000元/月" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];//价格
+    UILabel *priceLabel = [UILabel labelWithText:@"1000元/月" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];//价格
     [self.contentView addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
@@ -85,6 +87,9 @@
     self.iconView = iconView;
     self.detailLabel = detailLabel;
     self.priceLabel = priceLabel;
+    
+    self.hyb_lastViewInCell = priceLabel;
+    self.hyb_bottomOffsetToCell = 10*kiphone6;
 }
 
 @end

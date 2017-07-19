@@ -21,7 +21,6 @@ static NSString *dentifier=@"cellforappliancelist";
 @property(nonatomic,assign)NSInteger flag;//判断点击cell是否跳转的标记
 @property(nonatomic,assign)NSInteger sectionHeight;//组尾高度
 @property(nonatomic,assign)BOOL active;//更新新搜索的数据的开关
-
 @end
 
 @implementation YJSearchHourseVC
@@ -91,7 +90,7 @@ static NSString *dentifier=@"cellforappliancelist";
         make.left.top.right.offset(0);
         make.height.offset(25);
     }];
-    //tableView
+        //tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 25, kScreenW, kScreenH-25)];
     [self.view addSubview:tableView];
     self.tableView = tableView;
@@ -203,16 +202,16 @@ static NSString *dentifier=@"cellforappliancelist";
             
         }
     }
-    if (self.searchCayegory==0 && self.flag == 0) {//跳转医药详情页面
+    if (self.searchCayegory==0 && self.flag == 0) {//跳转搜索城市页面
         YJCityListModel *model = self.searchingList[indexPath.row];
         self.popVCBlock(model.areaName);//给bolock赋值
         [self.navigationController popViewControllerAnimated:true];
         
     }else if (self.searchCayegory == 1 && self.flag == 0){//跳转搜索小区列表详情页面
-        YJHouseSearchResultVC *hospitaiVC = [[YJHouseSearchResultVC alloc]init];
+        YJHouseSearchResultVC *houseVC = [[YJHouseSearchResultVC alloc]init];
         //传递model---------------------
-        hospitaiVC.model = self.searchingList[indexPath.row];
-        [self.navigationController pushViewController:hospitaiVC animated:true];
+        houseVC.model = self.searchingList[indexPath.row];
+        [self.navigationController pushViewController:houseVC animated:true];
         
     }
 

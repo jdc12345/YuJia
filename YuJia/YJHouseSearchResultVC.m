@@ -12,12 +12,20 @@
 #import "YJHouseDetailVC.h"
 #import "YJSearchHourseVC.h"
 #import "YJHouseListModel.h"
+//改
+#import "YJHeaderTitleBtn.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJHouseSearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSMutableArray *houseArr;
 //@property(nonatomic,weak)UIButton *LocationBtn;//定位按钮
+//改
+@property(nonatomic,weak)UIView *conditionView;//头部视图
+@property(nonatomic,weak)YJHeaderTitleBtn *areaBtn;//区域选择按钮
+@property(nonatomic,weak)YJHeaderTitleBtn *priceBtn;//租金选择按钮
+@property(nonatomic,weak)YJHeaderTitleBtn *typeBtn;//方式选择按钮
+@property(nonatomic,weak)YJHeaderTitleBtn *moreBtn;//更多选择按钮
 
 @end
 
@@ -70,8 +78,85 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem * leftItem3 = [[UIBarButtonItem alloc] initWithCustomView:searchBtn];
     [itemArr addObject:leftItem3];
     self.navigationItem.leftBarButtonItems = itemArr;
-    
+    //添加头部条件选择view
+    UIView *conditionView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 48*kiphone6)];
+    conditionView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    [self.view addSubview:conditionView];
+    self.conditionView = conditionView;
+    NSArray *conditionArr = @[@"区域",@"租金",@"出租方式",@"更多"];
+    for (int i=0; i<conditionArr.count; i++) {
+        YJHeaderTitleBtn *btn = [[YJHeaderTitleBtn alloc]init];
+        btn.tag = 1+i;
+        switch (btn.tag) {
+            case 1:
+                self.areaBtn = btn;
+                break;
+            case 2:
+                self.priceBtn = btn;
+                break;
+            case 3:
+                self.typeBtn = btn;
+                break;
+            case 4:
+                self.moreBtn = btn;
+                break;
+            default:
+                break;
+        }
+        [btn setTitle:conditionArr[i] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateSelected];
+        btn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btn setImage:[UIImage imageNamed:@"Triangle"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"click-Triangle"] forState:UIControlStateSelected];
+        btn.titleLabel.textAlignment = NSTextAlignmentRight;
+        btn.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
+        [conditionView addSubview:btn];
+        CGFloat width = kScreenW*0.25;
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(i*width);
+            make.centerY.equalTo(conditionView.mas_bottom).offset(-24*kiphone6);
+            make.width.offset(width);
+            make.height.equalTo(conditionView);
+        }];
+        [btn addTarget:self action:@selector(choiceCondition:) forControlEvents:UIControlEventTouchUpInside];
+        UIView *line = [[UIView alloc]init];//分割线1
+        line.backgroundColor = [UIColor colorWithHexString:@"#e5e5e5"];
+        [conditionView addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.offset(0);
+            make.height.offset(1/[UIScreen mainScreen].scale);
+        }];
+    }
 }
+- (void)choiceCondition:(UIButton*)sender{
+    sender.selected = !sender.selected;
+    switch (sender.tag) {
+        case 1:
+            self.priceBtn.selected = false;
+            self.typeBtn.selected = false;
+            self.moreBtn.selected = false;
+            break;
+        case 2:
+            self.areaBtn.selected = false;
+            self.typeBtn.selected = false;
+            self.moreBtn.selected = false;
+            break;
+        case 3:
+            self.areaBtn.selected = false;
+            self.priceBtn.selected = false;
+            self.moreBtn.selected = false;
+            break;
+        case 4:
+            self.areaBtn.selected = false;
+            self.priceBtn.selected = false;
+            self.typeBtn.selected = false;
+            break;
+        default:
+            break;
+    }
+}
+
 -(void)setModel:(YJSearchHouseDetailResultModel *)model{
     _model = model;
     [self loadData];
@@ -130,8 +215,8 @@ static NSString* tableCellid = @"table_cell";
     [self.view addSubview:tableView];
     //    self.tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.top.left.right.bottom.offset(0);
+        make.top.offset(48*kiphone6);
+        make.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJHouseListTVCell class] forCellReuseIdentifier:tableCellid];

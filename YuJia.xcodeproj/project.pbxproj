@@ -108,6 +108,7 @@
 		16750B321EC8268F002296EE /* YJCommunityCarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16750B311EC8268F002296EE /* YJCommunityCarVC.m */; };
 		16750B361EC828C2002296EE /* YJCommunityCarTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16750B351EC828C2002296EE /* YJCommunityCarTVCell.m */; };
 		16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16750B3B1EC8454A002296EE /* YJCommunityCarDetailVC.m */; };
+		1675FBFB1F1C4E2D000991D8 /* YJCitySelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1675FBFA1F1C4E2D000991D8 /* YJCitySelectVC.m */; };
 		167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 167EC1B91ECED99A00D8FF9E /* YJCityDetailModel.m */; };
 		167EC1BD1ECEE55F00D8FF9E /* YJAreaDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 167EC1BC1ECEE55F00D8FF9E /* YJAreaDetailModel.m */; };
 		1681276D1ECD2B66003EBC9F /* YJNearbyShopDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */; };
@@ -133,6 +134,9 @@
 		16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9B1EDD71A900F52A7A /* libc++.tbd */; };
 		16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9D1EDD71C600F52A7A /* GLKit.framework */; };
 		16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */; };
+		16DD444F1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD444E1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m */; };
+		16DD44521F1DEFAD000823AD /* YJHousePriceTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD44511F1DEFAD000823AD /* YJHousePriceTVCell.m */; };
+		16DD44551F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD44541F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m */; };
 		16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
@@ -474,6 +478,8 @@
 		16750B351EC828C2002296EE /* YJCommunityCarTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarTVCell.m; sourceTree = "<group>"; };
 		16750B3A1EC8454A002296EE /* YJCommunityCarDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityCarDetailVC.h; sourceTree = "<group>"; };
 		16750B3B1EC8454A002296EE /* YJCommunityCarDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarDetailVC.m; sourceTree = "<group>"; };
+		1675FBF91F1C4E2D000991D8 /* YJCitySelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCitySelectVC.h; sourceTree = "<group>"; };
+		1675FBFA1F1C4E2D000991D8 /* YJCitySelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCitySelectVC.m; sourceTree = "<group>"; };
 		167EC1B81ECED99A00D8FF9E /* YJCityDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCityDetailModel.h; sourceTree = "<group>"; };
 		167EC1B91ECED99A00D8FF9E /* YJCityDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCityDetailModel.m; sourceTree = "<group>"; };
 		167EC1BB1ECEE55F00D8FF9E /* YJAreaDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAreaDetailModel.h; sourceTree = "<group>"; };
@@ -512,6 +518,12 @@
 		16AD9E9D1EDD71C600F52A7A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		16AD9E9F1EDED75100F52A7A /* YJNearbyShopChangeAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopChangeAddressVC.h; sourceTree = "<group>"; };
 		16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopChangeAddressVC.m; sourceTree = "<group>"; };
+		16DD444D1F1DBB12000823AD /* YJSearchHouseConditionTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSearchHouseConditionTVCell.h; sourceTree = "<group>"; };
+		16DD444E1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSearchHouseConditionTVCell.m; sourceTree = "<group>"; };
+		16DD44501F1DEFAD000823AD /* YJHousePriceTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHousePriceTVCell.h; sourceTree = "<group>"; };
+		16DD44511F1DEFAD000823AD /* YJHousePriceTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHousePriceTVCell.m; sourceTree = "<group>"; };
+		16DD44531F1E1AC9000823AD /* YJHouseSearchMoreTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseSearchMoreTVCell.h; sourceTree = "<group>"; };
+		16DD44541F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchMoreTVCell.m; sourceTree = "<group>"; };
 		16EBB5381F0B714C006D178C /* YJBillHeaderViewTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJBillHeaderViewTVCell.h; sourceTree = "<group>"; };
 		16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBillHeaderViewTVCell.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -953,6 +965,12 @@
 				164F83FC1EBAC391002318A6 /* IWComposeImageView.m */,
 				164F84011EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.h */,
 				164F84021EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.m */,
+				16DD444D1F1DBB12000823AD /* YJSearchHouseConditionTVCell.h */,
+				16DD444E1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m */,
+				16DD44501F1DEFAD000823AD /* YJHousePriceTVCell.h */,
+				16DD44511F1DEFAD000823AD /* YJHousePriceTVCell.m */,
+				16DD44531F1E1AC9000823AD /* YJHouseSearchMoreTVCell.h */,
+				16DD44541F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m */,
 				1621A4311EBB213900BDAF10 /* repairRecord */,
 				166FF49F1EBC497000846A59 /* preprotyBill */,
 				1606D9981EC017ED00A74938 /* LifePayMent */,
@@ -1095,6 +1113,8 @@
 				169519841ED4498F00C2C380 /* YJSearchHourseVC.m */,
 				1640BE9B1ED9887B00E3AE00 /* YJHouseSearchResultVC.h */,
 				1640BE9C1ED9887B00E3AE00 /* YJHouseSearchResultVC.m */,
+				1675FBF91F1C4E2D000991D8 /* YJCitySelectVC.h */,
+				1675FBFA1F1C4E2D000991D8 /* YJCitySelectVC.m */,
 			);
 			name = "Rental house";
 			sourceTree = "<group>";
@@ -1833,6 +1853,7 @@
 				3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */,
 				3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */,
 				1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */,
+				1675FBFB1F1C4E2D000991D8 /* YJCitySelectVC.m in Sources */,
 				1681276D1ECD2B66003EBC9F /* YJNearbyShopDetailVC.m in Sources */,
 				166B42621ED03BF600E8FEF0 /* YJRenovationViewController.m in Sources */,
 				3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */,
@@ -1853,6 +1874,7 @@
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
 				3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
+				16DD44521F1DEFAD000823AD /* YJHousePriceTVCell.m in Sources */,
 				169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */,
 				3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */,
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
@@ -1873,6 +1895,7 @@
 				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
 				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
 				3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */,
+				16DD44551F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m in Sources */,
 				1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */,
 				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
@@ -2016,6 +2039,7 @@
 				1671302A1EB9745500CC2394 /* YJHeaderTitleBtn.m in Sources */,
 				163E96121ED577C500C20B42 /* YJBussinessServeDetailModel.m in Sources */,
 				1661FE361EB89D4000583A7F /* YYCircleTableViewCell.m in Sources */,
+				16DD444F1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m in Sources */,
 				3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */,
 				1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
