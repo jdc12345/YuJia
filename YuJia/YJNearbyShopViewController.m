@@ -122,18 +122,6 @@ static NSString* tableCellid = @"table_cell";
         self.location = regeo.location;//请求数据时候需要坐标
         regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
         [self.search AMapReGoecodeSearch:regeo];
-        //        //定位结果
-        //        NSLog(@"location:{lat:%f; lon:%f; accuracy:%f}", location.coordinate.latitude, location.coordinate.longitude, location.horizontalAccuracy);
-        //        if (regeocode)//定位只返回到城市级别的信息，此处需要的是具体信息
-        //        {
-        //            NSLog(@"reGeocode:%@", regeocode.district);
-        //            if(!regeocode.district){
-        //                [btn setTitle:@"无定位" forState:UIControlStateNormal];
-        //            }else{
-        //                [btn setTitle:regeocode.district forState:UIControlStateNormal];
-        //            }
-        //        }
-        
     }];
    
 }
@@ -201,7 +189,7 @@ static NSString* tableCellid = @"table_cell";
     {
         //解析response获取地址描述，具体解析见 Demo
         NSLog(@"reGeocode:%@", response.regeocode.aois[0].name);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
-        
+        NSLog(@"reGeocode:%@,%@,%@", response.regeocode.addressComponent.province,response.regeocode.addressComponent.city,response.regeocode.addressComponent.district);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
         [self.locationAddressBtn setTitle:response.regeocode.aois[0].name forState:UIControlStateNormal];
         [self loaddata];
         

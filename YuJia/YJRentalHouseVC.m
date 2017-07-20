@@ -99,7 +99,7 @@ static NSString* photoCellid = @"photo_cell";
     [scrollView addSubview:backView];
     self.backView = backView;
     backView.backgroundColor = [UIColor whiteColor];
-    UILabel *noticeLabel = [UILabel labelWithText:@"您本月可发帖8条" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];
+    UILabel *noticeLabel = [UILabel labelWithText:@"您本月可发帖8条" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];
     [backView addSubview:noticeLabel];
     [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
@@ -122,8 +122,8 @@ static NSString* photoCellid = @"photo_cell";
     }];//
     UIButton *allRentBtn = [[UIButton alloc]init];
     allRentBtn.tag = 101;
-    [allRentBtn setImage:[UIImage imageNamed:@"choice_rent"] forState:UIControlStateNormal];
-    [allRentBtn setImage:[UIImage imageNamed:@"choiced_rent"] forState:UIControlStateSelected];
+    [allRentBtn setImage:[UIImage imageNamed:@"type_Choice"] forState:UIControlStateNormal];
+    [allRentBtn setImage:[UIImage imageNamed:@"type_Choiced"] forState:UIControlStateSelected];
     [allRentBtn setTitle:@"整租" forState:UIControlStateNormal];
     [allRentBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     allRentBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -134,8 +134,8 @@ static NSString* photoCellid = @"photo_cell";
     }];
     UIButton *shareRentBtn = [[UIButton alloc]init];
     shareRentBtn.tag = 102;
-    [shareRentBtn setImage:[UIImage imageNamed:@"choice_rent"] forState:UIControlStateNormal];
-    [shareRentBtn setImage:[UIImage imageNamed:@"choiced_rent"] forState:UIControlStateSelected];
+    [shareRentBtn setImage:[UIImage imageNamed:@"type_Choice"] forState:UIControlStateNormal];
+    [shareRentBtn setImage:[UIImage imageNamed:@"type_Choiced"] forState:UIControlStateSelected];
     [shareRentBtn setTitle:@"合租" forState:UIControlStateNormal];
     [shareRentBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     shareRentBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -200,12 +200,14 @@ static NSString* photoCellid = @"photo_cell";
     UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100)];
     footerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [btn setTitle:@"提交" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
     btn.layer.masksToBounds = true;
     btn.layer.cornerRadius = 3;
+    btn.layer.borderWidth = 1;
+    btn.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
     [footerView addSubview:btn];
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.offset(40*kiphone6);
@@ -241,6 +243,7 @@ static NSString* photoCellid = @"photo_cell";
     if (self.coverView) {
         
         [self.onePickerView reloadAllComponents];
+        [self.view endEditing:true];
         self.topView.hidden = false;
         self.onePickerView.hidden = false;
         self.coverView.hidden = false;
@@ -583,7 +586,9 @@ static NSString* photoCellid = @"photo_cell";
     }
     return 5;
 }
-
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self.view endEditing:true];
+}
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section

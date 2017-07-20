@@ -119,7 +119,7 @@
     }];
     NSString *price = [NSString stringWithFormat:@"%ld元/月",self.houseModel.rent];
  
-    UILabel *priceLabel = [UILabel labelWithText:price andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    UILabel *priceLabel = [UILabel labelWithText:price andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];
     [self.view addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(priceItemLabel);
@@ -140,7 +140,7 @@
         make.centerX.equalTo(vline1.mas_left).offset(kScreenW/3/2);
         make.bottom.equalTo(line1.mas_bottom).offset(29*kiphone6);
     }];
-    UILabel *typeLabel = [UILabel labelWithText:self.houseModel.apartmentLayout andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    UILabel *typeLabel = [UILabel labelWithText:self.houseModel.apartmentLayout andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];
     [self.view addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(typeItemLabel);
@@ -162,7 +162,7 @@
         make.bottom.equalTo(line1.mas_bottom).offset(29*kiphone6);
     }];
     NSString *area = [NSString stringWithFormat:@"%ld㎡",self.houseModel.housingArea];
-    UILabel *areaLabel = [UILabel labelWithText:area andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];
+    UILabel *areaLabel = [UILabel labelWithText:area andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];
     [self.view addSubview:areaLabel];
     [areaLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(areaItemLabel);
@@ -272,7 +272,7 @@
         make.height.offset(1/[UIScreen mainScreen].scale);
     }];
     UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
     [btn setTitle:@"预约看房" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -321,7 +321,7 @@
         str = [NSString stringWithFormat:@"您今日还有%ld次房源机会，联系房东将扣除1次，确认联系房东",6-self.recodeNum];
         NSMutableAttributedString *strF = [[NSMutableAttributedString alloc] initWithString:str];
         //颜色 设置
-        [strF addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#00bfff"] range:NSMakeRange(5, 1)];
+        [strF addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#00eac6"] range:NSMakeRange(5, 1)];
         contentLabel.attributedText = strF;
         
     }else{
@@ -343,7 +343,7 @@
         [contactButton setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
         contactButton.titleLabel.font = [UIFont systemFontOfSize:17];
     if (self.recodeNum<6) {
-        contactButton.backgroundColor = [UIColor colorWithHexString:@"#00bfff"];
+        contactButton.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
     }else{
         contactButton.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     }

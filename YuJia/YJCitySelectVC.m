@@ -62,9 +62,9 @@ static NSString* tableCellid = @"table_cell";
 
     }else{
         if (indexPath.row==0) {
-            cell.textLabel.text = @"北京";
+            cell.textLabel.text = @"北京市";
         }else if (indexPath.row==1){
-            cell.textLabel.text = @"保定";
+            cell.textLabel.text = @"保定市";
         }
     }
     UIView *line = [[UIView alloc]init];

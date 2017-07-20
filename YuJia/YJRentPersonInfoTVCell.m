@@ -40,7 +40,7 @@
         make.bottom.left.right.offset(0);
         make.height.offset(1*kiphone6);
     }];
-    UILabel *starLabel = [UILabel labelWithText:@"*" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:17];
+    UILabel *starLabel = [UILabel labelWithText:@"*" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:17];
     [self.contentView addSubview:starLabel];
     UILabel *itemLabel = [UILabel labelWithText:@"城  市" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:13];
     [self.contentView addSubview:itemLabel];
@@ -55,8 +55,8 @@
     contentField.delegate = self;
     [starLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
-        make.centerY.equalTo(self.contentView).offset(-5);
-        make.width.offset(5);
+        make.centerY.equalTo(self.contentView);
+        make.width.offset(10);
     }];
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(starLabel.mas_right).offset(5*kiphone6);

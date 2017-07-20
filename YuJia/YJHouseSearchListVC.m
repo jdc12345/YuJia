@@ -47,8 +47,9 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UITableView *typeTableView;//出租方式tableview
 @property(nonatomic,weak)UITableView *moreTableView;//更多tableview
 @property(nonatomic,strong)NSArray *firArr;//区域第一个tableview数据源
-@property(nonatomic,strong)NSArray *secArr;//区域第二个tableview数据源
-@property(nonatomic,strong)NSArray *thirdArr;//区域第三个tableview数据源
+@property(nonatomic,strong)NSMutableArray *secArr;//区域第二个tableview数据源
+@property(nonatomic,strong)NSMutableArray *sThirdArr;//区域第三个tableview数据源
+@property(nonatomic,strong)NSMutableArray *thirdArr;//区域第三个tableview数据源的汇总
 @property(nonatomic,strong)NSArray *priceArr;//租金tableview数据源
 @property(nonatomic,strong)NSArray *typeArr;//出租方式tableview数据源
 @property(nonatomic,strong)NSArray *moreArr;//更多tableview数据源
@@ -58,6 +59,10 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *backGrayView;//半透明背景
 @property(nonatomic,weak)UIView *areaBackView;//区域联动列表背景
 
+@property (nonatomic, strong) AMapSearchAPI *search;//搜索实体类
+@property (nonatomic, copy)   AMapGeoPoint *location;//中心点坐标。
+@property (nonatomic, strong)   NSString *name;//根据名称进行行政区划数据搜索的名称
+@property (nonatomic, assign)   BOOL isExchangeCity;//是否更换了城市。
 @end
 
 @implementation YJHouseSearchListVC
@@ -143,30 +148,28 @@ static NSString* tableCellid = @"table_cell";
             }else{
                 [localBtn setTitle:regeocode.district forState:UIControlStateNormal];
                 //                        self.currentCity = localBtn.titleLabel.text;
-//                //当前区域数据
-//                self.firArr = @[@{@"secArr":@[@"不限",@"1000米内",@"1500米内",@"2000米内"],@"name":@"附近"},@{@"secArr":@[@"全保定",@"北市",@"南市",@"涿州",@"高开"],@"name":@"区域"}];
-//                self.secArr = @[@"全保定",@"北市",@"南市",@"涿州",@"高开"];
-//                self.thirdArr = @[];
-//                self.tableHeight = 0;
-//                for (int i=0; i<self.firArr.count; i++) {
-//                   NSArray *secArr = self.firArr[i][@"secArr"];
-//                   self.tableHeight = self.tableHeight<secArr.count*45*kiphone6?secArr.count*45*kiphone6:self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
-//                }
-                [self loadData];
+                [self loadData];//先根据定位的城市搜索并显示房源，再根据城市编码确定行政区划数据
+                self.isExchangeCity=true;//第一次城市初次定位，需要确定下级行政区域，所以为true
+                //设置行政区划查询参数并发起行政区划查询
+                self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+                self.search.delegate = self;
+                AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+                dist.keywords = regeocode.citycode;
+                dist.requireExtension = YES;
+                [self.search AMapDistrictSearch:dist];
+                
+//                //当前区域数据确定(逆地理编码)
+//                self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+//                self.search.delegate = self;
+//                AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
+//                regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+//                self.location = regeo.location;//请求数据时候需要坐标
+//                regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
+//                [self.search AMapReGoecodeSearch:regeo];
             }
         }
     }];
     [localBtn addTarget:self action:@selector(localBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    //当前区域数据
-    self.firArr = @[@{@"secArr":@[@"不限",@"1000米内",@"1500米内",@"2000米内"],@"name":@"附近"},@{@"secArr":@[@"全保定",@"北市",@"南市",@"涿州",@"高开"],@"name":@"区域"}];
-    self.secArr = @[@"全保定",@"北市",@"南市",@"涿州",@"高开"];
-    self.thirdArr = @[];
-    self.tableHeight = 0;
-    for (int i=0; i<self.firArr.count; i++) {
-        NSArray *secArr = self.firArr[i][@"secArr"];
-        self.tableHeight = self.tableHeight<secArr.count*45*kiphone6?secArr.count*45*kiphone6:self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
-    }
     
     UIButton *searchBtn = [[UIButton alloc]init];//搜索按钮
     [headerView addSubview:searchBtn];
@@ -242,6 +245,64 @@ static NSString* tableCellid = @"table_cell";
         [btn addTarget:self action:@selector(choiceCondition:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
+#pragma AMapSearchDelegate
+/* 行政区划数据查询回调. */
+- (void)onDistrictSearchDone:(AMapDistrictSearchRequest *)request response:(AMapDistrictSearchResponse *)response
+{
+    
+    if (response == nil)
+    {
+        return;
+    }
+    //当前区域数据
+    
+    //解析response获取行政区划，具体解析见 Demo
+    for (AMapDistrict *dist in response.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+    {
+        
+//        NSLog(@"%@,name:%@ 下级行政区域数：%ld ///返回数目%ld",dist.level,dist.name,dist.districts.count,response.count);
+        if (self.isExchangeCity) {//改变了城市二级区域才要更新secTableview数据源
+            self.secArr = [NSMutableArray arrayWithObject:dist];//第二个数组第一个元素
+            // sub(二级)
+            for (AMapDistrict *subdist in dist.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+            {
+//                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
+                [self.secArr addObject:subdist];//第二个数组的第一个元素之后元素
+                
+            }
+            [self.secTableView reloadData];
+            self.isExchangeCity = false;//每次查询之后必须设为false，只有在改变了城市之后才会改为true
+            self.thirdArr = [NSMutableArray array];//此时三级数据源是空的
+        }else{//两种执行情况：1.执行更新secTableview数据源之后，选取第一个下级行政区域数据源作为thirdTableView数据源 2.点击了secTableview的cell需要更新对应的thirdTableView数据源
+            self.thirdArr = [NSMutableArray arrayWithObject:dist];//第三个数组第一个元素
+            // sub(三级)
+            for (AMapDistrict *subdist in dist.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+            {
+                //                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
+                [self.thirdArr addObject:subdist];//第三个数组的第一个元素之后元素
+                
+            }
+        }
+        [self.thirdTableView reloadData];
+        self.firArr = @[@{@"secArr":@[@"不限",@"1000米内",@"1500米内",@"2000米内"],@"name":@"附近"},@{@"secArr":self.secArr,@"name":@"区域"}];
+        self.tableHeight = 0;
+        for (int i=0; i<self.firArr.count; i++) {
+            NSArray *secArr = self.firArr[i][@"secArr"];
+            self.tableHeight = self.tableHeight<(secArr.count*45*kiphone6)?(secArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
+        }
+        self.tableHeight = self.tableHeight<(self.thirdArr.count*45*kiphone6)?(self.thirdArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
+        self.tableHeight = self.tableHeight>(kScreenH-88.5*kiphone6-64*kiphone6)?(kScreenH-88.5*kiphone6-64*kiphone6):self.tableHeight;//如果超出屏幕可视区域需要把可视区域的高度作为区域按钮下tableview所在背景的高度，否则有可能无法完全scrollw整个tableview
+        break;//大for循环只执行一次
+    }
+    
+}
+//当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
+- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", error);
+    [SVProgressHUD showErrorWithStatus:error.description];
+}
+
 - (void)choiceCondition:(UIButton*)sender{//搜索房源的条件
     sender.selected = !sender.selected;
     //大蒙布View
@@ -316,29 +377,33 @@ static NSString* tableCellid = @"table_cell";
                     
                     UITableView *secTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
                     secTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-                    secTableView.backgroundColor = [UIColor colorWithHexString:@"#f3f3f3"];
+                    secTableView.backgroundColor = [UIColor colorWithHexString:@"#f8f9fa"];
                     [self.areaBackView addSubview:secTableView];
                     self.secTableView = secTableView;
                     self.secTableView.delegate=self;
                     self.secTableView.dataSource=self;
                  
                     UITableView *thirdTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-                    secTableView.backgroundColor = [UIColor colorWithHexString:@"#f8f9fa"];
+                    thirdTableView.backgroundColor = [UIColor colorWithHexString:@"#f8f9fa"];
                     thirdTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                     [self.areaBackView addSubview:thirdTableView];
                     self.thirdTableView = thirdTableView;
                     self.thirdTableView.delegate=self;
                     self.thirdTableView.dataSource=self;
                     
-                    if (self.thirdArr.count>0) {
-                        firTableView.frame = CGRectMake(0, 0, kScreenW/3, self.tableHeight);
-                        secTableView.frame = CGRectMake(kScreenW/3, 0, kScreenW/3, self.tableHeight);
-                        thirdTableView.frame = CGRectMake(kScreenW/3*2, 0, kScreenW/3, self.tableHeight);
-                    }else{
-                        firTableView.frame = CGRectMake(0, 0, 112*kiphone6, self.tableHeight);
-                        secTableView.frame = CGRectMake(112*kiphone6, 0, kScreenW-112*kiphone6, self.tableHeight);
-                        thirdTableView.frame = CGRectMake(kScreenW/3*2, 0, 0, self.tableHeight);
-                    }
+                    
+                    firTableView.frame = CGRectMake(0, 0, kScreenW/3, self.tableHeight);
+                    secTableView.frame = CGRectMake(kScreenW/3, 0, kScreenW/3, self.tableHeight);
+                    thirdTableView.frame = CGRectMake(kScreenW/3*2, 0, kScreenW/3, self.tableHeight);
+//                    if (self.thirdArr.count>0) {
+//                        firTableView.frame = CGRectMake(0, 0, kScreenW/3, self.tableHeight);
+//                        secTableView.frame = CGRectMake(kScreenW/3, 0, kScreenW/3, self.tableHeight);
+//                        thirdTableView.frame = CGRectMake(kScreenW/3*2, 0, kScreenW/3, self.tableHeight);
+//                    }else{
+//                        firTableView.frame = CGRectMake(0, 0, 112*kiphone6, self.tableHeight);
+//                        secTableView.frame = CGRectMake(112*kiphone6, 0, kScreenW-112*kiphone6, self.tableHeight);
+//                        thirdTableView.frame = CGRectMake(kScreenW/3*2, 0, 0, self.tableHeight);
+//                    }
                     //开始默认选择cell
                     NSIndexPath* path1 = [NSIndexPath indexPathForRow:1 inSection:0];
                     NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -515,17 +580,32 @@ static NSString* tableCellid = @"table_cell";
     }];
   
 }
+//返回按钮点击事件
 - (void)backBtnClick:(UIButton*)sender {
     [self.navigationController popViewControllerAnimated:true];
 }
+//定位按钮点击事件
 - (void)localBtnClick:(UIButton*)sender {
     YJCitySelectVC *vc = [[YJCitySelectVC alloc]init];
     vc.cityName = sender.titleLabel.text;
 //    YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
 //    vc.searchCayegory = 0;
 //    vc.city = self.currentCity;
-    vc.popVCBlock = ^(NSString *cityName){
+    vc.popVCBlock = ^(NSString *cityName){//选择城市之后的返回事件
+        if (![cityName isEqualToString:self.LocationBtn.titleLabel.text]) {
+            self.isExchangeCity = true;//改变了城市
+        }
         [self.LocationBtn setTitle:cityName forState:UIControlStateNormal];
+        //设置行政区划查询参数并发起行政区划查询
+        AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+        if ([cityName isEqualToString:@"保定市"]) {
+            dist.keywords = @"0312";
+        }else if ([cityName isEqualToString:@"北京市"]){
+            dist.keywords = @"110100";
+        }
+        
+        dist.requireExtension = YES;
+        [self.search AMapDistrictSearch:dist];
         [SVProgressHUD show];// 动画开始
         cityName = [cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,cityName];
@@ -555,12 +635,14 @@ static NSString* tableCellid = @"table_cell";
     };
     [self.navigationController pushViewController:vc animated:true];
 }
+//搜索按钮点击事件
 - (void)searchBtnClick:(UIButton*)sender {
     YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
     vc.searchCayegory = 1;
     vc.city = self.LocationBtn.titleLabel.text;
     [self.navigationController pushViewController:vc animated:true];
 }
+//大tableview
 - (void)setupUI {
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
@@ -690,7 +772,17 @@ static NSString* tableCellid = @"table_cell";
             cell=[[YJSearchHouseConditionTVCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cityReuse];
         }
         cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#f8f9fa"];
-        cell.textLabel.text=self.secArr[indexPath.row];
+        if ([self.secArr[indexPath.row] isKindOfClass:[NSString class]]) {//点“附近按钮”时候
+            cell.textLabel.text=self.secArr[indexPath.row];
+        }else{
+            AMapDistrict *dist = self.secArr[indexPath.row];
+            if (indexPath.row==0) {
+                cell.textLabel.text= [NSString stringWithFormat:@"全%@",dist.name];
+            }else{
+                cell.textLabel.text=dist.name;
+            }
+        }
+        
         UIView *line = [[UIView alloc]init];
         line.backgroundColor = [UIColor colorWithHexString:@"#f3f3f3"];
         [cell.contentView addSubview:line];
@@ -708,7 +800,13 @@ static NSString* tableCellid = @"table_cell";
             cell=[[YJSearchHouseConditionTVCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:zoneReuse];
         }
         if (self.thirdArr.count>0) {
-            cell.textLabel.text=self.thirdArr[indexPath.row];
+            AMapDistrict *dist = self.thirdArr[indexPath.row];
+            if (indexPath.row==0) {
+                cell.textLabel.text= [NSString stringWithFormat:@"全%@",dist.name];
+            }else{
+                cell.textLabel.text=dist.name;
+            }
+            
         }
         cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
         UIView *line = [[UIView alloc]init];
@@ -782,15 +880,41 @@ static NSString* tableCellid = @"table_cell";
         [self.secTableView reloadData];
         NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.secTableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+        if ([self.secArr[indexPath.row] isKindOfClass:[NSString class]]) {//点“附近按钮”时候
+            self.thirdArr = [NSMutableArray array];
+            [self.thirdTableView reloadData];
+        }
     }
     else if(self.secTableView ==tableView){
-        if (self.thirdArr.count>0) {
-            self.thirdArr=self.secArr[indexPath.row][@"thirdArr"];
-            [self.thirdTableView reloadData];
-            NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.thirdTableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-            
+        if (![self.secArr[indexPath.row] isKindOfClass:[NSString class]]) {//点“附近按钮”时候
+            AMapDistrict *cellDist = self.secArr[indexPath.row];
+            if (indexPath.row>0) {
+                //把点击区域的acode改变，并发起行政区域查询
+                //设置行政区划查询参数并发起行政区划查询
+                AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+                dist.keywords = cellDist.adcode;
+                dist.requireExtension = YES;
+                [self.search AMapDistrictSearch:dist];
+                
+            }
         }
+        
+        [self.areaBtn setTitle:cell.textLabel.text forState:UIControlStateNormal];
+        
+    }
+    else if(self.thirdTableView ==tableView){
+//        AMapDistrict *dist = self.thirdArr[indexPath.row];
+//        if (indexPath.row>0) {
+//            //把点击区域的acode改变，并发起行政区域查询
+//            
+//        }
+//        if (self.thirdArr.count>0) {
+//            self.sThirdArr=self.thirdArr[indexPath.row];//设计thirdTableView数据源对应secTableView对应位置区域的下级行政区域
+//            [self.thirdTableView reloadData];
+//            NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
+//            [self.thirdTableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+//            
+//        }
         [self.areaBtn setTitle:cell.textLabel.text forState:UIControlStateNormal];
         
     }
