@@ -116,6 +116,7 @@
 		168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A51EBB423000A98295 /* YJRepairRecordFlowLayout.m */; };
 		168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */; };
 		168900021F147ED10025F1E0 /* YJFriendStatesFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 168900011F147ED10025F1E0 /* YJFriendStatesFlowLayout.m */; };
+		168B7E071F21EC96003AC13C /* YJPayPropertyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 168B7E061F21EC96003AC13C /* YJPayPropertyVC.m */; };
 		169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */; };
 		1695197A1ED405AB00C2C380 /* YJHouseListTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 169519791ED405AB00C2C380 /* YJHouseListTVCell.m */; };
 		1695197D1ED40ED900C2C380 /* YJHouseDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1695197C1ED40ED900C2C380 /* YJHouseDetailVC.m */; };
@@ -490,6 +491,8 @@
 		168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJImageDisplayCollectionViewCell.m; sourceTree = "<group>"; };
 		168900001F147ED10025F1E0 /* YJFriendStatesFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendStatesFlowLayout.h; sourceTree = "<group>"; };
 		168900011F147ED10025F1E0 /* YJFriendStatesFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendStatesFlowLayout.m; sourceTree = "<group>"; };
+		168B7E051F21EC96003AC13C /* YJPayPropertyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPayPropertyVC.h; sourceTree = "<group>"; };
+		168B7E061F21EC96003AC13C /* YJPayPropertyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPayPropertyVC.m; sourceTree = "<group>"; };
 		169519751ED3E0EB00C2C380 /* YJHouseSearchListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseSearchListVC.h; sourceTree = "<group>"; };
 		169519761ED3E0EB00C2C380 /* YJHouseSearchListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchListVC.m; sourceTree = "<group>"; };
 		169519781ED405AB00C2C380 /* YJHouseListTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHouseListTVCell.h; sourceTree = "<group>"; };
@@ -1076,6 +1079,8 @@
 				1606D9A01EC040CF00A74938 /* YJEditNumberVC.m */,
 				1606D9A21EC05A1E00A74938 /* YJInputPayNumberVC.h */,
 				1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */,
+				168B7E051F21EC96003AC13C /* YJPayPropertyVC.h */,
+				168B7E061F21EC96003AC13C /* YJPayPropertyVC.m */,
 			);
 			name = "Life payment";
 			sourceTree = "<group>";
@@ -2032,6 +2037,7 @@
 				3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */,
+				168B7E071F21EC96003AC13C /* YJPayPropertyVC.m in Sources */,
 				3E9439611ECAA087001FE471 /* AreaModel.m in Sources */,
 				166CD8FD1ED27B4F00CC4F11 /* YJBackView.m in Sources */,
 				1661FE191EB86A1100583A7F /* YYFunctionListFlowLayout.m in Sources */,

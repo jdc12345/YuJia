@@ -16,6 +16,7 @@
 #import "YJEditNumberVC.h"
 #import "YJInputPayNumberVC.h"
 #import "UIViewController+Cloudox.h"
+#import "YJPayPropertyVC.h"
 
 static NSString* emptyCellid = @"empty_cell";
 static NSString* payCellid = @"pay_cell";
@@ -53,10 +54,28 @@ static NSString* payCellid = @"pay_cell";
     }
     self.payItemArr = modelArr;
     if (isBill) {
+        NSMutableArray* rightItemArr = [NSMutableArray array];
+        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        negativeSpacer.width = -5;
+        [rightItemArr addObject:negativeSpacer];//修正按钮离屏幕边缘位置的UIBarButtonItem应在按钮的前边加入数组
+        UIButton *payRecordBtn = [[UIButton alloc]init];
+        [payRecordBtn setTitle:@"缴费记录" forState:UIControlStateNormal];
+        payRecordBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [payRecordBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        [payRecordBtn sizeToFit];
+        [payRecordBtn addTarget:self action:@selector(payRecordBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:payRecordBtn];
+        [rightItemArr addObject:rightBarItem];
+        self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
+        //缴费项目tableView
         [self setupTableView];
     }else{
         [self addAddress];
     }
+}
+- (void)payRecordBtnClick{
+    //跳转缴费记录页面
+    
 }
 - (void)addAddress{
     //添加tableView
@@ -128,19 +147,23 @@ static NSString* payCellid = @"pay_cell";
     return 55*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74*kiphone6)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 86*kiphone6)];
+    view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
+    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 76*kiphone6)];
+    [headerBtn setImage:[UIImage imageNamed:@"address_backPhoto"] forState:UIControlStateNormal];
+    [view addSubview:headerBtn];
     headerBtn.backgroundColor = [UIColor whiteColor];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"address_info"]];
     [headerBtn addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
-        make.centerY.equalTo(headerBtn).offset(-5*kiphone6);
+        make.centerY.equalTo(headerBtn);
     }];
     if (tableView == self.emptyTableView) {
-        UILabel *addressLabel = [UILabel labelWithText:@"无信息" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];
+        UILabel *addressLabel = [UILabel labelWithText:@"无信息" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
         [headerBtn addSubview:addressLabel];
         [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(headerBtn).offset(-5*kiphone6);
+            make.centerY.equalTo(headerBtn);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
         self.clickBtnBlock = ^(NSString *address) {
@@ -150,11 +173,9 @@ static NSString* payCellid = @"pay_cell";
             
             
         };
-        
-         [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
 
     }else{
-        UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+        UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
         [headerBtn addSubview:addressLabel];
         [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(imageView.mas_centerY).offset(2.5*kiphone6);
@@ -168,44 +189,38 @@ static NSString* payCellid = @"pay_cell";
             
         };
         
-        UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
+        UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
         [headerBtn addSubview:cityLabel];
         [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
-        UIImageView *gray_forward = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_forward"]];
-        [headerBtn addSubview:gray_forward];
-        [gray_forward mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.offset(-10*kiphone6);
-            make.centerY.equalTo(headerBtn).offset(-5*kiphone6);
-        }];
-        [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
- 
     }
-    UIView *view = [[UIView alloc]init];
-    view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [headerBtn addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(5*kiphone6);
+    UIImageView *gray_forward = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_forward"]];
+    [headerBtn addSubview:gray_forward];
+    [gray_forward mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.offset(-10*kiphone6);
+        make.centerY.equalTo(headerBtn);
     }];
-    return headerBtn;
+    [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
+    return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 74*kiphone6;
+    return 86*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     if (tableView == self.emptyTableView) {
         UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100*kiphone6)];
         footerView.backgroundColor = [UIColor whiteColor];
         UIButton *btn = [[UIButton alloc]init];
-        btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-        [btn setTitle:@"添加地址" forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+        btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        [btn setTitle:@"添加小区" forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:15];
         btn.layer.masksToBounds = true;
         btn.layer.cornerRadius = 3;
+        btn.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
+        btn.layer.borderWidth = 1;
         [footerView addSubview:btn];
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.offset(40*kiphone6);
@@ -233,7 +248,7 @@ static NSString* payCellid = @"pay_cell";
     NSArray *itemArr = @[@"电费",@"水费",@"燃气费",@"物业费"];
     vc.title = itemArr[indexPath.row];
     if (indexPath.row==3) {
-        YJInputPayNumberVC *vc = [[YJInputPayNumberVC alloc]init];
+        YJPayPropertyVC *vc = [[YJPayPropertyVC alloc]init];
         vc.title = itemArr[indexPath.row];
         [self.navigationController pushViewController:vc animated:true];
 

@@ -7,7 +7,6 @@
 //
 
 #import "YJEditNumberVC.h"
-#import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import "YJInputPayNumberVC.h"
 static NSString* payCellid = @"pay_cell";
@@ -15,7 +14,7 @@ static NSString* payCellid = @"pay_cell";
 @property(nonatomic,weak)UITableView *payTableView;
 @property(nonatomic,strong)NSArray *payItemArr;
 @property(nonatomic,weak)UITextField *numberField;
-
+@property(nonatomic,weak)UIButton *btn;//下一步按钮
 @end
 
 @implementation YJEditNumberVC
@@ -23,26 +22,23 @@ static NSString* payCellid = @"pay_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = false;
-    self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     [self loadData];
 }
 
 - (void)loadData {
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-    tableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     self.payTableView = tableView;
     [self.view addSubview:tableView];
-    self.payTableView.backgroundColor = [UIColor whiteColor];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:payCellid];
-    
     tableView.delegate =self;
-    tableView.dataSource = self;
-    
+    tableView.dataSource = self;    
 }
 #pragma mark - UITableView
 
@@ -71,7 +67,7 @@ static NSString* payCellid = @"pay_cell";
         cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#999999"];
         cell.detailTextLabel.text = @"名流一品物业";
     }else{
-        //添加电话textField
+        //添加编号textField
         UITextField *numberField = [[UITextField alloc]init];
         numberField.font = [UIFont boldSystemFontOfSize:13];
         numberField.placeholder = @"查看纸质账单";
@@ -96,21 +92,25 @@ static NSString* payCellid = @"pay_cell";
     return 55*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74*kiphone6)];
-    headerBtn.backgroundColor = [UIColor whiteColor];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 86*kiphone6)];
+    view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
+    UIButton *headerBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 76*kiphone6)];
+    [headerBtn setImage:[UIImage imageNamed:@"address_backPhoto"] forState:UIControlStateNormal];
+    [view addSubview:headerBtn];
+//    headerBtn.backgroundColor = [UIColor whiteColor];
     UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"address_info"]];
     [headerBtn addSubview:imageView];
     [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
-        make.centerY.equalTo(headerBtn).offset(-5*kiphone6);
+        make.centerY.equalTo(headerBtn);
     }];
-    UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:13];
+    UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(imageView.mas_centerY).offset(2.5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
     }];
-    UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:17];
+    UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
@@ -120,27 +120,22 @@ static NSString* payCellid = @"pay_cell";
     [headerBtn addSubview:gray_forward];
     [gray_forward mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.offset(-10*kiphone6);
-            make.centerY.equalTo(headerBtn).offset(-5*kiphone6);
+            make.centerY.equalTo(headerBtn);
     }];
-    [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
+    [headerBtn addTarget:self action:@selector(goAddAddress:) forControlEvents:UIControlEventTouchUpInside];
 
-    UIView *view = [[UIView alloc]init];
-    view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [headerBtn addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(5*kiphone6);
-    }];
-    return headerBtn;
+    return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 74*kiphone6;
+    return 86*kiphone6;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
         UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100*kiphone6)];
-        footerView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+        footerView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
         UIButton *btn = [[UIButton alloc]init];
-        btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+        btn.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
+    btn.layer.borderWidth =  1;
+    btn.layer.borderColor = [UIColor colorWithHexString:@"#999999"].CGColor;
     if (self.payItem) {
         [btn setTitle:self.payItem forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(holdNumber) forControlEvents:UIControlEventTouchUpInside];
@@ -148,8 +143,7 @@ static NSString* payCellid = @"pay_cell";
         [btn setTitle:@"下一步" forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(goInputPayMoney) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-        [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#999999"] forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:15];
         btn.layer.masksToBounds = true;
         btn.layer.cornerRadius = 3;
@@ -160,7 +154,8 @@ static NSString* payCellid = @"pay_cell";
             make.width.offset(325*kiphone6);
             make.height.offset(45*kiphone6);
         }];
-    
+    btn.userInteractionEnabled = false;
+    self.btn = btn;
         [footerView addSubview:btn];
     
         return footerView;
@@ -175,7 +170,6 @@ static NSString* payCellid = @"pay_cell";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     
 }
-
 
 -(void)setPayItem:(NSString *)payItem{
     _payItem = payItem;
@@ -192,6 +186,24 @@ static NSString* payCellid = @"pay_cell";
     
     
 }
+#pragma  mark - textField delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+//    NSLog(@"string:%@,string.length:%ld,textField.text:%@,&&textField.text.length:%ld",string,string.length,textField.text,textField.text.length);
+    if (string) {
+        [self.btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+        self.btn.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
+        self.btn.userInteractionEnabled = true;
+    }
+    if(string.length==0&&textField.text.length==1){
+        [self.btn setTitleColor:[UIColor colorWithHexString:@"#999999"] forState:UIControlStateNormal];
+        self.btn.layer.borderColor = [UIColor colorWithHexString:@"#999999"].CGColor;
+        self.btn.userInteractionEnabled = false;
+    }
+//    NSLog(@"1");//输入文字时 一直监听
+    return YES;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

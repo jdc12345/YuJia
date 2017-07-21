@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJEditNumberVC : UIViewController
-@property(nonatomic,strong)NSString *payItem;
+@property(nonatomic,strong)NSString *payItem;//用来判断是要修改编号时候
 @end

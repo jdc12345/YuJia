@@ -156,16 +156,7 @@ static NSString* tableCellid = @"table_cell";
                 AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
                 dist.keywords = regeocode.citycode;
                 dist.requireExtension = YES;
-                [self.search AMapDistrictSearch:dist];
-                
-//                //当前区域数据确定(逆地理编码)
-//                self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
-//                self.search.delegate = self;
-//                AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
-//                regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
-//                self.location = regeo.location;//请求数据时候需要坐标
-//                regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
-//                [self.search AMapReGoecodeSearch:regeo];
+                [self.search AMapDistrictSearch:dist];                
             }
         }
     }];
