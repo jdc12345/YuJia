@@ -71,7 +71,7 @@ static NSString* tableCellid = @"table_cell";
         make.centerY.equalTo(LocationView);
     }];
     self.locationAddressBtn = btn;
-    //    -------------------------先用locationKit定位，再根据定位的坐标用searchKit查询
+    //    -------------------------先用locationKit定位,得出兴趣点
     [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
     
     self.locationManager = [[AMapLocationManager alloc]init];
@@ -114,17 +114,46 @@ static NSString* tableCellid = @"table_cell";
                 return;
             }
         }
-        NSLog(@"location:%@", location);
-        self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
-        self.search.delegate = self;
-        AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
-        regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
-        self.location = regeo.location;//请求数据时候需要坐标
-        regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
-        [self.search AMapReGoecodeSearch:regeo];
+        
+        NSLog(@"location:%@,AOIName---%@,POIName---%@", location,regeocode.AOIName,regeocode.POIName);
+        [self.locationAddressBtn setTitle:regeocode.POIName forState:UIControlStateNormal];
+        self.location = [[AMapGeoPoint alloc]init];
+        self.location.latitude = location.coordinate.latitude;//请求数据时候需要坐标
+        self.location.longitude = location.coordinate.longitude;//请求数据时候需要坐标
+        [self loaddata];
+//        self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+//        self.search.delegate = self;
+//        AMapReGeocodeSearchRequest *regeo = [[AMapReGeocodeSearchRequest alloc] init];//实例化搜索请求对象
+//        regeo.location = [AMapGeoPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+//        self.location = regeo.location;//请求数据时候需要坐标
+//        regeo.requireExtension = YES;//是否返回扩展信息，默认NO。
+//        [self.search AMapReGoecodeSearch:regeo];
     }];
    
 }
+#pragma AMapSearchDelegate
+/* 逆地理编码回调. */
+//- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+//{
+//    
+//    if (response.regeocode != nil)
+//    {
+//        //解析response获取地址描述，具体解析见 Demo
+//        NSLog(@"reGeocode:%@", response.regeocode.aois[0].name);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
+//        NSLog(@"reGeocode:%@,%@,%@", response.regeocode.addressComponent.province,response.regeocode.addressComponent.city,response.regeocode.addressComponent.district);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
+//        [self.locationAddressBtn setTitle:response.regeocode.aois[0].name forState:UIControlStateNormal];
+//        [self loaddata];
+//        
+//    }else{
+//        [self.locationAddressBtn setTitle:@"无定位" forState:UIControlStateNormal];
+//    }
+//}
+////当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
+//- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
+//{
+//    NSLog(@"Error: %@", error);
+//    [SVProgressHUD showErrorWithStatus:error.description];
+//}
 -(void)loaddata{
     //根据地址请求数据
     //http://192.168.1.55:8080/smarthome/mobileapi/business/findBusinessList.do?   token=EC9CDB5177C01F016403DFAAEE3C1182
@@ -180,29 +209,7 @@ static NSString* tableCellid = @"table_cell";
 //        NSLog(@"弹出一个模态窗口");
     }];
 }
-#pragma AMapSearchDelegate
-/* 逆地理编码回调. */
-- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
-{
-    
-    if (response.regeocode != nil)
-    {
-        //解析response获取地址描述，具体解析见 Demo
-        NSLog(@"reGeocode:%@", response.regeocode.aois[0].name);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
-        NSLog(@"reGeocode:%@,%@,%@", response.regeocode.addressComponent.province,response.regeocode.addressComponent.city,response.regeocode.addressComponent.district);//aois是兴趣(搜索出的)区域信息组，第一个是最近的一个
-        [self.locationAddressBtn setTitle:response.regeocode.aois[0].name forState:UIControlStateNormal];
-        [self loaddata];
-        
-    }else{
-        [self.locationAddressBtn setTitle:@"无定位" forState:UIControlStateNormal];
-    }
-}
-//当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
-- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
-{
-    NSLog(@"Error: %@", error);
-    [SVProgressHUD showErrorWithStatus:error.description];
-}
+
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

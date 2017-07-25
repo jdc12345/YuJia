@@ -92,11 +92,11 @@ http://192.168.1.55:8080/smarthome/mobileapi/business/findbusinessOne.do?
         make.left.offset(10*kiphone6);
         make.top.equalTo(nameLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *priceLabel = [UILabel labelWithText:[NSString stringWithFormat:@"%.0f元",self.detailModel.average] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
+    UILabel *priceLabel = [UILabel labelWithText:[NSString stringWithFormat:@"人均:%.0f元/人",self.detailModel.average] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
     [headerView addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(85*kiphone6);
-        make.top.equalTo(nameLabel.mas_bottom).offset(10*kiphone6);
+        make.top.equalTo(nameLabel.mas_bottom).offset(7*kiphone6);
     }];
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
@@ -190,7 +190,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/business/findbusinessOne.do?
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     cell.detailTextLabel.text =[NSString stringWithFormat:@"¥ %.0f元",model.price];
-    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00bfff"];
+    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00eac6"];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
