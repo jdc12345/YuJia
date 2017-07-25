@@ -38,6 +38,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *coverView;//时间选择器背景蒙布
 @property(nonatomic,weak)UIButton *nowSelectBtn;//工具栏中间按钮
 @property(nonatomic,strong)NSString *nowTiltle;//工具栏中间按钮标题
+
 @end
 
 @implementation YJCreatActivitiesVC

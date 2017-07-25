@@ -13,9 +13,12 @@
 #import "YJPropertyAddressModel.h"
 #import "YJChangePropertyBillAddressVC.h"
 
+#import "manageAddressTVCell.h"
+
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
+@property(nonatomic,strong)NSIndexPath *index;//选中的cell
 @end
 
 @implementation YJModifyAddressVC
@@ -25,12 +28,53 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     self.title = @"物业账单";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
 //    [self setupUI];
+    [self loadData];
 }
--(void)setAddresses:(NSMutableArray *)addresses{
-    _addresses = addresses;
-    [self setupUI];
+- (void)loadData {
+    //    CcUserModel *userModel = [CcUserModel defaultClient];
+    //    NSString *token = userModel.userToken;
+    //    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主地址
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.addresses = mArr;
+            [self setupUI];
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+            }
+        }
+        [SVProgressHUD dismiss];// 动画结束
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
+//-(void)setAddresses:(NSMutableArray *)addresses{
+//    _addresses = addresses;
+//    [self setupUI];
+//}
 - (void)setupUI {
+    NSMutableArray* rightItemArr = [NSMutableArray array];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -5;
+    [rightItemArr addObject:negativeSpacer];//修正按钮离屏幕边缘位置的UIBarButtonItem应在按钮的前边加入数组
+    UIButton *postAddressBtn = [[UIButton alloc]init];
+    [postAddressBtn setTitle:@"添加" forState:UIControlStateNormal];
+    postAddressBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [postAddressBtn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+    [postAddressBtn sizeToFit];
+    [postAddressBtn addTarget:self action:@selector(addAddress) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postAddressBtn];
+    [rightItemArr addObject:rightBarItem];
+    self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
@@ -42,34 +86,51 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     }];
     tableView.bounces = false;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:detailInfoCellid];
+    [tableView registerClass:[manageAddressTVCell class] forCellReuseIdentifier:detailInfoCellid];
     tableView.delegate =self;
     tableView.dataSource = self;
-    
-    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100*kiphone6)];
-    footerView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-    [btn setTitle:@"添加地址" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:15];
-    btn.layer.masksToBounds = true;
-    btn.layer.cornerRadius = 3;
-    [footerView addSubview:btn];
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(40*kiphone6);
-        make.centerX.equalTo(footerView);
-        make.width.offset(325*kiphone6);
-        make.height.offset(45*kiphone6);
-    }];
-    [btn addTarget:self action:@selector(addAddress) forControlEvents:UIControlEventTouchUpInside];
-    [footerView addSubview:btn];
-    tableView.tableFooterView = footerView;
     
 }
 - (void)addAddress{
     YJAddPropertyBillAddressVC *vc = [[YJAddPropertyBillAddressVC alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+//弹出alert,删除地址时候用
+-(void)showAlertWithMessage:(NSString*)message{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:message];
+    
+    [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSMakeRange(0, message.length)];
+    
+    [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(0, message.length)];
+    
+    [alert setValue:alertControllerMessageStr forKey:@"attributedMessage"];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        YJPropertyAddressModel *model = self.addresses[_index.row];
+        //        http://localhost:8080/smarthome/mobileapi/family/deleteDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&AddressId=2
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/family/deleteDetailHomeAddress.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
+        //        [SVProgressHUD show];// 动画开始
+        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [self.addresses removeObjectAtIndex:self.index.row];
+                [self.tableView deleteRowsAtIndexPaths:@[self.index] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }else{
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:@"删除未成功，请稍后再试"];
+            return ;
+        }];
+    }];
+    [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
+    [okAction setValue:[UIColor colorWithHexString:@"#00eac6"] forKey:@"titleTextColor"];
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 #pragma mark - UITableView
 
@@ -77,41 +138,52 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     return self.addresses.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
+    manageAddressTVCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
     YJPropertyAddressModel *model = self.addresses[indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", model.city,model.detailAddress];
-        cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
-    //添加line
-    UIView *line = [[UIView alloc]init];
-    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    [cell.contentView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.left.right.offset(0);
-        make.height.offset(1*kiphone6);
-    }];
-
-        return cell;
-   
+    cell.model = model;
+    cell.clickBtnBlock = ^(NSInteger tag, YJPropertyAddressModel *model) {
+        if (tag==31) {//删除
+            for (YJPropertyAddressModel *smodel in self.addresses) {
+                if (smodel.info_id == model.info_id) {
+                    NSInteger row = [self.addresses indexOfObject:smodel];
+                    NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:0];
+                    self.index = index;
+                    [self showAlertWithMessage:@"你确定要删除该地址？"];
+                }
+            }
+        }else{//编辑
+            YJChangePropertyBillAddressVC *chanceVC = [[YJChangePropertyBillAddressVC alloc]init];
+            chanceVC.info_id = model.info_id;//传给修改页面要修改地址的id
+            [self.navigationController pushViewController:chanceVC animated:true];
+        }
+    };
+    return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
-            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
-            revise.clickBtnBlock(cell.textLabel.text);
-            [self.navigationController popToViewController:revise animated:YES];
-        }
-        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
-            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
-            revise.clickBtnBlock(cell.textLabel.text);
-            [self.navigationController popToViewController:revise animated:YES];
-        }
+    manageAddressTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selected) {
+        cell.backView.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
+    }else{
+        cell.backView.layer.borderColor = [UIColor colorWithHexString:@"#ffffff"].CGColor;
+
     }
+    
+//    for (UIViewController *controller in self.navigationController.viewControllers) {
+//        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
+//            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
+//            revise.clickBtnBlock(cell.textLabel.text);
+//            [self.navigationController popToViewController:revise animated:YES];
+//        }
+//        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+//            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+//            revise.clickBtnBlock(cell.textLabel.text);
+//            [self.navigationController popToViewController:revise animated:YES];
+//        }
+//    }
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 45*kiphone6;
+    return 80*kiphone6;
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -120,41 +192,40 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 /**
  *  左滑cell时出现什么按钮
  */
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    YJPropertyAddressModel *model = self.addresses[indexPath.row];
-    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-        NSLog(@"点击了修改");
-        // 收回左滑出现的按钮(退出编辑模式)
-        tableView.editing = NO;
-        YJChangePropertyBillAddressVC *chanceVC = [[YJChangePropertyBillAddressVC alloc]init];
-        chanceVC.info_id = model.info_id;//传给修改页面要修改地址的id
-        [self.navigationController pushViewController:chanceVC animated:true];
-    }];
-    UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
-//        http://localhost:8080/smarthome/mobileapi/family/deleteDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&AddressId=2
-        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/family/deleteDetailHomeAddress.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
-//        [SVProgressHUD show];// 动画开始
-        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
-            
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                [self.addresses removeObjectAtIndex:indexPath.row];
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            }else{
-                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"删除未成功，请稍后再试"];
-            return ;
-        }];
-
-        
-    }];
-    
-    return @[action1, action0];
-//    return @[action1];
-}
+//- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    YJPropertyAddressModel *model = self.addresses[indexPath.row];
+//    UITableViewRowAction *action0 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"修改" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+//        NSLog(@"点击了修改");
+//        // 收回左滑出现的按钮(退出编辑模式)
+//        tableView.editing = NO;
+//        YJChangePropertyBillAddressVC *chanceVC = [[YJChangePropertyBillAddressVC alloc]init];
+//        chanceVC.info_id = model.info_id;//传给修改页面要修改地址的id
+//        [self.navigationController pushViewController:chanceVC animated:true];
+//    }];
+//    UITableViewRowAction *action1 = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+////        http://localhost:8080/smarthome/mobileapi/family/deleteDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&AddressId=2
+//        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/family/deleteDetailHomeAddress.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
+////        [SVProgressHUD show];// 动画开始
+//        [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
+//            
+//        } success:^(NSURLSessionDataTask *task, id responseObject) {
+//            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//                [self.addresses removeObjectAtIndex:indexPath.row];
+//                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            }else{
+//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+//            }
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            [SVProgressHUD showErrorWithStatus:@"删除未成功，请稍后再试"];
+//            return ;
+//        }];
+//        
+//    }];
+//    
+//    return @[action1, action0];
+////    return @[action1];
+//}
 -(void)setAddressModel:(YJPropertyDetailAddressModel *)addressModel{
     _addressModel = addressModel;
     for (int i = 0; i<self.addresses.count; i++) {

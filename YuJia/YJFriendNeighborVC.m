@@ -41,7 +41,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *scrollowHeaderView;//scrollow头部试图
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)UIView *line;//时间选择滚动条
-
+@property(nonatomic,strong)NSDictionary *personal;//个人信息
 @end
 
 @implementation YJFriendNeighborVC
@@ -141,7 +141,9 @@ static NSString* tableCellid = @"table_cell";
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSString *userId = responseObject[@"userid"];
             self.userId = [userId integerValue];
-            NSArray *arr = responseObject[@"result"];
+            NSDictionary *dic = responseObject[@"result"];
+            self.personal = dic[@"personalEntity"];//个人信息
+            NSArray *arr = dic[@"stateAllList"];//朋友圈状态
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -175,7 +177,7 @@ static NSString* tableCellid = @"table_cell";
     self.scrollowHeaderView = headerView;
     //添加头像
     UIImageView *iconView = [[UIImageView alloc]init];
-    UIImage *iconImage = [UIImage imageNamed:@"icon"];
+    UIImage *iconImage = [UIImage imageNamed:self.personal[@"avatar"]];
     iconView.image = iconImage;
     [headerView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -187,7 +189,7 @@ static NSString* tableCellid = @"table_cell";
     iconView.layer.masksToBounds=YES;//隐藏裁剪掉的部分
     iconView.layer.borderColor = [UIColor colorWithHexString:@"#ffffff"].CGColor;
     iconView.layer.borderWidth = 1.5f;
-    UILabel *namelabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:16];
+    UILabel *namelabel = [UILabel labelWithText:self.personal[@"userName"] andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:16];
     [headerView addSubview:namelabel];
     [namelabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(iconView);
@@ -274,7 +276,10 @@ static NSString* tableCellid = @"table_cell";
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"result"];
+                NSDictionary *dic = responseObject[@"result"];
+                self.personal = dic[@"personalEntity"];//个人信息
+                NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//                NSArray *arr = responseObject[@"result"];
                 NSMutableArray *mArr = [NSMutableArray array];
                 for (NSDictionary *dic in arr) {
                     YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -304,7 +309,10 @@ static NSString* tableCellid = @"table_cell";
         [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"result"];
+                NSDictionary *dic = responseObject[@"result"];
+                self.personal = dic[@"personalEntity"];//个人信息
+                NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//                NSArray *arr = responseObject[@"result"];
                 for (NSDictionary *dic in arr) {
                     YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
                     [weakSelf.statesArr addObject:infoModel];
@@ -360,7 +368,10 @@ static NSString* tableCellid = @"table_cell";
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
+            NSDictionary *dic = responseObject[@"result"];
+            self.personal = dic[@"personalEntity"];//个人信息
+            NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -453,7 +464,10 @@ static NSString* tableCellid = @"table_cell";
             } success:^(NSURLSessionDataTask *task, id responseObject) {
                 [SVProgressHUD dismiss];// 动画结束
                 if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                    NSArray *arr = responseObject[@"result"];
+                    NSDictionary *dic = responseObject[@"result"];
+                    self.personal = dic[@"personalEntity"];//个人信息
+                    NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//                    NSArray *arr = responseObject[@"result"];
                     NSMutableArray *mArr = [NSMutableArray array];
                     for (NSDictionary *dic in arr) {
                         YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -485,7 +499,10 @@ static NSString* tableCellid = @"table_cell";
             } success:^(NSURLSessionDataTask *task, id responseObject) {
                 [SVProgressHUD dismiss];// 动画结束
                 if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                    NSArray *arr = responseObject[@"result"];
+                    NSDictionary *dic = responseObject[@"result"];
+                    self.personal = dic[@"personalEntity"];//个人信息
+                    NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//                    NSArray *arr = responseObject[@"result"];
                     NSMutableArray *mArr = [NSMutableArray array];
                     for (NSDictionary *dic in arr) {
                         YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -517,7 +534,10 @@ static NSString* tableCellid = @"table_cell";
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
+            NSDictionary *dic = responseObject[@"result"];
+            self.personal = dic[@"personalEntity"];//个人信息
+            NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -597,7 +617,10 @@ static NSString* tableCellid = @"table_cell";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
+            NSDictionary *dic = responseObject[@"result"];
+            self.personal = dic[@"personalEntity"];//个人信息
+            NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+//            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];

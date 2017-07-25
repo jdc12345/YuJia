@@ -17,6 +17,7 @@
 #import "YJInputPayNumberVC.h"
 #import "UIViewController+Cloudox.h"
 #import "YJPayPropertyVC.h"
+#import "YJPayRecoderVC.h"
 
 static NSString* emptyCellid = @"empty_cell";
 static NSString* payCellid = @"pay_cell";
@@ -75,7 +76,8 @@ static NSString* payCellid = @"pay_cell";
 }
 - (void)payRecordBtnClick{
     //跳转缴费记录页面
-    
+    YJPayRecoderVC *vc = [[YJPayRecoderVC alloc]init];
+    [self.navigationController pushViewController:vc animated:true];
 }
 - (void)addAddress{
     //添加tableView
@@ -285,8 +287,9 @@ static NSString* payCellid = @"pay_cell";
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)goAddAddress{
-    YJAddPropertyBillAddressVC *vc = [[YJAddPropertyBillAddressVC alloc]init];
+    YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
+
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

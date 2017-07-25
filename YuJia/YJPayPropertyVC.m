@@ -67,9 +67,6 @@ static NSString* payCellid = @"pay_cell";
         numberField.font = [UIFont boldSystemFontOfSize:22];
         numberField.contentHorizontalAlignment=UIControlContentHorizontalAlignmentCenter;//垂直居中
         numberField.textAlignment = NSTextAlignmentCenter; //水平居中
-//        numberField.placeholder = @"输入缴费金额";
-//        [numberField setValue:[UIColor colorWithHexString:@"#999999"] forKeyPath:@"_placeholderLabel.textColor"];
-//        [numberField setValue:[UIFont boldSystemFontOfSize:22] forKeyPath:@"_placeholderLabel.font"];
         
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.alignment = NSTextAlignmentCenter;

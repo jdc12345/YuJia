@@ -72,7 +72,7 @@ static NSString* billCellid = @"bill_cell";
             YJPropertyAddressModel *model = self.addresses[0];
             self.address = model.detailAddress;//默认选择第一个地址
             [SVProgressHUD dismiss];// 动画结束
-             [self setupBill];
+            [self setupBill];
             
         }else{
             if ([responseObject[@"code"] isEqualToString:@"-1"]) {
@@ -569,9 +569,8 @@ static NSString* billCellid = @"bill_cell";
 
 }
 - (void)modifyAddress{
-    YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];
-    vc.addresses = self.addresses;
-    [self.navigationController pushViewController:vc animated:true];
+    //跳转到家模块审核过的地址vc
+
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
