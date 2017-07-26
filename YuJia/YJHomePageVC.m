@@ -15,12 +15,13 @@
 
 //static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
-@interface YJHomePageVC ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface YJHomePageVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
 @property(nonatomic,weak)UICollectionView *colllectionView;
 @property(nonatomic,weak)UIButton *mysceneBtn;
 @property(nonatomic,weak)UIButton *equipmentBtn;
 @property(nonatomic,strong)NSArray *imagesURLStrings;
 @property (nonatomic, strong) NSArray* functionListData;//功能列表
+@property(nonatomic,weak)UIView *clearView;
 
 @end
 
@@ -48,11 +49,136 @@ static NSString* collectionCellid = @"collection_cell";
     //}
     return UIStatusBarStyleLightContent;
 }
-// 解析数据
-- (NSArray*)loadFunctionListData
-{
-    return [NSArray objectListWithPlistName:@"YJHomeSceneList.plist" clsName:@"YYPropertyFunctionList"];
+- (void)setUpUI {
+    UIButton *editBtn = [[UIButton alloc]init];//编辑按钮
+    [self setBtn:editBtn WithTitle:@"编辑" font:13 titleColor:@"#333333"];
+    editBtn.backgroundColor = [UIColor whiteColor];
+    editBtn.layer.cornerRadius = 12;
+    editBtn.layer.masksToBounds = true;
+    [self.view addSubview:editBtn];
+    [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.view.mas_top).offset(42*kiphone6);
+        make.right.offset(-15*kiphone6);
+        make.width.offset(60*kiphone6);
+        make.height.offset(25*kiphone6);
+    }];
+    UIButton *mySceneBtn = [[UIButton alloc]init];;//我的情景
+    mySceneBtn.tag = 31;
+    self.mysceneBtn = mySceneBtn;
+    [self setBtn:mySceneBtn WithTitle:@"我的情景" font:24 titleColor:@"#ffffff"];
+    [self.view addSubview:mySceneBtn];
+    [mySceneBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(74*kiphone6);
+        make.left.offset(15*kiphone6);
+    }];
+    UILabel *septemperLabel = [UILabel labelWithText:@"/" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:20];
+    [self.view addSubview:septemperLabel];
+    [septemperLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(120);
+        make.top.offset(84*kiphone6);
+    }];
+    UIButton *equipmentBtn = [[UIButton alloc]init];;//我的设备
+    equipmentBtn.tag = 32;
+    self.equipmentBtn = equipmentBtn;
+    [self setBtn:equipmentBtn WithTitle:@"我的设备" font:16 titleColor:@"#ffffff"];
+    [self.view addSubview:equipmentBtn];
+    [equipmentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(septemperLabel.mas_right).offset(10);
+        make.bottom.equalTo(mySceneBtn);
+    }];
+    [mySceneBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [equipmentBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *noticeLabel = [UILabel labelWithText:@"添加我的常用情景，创建我的智能家庭" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:13];
+    [self.view addSubview:noticeLabel];
+    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(15*kiphone6);
+        make.top.equalTo(mySceneBtn.mas_bottom).offset(25*kiphone6);
+    }];
+    UIButton *addBtn = [[UIButton alloc]init];
+    [self setBtn:addBtn WithTitle:@"添加" font:13 titleColor:@"#333333"];
+    addBtn.backgroundColor = [UIColor whiteColor];
+    addBtn.layer.cornerRadius = 12;
+    addBtn.layer.masksToBounds = true;
+    [self.view addSubview:addBtn];
+    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(15*kiphone6);
+        make.top.equalTo(noticeLabel.mas_bottom).offset(10*kiphone6);
+        make.width.offset(60*kiphone6);
+        make.height.offset(25*kiphone6);
+    }];
+    //添加中间透明view，用于滑动情景view
+    UIView *clearView = [[UIView alloc]init];
+    clearView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:clearView];
+    [clearView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.offset(0);
+        make.top.equalTo(addBtn.mas_bottom);
+        make.height.offset(165*kiphone6);
+    }];
+    self.clearView = clearView;
+    // 用来接收数据 方便设置数据源
+    self.functionListData = [self loadFunctionListData];
+    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
+//    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 218*kiphone6, kScreenW, kScreenH-self.tabBarController.tabBar.bounds.size.height-218*kiphone6) collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
+    collectionView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:collectionView];
+    [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(clearView.mas_bottom);
+        make.left.right.offset(0);
+        make.bottom.offset(-self.tabBarController.tabBar.bounds.size.height);
+    }];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    // 注册单元格
+    [collectionView registerClass:[YJHomeSceneCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];
+    collectionView.showsHorizontalScrollIndicator = false;
+    collectionView.showsVerticalScrollIndicator = false;
+    //添加滑动手势
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGesture:)];
+    [self.view addGestureRecognizer:pan];
+    pan.delegate = self;
 }
+#pragma UIgestureRecognizer Delegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
+//设置手势
+-(void)panGesture:(UIPanGestureRecognizer*)sender{
+    //
+    //    if ([self.shopDetailView isTracking]) {
+    //        return;
+    //    }
+    //
+    CGPoint p = [sender translationInView:sender.view];
+    //手势要归零
+    [sender setTranslation:CGPointZero inView:sender.view];
+    //用绝对值把左右滑动情况排除
+    if (ABS(p.x)>ABS(p.y)) {
+        return;
+    }
+    //
+    [self.clearView mas_updateConstraints:^(MASConstraintMaker *make) {
+        //设置高度的下限
+        if ((self.clearView.bounds.size.height+p.y)<25*kiphone6) {
+            make.height.offset(25*kiphone6);
+            return ;
+        }
+        //设置高度的上限
+        if ((self.clearView.bounds.size.height+p.y)>165*kiphone6) {
+            make.height.offset(165*kiphone6);
+            return;
+        }
+        make.height.offset(self.clearView.bounds.size.height + p.y);
+    }];
+    //
+    [self.view layoutIfNeeded];
+}
+-(void)setBtn:(UIButton*)btn WithTitle:(NSString*)title font:(CGFloat)font titleColor:(NSString*)color{
+    [btn setTitle:title forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:font];
+    [btn setTitleColor:[UIColor colorWithHexString:color] forState:UIControlStateNormal];
+}
+//我的情景和我的设备按钮切换
 - (void)selectedBtn:(UIButton*)sender{
     sender.titleLabel.font = [UIFont systemFontOfSize:24];
     [sender mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -77,86 +203,10 @@ static NSString* collectionCellid = @"collection_cell";
         //加载我的设备数据
     }
 }
-- (void)setUpUI {
-    UIButton *editBtn = [[UIButton alloc]init];
-    [self setBtn:editBtn WithTitle:@"编辑" font:13 titleColor:@"#333333"];
-    editBtn.backgroundColor = [UIColor whiteColor];
-    editBtn.layer.cornerRadius = 12;
-    editBtn.layer.masksToBounds = true;
-    [self.view addSubview:editBtn];
-    [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view.mas_top).offset(42*kiphone6);
-        make.right.offset(-15*kiphone6);
-        make.width.offset(60*kiphone6);
-        make.height.offset(25*kiphone6);
-    }];
-    UIButton *mySceneBtn = [[UIButton alloc]init];
-    mySceneBtn.tag = 31;
-    self.mysceneBtn = mySceneBtn;
-    [self setBtn:mySceneBtn WithTitle:@"我的情景" font:24 titleColor:@"#ffffff"];
-    [self.view addSubview:mySceneBtn];
-    [mySceneBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(74*kiphone6);
-        make.left.offset(15*kiphone6);
-    }];
-    UILabel *septemperLabel = [UILabel labelWithText:@"/" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:20];
-    [self.view addSubview:septemperLabel];
-    [septemperLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(120*kiphone6);
-        make.top.offset(84*kiphone6);
-    }];
-    UIButton *equipmentBtn = [[UIButton alloc]init];
-    equipmentBtn.tag = 32;
-    self.equipmentBtn = equipmentBtn;
-    [self setBtn:equipmentBtn WithTitle:@"我的设备" font:16 titleColor:@"#ffffff"];
-    [self.view addSubview:equipmentBtn];
-    [equipmentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(septemperLabel.mas_right).offset(5);
-        make.bottom.equalTo(mySceneBtn);
-    }];
-    [mySceneBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [equipmentBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *noticeLabel = [UILabel labelWithText:@"添加我的常用情景，创建我的智能家庭" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:13];
-    [self.view addSubview:noticeLabel];
-    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(15*kiphone6);
-        make.top.equalTo(mySceneBtn.mas_bottom).offset(25*kiphone6);
-    }];
-    UIButton *addBtn = [[UIButton alloc]init];
-    [self setBtn:addBtn WithTitle:@"添加" font:13 titleColor:@"#333333"];
-    addBtn.backgroundColor = [UIColor whiteColor];
-    addBtn.layer.cornerRadius = 12;
-    addBtn.layer.masksToBounds = true;
-    [self.view addSubview:addBtn];
-    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.offset(15*kiphone6);
-        make.top.equalTo(noticeLabel.mas_bottom).offset(10*kiphone6);
-        make.width.offset(60*kiphone6);
-        make.height.offset(25*kiphone6);
-    }];
-    // 用来接收数据 方便设置数据源
-    self.functionListData = [self loadFunctionListData];
-    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
-//    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 218*kiphone6, kScreenW, kScreenH-self.tabBarController.tabBar.bounds.size.height-218*kiphone6) collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
-    collectionView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:collectionView];
-    [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(addBtn.mas_bottom).offset(65*kiphone6);
-        make.left.right.offset(0);
-        make.bottom.offset(-self.tabBarController.tabBar.bounds.size.height);
-    }];
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
-    // 注册单元格
-    [collectionView registerClass:[YJHomeSceneCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];
-    collectionView.showsHorizontalScrollIndicator = false;
-    collectionView.showsVerticalScrollIndicator = false;
-    
-}
--(void)setBtn:(UIButton*)btn WithTitle:(NSString*)title font:(CGFloat)font titleColor:(NSString*)color{
-    [btn setTitle:title forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:font];
-    [btn setTitleColor:[UIColor colorWithHexString:color] forState:UIControlStateNormal];
+// 解析数据
+- (NSArray*)loadFunctionListData
+{
+    return [NSArray objectListWithPlistName:@"YJHomeSceneList.plist" clsName:@"YYPropertyFunctionList"];
 }
 #pragma mark - UICollectionView
 // 有多少行
@@ -171,11 +221,6 @@ static NSString* collectionCellid = @"collection_cell";
     // 去缓存池找
     YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
     cell.functionList = self.functionListData[indexPath.row];
-    if (indexPath.row==0||indexPath.row==1) {
-        cell.backgroundColor = [UIColor clearColor];
-    }else{
-        cell.backgroundColor = [UIColor whiteColor];
-    }
     cell.selected = false;
     return cell;
 }

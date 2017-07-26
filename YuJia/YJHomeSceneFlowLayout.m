@@ -16,7 +16,7 @@
     [super prepareLayout];
     
     // 计算cell的宽高
-    CGFloat w = (self.collectionView.bounds.size.width-45*kiphone6)  / 2;
+    CGFloat w = (self.collectionView.bounds.size.width-46*kiphone6)  / 2;
     CGFloat h = 90*kiphone6;
     
     // cell的大小
@@ -27,8 +27,8 @@
     // 行间距
     self.minimumLineSpacing = 10*kiphone6;
     //
-    //    // 组的内间距
-    self.sectionInset = UIEdgeInsetsMake(0, 15, 0, 15);
+    // 组的内间距
+    self.sectionInset = UIEdgeInsetsMake(0, 15*kiphone6, 0, 15*kiphone6);
 }
 
 @end

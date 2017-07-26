@@ -29,7 +29,7 @@
 }
 -(void)setModel:(YJPropertyAddressModel *)model{
     _model = model;
-    self.addressLabel.text = model.detailAddress;
+    self.addressLabel.text = model.address;
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果

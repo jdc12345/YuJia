@@ -232,7 +232,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         YJPropertyAddressModel *model = self.addresses[i];
         if (model.info_id == self.addressModel.info_id) {
             model.city = addressModel.city;
-            model.detailAddress = [NSString stringWithFormat:@"%@%@%@%@%@",self.addressModel.residentialQuarters,self.addressModel.buildingNumber,self.addressModel.unitNumber,self.addressModel.floor,self.addressModel.roomNumber];
+            model.address = [NSString stringWithFormat:@"%@%@%@%@%@",self.addressModel.residentialQuarters,self.addressModel.buildingNumber,self.addressModel.unitNumber,self.addressModel.floor,self.addressModel.roomNumber];
             [self.tableView reloadData];
         }
     }

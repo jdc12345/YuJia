@@ -4,18 +4,6 @@
 <array>
 	<dict>
 		<key>name</key>
-		<string></string>
-		<key>icon</key>
-		<string></string>
-	</dict>
-	<dict>
-		<key>name</key>
-		<string></string>
-		<key>icon</key>
-		<string></string>
-	</dict>
-	<dict>
-		<key>name</key>
 		<string>起床</string>
 		<key>icon</key>
 		<string>getup</string>

@@ -10,7 +10,6 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJFriendStateTableViewCell.h"
 #import "YJPostFriendStateVC.h"
-#import "UIButton+Badge.h"
 #import "YJFriendStateDetailVC.h"
 #import "YJPostFriendStateVC.h"
 #import "YJNoticeListTableVC.h"
@@ -22,7 +21,7 @@
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
-@interface YJFriendNeighborVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJFriendNeighborVC ()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 @property(nonatomic,weak)UIButton *myCommunityBtn;
 @property(nonatomic,weak)UIButton *otherCommunityBtn;
 @property(nonatomic,weak)UIView *blackView;
@@ -39,7 +38,6 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,assign)Boolean isHasMessage;//是否有消息
 
 @property(nonatomic,weak)UIView *scrollowHeaderView;//scrollow头部试图
-@property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)UIView *line;//时间选择滚动条
 @property(nonatomic,strong)NSDictionary *personal;//个人信息
 @end
@@ -50,7 +48,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"友邻圈";
     self.automaticallyAdjustsScrollViewInsets = NO;
-//    self.navigationController.navigationBar.translucent = false;
+    //    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -75,7 +73,7 @@ static NSString* tableCellid = @"table_cell";
     [itemArr addObject:rightBarItem];
     
     self.navigationItem.rightBarButtonItems = itemArr;
-//  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
+    //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
     NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
         
@@ -98,11 +96,11 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
-
+    
 }
 -(void)loadData{
     [SVProgressHUD show];// 动画开始
-//    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
+    //    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
     NSString *areaUrlStr = [NSString stringWithFormat:@"%@/mobileapi/residentialQuarters/findRQ.do?token=%@",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:areaUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -121,12 +119,12 @@ static NSString* tableCellid = @"table_cell";
     }];
 }
 -(void)setupUI{
-    http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
-//    &residentialQuartersId=2
-//    &visibleRange=1
-//    &start=0
-//    &limit=4
-//    &categoryId=1
+http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    //    &residentialQuartersId=2
+    //    &visibleRange=1
+    //    &start=0
+    //    &limit=4
+    //    &categoryId=1
     [SVProgressHUD show];// 动画开始
     if (self.areaArr.count) {
         self.rqId = self.areaArr[0][@"id"];
@@ -161,17 +159,16 @@ static NSString* tableCellid = @"table_cell";
     }];
 }
 -(void)setupTableView{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH)];
-    [self.view addSubview:view];
-    UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH)];
-    scrollView.bounces  = NO;
-    scrollView.delegate = self;
-    [view addSubview:scrollView];
-    self.scrollView = scrollView;
+    
     //添加头部视图
-    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 144*kiphone6)];
+    UIImageView *headerView = [[UIImageView alloc]init];
     headerView.userInteractionEnabled = true;
-    [scrollView addSubview:headerView];
+    [self.view addSubview:headerView];
+    [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(64);
+        make.left.right.offset(0);
+        make.height.offset(144*kiphone6);
+    }];
     UIImage *oldImage = [UIImage imageNamed:@"friend_circle_photo"];
     headerView.image = oldImage;
     self.scrollowHeaderView = headerView;
@@ -209,9 +206,14 @@ static NSString* tableCellid = @"table_cell";
         make.width.offset(headerView.bounds.size.width/2);
     }];
     //添加类型选择view
-    UIView *barView = [[UIView alloc]initWithFrame:CGRectMake(0, 144*kiphone6+64, kScreenW, 43*kiphone6)];
+    UIView *barView = [[UIView alloc]init];
     barView.backgroundColor = [UIColor whiteColor];
-    [scrollView addSubview:barView];
+    [self.view addSubview:barView];
+    [barView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.offset(0);
+        make.top.equalTo(headerView.mas_bottom);
+        make.height.offset(43*kiphone6);
+    }];
     NSArray *itemArr = @[@"全部",@"健康",@"居家",@"母婴",@"旅游",@"美食",@"宠物"];
     for (int i=0; i<itemArr.count; i++) {
         UIButton *btn = [[UIButton alloc]init];
@@ -247,27 +249,26 @@ static NSString* tableCellid = @"table_cell";
         make.left.right.bottom.offset(0);
         make.height.offset(1*kiphone6);
     }];
-
-    //添加tableView
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 187*kiphone6+64, kScreenW, kScreenH-144*kiphone6)];
-    self.tableView = tableView;
-    [scrollView addSubview:tableView];
-//    self.tableView.backgroundColor = [UIColor clearColor];
-    scrollView.contentSize = CGSizeMake(kScreenW, kScreenH+100*kiphone6);
-//    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.offset(0);
-//        make.left.right.bottom.offset(0);
-//    }];
-//    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 100*kiphone6)];
-//    headerView.backgroundColor = [UIColor clearColor];
-//    self.tableView.tableHeaderView = headerView;//添加头部试图
     
+    //添加tableView
+    UITableView *tableView = [[UITableView alloc]init];
+    self.tableView = tableView;
+    [self.view addSubview:tableView];
+    [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(barView.mas_bottom);
+        make.left.right.bottom.offset(0);
+    }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCellid];
     tableView.rowHeight = UITableViewAutomaticDimension;
     tableView.estimatedRowHeight =  235*kiphone6;
     tableView.delegate =self;
     tableView.dataSource = self;
+    //添加滑动手势
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGesture:)];
+    [self.view addGestureRecognizer:pan];
+    pan.delegate = self;
+    
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
@@ -279,7 +280,7 @@ static NSString* tableCellid = @"table_cell";
                 NSDictionary *dic = responseObject[@"result"];
                 self.personal = dic[@"personalEntity"];//个人信息
                 NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//                NSArray *arr = responseObject[@"result"];
+                //                NSArray *arr = responseObject[@"result"];
                 NSMutableArray *mArr = [NSMutableArray array];
                 for (NSDictionary *dic in arr) {
                     YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -289,14 +290,14 @@ static NSString* tableCellid = @"table_cell";
                 start = weakSelf.statesArr.count;
                 [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+                //                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
             [weakSelf.tableView.mj_header endRefreshing];
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_header endRefreshing];
             return ;
         }];
-
+        
     }];
     //设置上拉加载更多
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
@@ -312,7 +313,7 @@ static NSString* tableCellid = @"table_cell";
                 NSDictionary *dic = responseObject[@"result"];
                 self.personal = dic[@"personalEntity"];//个人信息
                 NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//                NSArray *arr = responseObject[@"result"];
+                //                NSArray *arr = responseObject[@"result"];
                 for (NSDictionary *dic in arr) {
                     YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
                     [weakSelf.statesArr addObject:infoModel];
@@ -320,37 +321,56 @@ static NSString* tableCellid = @"table_cell";
                 start = weakSelf.statesArr.count;
                 [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+                //                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
-//            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
-//                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-//                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-//            }
+            //            if (weakSelf.commentInfos.count==3||weakSelf.commentInfos.count==4) {//第一次刷新需要滑动到的位置
+            //                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+            //                [weakSelf.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            //            }
             [weakSelf.tableView.mj_footer endRefreshing];
-
+            
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [weakSelf.tableView.mj_footer endRefreshing];
             [SVProgressHUD showErrorWithStatus:@"刷新失败"];
             return ;
         }];
     }];
-    
-//    UIButton *postBtn = [[UIButton alloc]init];
-//    [postBtn setImage:[UIImage imageNamed:@"post"] forState:UIControlStateNormal];
-//    //    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-//    postBtn.layer.cornerRadius = 25*kiphone6;
-//    postBtn.layer.masksToBounds = YES;
-//    [postBtn addTarget:self action:@selector(postBtn:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:postBtn];
-//    
-//    WS(ws);
-//    [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(ws.view).with.offset(-54*kiphone6);
-//        make.right.equalTo(ws.view).with.offset(-12*kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(49*kiphone6 ,49*kiphone6));
-//    }];
-
 }
+//避免手势冲突
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
+//设置手势
+-(void)panGesture:(UIPanGestureRecognizer*)sender{
+    //
+    //    if ([self.shopDetailView isTracking]) {
+    //        return;
+    //    }
+    //
+    CGPoint p = [sender translationInView:sender.view];
+    //手势要归零
+    [sender setTranslation:CGPointZero inView:sender.view];
+    //用绝对值把左右滑动情况排除
+    if (ABS(p.x)>ABS(p.y)) {
+        return;
+    }
+    [self.scrollowHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
+        //设置高度的下限
+        if ((self.scrollowHeaderView.frame.origin.y+p.y)<-(102*kiphone6-64)) {
+            make.top.offset(-(102*kiphone6-64));
+            return ;
+        }
+        //设置高度的上限
+        if ((self.scrollowHeaderView.frame.origin.y+p.y)>64) {
+            make.top.offset(64);
+            return;
+        }
+        make.top.offset(self.scrollowHeaderView.frame.origin.y + p.y);
+    }];
+    //
+    [self.view layoutIfNeeded];
+}
+
 -(void)scrollBlueView:(UIButton*)sender{
     [UIView animateWithDuration:0.3 animations:^{
         [self.blackView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -371,7 +391,7 @@ static NSString* tableCellid = @"table_cell";
             NSDictionary *dic = responseObject[@"result"];
             self.personal = dic[@"personalEntity"];//个人信息
             NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//            NSArray *arr = responseObject[@"result"];
+            //            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -394,7 +414,7 @@ static NSString* tableCellid = @"table_cell";
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
     [btn setTitle:title forState:UIControlStateNormal];
-//    btn.backgroundColor = [UIColor clearColor];
+    //    btn.backgroundColor = [UIColor clearColor];
     [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     [self.scrollowHeaderView addSubview:btn];
     btn.tag = tag;
@@ -407,8 +427,8 @@ static NSString* tableCellid = @"table_cell";
     [btn addTarget:self action:@selector(selectRepairItem:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)selectRepairItem:(UIButton*)sender{
-//    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-//    [sender setImage:[UIImage imageNamed:@"selected_open"] forState:UIControlStateNormal];
+    //    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    //    [sender setImage:[UIImage imageNamed:@"selected_open"] forState:UIControlStateNormal];
     [sender setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
     //添加滚动线
     [UIView animateWithDuration:0 animations:^{
@@ -420,8 +440,8 @@ static NSString* tableCellid = @"table_cell";
         }];
     }];
     if (sender.tag == 101) {
-//        self.otherCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-//        [self.otherCommunityBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
+        //        self.otherCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        //        [self.otherCommunityBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
         [self.otherCommunityBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         self.visibleRange = @"1";
         if (self.areaArr.count>1) {
@@ -467,7 +487,7 @@ static NSString* tableCellid = @"table_cell";
                     NSDictionary *dic = responseObject[@"result"];
                     self.personal = dic[@"personalEntity"];//个人信息
                     NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//                    NSArray *arr = responseObject[@"result"];
+                    //                    NSArray *arr = responseObject[@"result"];
                     NSMutableArray *mArr = [NSMutableArray array];
                     for (NSDictionary *dic in arr) {
                         YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -487,40 +507,40 @@ static NSString* tableCellid = @"table_cell";
                 return ;
             }];
         }
-        }else{
-//        self.myCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-//        [self.myCommunityBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
+    }else{
+        //        self.myCommunityBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        //        [self.myCommunityBtn setImage:[UIImage imageNamed:@"unselected_open"] forState:UIControlStateNormal];
         [self.myCommunityBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         self.visibleRange = [NSString stringWithFormat:@"%d",2];
-            [SVProgressHUD show];// 动画开始
-            NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,self.rqId,self.categoryId,self.visibleRange];
-            [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
-                
-            } success:^(NSURLSessionDataTask *task, id responseObject) {
-                [SVProgressHUD dismiss];// 动画结束
-                if ([responseObject[@"code"] isEqualToString:@"0"]) {
-                    NSDictionary *dic = responseObject[@"result"];
-                    self.personal = dic[@"personalEntity"];//个人信息
-                    NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//                    NSArray *arr = responseObject[@"result"];
-                    NSMutableArray *mArr = [NSMutableArray array];
-                    for (NSDictionary *dic in arr) {
-                        YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
-                        [mArr addObject:infoModel];
-                    }
-                    self.statesArr = mArr;
-                    start = self.statesArr.count;
-                    [self.tableView reloadData];
-                }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-                    self.statesArr = [NSMutableArray array];
-                    start = self.statesArr.count;
-                    [self.tableView reloadData];
-                    [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+        [SVProgressHUD show];// 动画开始
+        NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=%@&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,self.rqId,self.categoryId,self.visibleRange];
+        [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];// 动画结束
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSDictionary *dic = responseObject[@"result"];
+                self.personal = dic[@"personalEntity"];//个人信息
+                NSArray *arr = dic[@"stateAllList"];//朋友圈状态
+                //                    NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
                 }
-            } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                [SVProgressHUD dismiss];// 动画结束
-                return ;
-            }];
+                self.statesArr = mArr;
+                start = self.statesArr.count;
+                [self.tableView reloadData];
+            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                self.statesArr = [NSMutableArray array];
+                start = self.statesArr.count;
+                [self.tableView reloadData];
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD dismiss];// 动画结束
+            return ;
+        }];
     }
 }
 -(void)updateAreaType:(UIButton*)sender{
@@ -537,7 +557,7 @@ static NSString* tableCellid = @"table_cell";
             NSDictionary *dic = responseObject[@"result"];
             self.personal = dic[@"personalEntity"];//个人信息
             NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//            NSArray *arr = responseObject[@"result"];
+            //            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -560,8 +580,8 @@ static NSString* tableCellid = @"table_cell";
 #pragma mark - UITableView
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
- return self.statesArr.count;//根据请求回来的数据定
+    
+    return self.statesArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -575,28 +595,29 @@ static NSString* tableCellid = @"table_cell";
         detailVc.userId = ws.userId;
         detailVc.stateId = model.info_id;
         [ws.navigationController pushViewController:detailVc animated:true];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [detailVc.commentField becomeFirstResponder];
-//
-//        });
+        //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //            [detailVc.commentField becomeFirstResponder];
+        //
+        //        });
     };
-        return cell;
+    return cell;
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    YJFriendNeighborStateModel *model = self.statesArr[indexPath.row];
-    return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
-        YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
-        
-        // 配置数据
-        [cell configCellWithModel:model indexPath:indexPath];
-    } cache:^NSDictionary *{
-        NSDictionary *cache = @{kHYBCacheUniqueKey :[NSString stringWithFormat:@"%ld",model.info_id],
-                                kHYBCacheStateKey  : @"",
-                                kHYBRecalculateForStateKey : @(model.shouldUpdateCache)};
-        model.shouldUpdateCache = NO;
-        return cache;
-    }];
+//    YJFriendNeighborStateModel *model = self.statesArr[indexPath.row];
+//    return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
+//        YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
+//        
+//        // 配置数据
+//        [cell configCellWithModel:model indexPath:indexPath];
+//    } cache:^NSDictionary *{
+//        NSDictionary *cache = @{kHYBCacheUniqueKey :[NSString stringWithFormat:@"%ld",model.info_id],
+//                                kHYBCacheStateKey  : @"",
+//                                kHYBRecalculateForStateKey : @(model.shouldUpdateCache)};
+//        model.shouldUpdateCache = NO;
+//        return cache;
+//    }];
+        return UITableViewAutomaticDimension;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -620,7 +641,7 @@ static NSString* tableCellid = @"table_cell";
             NSDictionary *dic = responseObject[@"result"];
             self.personal = dic[@"personalEntity"];//个人信息
             NSArray *arr = dic[@"stateAllList"];//朋友圈状态
-//            NSArray *arr = responseObject[@"result"];
+            //            NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];
@@ -639,21 +660,21 @@ static NSString* tableCellid = @"table_cell";
     }];
 }
 -(void)informationBtnClick:(UIButton*)sender{
-
+    
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
     vc.noticeType = 1;
     [self.navigationController pushViewController:vc animated:true];
-
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = true;
-
+    
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.translucent = false;
-
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -661,13 +682,13 @@ static NSString* tableCellid = @"table_cell";
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

@@ -57,8 +57,9 @@ static NSString* billCellid = @"bill_cell";
 //    CcUserModel *userModel = [CcUserModel defaultClient];
 //    NSString *token = userModel.userToken;
 //    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主地址
+    http://localhost:8080/smarthome/mobileapi/family/findMyFamilyAddress.do?token=49491B920A9DD107E146D961F4BDA50E
     [SVProgressHUD show];// 动画开始
-    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findMyFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
@@ -70,7 +71,7 @@ static NSString* billCellid = @"bill_cell";
             }
             self.addresses = mArr;
             YJPropertyAddressModel *model = self.addresses[0];
-            self.address = model.detailAddress;//默认选择第一个地址
+            self.address = model.address;//默认选择第一个地址
             [SVProgressHUD dismiss];// 动画结束
             [self setupBill];
             

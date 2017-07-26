@@ -187,10 +187,10 @@ static NSString* photoCellid = @"photo_cell";
     [likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(commentNumberLabel);
         make.right.equalTo(likeNumberLabel.mas_left).offset(-5*kiphone6);
-//        make.bottom.offset(-15*kiphone6);
+        make.bottom.offset(-15*kiphone6);
     }];
-    self.hyb_lastViewInCell = likeBtn;//从上到下最后一个控件
-    self.hyb_bottomOffsetToCell = 15*kiphone6;//最后一个控件到cell底部的距离
+//    self.hyb_lastViewInCell = likeBtn;//从上到下最后一个控件
+//    self.hyb_bottomOffsetToCell = 15*kiphone6;//最后一个控件到cell底部的距离
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line];
