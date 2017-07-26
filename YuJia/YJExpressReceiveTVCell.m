@@ -52,20 +52,21 @@
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     UIView *headerView = [[UIView alloc]init];//添加line
     headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [self.contentView addSubview:headerView];
     [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
-        make.height.offset(195*kiphone6);
+        make.top.left.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.height.offset(200*kiphone6);
     }];
     UILabel *stateLabel = [UILabel labelWithText:@"物流状态" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//物流状态
     [headerView addSubview:stateLabel];
     [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.offset(10*kiphone6);
     }];
-    UILabel *stateContentLabel = [UILabel labelWithText:@"服务站已签收" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];//服务站已签收
+    UILabel *stateContentLabel = [UILabel labelWithText:@"服务站已签收" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];//服务站已签收
     [headerView addSubview:stateContentLabel];
     [stateContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(stateLabel);
@@ -95,7 +96,7 @@
         make.top.equalTo(boxLabel.mas_bottom).offset(10*kiphone6);
         make.left.offset(10*kiphone6);
     }];
-    UILabel *codeContentLabel = [UILabel labelWithText:@"888888" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:14];//888888
+    UILabel *codeContentLabel = [UILabel labelWithText:@"888888" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:14];//888888
     [headerView addSubview:codeContentLabel];
     [codeContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(codeLabel);
@@ -126,14 +127,14 @@
         make.centerY.equalTo(acceptNumberLabel);
     }];
     UIView *line = [[UIView alloc]init];//添加line
-    line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+    line.backgroundColor = [UIColor colorWithHexString:@"#e5e5e5"];
     [headerView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(acceptNumberLabel.mas_bottom).offset(10*kiphone6);
         make.left.right.offset(0);
         make.height.offset(1*kiphone6/[UIScreen mainScreen].scale);
     }];
-    UILabel *acceptStateLabel = [UILabel labelWithText:@"未签收" andTextColor:[UIColor colorWithHexString:@"#00bfff"] andFontSize:15];//未签收
+    UILabel *acceptStateLabel = [UILabel labelWithText:@"未签收" andTextColor:[UIColor colorWithHexString:@"#00eac6"] andFontSize:15];//未签收
     [headerView addSubview:acceptStateLabel];
     [acceptStateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(line.mas_bottom).offset(19*kiphone6);

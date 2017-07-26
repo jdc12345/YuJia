@@ -23,7 +23,9 @@ static NSString* senderCellid = @"sender_cell";
 @property(nonatomic,weak)UITableView *senderTableView;
 @property(nonatomic,weak)UITableView *receiveTableView;
 @property(nonatomic,strong)NSArray *expressCompanys;
-
+//改动又添加的
+@property(nonatomic,weak)UIView *headerImageView;
+@property(nonatomic,weak)UIView *scrollowView;//滚动条
 @end
 
 @implementation YJExpressDeliveryVC
@@ -37,8 +39,33 @@ static NSString* senderCellid = @"sender_cell";
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"收快递"andTag:101];
-    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 44*kiphone6) WithTitle:@"发快递"andTag:102];
+    //添加头部视图
+    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 55*kiphone6)];
+    headerView.userInteractionEnabled = true;
+    [self.view addSubview:headerView];
+    UIImage *oldImage = [UIImage imageNamed:@"express_header"];
+    headerView.image = oldImage;
+    self.headerImageView = headerView;
+    [self setBtnWithFrame:CGRectMake(0, 0, kScreenW*0.5, 55*kiphone6) WithTitle:@"收快递"andTag:101];
+    [self setBtnWithFrame:CGRectMake(kScreenW*0.5, 0, kScreenW*0.5, 55*kiphone6) WithTitle:@"发快递"andTag:102];
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"#373840"];
+    [self.view addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(headerView.mas_bottom);
+        make.right.left.offset(0);
+        make.height.offset(2*kiphone6);
+    }];
+    UIView *scrollowView = [[UIView alloc]init];//添加滚动线
+    scrollowView.backgroundColor = [UIColor colorWithHexString:@"#03c2a5"];
+    [line addSubview:scrollowView];
+    self.scrollowView = scrollowView;
+    [scrollowView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.offset(0);
+        make.height.offset(2*kiphone6);
+        make.width.offset(kScreenW*0.5);
+    }];
+
     [self loadData];
 }
 -(void)loadData{
@@ -47,35 +74,31 @@ static NSString* senderCellid = @"sender_cell";
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
+    [self.headerImageView addSubview:btn];
+    btn.backgroundColor = [UIColor clearColor];
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:14];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [self.view addSubview:btn];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
     btn.tag = tag;
     if (btn.tag==101) {
-        UIView *line = [[UIView alloc]init];//添加line
-        line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-        [btn addSubview:line];
-        [line mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.offset(0);
-            make.right.offset(0);
-            make.width.offset(1*kiphone6/[UIScreen mainScreen].scale);
-        }];
-
         self.receiveBtn = btn;
+        [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
     }else{
         self.senderdBtn = btn;
     }
     [btn addTarget:self action:@selector(selectItem:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)selectItem:(UIButton*)sender{
-    sender.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-    [sender setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+    [sender setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+    [self.scrollowView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(sender);
+        make.top.equalTo(sender.mas_bottom);
+        make.height.offset(2*kiphone6);
+    }];
     if (sender.tag == 101) {
         self.senderTableView.hidden = true;
-        self.senderdBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-        [self.senderdBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+//        self.senderdBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        [self.senderdBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         http://192.168.1.55:8080/smarthome/mobileapi/takeExpress/findList.do?token=ACDCE729BCE6FABC50881A867CAFC1BC 查询个人快递
         [SVProgressHUD show];// 动画开始
         NSString *expressPersonalUrlStr = [NSString stringWithFormat:@"%@/mobileapi/takeExpress/findList.do?token=%@",mPrefixUrl,mDefineToken1];
@@ -104,14 +127,15 @@ static NSString* senderCellid = @"sender_cell";
             [self.view addSubview:tableView];
             self.receiveTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
             [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(self.receiveBtn.mas_bottom);
+                make.top.equalTo(self.receiveBtn.mas_bottom).offset(2*kiphone6);
                 make.left.right.bottom.offset(0);
             }];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
          [tableView registerClass:[YJExpressReceiveTVCell class] forCellReuseIdentifier:receiveCellid];
             tableView.delegate =self;
             tableView.dataSource = self;
-            tableView.rowHeight = 200*kiphone6;
+            tableView.estimatedRowHeight =  172*kiphone6;
+            tableView.rowHeight = UITableViewAutomaticDimension;
             UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 38*kiphone6)];
             headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
             UILabel *noticeLabel = [UILabel labelWithText:@"提货码有效期为三天，失效后请到物业办公室处理。" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];
@@ -142,8 +166,7 @@ static NSString* senderCellid = @"sender_cell";
     }else{
         self.receiveTableView.hidden = true;
         self.senderTableView.hidden = false;
-        self.receiveBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-        [self.receiveBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+        [self.receiveBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
 //        http://192.168.1.55:8080/smarthome/mobileapi/express/findList.do?token=EC9CDB5177C01F016403DFAAEE3C1182  快递公司列表
         [SVProgressHUD show];// 动画开始
         NSString *expressCompanyUrlStr = [NSString stringWithFormat:@"%@/mobileapi/express/findList.do?token=%@",mPrefixUrl,mDefineToken1];
@@ -166,12 +189,14 @@ static NSString* senderCellid = @"sender_cell";
                     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
                     self.senderTableView = tableView;
                     [self.view addSubview:tableView];
-                    self.senderTableView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+                    self.senderTableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
                     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.top.equalTo(self.receiveBtn.mas_bottom);
+                        make.top.equalTo(self.receiveBtn.mas_bottom).offset(2*kiphone6);
                         make.left.right.bottom.offset(0);
                     }];
-                    tableView.rowHeight = 71*kiphone6;
+                    tableView.estimatedRowHeight =  76*kiphone6;
+                    tableView.rowHeight = UITableViewAutomaticDimension;
+
                     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                     [tableView registerClass:[YJExpressSenderTVCell class] forCellReuseIdentifier:senderCellid];
                     tableView.delegate =self;
@@ -195,6 +220,7 @@ static NSString* senderCellid = @"sender_cell";
     if (tableView == self.receiveTableView) {
         
         return self.personalExpresss.count;
+//        return 4;
     }else{
         return self.expressCompanys.count;//根据请求回来的数据定
     }
@@ -208,6 +234,14 @@ static NSString* senderCellid = @"sender_cell";
         YJExpressSenderTVCell *cell = [tableView dequeueReusableCellWithIdentifier:senderCellid forIndexPath:indexPath];
         cell.model = self.expressCompanys[indexPath.row];
         return cell;
+    }
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.receiveTableView) {
+        
+        return 210*kiphone6;
+    }else{
+        return 76*kiphone6;//根据请求回来的数据定
     }
 }
 -(void)setPersonalExpresss:(NSArray *)personalExpresss{

@@ -37,14 +37,14 @@
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
-    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
+    self.contentView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     UIView *headerView = [[UIView alloc]init];//添加line
     headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [self.contentView addSubview:headerView];
     [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(5*kiphone6);
+        make.top.offset(0);
         make.left.right.offset(0);
-        make.bottom.offset(0);
+        make.bottom.offset(-10*kiphone6);
     }];
     UIImageView *iconView = [[UIImageView alloc] init];
     iconView.image = [UIImage imageNamed:@"sf"];

@@ -58,7 +58,7 @@ static NSString* tableCellid = @"table_cell";
         make.left.offset(10*kiphone6);
         make.top.equalTo(nameLabel.mas_bottom).offset(10*kiphone6);
     }];
-    UILabel *priceLabel = [UILabel labelWithText:[NSString stringWithFormat:@"%.0f元",self.detailModel.average] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
+    UILabel *priceLabel = [UILabel labelWithText:[NSString stringWithFormat:@"均价:%.0f元",self.detailModel.average] andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:12];//价格
     [headerView addSubview:priceLabel];
     [priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(85*kiphone6);
@@ -124,7 +124,7 @@ static NSString* tableCellid = @"table_cell";
     //    tableView.rowHeight = UITableViewAutomaticDimension;
     //    tableView.estimatedRowHeight = 180*kiphone6;
     UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
     [btn setTitle:@"立即咨询" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -160,7 +160,7 @@ static NSString* tableCellid = @"table_cell";
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"¥ %.0f元/㎡",model.price];
-    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00bfff"];
+    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#00eac6"];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
