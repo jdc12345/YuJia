@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJLifePayAddressModel.h"
 
 @interface YJLifepaymentVC : UIViewController
 /** block方式监听点击 */
-@property (nonatomic, copy) void (^clickBtnBlock)(NSString *address);
+@property (nonatomic, copy) void (^clickBtnBlock)(YJLifePayAddressModel *model);
+@property (nonatomic, strong)YJLifePayAddressModel *currentAddressModel;//当前选中地址
 @end

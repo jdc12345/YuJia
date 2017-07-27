@@ -11,7 +11,7 @@
 
 @interface manageAddressTVCell()
 @property (nonatomic, weak) UIButton* btn;
-@property (nonatomic, weak) UILabel* addressLabel;
+
 @property (nonatomic, weak) UILabel* timeLabel;
 @property (nonatomic, weak) UILabel* moneyLabel;
 @end
@@ -27,9 +27,9 @@
     [super awakeFromNib];
     [self setupUI];
 }
--(void)setModel:(YJPropertyAddressModel *)model{
+-(void)setModel:(YJLifePayAddressModel *)model{
     _model = model;
-    self.addressLabel.text = model.address;
+    self.addressLabel.text = model.detailAddress;
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果

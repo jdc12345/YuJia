@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YJPropertyAddressModel.h"
+//#import "YJPropertyAddressModel.h"
+#import "YJLifePayAddressModel.h"
 
 @interface manageAddressTVCell : UITableViewCell
 @property (nonatomic, weak) UIView* backView;//选中cell时候需要改变边框颜色
-@property (nonatomic, strong) YJPropertyAddressModel *model;
+@property (nonatomic, strong) YJLifePayAddressModel *model;
 /** block方式监听点击 */
-@property (nonatomic, copy) void (^clickBtnBlock)(NSInteger tag,YJPropertyAddressModel *model);
+@property (nonatomic, copy) void (^clickBtnBlock)(NSInteger tag,YJLifePayAddressModel *model);
+@property (nonatomic, weak) UILabel* addressLabel;
 @end

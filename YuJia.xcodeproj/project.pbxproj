@@ -18,6 +18,7 @@
 		161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B91EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m */; };
 		161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */; };
 		161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */; };
+		161C4D981F29C36800952B4F /* YJLifePayAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */; };
 		161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */; };
 		16211D3E1F09E96700F1E9EF /* YJHomePageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D3D1F09E96700F1E9EF /* YJHomePageVC.m */; };
 		16211D441F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D401F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m */; };
@@ -305,6 +306,8 @@
 		161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreatActivitiesVC.m; sourceTree = "<group>"; };
 		161918BE1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCreateActivitieTVCell.h; sourceTree = "<group>"; };
 		161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreateActivitieTVCell.m; sourceTree = "<group>"; };
+		161C4D961F29C36800952B4F /* YJLifePayAddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayAddressModel.h; sourceTree = "<group>"; };
+		161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayAddressModel.m; sourceTree = "<group>"; };
 		161CEE991EC5940800B34E3B /* YJActivitesCommentTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesCommentTVCell.h; sourceTree = "<group>"; };
 		161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesCommentTVCell.m; sourceTree = "<group>"; };
 		16211D3C1F09E96700F1E9EF /* YJHomePageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomePageVC.h; sourceTree = "<group>"; };
@@ -950,6 +953,8 @@
 				1640BE961ED915A400E3AE00 /* YJHouseListModel.m */,
 				1640BE981ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.h */,
 				1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */,
+				161C4D961F29C36800952B4F /* YJLifePayAddressModel.h */,
+				161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1834,7 +1839,7 @@
 		};
 		30F05BC4CAE1DC2E14DD7226 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -1842,14 +1847,14 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YuJia/Pods-YuJia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		42224D88EB5389098900AA59 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -1857,7 +1862,7 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
@@ -1955,6 +1960,7 @@
 				1668688D1F0634F0008C3DFC /* UINavigationController+Cloudox.m in Sources */,
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				3E8970E31ED3CA2200C9DEB1 /* LockRecardTableViewCell.m in Sources */,
+				161C4D981F29C36800952B4F /* YJLifePayAddressModel.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				166B425C1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,

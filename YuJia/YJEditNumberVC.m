@@ -9,12 +9,15 @@
 #import "YJEditNumberVC.h"
 #import "UILabel+Addition.h"
 #import "YJInputPayNumberVC.h"
+#import "YJModifyAddressVC.h"
+
 static NSString* payCellid = @"pay_cell";
 @interface YJEditNumberVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property(nonatomic,weak)UITableView *payTableView;
 @property(nonatomic,strong)NSArray *payItemArr;
 @property(nonatomic,weak)UITextField *numberField;
 @property(nonatomic,weak)UIButton *btn;//下一步按钮
+
 @end
 
 @implementation YJEditNumberVC
@@ -23,10 +26,13 @@ static NSString* payCellid = @"pay_cell";
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
-    [self loadData];
 }
 
-- (void)loadData {
+-(void)setCurrentAddressModel:(YJLifePayAddressModel *)currentAddressModel{
+    _currentAddressModel = currentAddressModel;
+    [self setupUI];
+}
+-(void)setupUI{
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
@@ -38,7 +44,7 @@ static NSString* payCellid = @"pay_cell";
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:payCellid];
     tableView.delegate =self;
-    tableView.dataSource = self;    
+    tableView.dataSource = self;
 }
 #pragma mark - UITableView
 
@@ -104,25 +110,33 @@ static NSString* payCellid = @"pay_cell";
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(headerBtn);
     }];
-    UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
+    UILabel *addressLabel = [UILabel labelWithText:self.currentAddressModel.detailAddress andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(imageView.mas_centerY).offset(2.5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
     }];
-    UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
+    UILabel *cityLabel = [UILabel labelWithText:self.currentAddressModel.city andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
     }];
+    self.clickBtnBlock = ^(YJLifePayAddressModel *model) {//将地址管理页面返回的地址更新
+        addressLabel.text = model.detailAddress;
+        cityLabel.text = model.city;
+        //此处需要根据新地址请求编号和收费单位
+        
+        
+        
+    };
     UIImageView *gray_forward = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_forward"]];
     [headerBtn addSubview:gray_forward];
     [gray_forward mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.offset(-10*kiphone6);
             make.centerY.equalTo(headerBtn);
     }];
-    [headerBtn addTarget:self action:@selector(goAddAddress:) forControlEvents:UIControlEventTouchUpInside];
+    [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
 
     return view;
 }
@@ -170,7 +184,11 @@ static NSString* payCellid = @"pay_cell";
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     
 }
-
+- (void)goAddAddress{
+    YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];
+    [self.navigationController pushViewController:vc animated:true];
+    
+}
 -(void)setPayItem:(NSString *)payItem{
     _payItem = payItem;
     self.title = self.payItem;

@@ -10,22 +10,26 @@
 #import "YJAddPropertyBillAddressVC.h"
 #import "YJPropertyBillVC.h"
 #import "YJLifepaymentVC.h"
-#import "YJPropertyAddressModel.h"
+//#import "YJPropertyAddressModel.h"
+#import "YJLifePayAddressModel.h"
 #import "YJChangePropertyBillAddressVC.h"
 
 #import "manageAddressTVCell.h"
+#import "YJEditNumberVC.h"
+#import "YJPayPropertyVC.h"
 
 static NSString* detailInfoCellid = @"detailInfo_cell";
 @interface YJModifyAddressVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,strong)NSIndexPath *index;//选中的cell
+
 @end
 
 @implementation YJModifyAddressVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"物业账单";
+    self.title = @"地址管理";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
 //    [self setupUI];
     [self loadData];
@@ -42,7 +46,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             NSArray *arr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
-                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
+                YJLifePayAddressModel *infoModel = [YJLifePayAddressModel mj_objectWithKeyValues:dic];
                 [mArr addObject:infoModel];
             }
             self.addresses = mArr;
@@ -108,7 +112,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        YJPropertyAddressModel *model = self.addresses[_index.row];
+        YJLifePayAddressModel *model = self.addresses[_index.row];
         //        http://localhost:8080/smarthome/mobileapi/family/deleteDetailHomeAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&AddressId=2
         NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/family/deleteDetailHomeAddress.do?token=%@&AddressId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
         //        [SVProgressHUD show];// 动画开始
@@ -139,11 +143,11 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     manageAddressTVCell *cell = [tableView dequeueReusableCellWithIdentifier:detailInfoCellid forIndexPath:indexPath];
-    YJPropertyAddressModel *model = self.addresses[indexPath.row];
+    YJLifePayAddressModel *model = self.addresses[indexPath.row];
     cell.model = model;
-    cell.clickBtnBlock = ^(NSInteger tag, YJPropertyAddressModel *model) {
+    cell.clickBtnBlock = ^(NSInteger tag, YJLifePayAddressModel *model) {
         if (tag==31) {//删除
-            for (YJPropertyAddressModel *smodel in self.addresses) {
+            for (YJLifePayAddressModel *smodel in self.addresses) {
                 if (smodel.info_id == model.info_id) {
                     NSInteger row = [self.addresses indexOfObject:smodel];
                     NSIndexPath *index = [NSIndexPath indexPathForRow:row inSection:0];
@@ -167,19 +171,27 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         cell.backView.layer.borderColor = [UIColor colorWithHexString:@"#ffffff"].CGColor;
 
     }
-    
-//    for (UIViewController *controller in self.navigationController.viewControllers) {
-//        if ([controller isKindOfClass:[YJPropertyBillVC class]]) {
-//            YJPropertyBillVC *revise =(YJPropertyBillVC *)controller;
-//            revise.clickBtnBlock(cell.textLabel.text);
-//            [self.navigationController popToViewController:revise animated:YES];
-//        }
-//        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
-//            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
-//            revise.clickBtnBlock(cell.textLabel.text);
-//            [self.navigationController popToViewController:revise animated:YES];
-//        }
-//    }
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[YJEditNumberVC class]]) {
+            YJEditNumberVC *revise =(YJEditNumberVC *)controller;//具体收费页面
+            revise.clickBtnBlock(cell.model);
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+        
+        if ([controller isKindOfClass:[YJPayPropertyVC class]]) {
+            YJPayPropertyVC *revise =(YJPayPropertyVC *)controller;//物业缴费页面
+            revise.clickBtnBlock(cell.model);
+            [self.navigationController popToViewController:revise animated:YES];
+        }
+        if (self.navigationController.viewControllers.count<4) {
+            if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+                YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;//生活缴费首页
+                revise.clickBtnBlock(cell.model);
+                [self.navigationController popToViewController:revise animated:YES];
+            }
+        }
+        
+    }
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -226,13 +238,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 //    return @[action1, action0];
 ////    return @[action1];
 //}
+//修改地址返回该页面更新对应地址
 -(void)setAddressModel:(YJPropertyDetailAddressModel *)addressModel{
     _addressModel = addressModel;
     for (int i = 0; i<self.addresses.count; i++) {
-        YJPropertyAddressModel *model = self.addresses[i];
+        YJLifePayAddressModel *model = self.addresses[i];
         if (model.info_id == self.addressModel.info_id) {
             model.city = addressModel.city;
-            model.address = [NSString stringWithFormat:@"%@%@%@%@%@",self.addressModel.residentialQuarters,self.addressModel.buildingNumber,self.addressModel.unitNumber,self.addressModel.floor,self.addressModel.roomNumber];
+            model.detailAddress = [NSString stringWithFormat:@"%@%@%@%@%@",self.addressModel.residentialQuarters,self.addressModel.buildingNumber,self.addressModel.unitNumber,self.addressModel.floor,self.addressModel.roomNumber];
             [self.tableView reloadData];
         }
     }

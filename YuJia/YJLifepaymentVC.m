@@ -19,6 +19,7 @@
 #import "YJPayPropertyVC.h"
 #import "YJPayRecoderVC.h"
 
+
 static NSString* emptyCellid = @"empty_cell";
 static NSString* payCellid = @"pay_cell";
 
@@ -27,6 +28,9 @@ static NSString* payCellid = @"pay_cell";
 @property(nonatomic,weak)UITableView *payTableView;
 @property(nonatomic,assign)BOOL isBill;
 @property(nonatomic,strong)NSArray *payItemArr;
+
+@property(nonatomic,strong)NSMutableArray *addresses;//地址
+
 @end
 
 @implementation YJLifepaymentVC
@@ -40,8 +44,7 @@ static NSString* payCellid = @"pay_cell";
     
 }
 - (void)loadData {
-    BOOL isBill = true;//请求判断是否是业主，依据地址请求账单
-    self.isBill = isBill;
+    
     NSArray *iconArr = @[@"electricity_pay",@"water_pay",@"gas_pay",@"property_pay"];
     NSArray *itemArr = @[@"电费",@"水费",@"燃气费",@"物业费"];
     NSArray *numberArr = @[@"111111",@"111111",@"",@""];
@@ -54,25 +57,49 @@ static NSString* payCellid = @"pay_cell";
         [modelArr addObject:payItemModel];
     }
     self.payItemArr = modelArr;
-    if (isBill) {
-        NSMutableArray* rightItemArr = [NSMutableArray array];
-        UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        negativeSpacer.width = -5;
-        [rightItemArr addObject:negativeSpacer];//修正按钮离屏幕边缘位置的UIBarButtonItem应在按钮的前边加入数组
-        UIButton *payRecordBtn = [[UIButton alloc]init];
-        [payRecordBtn setTitle:@"缴费记录" forState:UIControlStateNormal];
-        payRecordBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-        [payRecordBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-        [payRecordBtn sizeToFit];
-        [payRecordBtn addTarget:self action:@selector(payRecordBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:payRecordBtn];
-        [rightItemArr addObject:rightBarItem];
-        self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
-        //缴费项目tableView
-        [self setupTableView];
-    }else{
-        [self addAddress];
-    }
+    //    CcUserModel *userModel = [CcUserModel defaultClient];
+    //    NSString *token = userModel.userToken;
+    //    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主地址
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJLifePayAddressModel *infoModel = [YJLifePayAddressModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.addresses = mArr;
+            if (mArr.count>0) {
+                NSMutableArray* rightItemArr = [NSMutableArray array];
+                UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+                negativeSpacer.width = -5;
+                [rightItemArr addObject:negativeSpacer];//修正按钮离屏幕边缘位置的UIBarButtonItem应在按钮的前边加入数组
+                UIButton *payRecordBtn = [[UIButton alloc]init];
+                [payRecordBtn setTitle:@"缴费记录" forState:UIControlStateNormal];
+                payRecordBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+                [payRecordBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+                [payRecordBtn sizeToFit];
+                [payRecordBtn addTarget:self action:@selector(payRecordBtnClick) forControlEvents:UIControlEventTouchUpInside];
+                UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:payRecordBtn];
+                [rightItemArr addObject:rightBarItem];
+                self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
+                //缴费项目tableView
+                [self setupTableView];
+            }else{
+                [self addAddress];
+            }
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+            }
+        }
+        [SVProgressHUD dismiss];// 动画结束
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
 - (void)payRecordBtnClick{
     //跳转缴费记录页面
@@ -168,35 +195,36 @@ static NSString* payCellid = @"pay_cell";
             make.centerY.equalTo(headerBtn);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
-        self.clickBtnBlock = ^(NSString *address) {
-            addressLabel.text = address;
-            //此处需要根据新地址刷新账单
-            
-            
-            
-        };
+//        self.clickBtnBlock = ^(NSString *address) {
+//            addressLabel.text = address;
+//            //此处需要根据新地址刷新账单
+//            
+//            
+//            
+//        };
 
     }else{
-        UILabel *addressLabel = [UILabel labelWithText:@"名流一品小区" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
+        YJLifePayAddressModel *infoModel = self.addresses[0];//当前地址
+        UILabel *addressLabel = [UILabel labelWithText:infoModel.detailAddress andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
         [headerBtn addSubview:addressLabel];
         [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(imageView.mas_centerY).offset(2.5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
-        self.clickBtnBlock = ^(NSString *address) {
-            addressLabel.text = address;
-            //此处需要根据新地址刷新账单
-            
-            
-            
-        };
+       
         
-        UILabel *cityLabel = [UILabel labelWithText:@"河北" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
+        UILabel *cityLabel = [UILabel labelWithText:infoModel.city andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
         [headerBtn addSubview:cityLabel];
         [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
+        __weak typeof(self) weakSelf = self;
+        self.clickBtnBlock = ^(YJLifePayAddressModel *model) {//将地址管理页面返回的地址更新
+            addressLabel.text = model.detailAddress;
+            cityLabel.text = model.city;
+            weakSelf.currentAddressModel = model;
+            };
     }
     UIImageView *gray_forward = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"gray_forward"]];
     [headerBtn addSubview:gray_forward];
@@ -246,17 +274,22 @@ static NSString* payCellid = @"pay_cell";
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
-    YJEditNumberVC *vc = [[YJEditNumberVC alloc]init];
-    NSArray *itemArr = @[@"电费",@"水费",@"燃气费",@"物业费"];
-    vc.title = itemArr[indexPath.row];
-    if (indexPath.row==3) {
-        YJPayPropertyVC *vc = [[YJPayPropertyVC alloc]init];
-        vc.title = itemArr[indexPath.row];
-        [self.navigationController pushViewController:vc animated:true];
-
-    }else{
-       [self.navigationController pushViewController:vc animated:true]; 
+    if (tableView==self.payTableView) {
+            NSArray *itemArr = @[@"电费",@"水费",@"燃气费",@"物业费"];
+            if (indexPath.row==3) {
+            YJPayPropertyVC *vc = [[YJPayPropertyVC alloc]init];
+            vc.title = itemArr[indexPath.row];
+            vc.currentAddressModel = self.currentAddressModel;//传过去的当前地址
+            [self.navigationController pushViewController:vc animated:true];
+            
+        }else{
+            YJEditNumberVC *vc = [[YJEditNumberVC alloc]init];
+            vc.currentAddressModel = self.currentAddressModel;//传过去的当前地址
+            vc.title = itemArr[indexPath.row];
+            [self.navigationController pushViewController:vc animated:true];
+        }
     }
+    
     
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
