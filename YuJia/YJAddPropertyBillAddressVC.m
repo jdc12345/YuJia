@@ -14,13 +14,14 @@
 #import "YJCityDetailModel.h"
 #import "YJAreaDetailModel.h"
 //改
-#import <AMapFoundationKit/AMapFoundationKit.h>
-#import <AMapLocationKit/AMapLocationKit.h>
-#import <AMapSearchKit/AMapSearchKit.h>
+//#import <AMapFoundationKit/AMapFoundationKit.h>
+//#import <AMapLocationKit/AMapLocationKit.h>
+//#import <AMapSearchKit/AMapSearchKit.h>
+#import "YJModifyAddressVC.h"
 
 static NSString* cityCellid = @"city_cell";
 static NSString* detailInfoCellid = @"detailInfo_cell";
-@interface YJAddPropertyBillAddressVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,AMapSearchDelegate>
+@interface YJAddPropertyBillAddressVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIView *selectView;
 @property(nonatomic,weak)UIView *selectAreaView;
@@ -52,6 +53,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     self.title = @"添加地址";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setupUI];
+    [self loadCityData];
     
 //    //    -------------------------(用高德本地请求)
 //    [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
@@ -91,22 +93,25 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             }else if ([self.firCitys[0] isEqualToString:@"北京市"]) {
                 self.secCitys = self.bjCitys;
             }
-            if (self.firCitys.count>0) {
-                [self setBackView];
-                UIPickerView *pickView = [[UIPickerView alloc]init];
-                [self.view.window addSubview:pickView];
-                pickView.backgroundColor = [UIColor whiteColor];
-                pickView.dataSource = self;
-                pickView.delegate = self;
-                pickView.showsSelectionIndicator = YES;
-                self.cityPickerView = pickView;
-                [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.right.bottom.offset(0);
-                    make.height.offset(122*kiphone6);
-                }];
-            }else{
-                [self resignFirstResponderText];//去掉透明view
-            }
+            self.backGrayView.hidden = true;
+            self.topView.hidden = true;
+            self.cityPickerView.hidden = true;
+//            if (self.firCitys.count>0) {
+//                [self setBackView];
+//                UIPickerView *pickView = [[UIPickerView alloc]init];
+//                [self.view.window addSubview:pickView];
+//                pickView.backgroundColor = [UIColor whiteColor];
+//                pickView.dataSource = self;
+//                pickView.delegate = self;
+//                pickView.showsSelectionIndicator = YES;
+//                self.cityPickerView = pickView;
+//                [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                    make.left.right.bottom.offset(0);
+//                    make.height.offset(122*kiphone6);
+//                }];
+//            }else{
+//                [self resignFirstResponderText];//去掉透明view
+//            }
         }else{
             
         }
@@ -141,6 +146,8 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
             self.yards = mArr;
             if (mArr.count>0) {
                 [self setBackView];
+                self.backGrayView.hidden = false;
+                self.topView.hidden = false;
                 UIPickerView *pickView = [[UIPickerView alloc]init];
                 [self.view.window addSubview:pickView];
                 pickView.backgroundColor = [UIColor whiteColor];
@@ -152,6 +159,7 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
                     make.left.right.bottom.offset(0);
                     make.height.offset(122*kiphone6);
                 }];
+                
             }else{
                 [self resignFirstResponderText];//去掉透明view
                 [SVProgressHUD showInfoWithStatus:@"本地区暂未提供该服务"];
@@ -322,9 +330,9 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             [SVProgressHUD showSuccessWithStatus:@"上传成功"];
             for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
-                    YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
-                    //            revise.clickBtnBlock(cell.textLabel.text);
+                if ([controller isKindOfClass:[YJModifyAddressVC class]]) {
+                    YJModifyAddressVC *revise =(YJModifyAddressVC *)controller;
+                    [revise loadData];//更新新添加的数据
                     [self.navigationController popToViewController:revise animated:YES];
                 }
             }
@@ -377,18 +385,24 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
             }else if ([self.firCitys[0] isEqualToString:@"北京市"]) {
                 self.secCitys = self.bjCitys;
             }
-            [self setBackView];
-            UIPickerView *pickView = [[UIPickerView alloc]init];
-            [self.view.window addSubview:pickView];
-            pickView.backgroundColor = [UIColor whiteColor];
-            pickView.dataSource = self;
-            pickView.delegate = self;
-            pickView.showsSelectionIndicator = YES;
-            self.cityPickerView = pickView;
-            [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.left.right.bottom.offset(0);
-              make.height.offset(122*kiphone6);
-            }];
+            if (!self.backGrayView) {
+                [self setBackView];
+                UIPickerView *pickView = [[UIPickerView alloc]init];
+                [self.view.window addSubview:pickView];
+                pickView.backgroundColor = [UIColor whiteColor];
+                pickView.dataSource = self;
+                pickView.delegate = self;
+                pickView.showsSelectionIndicator = YES;
+                self.cityPickerView = pickView;
+                [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.bottom.offset(0);
+                    make.height.offset(122*kiphone6);
+                }];
+
+            }
+            self.cityPickerView.hidden = false;
+            self.topView.hidden = false;
+            self.backGrayView.hidden = false;
         }
         
         //            //城市第一列数据(用高德本地请求)
@@ -575,18 +589,17 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
 //执行手势触发的方法：
 - (void)event:(UITapGestureRecognizer *)gesture
 {
+    self.cityPickerView.hidden = true;
+    self.topView.hidden = true;
+    self.backGrayView.hidden = true;
     //移除view
-    [gesture.view removeFromSuperview];
-    [self.cityPickerView removeFromSuperview];
     [self.yardPickerView removeFromSuperview];
-    [self.topView removeFromSuperview];
 }
 -(void)resignFirstResponderText {
-    [self.view endEditing:true];
-    [self.cityPickerView removeFromSuperview];
+    self.cityPickerView.hidden = true;
+    self.topView.hidden = true;
+    self.backGrayView.hidden = true;
     [self.yardPickerView removeFromSuperview];
-    [self.backGrayView removeFromSuperview];
-    [self.topView removeFromSuperview];
     [self.view endEditing:true];
 }
 -(void)addToolSender:(UITextField*)textField{

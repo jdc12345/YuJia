@@ -13,5 +13,53 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YuJia/YJChangePropertyBillAddressVC.m"
+            timestampString = "522904430.633708"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
+            landmarkName = "-submitAddress"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__46-[YJChangePropertyBillAddressVC submitAddress]_block_invoke_2"
+                  moduleName = "YuJia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/w/jdc/YuJia/YuJia/YJChangePropertyBillAddressVC.m"
+                  timestampString = "522928033.827147"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "337"
+                  endingLineNumber = "337"
+                  offsetFromSymbolStart = "294">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__46-[YJChangePropertyBillAddressVC submitAddress]_block_invoke_2"
+                  moduleName = "YuJia"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/w/jdc/YuJia/YuJia/YJChangePropertyBillAddressVC.m"
+                  timestampString = "522928033.829506"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "337"
+                  endingLineNumber = "337"
+                  offsetFromSymbolStart = "302">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

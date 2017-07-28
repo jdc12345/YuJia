@@ -10,6 +10,7 @@
 #import "UILabel+Addition.h"
 #import "YJInputPayNumberVC.h"
 #import "YJModifyAddressVC.h"
+#import "YJLifePayInfiModel.h"
 
 static NSString* payCellid = @"pay_cell";
 @interface YJEditNumberVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
@@ -17,6 +18,7 @@ static NSString* payCellid = @"pay_cell";
 @property(nonatomic,strong)NSArray *payItemArr;
 @property(nonatomic,weak)UITextField *numberField;
 @property(nonatomic,weak)UIButton *btn;//下一步按钮
+@property(nonatomic,strong)YJLifePayInfiModel *infoModel;//该地址的缴费信息
 
 @end
 
@@ -30,7 +32,26 @@ static NSString* payCellid = @"pay_cell";
 
 -(void)setCurrentAddressModel:(YJLifePayAddressModel *)currentAddressModel{
     _currentAddressModel = currentAddressModel;
-    [self setupUI];
+    http://localhost:8080/smarthome/mobileapi/detailHome/findPayment.do?token=49491B920A9DD107E146D961F4BDA50E&DhId=12  //根据缴费地址ID查询缴费单位，缴费地址，用户名（生活缴费用户输入编号后点击下一步需要显示的信息）
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/findPayment.do?token=%@&DhId=%ld",mPrefixUrl,mDefineToken1,currentAddressModel.info_id];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSDictionary *dic = responseObject[@"result"];
+            YJLifePayInfiModel *infoModel = [YJLifePayInfiModel mj_objectWithKeyValues:dic];
+            self.infoModel = infoModel;
+            [self setupUI];
+            }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        }
+        [SVProgressHUD dismiss];// 动画结束
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 }
 -(void)setupUI{
     //添加tableView
@@ -71,7 +92,7 @@ static NSString* payCellid = @"pay_cell";
     if (indexPath.row==0) {
         cell.detailTextLabel.font = [UIFont systemFontOfSize:11];
         cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#999999"];
-        cell.detailTextLabel.text = @"名流一品物业";
+        cell.detailTextLabel.text = self.infoModel.propertyName;
     }else{
         //添加编号textField
         UITextField *numberField = [[UITextField alloc]init];
@@ -196,7 +217,10 @@ static NSString* payCellid = @"pay_cell";
     
 }
 -(void)goInputPayMoney{
+    self.infoModel.customerNum = self.numberField.text;//赋值客户编码
+    self.infoModel.payType = self.title;//赋值缴费类型
     YJInputPayNumberVC *vc = [[YJInputPayNumberVC alloc]init];
+    vc.infoModel = self.infoModel;
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)holdNumber{

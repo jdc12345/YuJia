@@ -31,10 +31,13 @@ static NSString* payCellid = @"pay_cell";
     self.title = @"缴费金额";
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
-    [self loadData];
+//    [self loadData];
 }
-
-- (void)loadData {
+-(void)setInfoModel:(YJLifePayInfiModel *)infoModel{
+    _infoModel = infoModel;
+    [self setupUI];
+}
+- (void)setupUI {
     UITapGestureRecognizer*tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Actiondo:)];
     [self.view addGestureRecognizer:tapGesture];
     //添加tableView
@@ -65,7 +68,7 @@ static NSString* payCellid = @"pay_cell";
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#999999"];
     NSArray *itemArr = @[@"缴费单位",@"客户编号",@"户名",@"用电地址",@"缴费类型",@"入表金额"];
     cell.textLabel.text = itemArr[indexPath.row];
-    NSArray *contentArr = @[@"名流一品物业",@"111111",@"TIAN",@"名流一品3号楼3单元306",@"电费",@"0.00元"];
+    NSArray *contentArr = @[self.infoModel.propertyName,self.infoModel.customerNum,self.infoModel.ownerName,self.infoModel.detailAddress,self.infoModel.payType,@"0.00元"];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
         cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#999999"];
         cell.detailTextLabel.text = contentArr[indexPath.row];

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YJLifePayRecoderModel.h"
 @interface YJPayRecoderTVCell : UITableViewCell
-
+@property(nonatomic,strong)YJLifePayRecoderModel *model;
 @end

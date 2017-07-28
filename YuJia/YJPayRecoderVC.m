@@ -10,10 +10,14 @@
 #import "UILabel+Addition.h"
 #import "YJInputPayNumberVC.h"
 #import "YJPayRecoderTVCell.h"
+
+#import "YJLifePayRecoderModel.h"
+#import "YJLifePayRecoderDetailVC.h"
+
 static NSString* payCellid = @"pay_cell";
 @interface YJPayRecoderVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic,weak)UITableView *payTableView;
-//@property(nonatomic,strong)NSArray *payItemArr;
+@property(nonatomic,strong)NSArray *recoderArr;//记录数据源
 @property(nonatomic,strong)NSMutableArray *yearArr;
 @property(nonatomic,strong)NSMutableArray *monthArr;
 @property(nonatomic,weak)UIPickerView *timePickerView;
@@ -23,6 +27,7 @@ static NSString* payCellid = @"pay_cell";
 @property(nonatomic,weak)UIView *backGrayView;//时间选择器半透明背景
 @property(nonatomic,weak)UILabel *timeLabel;//时间label
 @property(nonatomic,strong)NSString *selectYear;//当前选中的年份
+@property(nonatomic,strong)NSString *selectMonth;//当前选中的月份
 @property(nonatomic,weak)UIToolbar * topView;//时间选择器工具栏
 
 @end
@@ -31,10 +36,28 @@ static NSString* payCellid = @"pay_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"缴费记录";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
-    [self loadData];
+    [self setupUI];
 }
-- (void)loadData {
+//一开始先查当前月份的记录
+-(void)setCurrentAddressModel:(YJLifePayAddressModel *)currentAddressModel{
+    _currentAddressModel = currentAddressModel;
+    _currentAddressModel.info_id = 12;//因为目前只有地址id为12的地址有记录，需要删除此行代码
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
+    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+    
+    NSInteger year = [dateComponent year];
+    self.nowYear = year;
+    NSInteger month =  [dateComponent month];
+    self.nowMonth = month;
+    self.selectYear = [NSString stringWithFormat:@"%ld",self.nowYear];
+    self.selectMonth = [NSString stringWithFormat:@"%02ld",self.nowMonth];
+    [self queryRecord];
+}
+- (void)setupUI {
     //添加tableView
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     tableView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
@@ -52,12 +75,14 @@ static NSString* payCellid = @"pay_cell";
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 5;
+    return self.recoderArr.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     YJPayRecoderTVCell *cell = [tableView dequeueReusableCellWithIdentifier:payCellid forIndexPath:indexPath];
-    
+    YJLifePayRecoderModel *infoModel = self.recoderArr[indexPath.row];
+    infoModel.detailAddress = self.currentAddressModel.detailAddress;//给记录添加一条地址的属性
+    cell.model = infoModel;
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -66,7 +91,9 @@ static NSString* payCellid = @"pay_cell";
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 45*kiphone6)];
     view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
-    UILabel *timeLabel = [UILabel labelWithText:@"开始时间" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
+    NSString *text = [NSString stringWithFormat:@"%ld月",[self.selectMonth integerValue]];
+    NSString *time = [NSString stringWithFormat:@"%@年%@",self.selectYear,text];
+    UILabel *timeLabel = [UILabel labelWithText:time andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
     [view addSubview:timeLabel];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view);
@@ -81,7 +108,6 @@ static NSString* payCellid = @"pay_cell";
         make.right.offset(-10*kiphone6);
     }];
     [timeBtn addTarget:self action:@selector(selectTime) forControlEvents:UIControlEventTouchUpInside];
-    
     return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -90,7 +116,10 @@ static NSString* payCellid = @"pay_cell";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
-    
+    YJLifePayRecoderModel *infoModel = self.recoderArr[indexPath.row];//创过去的单条记录详情
+    YJLifePayRecoderDetailVC *vc = [[YJLifePayRecoderDetailVC alloc]init];
+    vc.infoModel = infoModel;
+    [self.navigationController pushViewController:vc animated:true];
 }
 //选择时间按钮点击事件
 - (void)selectTime{
@@ -123,13 +152,13 @@ static NSString* payCellid = @"pay_cell";
         [backGrayView addGestureRecognizer:tapGesture];
         //时间选择器
             for (NSInteger i = year-9; i<=year; i++) {
-                NSString *yearStr = [NSString stringWithFormat: @"%ld年", (long)i];
+                NSString *yearStr = [NSString stringWithFormat: @"%ld", (long)i];
                 [timeArr addObject:yearStr];
             }
             self.yearArr = timeArr;
         NSMutableArray *monthArr = [NSMutableArray array];
         for (NSInteger i = 1; i<=12; i++) {
-            NSString *monthStr = [NSString stringWithFormat: @"%ld月", (long)i];
+            NSString *monthStr = [NSString stringWithFormat: @"%02ld", (long)i];
             [monthArr addObject:monthStr];
         }
         self.monthArr = monthArr;
@@ -166,7 +195,7 @@ static NSString* payCellid = @"pay_cell";
         UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         btn.frame = CGRectMake(2, 5, 50, 25);
-        [btn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(queryRecord) forControlEvents:UIControlEventTouchUpInside];//点击完成开始查询记录
         [btn setTitle:@"完成" forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
         UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
@@ -182,16 +211,61 @@ static NSString* payCellid = @"pay_cell";
             make.bottom.equalTo(pickView.mas_top);
             //            make.height.offset(200*kiphone6);
         }];
-        
         //            设置初始默认值
         [self pickerView:self.timePickerView didSelectRow:self.yearArr.count-1 inComponent:0];
         [self pickerView:self.timePickerView didSelectRow:self.nowMonth-1 inComponent:1];
         [self.timePickerView selectRow:self.yearArr.count-1 inComponent:0 animated:true];
         [self.timePickerView selectRow:self.nowMonth-1 inComponent:1 animated:true];
 
+    }else{
+        self.backGrayView.hidden = false;
+        self.timePickerView.hidden = false;
+        self.topView.hidden = false;
     }
 }
+//查询记录
+-(void)queryRecord{
+    [self resignFirstResponderText];
+//    七：查询生活缴费缴费记录接口
+http://localhost:8080/smarthome/mobileapi/detailrecord/findDetailRecord.do?token=49491B920A9DD107E146D961F4BDA50E
+//    &detailHomeId=12
+//    &year=2017
+//    &month=07
+//    参数：  参数名                     参数类型                             备注
+//    token              String         令牌
+//    detailHomeId             Long        缴费地址ID
+//    year               String         年份
+//    month              String      月份（格式01，02两位数）
+    [SVProgressHUD show];// 动画开始
+    NSString *queryRecordUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailrecord/findDetailRecord.do?token=%@&detailHomeId=%ld&year=%@&month=%@",mPrefixUrl,mDefineToken1,self.currentAddressModel.info_id,self.selectYear,self.selectMonth];
+    [[HttpClient defaultClient]requestWithPath:queryRecordUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJLifePayRecoderModel *infoModel = [YJLifePayRecoderModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.recoderArr = mArr;
+            if (mArr.count>0) {
+                [self.payTableView reloadData];
+            }else{
+                [SVProgressHUD showInfoWithStatus:@"本月没有记录"];
+            }
+            
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
+        }
+        [SVProgressHUD dismiss];// 动画结束
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
 
+}
 #pragma Mark -- UIPickerViewDelegate
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 2;
@@ -224,12 +298,12 @@ static NSString* payCellid = @"pay_cell";
             NSInteger selectYear = [self.timeLabel.text integerValue];
             if (selectYear<self.nowYear) {
                 for (NSInteger i = 1; i<=12; i++) {
-                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    NSString *yearStr = [NSString stringWithFormat: @"%02ld", (long)i];
                     [timeArr addObject:yearStr];
                 }
             }else{
                 for (NSInteger i = 1; i<=self.nowMonth; i++) {
-                    NSString *yearStr = [NSString stringWithFormat: @"%ld月", (long)i];
+                    NSString *yearStr = [NSString stringWithFormat: @"%02ld", (long)i];
                     [timeArr addObject:yearStr];
                 }
             }
@@ -238,7 +312,10 @@ static NSString* payCellid = @"pay_cell";
         }
     }else{
         if (row < self.monthArr.count) {
-            self.timeLabel.text = [NSString stringWithFormat:@"%@%@",self.selectYear,[self.monthArr objectAtIndex:row]];
+            self.selectMonth = [self.monthArr objectAtIndex:row];
+            NSString *month = [self.monthArr objectAtIndex:row];
+            NSString *text = [NSString stringWithFormat:@"%ld月",[month integerValue]];
+            self.timeLabel.text = [NSString stringWithFormat:@"%@年%@",self.selectYear,text];
 
         }
     }
@@ -270,10 +347,11 @@ static NSString* payCellid = @"pay_cell";
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [pickerView rowSizeForComponent:component].width, [pickerView rowSizeForComponent:component].height)];
         if (component == 0) {
-        
             [label setText:[self.yearArr objectAtIndex:row]];
         }else{
-            [label setText:[self.monthArr objectAtIndex:row]];
+            NSString *month = [self.monthArr objectAtIndex:row];
+            NSString *text = [NSString stringWithFormat:@"%ld月",[month integerValue]];
+            [label setText:text];
         }
     label.backgroundColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -284,16 +362,17 @@ static NSString* payCellid = @"pay_cell";
 //执行手势触发的方法：
 - (void)event:(UITapGestureRecognizer *)gesture
 {
-    //移除view
-    [gesture.view removeFromSuperview];
-    [self.timePickerView removeFromSuperview];
-    [self.topView removeFromSuperview];
+    self.backGrayView.hidden = true;
+    self.timePickerView.hidden = true;
+    self.topView.hidden = true;
+
 }
 -(void)resignFirstResponderText {
     [self.view endEditing:true];
-    [self.timePickerView removeFromSuperview];
-    [self.backGrayView removeFromSuperview];
-    [self.topView removeFromSuperview];
+    self.backGrayView.hidden = true;
+    self.timePickerView.hidden = true;
+    self.topView.hidden = true;
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJLifePayAddressModel.h"
 
 @interface YJPayRecoderVC : UIViewController
-
+@property (nonatomic, strong)YJLifePayAddressModel *currentAddressModel;//当前选中地址
 @end

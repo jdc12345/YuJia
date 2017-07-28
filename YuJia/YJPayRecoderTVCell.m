@@ -15,6 +15,7 @@
 @property (nonatomic, weak) UILabel* itemLabel;
 @property (nonatomic, weak) UILabel* timeLabel;
 @property (nonatomic, weak) UILabel* moneyLabel;
+@property (nonatomic, weak) UILabel* refundAmountLabel;//退款label
 @end
 @implementation YJPayRecoderTVCell
 
@@ -28,17 +29,57 @@
     [super awakeFromNib];
     [self setupUI];
 }
-//-(void)setModel:(YYPropertyItemModel *)model{
-//    _model = model;
-//    self.itemLabel.text = model.item;
-//    [self.btn setTitle:model.event forState:UIControlStateNormal];
-//    if ([model.event isEqualToString:@""]) {
-//        self.btn.hidden = true;
-//    }else{
-//        self.btn.hidden = false;
-//    }
-//    
-//}
+-(void)setModel:(YJLifePayRecoderModel *)model{
+    _model = model;
+    //personalId            Long        当前用户ID
+    //orderNumber             Long        订单号
+    //paymentAmount          Long        缴费金额
+    //drNumber            String    表的编号，物业费的时候不显示
+    //paymentInstruction          String        缴费说明
+    //detailHomeId            Long        缴费地址ID
+    //paymentTimeString         String        缴费时间
+    //paymentMethod         Integer    支付方式1=微信支付2=支付宝支付
+    //drType             Integer  缴费类型1=电费2=水费3=燃气费4=物业费
+    //id              Long        当前记录ID
+    //propertyId            Long        物业单位ID
+    //refundTimeString          String           退款时间
+    //paymentStatus          Integer      状态：1=支付成功2=退款成功
+    //refundAmount           Long        退款金额
+    switch (model.drType) {
+        case 1:
+            self.itemLabel.text = [NSString stringWithFormat:@"电费-%@",model.detailAddress];
+            break;
+        case 2:
+            self.itemLabel.text = [NSString stringWithFormat:@"水费-%@",model.detailAddress];
+            break;
+        case 3:
+            self.itemLabel.text = [NSString stringWithFormat:@"燃气费-%@",model.detailAddress];
+            break;
+        case 4:
+            self.itemLabel.text = [NSString stringWithFormat:@"物业费-%@",model.detailAddress];
+            break;
+        default:
+            break;
+    }
+    self.timeLabel.text = model.paymentTimeString;
+    if (model.paymentStatus==1) {
+        self.moneyLabel.text = [NSString stringWithFormat:@"-%ld",model.paymentAmount];
+        self.refundAmountLabel.hidden = true;
+        [self.moneyLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.offset(-10*kiphone6);
+            make.centerY.equalTo(self.contentView);
+        }];
+    }else if (model.paymentStatus==2){
+        self.moneyLabel.text = [NSString stringWithFormat:@"-%ld",model.paymentAmount];
+        self.refundAmountLabel.text = [NSString stringWithFormat:@"已退款(¥%ld)",model.refundAmount];
+        self.refundAmountLabel.hidden = false;
+        [self.moneyLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.offset(-10*kiphone6);
+            make.bottom.equalTo(self.contentView.mas_centerY).offset(-2.5*kiphone6);
+        }];
+
+    }
+}
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];
@@ -54,7 +95,9 @@
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
         make.bottom.equalTo(self.contentView.mas_centerY).offset(-2.5*kiphone6);
+        make.width.offset(100*kiphone6);
     }];
+    itemLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;    //中间的内容以……方式省略，显示头尾
     UILabel *timeLabel = [UILabel labelWithText:@"07-17 19:54" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:12];
     [self.contentView addSubview:timeLabel];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -67,6 +110,13 @@
         make.right.offset(-10*kiphone6);
         make.centerY.equalTo(self.contentView);
     }];
+    UILabel *refundAmountLabel = [UILabel labelWithText:@"已退款(¥60.00)" andTextColor:[UIColor colorWithHexString:@"#f97878"] andFontSize:14];
+    [self.contentView addSubview:refundAmountLabel];
+    [refundAmountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.offset(-10*kiphone6);
+        make.top.equalTo(self.contentView.mas_centerY).offset(2.5*kiphone6);
+    }];
+    refundAmountLabel.hidden = true;
     //添加line
     UIView *line = [[UIView alloc]init];
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
@@ -78,6 +128,7 @@
     self.itemLabel = itemLabel;
     self.timeLabel = timeLabel;
     self.moneyLabel = moneyLabel;
+    self.refundAmountLabel = refundAmountLabel;
     
 }
 

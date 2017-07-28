@@ -104,6 +104,7 @@ static NSString* payCellid = @"pay_cell";
 - (void)payRecordBtnClick{
     //跳转缴费记录页面
     YJPayRecoderVC *vc = [[YJPayRecoderVC alloc]init];
+    vc.currentAddressModel = self.currentAddressModel;
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)addAddress{
@@ -205,6 +206,7 @@ static NSString* payCellid = @"pay_cell";
 
     }else{
         YJLifePayAddressModel *infoModel = self.addresses[0];//当前地址
+        self.currentAddressModel = infoModel;
         UILabel *addressLabel = [UILabel labelWithText:infoModel.detailAddress andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
         [headerBtn addSubview:addressLabel];
         [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {

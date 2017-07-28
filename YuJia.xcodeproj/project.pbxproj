@@ -19,6 +19,7 @@
 		161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BC1EC4329100FE2FD1 /* YJCreatActivitiesVC.m */; };
 		161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */; };
 		161C4D981F29C36800952B4F /* YJLifePayAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */; };
+		161C4D9B1F29F24800952B4F /* YJLifePayInfiModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 161C4D9A1F29F24800952B4F /* YJLifePayInfiModel.m */; };
 		161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */; };
 		16211D3E1F09E96700F1E9EF /* YJHomePageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D3D1F09E96700F1E9EF /* YJHomePageVC.m */; };
 		16211D441F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D401F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m */; };
@@ -138,6 +139,8 @@
 		16AD9E9C1EDD71A900F52A7A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9B1EDD71A900F52A7A /* libc++.tbd */; };
 		16AD9E9E1EDD71C600F52A7A /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AD9E9D1EDD71C600F52A7A /* GLKit.framework */; };
 		16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */; };
+		16CCBBDC1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCBBDB1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m */; };
+		16CCBBDF1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16CCBBDE1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m */; };
 		16D389DC1F25972700F97814 /* YJPayRecoderTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D389DB1F25972700F97814 /* YJPayRecoderTVCell.m */; };
 		16DD444F1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD444E1F1DBB12000823AD /* YJSearchHouseConditionTVCell.m */; };
 		16DD44521F1DEFAD000823AD /* YJHousePriceTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD44511F1DEFAD000823AD /* YJHousePriceTVCell.m */; };
@@ -308,6 +311,8 @@
 		161918BF1EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCreateActivitieTVCell.m; sourceTree = "<group>"; };
 		161C4D961F29C36800952B4F /* YJLifePayAddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayAddressModel.h; sourceTree = "<group>"; };
 		161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayAddressModel.m; sourceTree = "<group>"; };
+		161C4D991F29F24800952B4F /* YJLifePayInfiModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayInfiModel.h; sourceTree = "<group>"; };
+		161C4D9A1F29F24800952B4F /* YJLifePayInfiModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayInfiModel.m; sourceTree = "<group>"; };
 		161CEE991EC5940800B34E3B /* YJActivitesCommentTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActivitesCommentTVCell.h; sourceTree = "<group>"; };
 		161CEE9A1EC5940800B34E3B /* YJActivitesCommentTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesCommentTVCell.m; sourceTree = "<group>"; };
 		16211D3C1F09E96700F1E9EF /* YJHomePageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomePageVC.h; sourceTree = "<group>"; };
@@ -531,6 +536,10 @@
 		16AD9E9D1EDD71C600F52A7A /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		16AD9E9F1EDED75100F52A7A /* YJNearbyShopChangeAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopChangeAddressVC.h; sourceTree = "<group>"; };
 		16AD9EA01EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJNearbyShopChangeAddressVC.m; sourceTree = "<group>"; };
+		16CCBBDA1F2B1B3700C0D9CB /* YJLifePayRecoderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayRecoderModel.h; sourceTree = "<group>"; };
+		16CCBBDB1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayRecoderModel.m; sourceTree = "<group>"; };
+		16CCBBDD1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayRecoderDetailVC.h; sourceTree = "<group>"; };
+		16CCBBDE1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayRecoderDetailVC.m; sourceTree = "<group>"; };
 		16D389DA1F25972700F97814 /* YJPayRecoderTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPayRecoderTVCell.h; sourceTree = "<group>"; };
 		16D389DB1F25972700F97814 /* YJPayRecoderTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPayRecoderTVCell.m; sourceTree = "<group>"; };
 		16DD444D1F1DBB12000823AD /* YJSearchHouseConditionTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSearchHouseConditionTVCell.h; sourceTree = "<group>"; };
@@ -955,6 +964,10 @@
 				1640BE991ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m */,
 				161C4D961F29C36800952B4F /* YJLifePayAddressModel.h */,
 				161C4D971F29C36800952B4F /* YJLifePayAddressModel.m */,
+				161C4D991F29F24800952B4F /* YJLifePayInfiModel.h */,
+				161C4D9A1F29F24800952B4F /* YJLifePayInfiModel.m */,
+				16CCBBDA1F2B1B3700C0D9CB /* YJLifePayRecoderModel.h */,
+				16CCBBDB1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1101,6 +1114,8 @@
 				168B7E061F21EC96003AC13C /* YJPayPropertyVC.m */,
 				160F01181F2584EE006EE0A2 /* YJPayRecoderVC.h */,
 				160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */,
+				16CCBBDD1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.h */,
+				16CCBBDE1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m */,
 			);
 			name = "Life payment";
 			sourceTree = "<group>";
@@ -1944,6 +1959,7 @@
 				3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */,
 				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
+				16CCBBDC1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m in Sources */,
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
@@ -2039,6 +2055,7 @@
 				3E90B7431EC3F56F00CC49D7 /* AirTimingViewController.m in Sources */,
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				163E96151ED597E100C20B42 /* YJActivitiesDetailModel.m in Sources */,
+				16CCBBDF1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m in Sources */,
 				3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */,
 				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */,
@@ -2073,6 +2090,7 @@
 				3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */,
 				1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */,
 				3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */,
+				161C4D9B1F29F24800952B4F /* YJLifePayInfiModel.m in Sources */,
 				166B40E51EC95E2A00CEFAE2 /* YJPostCommunityCarVC.m in Sources */,
 				164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */,
 				163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */,

@@ -31,9 +31,10 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     [super viewDidLoad];
     self.title = @"地址管理";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-//    [self setupUI];
+    [self setupUI];
     [self loadData];
 }
+//刷新数据，当从添加页面回来时候可以用来更新
 - (void)loadData {
     //    CcUserModel *userModel = [CcUserModel defaultClient];
     //    NSString *token = userModel.userToken;
@@ -50,7 +51,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
                 [mArr addObject:infoModel];
             }
             self.addresses = mArr;
-            [self setupUI];
+            [self.tableView reloadData];
         }else{
             if ([responseObject[@"code"] isEqualToString:@"-1"]) {
             }
@@ -61,10 +62,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         return ;
     }];
 }
-//-(void)setAddresses:(NSMutableArray *)addresses{
-//    _addresses = addresses;
-//    [self setupUI];
-//}
+
 - (void)setupUI {
     NSMutableArray* rightItemArr = [NSMutableArray array];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -251,6 +249,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     }
     
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

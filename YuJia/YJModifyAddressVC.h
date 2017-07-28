@@ -11,4 +11,6 @@
 @interface YJModifyAddressVC : UIViewController
 @property(nonatomic,strong)NSMutableArray *addresses;
 @property(nonatomic,strong)YJPropertyDetailAddressModel *addressModel;//修改回来时候更新用
+//刷新数据，当从添加页面回来时候可以用来更新
+- (void)loadData;
 @end
