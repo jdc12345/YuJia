@@ -12,15 +12,20 @@
 #import "UILabel+Addition.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
+#import "YJEquipmentrCollectionVCell.h"
+#import "YJHeaderTitleBtn.h"
 
-//static NSString* tableCellid = @"table_cell";
+static NSString* eqCellid = @"eq_cell";
 static NSString* collectionCellid = @"collection_cell";
+static NSString *headerViewIdentifier =@"hederview";
 @interface YJHomePageVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
-@property(nonatomic,weak)UICollectionView *colllectionView;
+@property(nonatomic,weak)UICollectionView *mysceneColView;//情景collectionView
+@property(nonatomic,weak)UICollectionView *equipmentColView;//设备collectionView
 @property(nonatomic,weak)UIButton *mysceneBtn;
 @property(nonatomic,weak)UIButton *equipmentBtn;
 @property(nonatomic,strong)NSArray *imagesURLStrings;
-@property (nonatomic, strong) NSArray* functionListData;//功能列表
+@property (nonatomic, strong) NSArray* mysceneListData;//情景列表
+@property (nonatomic, strong) NSArray* equipmentListData;//设备列表
 @property(nonatomic,weak)UIView *clearView;
 
 @end
@@ -116,8 +121,8 @@ static NSString* collectionCellid = @"collection_cell";
         make.height.offset(165*kiphone6);
     }];
     self.clearView = clearView;
-    // 用来接收数据 方便设置数据源
-    self.functionListData = [self loadFunctionListData];
+    // 用来接收情景数据 方便设置数据源
+    self.mysceneListData = [self loadFunctionListData];
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
 //    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 218*kiphone6, kScreenW, kScreenH-self.tabBarController.tabBar.bounds.size.height-218*kiphone6) collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
     collectionView.backgroundColor = [UIColor clearColor];
@@ -129,6 +134,7 @@ static NSString* collectionCellid = @"collection_cell";
     }];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    self.mysceneColView = collectionView;
     // 注册单元格
     [collectionView registerClass:[YJHomeSceneCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];
     collectionView.showsHorizontalScrollIndicator = false;
@@ -159,8 +165,8 @@ static NSString* collectionCellid = @"collection_cell";
     //
     [self.clearView mas_updateConstraints:^(MASConstraintMaker *make) {
         //设置高度的下限
-        if ((self.clearView.bounds.size.height+p.y)<25*kiphone6) {
-            make.height.offset(25*kiphone6);
+        if ((self.clearView.bounds.size.height+p.y)<30*kiphone6) {
+            make.height.offset(30*kiphone6);
             return ;
         }
         //设置高度的上限
@@ -192,7 +198,9 @@ static NSString* collectionCellid = @"collection_cell";
         }];
         self.equipmentBtn.titleLabel.font = [UIFont systemFontOfSize:16];
         //加载我的情景数据
-        
+        self.equipmentColView.hidden = true;
+        self.mysceneColView.hidden = false;
+        [self.mysceneColView reloadData];
         
     }else{
         [self.mysceneBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -201,6 +209,32 @@ static NSString* collectionCellid = @"collection_cell";
         }];
         self.mysceneBtn.titleLabel.font = [UIFont systemFontOfSize:16];
         //加载我的设备数据
+        self.mysceneColView.hidden = true;
+        if (self.equipmentColView) {
+            self.equipmentColView.hidden = false;
+            [self.equipmentColView reloadData];
+        }else{
+            // 用来接收设备数据 方便设置数据源
+            self.equipmentListData = [NSArray objectListWithPlistName:@"YJEquipmentList.plist" clsName:@"YJEquipmentListModel"];;
+            UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
+            collectionView.backgroundColor = [UIColor clearColor];
+            [self.view addSubview:collectionView];
+            [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.clearView.mas_bottom).offset(-30*kiphone6);
+                make.left.right.offset(0);
+                make.bottom.offset(-self.tabBarController.tabBar.bounds.size.height);
+            }];
+            collectionView.dataSource = self;
+            collectionView.delegate = self;
+            self.equipmentColView = collectionView;
+            // 注册单元格
+            [collectionView registerClass:[YJEquipmentrCollectionVCell class] forCellWithReuseIdentifier:eqCellid];
+            //注册头视图
+            [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewIdentifier];
+            collectionView.showsHorizontalScrollIndicator = false;
+            collectionView.showsVerticalScrollIndicator = false;
+        }
+
     }
 }
 // 解析数据
@@ -212,17 +246,31 @@ static NSString* collectionCellid = @"collection_cell";
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.functionListData.count;
+    if (collectionView==self.mysceneColView) {
+        return self.mysceneListData.count;
+    }else{
+        return self.equipmentListData.count;
+    }
+    
 }
 
 // cell内容
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    // 去缓存池找
-    YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
-    cell.functionList = self.functionListData[indexPath.row];
-    cell.selected = false;
-    return cell;
+    if (collectionView==self.mysceneColView) {
+        // 去缓存池找
+        YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
+        cell.functionList = self.mysceneListData[indexPath.row];
+        cell.selected = false;
+        return cell;
+    }else{
+        YJEquipmentrCollectionVCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
+        cell.functionList = self.equipmentListData[indexPath.row];
+//        cell.selected = false;
+        return cell;
+    }
+    
+    
 }
 
 // cell点击事件
@@ -282,7 +330,49 @@ static NSString* collectionCellid = @"collection_cell";
     
     
 }
-
+//  返回头视图
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    //如果是头视图
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        if (collectionView==self.mysceneColView) {
+            return nil;
+        }
+        UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:headerViewIdentifier forIndexPath:indexPath];
+        //添加头视图的内容
+        YJHeaderTitleBtn *roomBtn = [[YJHeaderTitleBtn alloc]init];
+        [roomBtn setTitle:@"客厅" forState:UIControlStateNormal];
+        [roomBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+        roomBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [roomBtn setImage:[UIImage imageNamed:@"more_room"] forState:UIControlStateNormal];
+        roomBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        //    localBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+        roomBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+        for (UIView *view in header.subviews) {
+            [view removeFromSuperview];
+        } // 防止复用分区头
+        [header addSubview:roomBtn];
+        [roomBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(20*kiphone6);
+            make.top.offset(0);
+        }];
+        return header;
+    }
+    //如果底部视图
+    //    if([kind isEqualToString:UICollectionElementKindSectionFooter]){
+    //
+    //    }
+    return nil;
+}
+//设置宽高
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    if (collectionView==self.mysceneColView) {
+        return CGSizeMake(kScreenW,0);
+    }
+    return CGSizeMake(kScreenW,30*kiphone6);
+    
+}
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.automaticallyAdjustsScrollViewInsets = NO;

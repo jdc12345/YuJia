@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>电视</string>
+		<key>icon</key>
+		<string>getup</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>空调</string>
+		<key>icon</key>
+		<string>rest</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>灯</string>
+		<key>icon</key>
+		<string>leave</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>窗帘</string>
+		<key>icon</key>
+		<string>gohome</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>音响</string>
+		<key>icon</key>
+		<string>playgame</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>插座</string>
+		<key>icon</key>
+		<string>rest</string>
+		<key>ownRoom</key>
+		<string>客厅</string>
+	</dict>
+</array>
+</plist>

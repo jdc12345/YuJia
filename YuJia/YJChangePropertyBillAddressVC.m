@@ -111,9 +111,9 @@ http://192.168.1.55:8080/smarthome/mobilepub/baseArea/findList.do 获取城市�
             }else if ([self.firCitys[0] isEqualToString:@"北京市"]) {
                 self.secCitys = self.bjCitys;
             }
-            self.backGrayView.hidden = true;
-            self.topView.hidden = true;
-            self.cityPickerView.hidden = true;
+//            self.backGrayView.hidden = true;
+//            self.topView.hidden = true;
+//            self.cityPickerView.hidden = true;
 //            if (self.firCitys.count>0) {
 //                [self setBackView];
 //                UIPickerView *pickView = [[UIPickerView alloc]init];
@@ -328,7 +328,13 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
 //    &roomNumber=1502
     //此处接提交地址接口！！！！！
     [SVProgressHUD show];// 动画开始
-    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/UpdateDetailHomeAddress.do?token=%@&AddressId=%ld&city=%@&residentialQuarters=%@&ownerName=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@&ownertelephone=%@&areaCode=%@",mPrefixUrl,mDefineToken1,self.info_id,city,yard,name,buildingNumber,unitNumber,floor,roomNumber,telCell.contentField.text,self.areaCode];
+    NSString *reportUrlStr = @"";
+    if (self.yardid) {
+        reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/UpdateDetailHomeAddress.do?token=%@&AddressId=%ld&city=%@&residentialQuarters=%@&ownerName=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@&ownertelephone=%@&areaCode=%@&yardid=%@",mPrefixUrl,mDefineToken1,self.info_id,city,yard,name,buildingNumber,unitNumber,floor,roomNumber,telCell.contentField.text,self.areaCode,self.yardid];
+    }else{
+        reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detailHome/UpdateDetailHomeAddress.do?token=%@&AddressId=%ld&city=%@&residentialQuarters=%@&ownerName=%@&buildingNumber=%@&unitNumber=%@&floor=%@&roomNumber=%@&ownertelephone=%@&areaCode=%@",mPrefixUrl,mDefineToken1,self.info_id,city,yard,name,buildingNumber,unitNumber,floor,roomNumber,telCell.contentField.text,self.areaCode];
+    }
+    
     [[HttpClient defaultClient]requestWithPath:reportUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
@@ -338,14 +344,15 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
                         if ([controller isKindOfClass:[YJModifyAddressVC class]]) {
                             YJModifyAddressVC *revise =(YJModifyAddressVC *)controller;
                             //            revise.clickBtnBlock(cell.textLabel.text);此处可根据新地址请求账单
-                            revise.addressModel = addressModel;
+//                            revise.addressModel = addressModel;
+                            [revise loadData];//更新新添加的数据
                             [self.navigationController popToViewController:revise animated:YES];
                         }
-                        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
-                            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
-                            //            revise.clickBtnBlock(cell.textLabel.text);
-                            [self.navigationController popToViewController:revise animated:YES];
-                        }
+//                        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+//                            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+//                            //            revise.clickBtnBlock(cell.textLabel.text);
+//                            [self.navigationController popToViewController:revise animated:YES];
+//                        }
                     }
 //           self.navigationController pop回去，根据最新内容改变修改cell的内容
         }else{
@@ -435,25 +442,27 @@ http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?Area
             }else if ([self.firCitys[0] isEqualToString:@"北京市"]) {
                 self.secCitys = self.bjCitys;
             }
-            if (!self.backGrayView) {
-                [self setBackView];
-                UIPickerView *pickView = [[UIPickerView alloc]init];
-                [self.view.window addSubview:pickView];
-                pickView.backgroundColor = [UIColor whiteColor];
-                pickView.dataSource = self;
-                pickView.delegate = self;
-                pickView.showsSelectionIndicator = YES;
-                self.cityPickerView = pickView;
-                [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.right.bottom.offset(0);
-                    make.height.offset(122*kiphone6);
-                }];
-                
-            }
-            self.cityPickerView.hidden = false;
-            self.topView.hidden = false;
-            self.backGrayView.hidden = false;
         }
+        if (!self.backGrayView) {
+            [self setBackView];
+        }
+        if (!self.cityPickerView) {
+            UIPickerView *pickView = [[UIPickerView alloc]init];
+            [self.view.window addSubview:pickView];
+            pickView.backgroundColor = [UIColor whiteColor];
+            pickView.dataSource = self;
+            pickView.delegate = self;
+            pickView.showsSelectionIndicator = YES;
+            self.cityPickerView = pickView;
+            [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.bottom.offset(0);
+                make.height.offset(122*kiphone6);
+            }];
+
+        }
+        self.cityPickerView.hidden = false;
+        self.topView.hidden = false;
+        self.backGrayView.hidden = false;
         //            //城市第一列数据(用高德本地请求)
         //            self.firCitys = [NSArray arrayWithObjects:@"北京市",@"保定市", nil];
         //            self.secCitys = [NSMutableArray arrayWithObjects:@"东城区",@"西城区",@"朝阳区",@"丰台区",@"石景山区",@"海淀区",@"门头沟区",@"房山区",@"通州区",@"顺义区",@"昌平区",@"大兴区",@"怀柔区",@"平谷区",@"密云区",@"延庆区",nil];

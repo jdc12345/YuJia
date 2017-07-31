@@ -19,7 +19,8 @@
 //"refundTimeString": "",
 //"paymentStatus": 1,
 //"refundAmount": 0
-
+//propertyName           String         缴费单位名称
+//roomNumber            String        房间号
 
 #import <Foundation/Foundation.h>
 
@@ -38,6 +39,8 @@
 @property (nonatomic, copy) NSString *refundTimeString;//退款时间
 @property (nonatomic, assign) NSInteger paymentStatus;//状态：1=支付成功2=退款成功
 @property (nonatomic, assign) long refundAmount;//退款金额
+@property (nonatomic, copy) NSString *propertyName;//缴费单位名称
+@property (nonatomic, copy) NSString *roomNumber;//房间号
 //为了显示地址加的属性
 @property (nonatomic, copy) NSString *detailAddress;//当前用户家庭地址
 @end

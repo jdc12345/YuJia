@@ -16,6 +16,7 @@
 @property (nonatomic, weak) UILabel* timeLabel;
 @property (nonatomic, weak) UILabel* moneyLabel;
 @property (nonatomic, weak) UILabel* refundAmountLabel;//退款label
+@property (nonatomic, weak) UIImageView* iconView;
 @end
 @implementation YJPayRecoderTVCell
 
@@ -48,15 +49,19 @@
     switch (model.drType) {
         case 1:
             self.itemLabel.text = [NSString stringWithFormat:@"电费-%@",model.detailAddress];
+            self.iconView.image = [UIImage imageNamed:@"electric_payed"];
             break;
         case 2:
             self.itemLabel.text = [NSString stringWithFormat:@"水费-%@",model.detailAddress];
+            self.iconView.image = [UIImage imageNamed:@"water_payed"];
             break;
         case 3:
             self.itemLabel.text = [NSString stringWithFormat:@"燃气费-%@",model.detailAddress];
+            self.iconView.image = [UIImage imageNamed:@"Gas_payed"];
             break;
         case 4:
             self.itemLabel.text = [NSString stringWithFormat:@"物业费-%@",model.detailAddress];
+            self.iconView.image = [UIImage imageNamed:@"Property_payed"];
             break;
         default:
             break;
@@ -84,6 +89,7 @@
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
     UIImageView *iconView = [[UIImageView alloc]init];
     iconView.image = [UIImage imageNamed:@"electric_payed"];
+    self.iconView = iconView;
     [self.contentView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);

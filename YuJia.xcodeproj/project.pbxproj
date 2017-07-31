@@ -46,6 +46,9 @@
 		164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */; };
 		164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */; };
 		164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */; };
+		164388491F2F126200BC3CEB /* YJEquipmentList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 164388481F2F126200BC3CEB /* YJEquipmentList.plist */; };
+		1643884D1F2F165200BC3CEB /* YJEquipmentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643884C1F2F165200BC3CEB /* YJEquipmentListModel.m */; };
+		164388501F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */; };
 		164F83F71EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */; };
 		164F83FA1EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83F91EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.m */; };
 		165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161918B61EC3FD0900FE2FD1 /* YJCommunityActivitiesVC.m */; };
@@ -366,6 +369,11 @@
 		164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesAddPersonModel.m; sourceTree = "<group>"; };
 		164275C31ED6728800F39E40 /* YJActiviesPictureModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesPictureModel.h; sourceTree = "<group>"; };
 		164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesPictureModel.m; sourceTree = "<group>"; };
+		164388481F2F126200BC3CEB /* YJEquipmentList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = YJEquipmentList.plist; sourceTree = "<group>"; };
+		1643884B1F2F165200BC3CEB /* YJEquipmentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJEquipmentListModel.h; sourceTree = "<group>"; };
+		1643884C1F2F165200BC3CEB /* YJEquipmentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJEquipmentListModel.m; sourceTree = "<group>"; };
+		1643884E1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJEquipmentrCollectionVCell.h; sourceTree = "<group>"; };
+		1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJEquipmentrCollectionVCell.m; sourceTree = "<group>"; };
 		164F83F51EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoAddBtnCollectionViewCell.h; sourceTree = "<group>"; };
 		164F83F61EBAB69E002318A6 /* YJPhotoAddBtnCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPhotoAddBtnCollectionViewCell.m; sourceTree = "<group>"; };
 		164F83F81EBAC283002318A6 /* YJPhotoDisplayCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPhotoDisplayCollectionViewCell.h; sourceTree = "<group>"; };
@@ -880,6 +888,7 @@
 				16211D411F09E98900F1E9EF /* YJHomeSceneFlowLayout.h */,
 				16211D421F09E98900F1E9EF /* YJHomeSceneFlowLayout.m */,
 				16211D431F09E98900F1E9EF /* YJHomeSceneList.plist */,
+				164388481F2F126200BC3CEB /* YJEquipmentList.plist */,
 			);
 			name = "New Group";
 			sourceTree = "<group>";
@@ -895,6 +904,24 @@
 				168466A81EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m */,
 			);
 			name = repairRecord;
+			sourceTree = "<group>";
+		};
+		1643884A1F2F158E00BC3CEB /* M */ = {
+			isa = PBXGroup;
+			children = (
+				1643884B1F2F165200BC3CEB /* YJEquipmentListModel.h */,
+				1643884C1F2F165200BC3CEB /* YJEquipmentListModel.m */,
+			);
+			name = M;
+			sourceTree = "<group>";
+		};
+		164388511F2F189300BC3CEB /* V */ = {
+			isa = PBXGroup;
+			children = (
+				1643884E1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.h */,
+				1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */,
+			);
+			name = V;
 			sourceTree = "<group>";
 		};
 		1661FE101EB8646B00583A7F /* tools */ = {
@@ -1482,6 +1509,8 @@
 		3E984F201EB829960094CBE4 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				164388511F2F189300BC3CEB /* V */,
+				1643884A1F2F158E00BC3CEB /* M */,
 				16211D3B1F09E94C00F1E9EF /* New Group */,
 				3E984FAB1EBC5D5D0094CBE4 /* Model */,
 				3E984F461EB82B550094CBE4 /* HomePageViewController.h */,
@@ -1808,6 +1837,7 @@
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
 				3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */,
 				3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */,
+				164388491F2F126200BC3CEB /* YJEquipmentList.plist in Resources */,
 				3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
 				3E94395F1ECAA087001FE471 /* area.plist in Resources */,
@@ -2002,6 +2032,7 @@
 				1695197A1ED405AB00C2C380 /* YJHouseListTVCell.m in Sources */,
 				1652216D1EC58ADD0033FB8A /* YJLikeActivitiesTVCell.m in Sources */,
 				3E984F2D1EB82AC50094CBE4 /* YYNavigationController.m in Sources */,
+				164388501F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m in Sources */,
 				168466A91EBB495E00A98295 /* YJImageDisplayCollectionViewCell.m in Sources */,
 				166CD9011ED28FB400CC4F11 /* YJSelectView.m in Sources */,
 				3E90B74A1EC3F68200CC49D7 /* AirDirectionTableViewCell.m in Sources */,
@@ -2034,6 +2065,7 @@
 				1672F9971F0DCB6E00019137 /* YJRepairRecoderVC.m in Sources */,
 				3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */,
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
+				1643884D1F2F165200BC3CEB /* YJEquipmentListModel.m in Sources */,
 				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,
 				166FF4AD1EBC6BA600846A59 /* YJBillResultTableViewCell.m in Sources */,
 				1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */,

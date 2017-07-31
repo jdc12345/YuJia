@@ -346,6 +346,19 @@ static NSString* payCellid = @"pay_cell";
 }
 -(void)nowPayMoney:(UIButton*)sender{
     [SVProgressHUD showInfoWithStatus:@"此功能暂时还未开放"];
+    //如果成功支付就添加缴费记录
+//    添加生活缴费缴费记录接口
+//http://localhost:8080/smarthome/mobileapi/detailrecord/AddDetailRecord.do?token=49491B920A9DD107E146D961F4BDA50E&drType=1&drNumber=dianfei1111&propertyId=1&detailHomeId=12&paymentAmount=200&paymentMethod=1
+//    参数：       参数名                     参数类型                             备注
+//    token                       String                    令牌
+//    drType              Integer          缴费类型1=电费2=水费3=燃气费4=物业费
+//    drNumber               Long        表的编号，缴物业费的时候用上传家的地址ID
+//    propertyId               Long        物业单位ID
+//    detailHomeId             Long          缴费地址ID
+//    paymentAmount             Long            缴费金额
+//    paymentMethod            String    支付方式1=微信支付2=支付宝支付
+//    code                              0表示成功-1失败
+//    message                    失败原因描述
     
 }
 -(void)selectBtnClick:(UIButton*)sender{
