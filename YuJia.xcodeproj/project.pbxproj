@@ -12,6 +12,8 @@
 		1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A01EC040CF00A74938 /* YJEditNumberVC.m */; };
 		1606D9A41EC05A1E00A74938 /* YJInputPayNumberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */; };
 		1606D9A71EC095C600A74938 /* YJFriendNeighborVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */; };
+		160775FA1F304FD500DCD8E4 /* YJHomepageTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 160775F91F304FD500DCD8E4 /* YJHomepageTVCell.m */; };
+		160775FD1F30843A00DCD8E4 /* YJRoomSetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160775FC1F30843A00DCD8E4 /* YJRoomSetUpVC.m */; };
 		160F011A1F2584EE006EE0A2 /* YJPayRecoderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */; };
 		1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */; };
 		1618C1E71ECC5C56003BBA58 /* ZFBLevelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E61ECC5C56003BBA58 /* ZFBLevelView.m */; };
@@ -294,6 +296,10 @@
 		1606D9A31EC05A1E00A74938 /* YJInputPayNumberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJInputPayNumberVC.m; sourceTree = "<group>"; };
 		1606D9A51EC095C600A74938 /* YJFriendNeighborVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborVC.h; sourceTree = "<group>"; };
 		1606D9A61EC095C600A74938 /* YJFriendNeighborVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborVC.m; sourceTree = "<group>"; };
+		160775F81F304FD500DCD8E4 /* YJHomepageTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomepageTVCell.h; sourceTree = "<group>"; };
+		160775F91F304FD500DCD8E4 /* YJHomepageTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHomepageTVCell.m; sourceTree = "<group>"; };
+		160775FB1F30843A00DCD8E4 /* YJRoomSetUpVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRoomSetUpVC.h; sourceTree = "<group>"; };
+		160775FC1F30843A00DCD8E4 /* YJRoomSetUpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRoomSetUpVC.m; sourceTree = "<group>"; };
 		160F01181F2584EE006EE0A2 /* YJPayRecoderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPayRecoderVC.h; sourceTree = "<group>"; };
 		160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPayRecoderVC.m; sourceTree = "<group>"; };
 		1618C1DE1ECC46E6003BBA58 /* YJNearbyShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJNearbyShopViewController.h; sourceTree = "<group>"; };
@@ -883,6 +889,8 @@
 			children = (
 				16211D3C1F09E96700F1E9EF /* YJHomePageVC.h */,
 				16211D3D1F09E96700F1E9EF /* YJHomePageVC.m */,
+				160775FB1F30843A00DCD8E4 /* YJRoomSetUpVC.h */,
+				160775FC1F30843A00DCD8E4 /* YJRoomSetUpVC.m */,
 				16211D3F1F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.h */,
 				16211D401F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m */,
 				16211D411F09E98900F1E9EF /* YJHomeSceneFlowLayout.h */,
@@ -920,6 +928,8 @@
 			children = (
 				1643884E1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.h */,
 				1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */,
+				160775F81F304FD500DCD8E4 /* YJHomepageTVCell.h */,
+				160775F91F304FD500DCD8E4 /* YJHomepageTVCell.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -1935,6 +1945,7 @@
 				166FF4B51EBC7C0400846A59 /* YJModifyAddressVC.m in Sources */,
 				169519821ED42F6E00C2C380 /* YJHouseConfigurePicModel.m in Sources */,
 				166CD8FA1ED27A6F00CC4F11 /* YJRentalHouseVC.m in Sources */,
+				160775FA1F304FD500DCD8E4 /* YJHomepageTVCell.m in Sources */,
 				166BDCAE1ECA86B100441DB5 /* YJExpressDeliveryVC.m in Sources */,
 				3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */,
 				165655CB1EC6F30300B99966 /* YJPostActivitesCommentVC.m in Sources */,
@@ -2011,6 +2022,7 @@
 				166B425C1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
 				3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */,
+				160775FD1F30843A00DCD8E4 /* YJRoomSetUpVC.m in Sources */,
 				3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
 				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,

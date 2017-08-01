@@ -14,11 +14,14 @@
 #import "YJHomeSceneCollectionViewCell.h"
 #import "YJEquipmentrCollectionVCell.h"
 #import "YJHeaderTitleBtn.h"
+#import "YJHomepageTVCell.h"
+#import "YJRoomSetUpVC.h"
 
 static NSString* eqCellid = @"eq_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString *headerViewIdentifier =@"hederview";
-@interface YJHomePageVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
+static NSString* tableCellid = @"table_cell";
+@interface YJHomePageVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UICollectionView *mysceneColView;//情景collectionView
 @property(nonatomic,weak)UICollectionView *equipmentColView;//设备collectionView
 @property(nonatomic,weak)UIButton *mysceneBtn;
@@ -26,8 +29,14 @@ static NSString *headerViewIdentifier =@"hederview";
 @property(nonatomic,strong)NSArray *imagesURLStrings;
 @property (nonatomic, strong) NSArray* mysceneListData;//情景列表
 @property (nonatomic, strong) NSArray* equipmentListData;//设备列表
-@property(nonatomic,weak)UIView *clearView;
-
+@property(nonatomic,weak)UIView *clearView;//添加和collectionview之间的透明view
+@property(nonatomic,assign)BOOL isMyscene;//判断是否处于我的情景页面,点击编辑按钮时候需要用到
+@property(nonatomic,weak)UIView *backGrayView;//半透明背景
+@property(nonatomic,weak)UITableView *sceneTableView;//情景tableView
+@property(nonatomic,weak)UITableView *roomTableView;//房间tableView
+@property(nonatomic,weak)UIView *closeView;//底部取消view
+@property (nonatomic, strong) NSMutableArray* roomListData;//房间列表
+@property(nonatomic,weak)YJHeaderTitleBtn *roomBtn;//显示当前房间的btn
 @end
 
 @implementation YJHomePageVC
@@ -55,18 +64,21 @@ static NSString *headerViewIdentifier =@"hederview";
     return UIStatusBarStyleLightContent;
 }
 - (void)setUpUI {
-    UIButton *editBtn = [[UIButton alloc]init];//编辑按钮
+    self.roomListData = [NSMutableArray arrayWithObjects:@"房间1",@"房间2",@"房间3",@"房间4",@"房间5", nil];
+    NSMutableArray* rightItemArr = [NSMutableArray array];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -5;
+    [rightItemArr addObject:negativeSpacer];//修正按钮离屏幕边缘位置的UIBarButtonItem应在按钮的前边加入数组
+    UIButton *editBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60*kiphone6, 25*kiphone6)];//编辑按钮
     [self setBtn:editBtn WithTitle:@"编辑" font:13 titleColor:@"#333333"];
     editBtn.backgroundColor = [UIColor whiteColor];
     editBtn.layer.cornerRadius = 12;
     editBtn.layer.masksToBounds = true;
-    [self.view addSubview:editBtn];
-    [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view.mas_top).offset(42*kiphone6);
-        make.right.offset(-15*kiphone6);
-        make.width.offset(60*kiphone6);
-        make.height.offset(25*kiphone6);
-    }];
+    [editBtn addTarget:self action:@selector(editBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.isMyscene = true;//开始是在情景页面
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:editBtn];
+    [rightItemArr addObject:rightBarItem];
+    self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
     UIButton *mySceneBtn = [[UIButton alloc]init];;//我的情景
     mySceneBtn.tag = 31;
     self.mysceneBtn = mySceneBtn;
@@ -93,7 +105,7 @@ static NSString *headerViewIdentifier =@"hederview";
     }];
     [mySceneBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
     [equipmentBtn addTarget:self action:@selector(selectedBtn:) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *noticeLabel = [UILabel labelWithText:@"添加我的常用情景，创建我的智能家庭" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:13];
+    UILabel *noticeLabel = [UILabel labelWithText:@"添加我的常用设备，创建我的智能家庭" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:13];
     [self.view addSubview:noticeLabel];
     [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(15*kiphone6);
@@ -192,6 +204,7 @@ static NSString *headerViewIdentifier =@"hederview";
         make.top.offset(74*kiphone6);
     }];
     if (sender.tag == 31) {
+        self.isMyscene = true;
         [self.equipmentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mysceneBtn.mas_right).offset(18);
             make.bottom.equalTo(self.mysceneBtn);
@@ -203,6 +216,7 @@ static NSString *headerViewIdentifier =@"hederview";
         [self.mysceneColView reloadData];
         
     }else{
+        self.isMyscene = false;
         [self.mysceneBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.equipmentBtn.mas_right).offset(18);
             make.bottom.equalTo(self.equipmentBtn);
@@ -234,13 +248,199 @@ static NSString *headerViewIdentifier =@"hederview";
             collectionView.showsHorizontalScrollIndicator = false;
             collectionView.showsVerticalScrollIndicator = false;
         }
-
     }
 }
 // 解析数据
 - (NSArray*)loadFunctionListData
 {
     return [NSArray objectListWithPlistName:@"YJHomeSceneList.plist" clsName:@"YYPropertyFunctionList"];
+}
+//编辑按钮点击事件
+- (void)editBtnClick:(UIButton*)sender{
+    if (self.isMyscene) {//处于我的情景页面
+        //大蒙布View
+        if (!self.backGrayView) {
+            [self addGrayView];
+        }else{
+            self.backGrayView.hidden = false;
+            self.closeView.hidden = false;
+        }
+        //大蒙布View
+        if (!self.sceneTableView) {
+            //处于我的情景页面
+            //情景选择tableView，cell+组尾视图+底部取消view
+            //添加tableView
+            UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+            tableView.backgroundColor = [UIColor clearColor];
+            self.sceneTableView = tableView;
+            [self.view.window addSubview:tableView];
+            [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.offset(10*kiphone6);
+                make.right.offset(-10*kiphone6);
+                make.height.offset(240*kiphone6);
+                make.bottom.equalTo(self.closeView.mas_top);
+            }];
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            [tableView registerClass:[YJHomepageTVCell class] forCellReuseIdentifier:tableCellid];
+            tableView.delegate =self;
+            tableView.dataSource = self;
+            tableView.layer.cornerRadius = 5;
+            tableView.layer.masksToBounds = true;
+            tableView.bounces = false;
+        }else{
+            self.sceneTableView.hidden = false;
+            }
+    }else{//处于我的设备页面
+        YJRoomSetUpVC *setVC = [[YJRoomSetUpVC alloc]init];
+        setVC.roomName = self.roomBtn.titleLabel.text;
+        setVC.equipmentListData = self.equipmentListData;
+        [self.navigationController pushViewController:setVC animated:true];
+    }
+}
+//切换添加房屋
+-(void)roomBtnClick{
+    //大蒙布View
+    if (!self.backGrayView) {
+        [self addGrayView];
+    }else{
+        self.backGrayView.hidden = false;
+        self.closeView.hidden = false;
+        }
+    if (!self.roomTableView) {
+        //情景选择tableView，cell+组尾视图+底部取消view
+        //添加tableView
+        UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+        tableView.backgroundColor = [UIColor clearColor];
+        self.roomTableView = tableView;
+        [self.view.window addSubview:tableView];
+        [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.offset(10*kiphone6);
+            make.right.offset(-10*kiphone6);
+            make.height.offset(240*kiphone6);
+            make.bottom.equalTo(self.closeView.mas_top);
+        }];
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        [tableView registerClass:[YJHomepageTVCell class] forCellReuseIdentifier:tableCellid];
+        tableView.delegate =self;
+        tableView.dataSource = self;
+        tableView.layer.cornerRadius = 5;
+        tableView.layer.masksToBounds = true;
+        tableView.bounces = false;
+    }else{
+        self.roomTableView.hidden = false;
+    }
+}
+-(void)addGrayView{
+    UIView *backGrayView = [[UIView alloc]init];
+    self.backGrayView = backGrayView;
+    backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+    backGrayView.alpha = 0.3;
+    [self.view.window addSubview:backGrayView];
+    [backGrayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.offset(0);
+    }];
+    backGrayView.userInteractionEnabled = YES;
+    //添加tap手势：
+    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+    //将手势添加至需要相应的view中
+    [backGrayView addGestureRecognizer:tapGesture];
+    //取消view
+    UIView *closeView = [[UIView alloc]init];
+    closeView.backgroundColor = [UIColor clearColor];
+    [self.view.window addSubview:closeView];
+    self.closeView = closeView;
+    [closeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(80*kiphone6);
+        make.left.offset(10*kiphone6);
+        make.right.offset(-10*kiphone6);
+        make.bottom.offset(0);
+    }];
+    UIButton *closeBtn = [[UIButton alloc]init];
+    [closeBtn setBackgroundColor:[UIColor whiteColor]];
+    [self setBtn:closeBtn WithTitle:@"取消" font:18 titleColor:@"#999999"];
+    closeBtn.layer.cornerRadius = 5;
+    closeBtn.layer.masksToBounds = true;
+    [closeView addSubview:closeBtn];
+    [closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.offset(0);
+        make.height.offset(60*kiphone6);
+        make.centerY.offset(0);
+    }];
+    [closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+}
+
+//执行手势触发的方法：
+- (void)event:(UITapGestureRecognizer *)gesture
+{
+    [self closeBtnClick];
+}
+- (void)closeBtnClick{
+    self.backGrayView.hidden = true;
+    self.sceneTableView.hidden = true;
+    self.closeView.hidden = true;
+    self.roomTableView.hidden = true;
+}
+#pragma mark - UITableView
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    if (tableView==self.sceneTableView) {
+        return self.mysceneListData.count;
+    }else{
+        return self.roomListData.count;
+    }
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    YJHomepageTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
+    if (tableView==self.sceneTableView) {
+        cell.functionList = self.mysceneListData[indexPath.row];
+    }else{
+       cell.roomName = self.roomListData[indexPath.row];
+    }
+  return cell;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60*kiphone6;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 45*kiphone6)];
+    view.backgroundColor = [UIColor whiteColor];
+    UIButton *addBtn = [[UIButton alloc]init];
+    [addBtn setBackgroundColor:[UIColor whiteColor]];
+    if (tableView==self.sceneTableView) {
+        [self setBtn:addBtn WithTitle:@"添加新情景" font:18 titleColor:@"#0ddcbc"];
+        
+    }else{
+        [self setBtn:addBtn WithTitle:@"添加新房间" font:18 titleColor:@"#0ddcbc"];
+    }
+    [view addSubview:addBtn];
+    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.bottom.offset(0);
+    }];
+    //添加line
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor colorWithHexString:@"#f3f3f3"];
+    [view addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.offset(0);
+        make.height.offset(1/[UIScreen mainScreen].scale);
+    }];
+    return view;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 60*kiphone6;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    YJHomepageTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (tableView==self.sceneTableView) {
+        //跳转情景设置页面
+        
+    }else{
+        [self.roomBtn setTitle:cell.roomName forState:UIControlStateNormal];
+    }
+    
 }
 #pragma mark - UICollectionView
 // 有多少行
@@ -266,7 +466,7 @@ static NSString *headerViewIdentifier =@"hederview";
     }else{
         YJEquipmentrCollectionVCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
         cell.functionList = self.equipmentListData[indexPath.row];
-//        cell.selected = false;
+//        cell.alpha = 0.7;
         return cell;
     }
     
@@ -356,6 +556,8 @@ static NSString *headerViewIdentifier =@"hederview";
             make.left.offset(20*kiphone6);
             make.top.offset(0);
         }];
+        [roomBtn addTarget:self action:@selector(roomBtnClick) forControlEvents:UIControlEventTouchUpInside];
+        self.roomBtn = roomBtn;
         return header;
     }
     //如果底部视图

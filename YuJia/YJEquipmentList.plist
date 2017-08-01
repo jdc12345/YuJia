@@ -6,7 +6,7 @@
 		<key>name</key>
 		<string>电视</string>
 		<key>icon</key>
-		<string>getup</string>
+		<string>tv</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>
@@ -14,7 +14,7 @@
 		<key>name</key>
 		<string>空调</string>
 		<key>icon</key>
-		<string>rest</string>
+		<string>aircondition</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>
@@ -22,7 +22,7 @@
 		<key>name</key>
 		<string>灯</string>
 		<key>icon</key>
-		<string>leave</string>
+		<string>light</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>
@@ -30,7 +30,7 @@
 		<key>name</key>
 		<string>窗帘</string>
 		<key>icon</key>
-		<string>gohome</string>
+		<string>curtain</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>
@@ -38,7 +38,7 @@
 		<key>name</key>
 		<string>音响</string>
 		<key>icon</key>
-		<string>playgame</string>
+		<string>sound</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>
@@ -46,7 +46,7 @@
 		<key>name</key>
 		<string>插座</string>
 		<key>icon</key>
-		<string>rest</string>
+		<string>socket</string>
 		<key>ownRoom</key>
 		<string>客厅</string>
 	</dict>

@@ -42,6 +42,7 @@
 //    [self setSelected:false];
     // 设置整个cell的背景颜色
     self.backgroundColor = [UIColor whiteColor];
+    
     self.layer.cornerRadius = 7.5;
     self.layer.masksToBounds = true;
     // 创建子控件
