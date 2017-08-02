@@ -10,7 +10,7 @@
 #import "UILabel+Addition.h"
 
 @interface YJHomepageTVCell()
-@property (nonatomic, weak) UILabel* itemLabel;
+
 @end
 @implementation YJHomepageTVCell
 

@@ -12,4 +12,5 @@
 @interface YJHomepageTVCell : UITableViewCell
 @property (nonatomic, strong) YYPropertyFunctionList* functionList;//情景数据模型
 @property (nonatomic, strong) NSString* roomName;//房间名字
+@property (nonatomic, weak) UILabel* itemLabel;
 @end

@@ -16,6 +16,8 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJHomepageTVCell.h"
 #import "YJRoomSetUpVC.h"
+#import "SightSettingViewController.h"
+#import "YJSceneSetVC.h"
 
 static NSString* eqCellid = @"eq_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -436,7 +438,12 @@ static NSString* tableCellid = @"table_cell";
     YJHomepageTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (tableView==self.sceneTableView) {
         //跳转情景设置页面
-        
+        YJSceneSetVC *vc = [[YJSceneSetVC alloc]init];
+//        SightSettingViewController *vc = [[SightSettingViewController alloc]init];
+        vc.sceneName = cell.itemLabel.text;
+        vc.equipmentListData = self.equipmentListData;
+        [self closeBtnClick];
+        [self.navigationController pushViewController:vc animated:true];
     }else{
         [self.roomBtn setTitle:cell.roomName forState:UIControlStateNormal];
     }

@@ -37,7 +37,12 @@
     self.iconView.image = [UIImage imageNamed:functionList.icon];
     self.nameLabel.text = functionList.name;
 }
-
+-(void)setEquipmentListModels:(YJEquipmentListModel *)equipmentListModels{
+    _equipmentListModels = equipmentListModels;
+    // 把数据放在控件上
+    self.iconView.image = [UIImage imageNamed:equipmentListModels.icon];
+    self.nameLabel.text = equipmentListModels.name;
+}
 - (void)setupUI
 {
     [self setSelected:false];

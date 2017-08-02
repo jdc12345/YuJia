@@ -102,9 +102,8 @@
     self.title = @"情景设置";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"删除" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
     self.selectStart = @[@"定时启动",@"定位启动"];
     [self tableView];
     // Do any additional setup after loading the view.
@@ -351,8 +350,7 @@
 - (UIView *)customFootView{
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 74)];
     footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
-    
-    
+        
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sureBtn.frame = CGRectMake(10, 16, 190, 44);
     [sureBtn setTitle:@"确定添加" forState:UIControlStateNormal];

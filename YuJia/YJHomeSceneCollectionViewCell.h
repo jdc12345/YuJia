@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "YYPropertyFunctionList.h"
+#import "YJEquipmentListModel.h"
 
 @interface YJHomeSceneCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) YYPropertyFunctionList* functionList;
+@property (nonatomic, strong) YJEquipmentListModel* equipmentListModels;//设备模型
 @end

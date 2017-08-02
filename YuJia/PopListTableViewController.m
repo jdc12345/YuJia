@@ -26,7 +26,7 @@
     self.tableView.layer.cornerRadius = 2.5;
     self.tableView.clipsToBounds = YES;
     self.tableView.layer.borderWidth = 1.5;
-    self.tableView.layer.borderColor = [UIColor colorWithHexString:@"e9e9e9"].CGColor;
+    self.tableView.layer.borderColor = [UIColor colorWithHexString:@"#e9e9e9"].CGColor;
     // 默认关闭下拉列表
     _isOpen = NO;
 }
