@@ -66,7 +66,7 @@ static NSString* eqCellid = @"eq_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"房间设置";
+    self.title = @"情景设置";
     //    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = false;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo)];
@@ -452,7 +452,7 @@ static NSString* eqCellid = @"eq_cell";
         [weekBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateSelected];
         weekBtn.layer.borderColor = [UIColor colorWithHexString:@"#f1f1f1"].CGColor;
         weekBtn.layer.borderWidth = 1;
-        weekBtn.layer.cornerRadius = 20;
+        weekBtn.layer.cornerRadius = 10;
         weekBtn.clipsToBounds = YES;
         [weekBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         [titleView addSubview:weekBtn];
@@ -647,7 +647,8 @@ static NSString* eqCellid = @"eq_cell";
     [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
-    
+    sureBtn.layer.cornerRadius = 20;
+    sureBtn.layer.masksToBounds = true;
     
     [titleView addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {

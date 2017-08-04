@@ -16,7 +16,6 @@
 #import "YJFriendNeighborStateModel.h"
 #import <MJRefresh.h>
 #import "RKNotificationHub.h"
-#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 #import "UILabel+Addition.h"
 
 static NSInteger start = 0;
@@ -40,6 +39,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *scrollowHeaderView;//scrollow头部试图
 @property(nonatomic,weak)UIView *line;//时间选择滚动条
 @property(nonatomic,strong)NSDictionary *personal;//个人信息
+@property(nonatomic,strong)NSMutableDictionary *cellHeightCache;// 1 .给tableview添加缓存行高属性(字典需要懒加载)
 @end
 
 @implementation YJFriendNeighborVC
@@ -604,22 +604,25 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD
     
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    YJFriendNeighborStateModel *model = self.statesArr[indexPath.row];
-//    return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
-//        YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
-//        
-//        // 配置数据
-//        [cell configCellWithModel:model indexPath:indexPath];
-//    } cache:^NSDictionary *{
-//        NSDictionary *cache = @{kHYBCacheUniqueKey :[NSString stringWithFormat:@"%ld",model.info_id],
-//                                kHYBCacheStateKey  : @"",
-//                                kHYBRecalculateForStateKey : @(model.shouldUpdateCache)};
-//        model.shouldUpdateCache = NO;
-//        return cache;
-//    }];
-        return UITableViewAutomaticDimension;
+    // 2 .给tableview缓存行高属性赋值并计算
+    YJFriendNeighborStateModel *comModel = self.statesArr[indexPath.row];// 2.1 找到这个cell对应的数据模型
+    NSString *thisId = [NSString stringWithFormat:@"%ld",comModel.info_id];// 2.2 取出模型对应id作为cell缓存行高对应key
+    CGFloat cacheHeight = [[self.cellHeightCache valueForKey:thisId] doubleValue];// 2.3 根据这个key取这个cell的高度
+    if (cacheHeight) {// 2.4 如果取得到就说明已经存过了，不需要再计算，直接返回这个高度
+        return cacheHeight;
+    }
+    YJFriendStateTableViewCell *commentCell = [tableView dequeueReusableCellWithIdentifier:tableCellid];// 2.4 如果没有取到值说明是第一遍，需要取一个cell(作为计算模型)并给cell的数据model赋值，进而计算出这个cell的高度
+    commentCell.model = comModel;// 2.5 赋值并在cell中计算
+    [self.cellHeightCache setValue:@(commentCell.cellHeight) forKey:thisId];// 2.6 取cell计算出的高度存入tableview的缓存行高字典里，方便读取
+    //            NSLog(@"%@",self.cellHeightCache);
+    return commentCell.cellHeight;
 }
-
+-(NSMutableDictionary *)cellHeightCache{
+    if (_cellHeightCache == nil) {
+        _cellHeightCache = [[NSMutableDictionary alloc]init];
+    }
+    return _cellHeightCache;
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJFriendStateDetailVC *detailVc = [[YJFriendStateDetailVC alloc]init];
     YJFriendStateTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

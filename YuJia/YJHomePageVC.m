@@ -419,6 +419,7 @@ static NSString* tableCellid = @"table_cell";
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.bottom.offset(0);
     }];
+    [addBtn addTarget:self action:@selector(addSceneOrNewHouseClick) forControlEvents:UIControlEventTouchUpInside];
     //添加line
     UIView *line = [[UIView alloc]init];
     line.backgroundColor = [UIColor colorWithHexString:@"#f3f3f3"];
@@ -449,6 +450,24 @@ static NSString* tableCellid = @"table_cell";
     }
     
 }
+-(void)addSceneOrNewHouseClick{
+    if (self.isMyscene) {
+        //跳转情景设置页面
+        YJSceneSetVC *vc = [[YJSceneSetVC alloc]init];
+        //        SightSettingViewController *vc = [[SightSettingViewController alloc]init];
+//        vc.sceneName = cell.itemLabel.text;
+        vc.equipmentListData = [NSArray array];
+        [self closeBtnClick];
+        [self.navigationController pushViewController:vc animated:true];
+    }else{//处于我的设备页面
+        YJRoomSetUpVC *setVC = [[YJRoomSetUpVC alloc]init];
+//        setVC.roomName = self.roomBtn.titleLabel.text;
+        setVC.equipmentListData = [NSArray array];
+        [self closeBtnClick];
+        [self.navigationController pushViewController:setVC animated:true];
+    }
+}
+
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section

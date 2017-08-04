@@ -23,10 +23,9 @@ static NSString* photoCellid = @"photo_cell";
 @property (nonatomic, weak) UILabel* stateLabel;
 @property (nonatomic, weak) UILabel* contentLabel;
 @property(nonatomic,weak)UICollectionView *collectionView;
-@property (nonatomic, weak) UIButton *finishBtn;
+//@property (nonatomic, weak) UIButton *finishBtn;
 @property (nonatomic, weak) UIButton *cancelBtn;
 @property(nonatomic,strong)NSArray *imagesArr;
-@property(nonatomic,strong)NSMutableArray *urlStrs;
 @end
 @implementation YJRepairRecordTableViewCell
 
@@ -49,23 +48,24 @@ static NSString* photoCellid = @"photo_cell";
     }else if (model.repairType == 3) {
         self.typeLabel.text = @"公共设施报修";
     }
-    self.timeLabel.text =[NSString stringWithFormat:@"期望处理时间:%@",model.processingTimeString];
+    self.timeLabel.text =[NSString stringWithFormat:@"期望处理时间:%@",model.processingTime];
     if (model.state == 1) {
-        self.stateLabel.text = @"待维修";
+        self.stateLabel.text = @"待处理";
     }else if (model.state == 2) {
         self.stateLabel.text = @"处理中";
     }else if (model.state == 3) {
-        self.stateLabel.text = @"已完成";
+        self.stateLabel.text = @"已处理";
+    }else if (model.state == 4) {
+        self.stateLabel.text = @"已取消";
     }
     self.contentLabel.text = model.details;
-    if (model.state == 1) {
-        self.finishBtn.hidden = false;
+    CGSize textSize = [model.details boundingRectWithSize:CGSizeMake(kScreenW-20*kiphone6, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]} context:nil].size;
+    [self.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(textSize.height);
+    }];//计算文字内容高度，更新约束
+    if (model.state == 1) {//1=待处理 2=处理中 3=已处理 4=已取消”
         self.cancelBtn.hidden = false;
-    }else if (model.state == 2) {
-        self.finishBtn.hidden = false;
-        self.cancelBtn.hidden = true;
-    }else if (model.state == 3) {
-        self.finishBtn.hidden = true;
+    }else{
         self.cancelBtn.hidden = true;
     }
     if (![model.picture isEqualToString:@""]) {
@@ -84,8 +84,18 @@ static NSString* photoCellid = @"photo_cell";
         }
     }else{
         self.imagesArr = [NSArray array];
+        [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.offset(0);
+        }];
     }
-    [self.collectionView reloadData];
+    [self.collectionView reloadData];//计算图片内容高度，更新约束
+        // 告诉self.view约束需要更新
+//    [self setNeedsUpdateConstraints];
+    // 调用此方法告诉self.view检测是否需要更新约束，若需要则更新，下面添加动画效果才起作用
+//    [self updateConstraintsIfNeeded];
+    [self layoutIfNeeded];//更新cell整体约束
+    
+    self.cellHeight = CGRectGetMaxY(self.cancelBtn.frame) + 10*kiphone6;//取最底部的控件最大Y值加距离底部的距离为cell的高度
 }
 
 -(void)setupUI{
@@ -125,17 +135,6 @@ static NSString* photoCellid = @"photo_cell";
     line2.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line2];
     
-
-    UIButton *finishBtn = [[UIButton alloc]init];//完成维修按钮
-//    finishBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    [finishBtn setTitle:@"完成维修" forState:UIControlStateNormal];
-    [finishBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
-    finishBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    finishBtn.layer.masksToBounds = true;
-    finishBtn.layer.cornerRadius = 3;
-    finishBtn.layer.borderColor = [UIColor colorWithHexString:@"#01c0ff"].CGColor;
-    finishBtn.layer.borderWidth = 1;
-    [self.contentView addSubview:finishBtn];
     UIButton *cancelBtn = [[UIButton alloc]init];//取消维修按钮
     cancelBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [cancelBtn setTitle:@"取消维修" forState:UIControlStateNormal];
@@ -144,7 +143,7 @@ static NSString* photoCellid = @"photo_cell";
     cancelBtn.layer.masksToBounds = true;
     cancelBtn.layer.cornerRadius = 3;
     cancelBtn.layer.borderWidth = 1;
-    cancelBtn.layer.borderColor = [UIColor colorWithHexString:@"#01c0ff"].CGColor;
+    cancelBtn.layer.borderColor = [UIColor colorWithHexString:@"#00eac6"].CGColor;
     [self.contentView addSubview:cancelBtn];
     //约束
     [spaceView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -159,12 +158,13 @@ static NSString* photoCellid = @"photo_cell";
         make.left.equalTo(typeView.mas_right).offset(5*kiphone6);
         make.centerY.equalTo(typeView);
     }];
-    [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(typeLabel.mas_right).offset(5*kiphone6);
-        make.centerY.equalTo(typeView);
-    }];
     [stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.offset(-10*kiphone6);
+        make.centerY.equalTo(typeView);
+    }];
+    [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(typeLabel.mas_right).offset(5*kiphone6);
+        make.right.equalTo(stateLabel.mas_left).offset(-5);
         make.centerY.equalTo(typeView);
     }];
     [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -180,51 +180,37 @@ static NSString* photoCellid = @"photo_cell";
     [photoCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(contentLabel.mas_bottom);
         make.left.offset(0);
-        make.bottom.offset(-45*kiphone6);
+//        make.bottom.offset(-45*kiphone6);
         make.width.offset(290*kiphone6);
+        make.height.offset(0);
     }];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.offset(0);
         make.height.offset(1*kiphone6);
         make.top.equalTo(photoCollectionView.mas_bottom);
     }];
-    [finishBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView.mas_bottom).offset(-22.5*kiphone6);
+
+    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(70*kiphone6);
         make.height.offset(25*kiphone6);
         make.right.offset(-10*kiphone6);
+        make.top.equalTo(line2.mas_bottom).offset(10*kiphone6);
     }];
-    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView.mas_bottom).offset(-22.5*kiphone6);
-        make.width.offset(70*kiphone6);
-        make.height.offset(25*kiphone6);
-        make.right.equalTo(finishBtn.mas_left).offset(-10*kiphone6);
-    }];
-//    [self.contentView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(line2.mas_bottom).offset(45*kiphone6);
-//        make.width.offset(kScreenW);
-//    }];
+
     self.typeLabel = typeLabel;
     self.timeLabel = timeLabel;
     self.stateLabel = stateLabel;
     self.contentLabel = contentLabel;
     self.collectionView = photoCollectionView;
-    self.finishBtn = finishBtn;
     self.cancelBtn = cancelBtn;
     cancelBtn.tag = 31;
-    finishBtn.tag = 32;
     [cancelBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [finishBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 - (void)btnClick:(UIButton *)sender{
-    NSString *state ;
-    if (sender.tag == 31) {
-        state = @"4";
-    }else if (sender.tag == 32){
-        state = @"3";
-    }
+
     if (self.clickBtnBlock) {
-        self.clickBtnBlock(state);
+        self.clickBtnBlock();
     }
 }
 #pragma mark - UICollectionView

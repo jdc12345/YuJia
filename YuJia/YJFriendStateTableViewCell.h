@@ -19,4 +19,6 @@
 
 @property(nonatomic,assign)BOOL isDetailCell;//判断是否是详情页面的cell
 @property (nonatomic, copy) void (^detailCommentBtnBlock)(YJFriendNeighborStateModel *model);
+
+@property (nonatomic, assign) CGFloat cellHeight;//cell的行高
 @end

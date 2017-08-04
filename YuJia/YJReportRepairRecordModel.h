@@ -14,7 +14,7 @@
 //contactAddress       String     地址
 //details          String    详情描述
 //state           Integer    1=待处理2=处理中 3=已处理 4=已取消”
-//processingTimeString.  String    希望处理时间
+//processingTime.  String    希望处理时间
 #import <Foundation/Foundation.h>
 
 @interface YJReportRepairRecordModel : NSObject
@@ -28,5 +28,5 @@
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, assign) NSInteger state;
 @property (nonatomic, assign) long info_id;
-@property (nonatomic, copy) NSString *processingTimeString;
+@property (nonatomic, copy) NSString *processingTime;
 @end

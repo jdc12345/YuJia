@@ -7,8 +7,6 @@
 //
 
 #import "YJReportRepairVC.h"
-#import "UIColor+colorValues.h"
-#import "YJHeaderTitleBtn.h"
 #import "UILabel+Addition.h"
 #import "YJRepairBaseInfoTableViewCell.h"
 #import "BRPlaceholderTextView.h"
@@ -24,19 +22,16 @@
 #import <MJRefresh.h>
 #import "UIViewController+Cloudox.h"
 #import "YJRepairRecoderVC.h"
+#import "YJPropertyAddressModel.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
 @interface YJReportRepairVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
-@property(nonatomic,strong)NSMutableArray *yearArr;
-@property(nonatomic,strong)NSMutableArray *monthArr;
 @property(nonatomic,strong)NSMutableArray *dayArr;
 @property(nonatomic,strong)NSArray *hourArr;
-@property(nonatomic,strong)NSArray *minusArr;
-@property(nonatomic,strong)NSString *selectTime;
-@property(nonatomic,strong)NSString *year;
-@property(nonatomic,strong)NSString *month;
+@property(nonatomic,strong)NSString *selectTime;//显示在cell上的时间
+@property(nonatomic,strong)NSString *selectReportTime;//进行报修提交的时间
 @property(nonatomic,strong)NSString *day;
 @property(nonatomic,strong)NSString *hour;
 @property(nonatomic,weak)UIPickerView *timePickerView;
@@ -59,6 +54,10 @@ static NSString* photoCellid = @"photo_cell";
 //
 @property(nonatomic,weak)UITableView *recordTableView;
 @property(nonatomic,strong)NSMutableArray *recordArr;
+@property(nonatomic,strong)NSMutableArray *addresses;//当前用户认证的地址集合
+@property(nonatomic, assign)long familyId;//当前用户所在家的ID
+@property(nonatomic,weak)UIToolbar * topView;//时间选择器工具栏
+@property(nonatomic,weak)UIView *coverView;//时间选择器背景蒙布
 @end
 
 @implementation YJReportRepairVC
@@ -74,7 +73,56 @@ static NSString* photoCellid = @"photo_cell";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self addTypeViewWith:@[@"水电燃气",@"房屋报修",@"公共设施"]];
     self.selectTime = @"请选择您期望的维修时间";
-    //添加tableView
+    [self loadData];//请求当前用户地址id
+    [self setupUI];
+    [self timeData];
+    //添加右侧报修记录按钮
+    UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 70, 30)];
+    [deleateBtn setTitle:@"报修记录" forState:UIControlStateNormal];
+    [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+    deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
+    //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+    deleateBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [deleateBtn addTarget:self action:@selector(informationBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+}
+//查询业主(认证通过的家庭地址)地址
+- (void)loadData {
+    //    CcUserModel *userModel = [CcUserModel defaultClient];
+    //    NSString *token = userModel.userToken;
+    //    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主(认证通过的家庭地址)地址
+http://localhost:8080/smarthome/mobileapi/family/findMyFamilyAddress.do?token=49491B920A9DD107E146D961F4BDA50E
+    [SVProgressHUD show];// 动画开始
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findMyFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            NSArray *arr = responseObject[@"result"];
+            NSMutableArray *mArr = [NSMutableArray array];
+            for (NSDictionary *dic in arr) {
+                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
+                [mArr addObject:infoModel];
+            }
+            self.addresses = mArr;
+            YJPropertyAddressModel *model = self.addresses[0];
+            self.familyId = model.info_id;//当前用户地址id
+            [SVProgressHUD dismiss];// 动画结束
+            
+        }else{
+            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [SVProgressHUD showErrorWithStatus:@"你还没有进行地址认证"];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"加载失败"];
+        return ;
+    }];
+}
+//添加tableView
+-(void)setupUI{
     UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView = tableView;
     [self.view addSubview:tableView];
@@ -89,24 +137,82 @@ static NSString* photoCellid = @"photo_cell";
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate =self;
     tableView.dataSource = self;
-    self.hourArr = @[@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20"];
-    self.minusArr = @[@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59"];
-    //添加右侧报修记录按钮
-    UIButton *deleateBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 70, 30)];
-    [deleateBtn setTitle:@"报修记录" forState:UIControlStateNormal];
-    [deleateBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-    deleateBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    deleateBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-    //        postBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
-    deleateBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [deleateBtn addTarget:self action:@selector(informationBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:deleateBtn];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
-
 }
+//报修记录页面跳转
 -(void)informationBtnClick{
     YJRepairRecoderVC *vc = [[YJRepairRecoderVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
+}
+//计算时间数据
+-(void)timeData{
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
+    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+    
+    NSInteger year = [dateComponent year];
+    NSInteger month = [dateComponent month];
+    calendar.timeZone = [NSTimeZone localTimeZone];
+    NSDate *curDate = [calendar dateFromComponents:dateComponent];
+    
+    NSDateComponents *comps2 = [[NSDateComponents alloc] init];
+    
+    [comps2 setDay:31];
+    if (month<11) {
+        [comps2 setMonth:month+2];
+        [comps2 setYear:year];
+    }else if(month==11){
+        [comps2 setMonth:1];
+        [comps2 setYear:year+1];
+    }else{
+        [comps2 setMonth:2];
+        [comps2 setYear:year+1];
+    }
+    NSDate *endDate = [calendar dateFromComponents:comps2];
+    
+    self.dayArr = [NSMutableArray array];
+    while([curDate timeIntervalSince1970] <= [endDate timeIntervalSince1970]) //you can also use the earlier-method
+    {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        dateFormatter.dateFormat = @"ee";
+//        NSString *weekDayStr = [dateFormatter stringFromDate:curDate];
+//        NSInteger w = [weekDayStr integerValue];
+        dateFormatter.dateFormat = @"yyyy-MM-dd";
+        NSString *dayStr = [dateFormatter stringFromDate:curDate];
+//        switch (w) {
+//            case 01:
+//                weekDayStr= @"星期天";
+//                break;
+//            case 02:
+//                weekDayStr= @"星期一";
+//                break;
+//            case 03:
+//                weekDayStr= @"星期二";
+//                break;
+//            case 04:
+//                weekDayStr= @"星期三";
+//                break;
+//            case 05:
+//                weekDayStr= @"星期四";
+//                break;
+//            case 06:
+//                weekDayStr= @"星期五";
+//                break;
+//            case 07:
+//                weekDayStr= @"星期六";
+//                break;
+//                
+//            default:
+//                break;
+//        }
+        
+        //        NSString *dayTitle = [NSString stringWithFormat:@"%@ %@",dayStr,weekDayStr];
+        NSString *dayTitle = [NSString stringWithFormat:@"%@ ",dayStr];
+        [self.dayArr addObject:dayTitle];
+        curDate = [NSDate dateWithTimeInterval:86400 sinceDate:curDate];
+    }
+    self.hourArr = @[@"09:00-13:00",@"13:00-18:00",@"18:00-22:00"];//小时时间段
+
 }
 -(void)addTypeViewWith:(NSArray*)typeArr{
     UIImageView *view = [[UIImageView alloc]init];
@@ -213,19 +319,13 @@ static NSString* photoCellid = @"photo_cell";
         }];
         [titleView layoutIfNeeded];
         titleView.delegate = self;
-//        self.titleView = titleView;
         titleView.placeholder = @"请描述您要保修的详情...";
-//        titleView.imagePlaceholder = @"title";
         titleView.font=[UIFont boldSystemFontOfSize:13];
         [titleView setBackgroundColor:[UIColor whiteColor]];
         [titleView setPlaceholderFont:[UIFont systemFontOfSize:13]];
         [titleView setPlaceholderColor:[UIColor colorWithHexString:@"#999999"]];
-        //    titleField.borderStyle = UITextBorderStyleNone;
-        //    //边框宽度
-        //    [titleField.layer setBorderWidth:0.01f];
         [titleView setPlaceholderOpacity:0.6];
         [titleView addMaxTextLengthWithMaxLength:300 andEvent:^(BRPlaceholderTextView *text) {
-//            [self.titleView endEditing:YES];
             
             NSLog(@"----------");
         }];
@@ -310,109 +410,121 @@ static NSString* photoCellid = @"photo_cell";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     if (indexPath.section==1&&indexPath.row==0) {
-        NSDate *now = [NSDate date];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
-        NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour;
-        NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
-        NSInteger year = [dateComponent year];
-        NSInteger month = [dateComponent month];
-        NSMutableArray *monthArr = [NSMutableArray array];
-        NSMutableArray *dayArr = [NSMutableArray array];
-        if (self.timePickerView) {
-            if (month<12) {
-                NSString *yearStr = [NSString stringWithFormat: @"%ld", (long)year];
-                self.yearArr = [NSMutableArray arrayWithObject:yearStr];
-                for (NSInteger i = month; i<=month+1; i++) {
-                    if (month<10) {
-                        NSString *monthStr = [NSString stringWithFormat: @"0%ld", (long)i];
-                        [monthArr addObject:monthStr];
-                    }else{
-                        NSString *monthStr = [NSString stringWithFormat: @"%ld", (long)i];
-                        [monthArr addObject:monthStr];
-                    }
-                }
-                self.monthArr = monthArr;
-            }else{
-                NSString *yearStr1 = [NSString stringWithFormat: @"%ld", (long)year];
-                NSString *yearStr2 = [NSString stringWithFormat: @"%ld", (long)year+1];
-                self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
-                 NSString *monthStr12 = [NSString stringWithFormat: @"%ld", (long)month];
-                NSString *monthStr1 =  @"%ld月";
-                self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
-                }
-            for (NSInteger i = 1; i<=31; i++) {
-                NSString *dayStr = [NSString stringWithFormat: @"%ld", (long)i];
-                [dayArr addObject:dayStr];
-            }
-            self.dayArr = dayArr;
-            if (self.timePickerView.hidden) {
-                self.timePickerView.hidden = false;
-            }else{
-                self.timePickerView.hidden = true;
-            }
-        }else{
-            if (month<12) {
-                NSString *yearStr = [NSString stringWithFormat: @"%ld", (long)year];
-                self.yearArr = [NSMutableArray arrayWithObject:yearStr];
-                for (NSInteger i = month; i<=month+1; i++) {
-                    if (month<10) {
-                        NSString *monthStr = [NSString stringWithFormat: @"0%ld", (long)i];
-                        [monthArr addObject:monthStr];
-                    }else{
-                        NSString *monthStr = [NSString stringWithFormat: @"%ld", (long)i];
-                        [monthArr addObject:monthStr];
-                    }
-                }
-                self.monthArr = monthArr;
-            }else{
-                NSString *yearStr1 = [NSString stringWithFormat: @"%ld", (long)year];
-                NSString *yearStr2 = [NSString stringWithFormat: @"%ld", (long)year+1];
-                self.yearArr = [NSMutableArray arrayWithObjects:yearStr1,yearStr2, nil];
-                NSString *monthStr12 = [NSString stringWithFormat: @"%ld", (long)month];
-                NSString *monthStr1 =  @"%ld";
-                self.monthArr = [NSMutableArray arrayWithObjects:monthStr12,monthStr1, nil];
-            }
-            for (NSInteger i = 1; i<=31; i++) {
-                NSString *dayStr = [NSString stringWithFormat: @"%ld", (long)i];
-                [dayArr addObject:dayStr];
-            }
-            self.dayArr = dayArr;
+        if (!self.timePickerView) {
+            self.edgesForExtendedLayout =UIRectEdgeNone;
+            //        大蒙布View
+            UIView *coverView = [[UIView alloc]init];
+            coverView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+            coverView.alpha = 0.3;
+            [self.view.window addSubview:coverView];
+            self.coverView = coverView;
+            [coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.left.bottom.right.offset(0);
+            }];
+            coverView.userInteractionEnabled = YES;
+            //添加tap手势：
+                UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+//            将手势添加至需要相应的view中
+            [coverView addGestureRecognizer:tapGesture];
+            
             UIPickerView *pickView = [[UIPickerView alloc]init];
-            [self.view addSubview:pickView];
-            pickView.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
+            [self.view.window addSubview:pickView];
+            [self.view.window bringSubviewToFront:pickView];
+            [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.bottom.offset(0);
+                make.height.offset(162*kiphone6);
+            }];
+            pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
             pickView.dataSource = self;
             pickView.delegate = self;
             pickView.showsSelectionIndicator = YES;
             self.timePickerView = pickView;
-            CGRect rectInTableView = [tableView rectForRowAtIndexPath:indexPath];
-            CGRect rect = [tableView convertRect:rectInTableView toView:[tableView superview]];
-            CGFloat y = CGRectGetMaxY(rect);
-            pickView.frame = CGRectMake(0, y, kScreenW, kScreenH-y);
+            UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 52*kiphone6)];
+            [topView setBarStyle:UIBarStyleDefault];
+            UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            closeBtn.frame = CGRectMake(2, 5, 50, 25);
+            [closeBtn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+            [closeBtn setTitle:@"取消" forState:UIControlStateNormal];
+            [closeBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+            UIBarButtonItem *cancleBtn = [[UIBarButtonItem alloc]initWithCustomView:closeBtn];
+            UIBarButtonItem * btnSpace1 = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+            UIButton *middelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            middelBtn.frame = CGRectMake(2, 5, 75, 25);
+            [middelBtn setTitle:@"上门时间" forState:UIControlStateNormal];
+            [middelBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
+            UIBarButtonItem *titleBtn = [[UIBarButtonItem alloc]initWithCustomView:middelBtn];
+            UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            btn.frame = CGRectMake(2, 5, 50, 25);
+            [btn addTarget:self action:@selector(resignFirstResponderText) forControlEvents:UIControlEventTouchUpInside];
+            [btn setTitle:@"确定" forState:UIControlStateNormal];
+            [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+            UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+            NSArray * buttonsArray = [NSArray arrayWithObjects:cancleBtn,btnSpace1,titleBtn,btnSpace,doneBtn,nil];
+            [topView setItems:buttonsArray];
+            [self.view.window addSubview:topView];
+            [self.view.window bringSubviewToFront:topView];
+            self.topView = topView;
+            [topView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.offset(0);
+                make.bottom.equalTo(pickView.mas_top);
+            }];
+            
             //            设置初始默认值
             [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
-            [self pickerView:self.timePickerView didSelectRow:0 inComponent:1];
-            [self pickerView:self.timePickerView didSelectRow:0 inComponent:2];
-            [self pickerView:self.timePickerView didSelectRow:0 inComponent:3];
+            [self pickerView:self.timePickerView didSelectRow:1 inComponent:1];
+//            [self.timePickerView selectRow:0 inComponent:0 animated:true];
+            [self.timePickerView selectRow:1 inComponent:1 animated:true];
+        }else{
+            self.timePickerView.hidden = false;
+            self.coverView.hidden = false;
+            self.topView.hidden = false;
         }
+//        if (self.timePickerView) {
+//            if (self.timePickerView.hidden) {
+//                self.timePickerView.hidden = false;
+//            }else{
+//                self.timePickerView.hidden = true;
+//            }
+//        }else{
+//            UIPickerView *pickView = [[UIPickerView alloc]init];
+//            [self.view addSubview:pickView];
+//            pickView.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
+//            pickView.dataSource = self;
+//            pickView.delegate = self;
+//            pickView.showsSelectionIndicator = YES;
+//            self.timePickerView = pickView;
+//            CGRect rectInTableView = [tableView rectForRowAtIndexPath:indexPath];
+//            CGRect rect = [tableView convertRect:rectInTableView toView:[tableView superview]];
+//            CGFloat y = CGRectGetMaxY(rect);
+//            pickView.frame = CGRectMake(0, y+52*kiphone6, kScreenW, kScreenH-y-52*kiphone6);
+//            //            设置初始默认值
+//            [self pickerView:self.timePickerView didSelectRow:0 inComponent:0];
+//            [self pickerView:self.timePickerView didSelectRow:0 inComponent:1];
+//
+//        }
     }
+}
+-(void)event:(UIGestureRecognizer*)tap{
+    [self resignFirstResponderText];
+}
+-(void)resignFirstResponderText {
+    [self.view endEditing:true];
+    self.timePickerView.hidden = true;
+    self.coverView.hidden = true;
+    self.topView.hidden = true;
 }
 #pragma mark - pickView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    return 5;
+    return 2;
 }
 // pickerView 每列个数
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if (component == 0) {
-        return self.yearArr.count;
-    }else if (component == 1){
-       return self.monthArr.count;
-    }else if (component == 2){
         return self.dayArr.count;
-    }else if (component == 3){
-        return self.hourArr.count;
     }else{
-        return self.minusArr.count;
+        return self.hourArr.count;
     }
 
 }
@@ -421,65 +533,53 @@ static NSString* photoCellid = @"photo_cell";
 // 每列宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     
-    return pickerView.bounds.size.width/5;
+    return pickerView.bounds.size.width/2;
+}
+-(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component{
+    return 54*kiphone6;
 }
 // 返回选中的行
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    NSString *minus = @"00";
     if (component == 0) {
-        self.year = [NSString stringWithFormat:@"%@",self.yearArr[row]];
+        self.day = [NSString stringWithFormat:@"%@",self.dayArr[row]];
         
     }else if (component == 1){
-        self.month = [NSString stringWithFormat:@"%@",self.monthArr[row]];
-    }else if (component == 2){
-        self.day = [NSString stringWithFormat:@"%@",self.dayArr[row]];
-    }else if (component == 3){
         self.hour = [NSString stringWithFormat:@"%@",self.hourArr[row]];
-    }else if (component == 4){
-        minus = [NSString stringWithFormat:@"%@",self.minusArr[row]];
     }
-    self.selectTime = [NSString stringWithFormat:@"您期望的维修时间为:%@-%@-%@ %@:%@:00",self.year,self.month,self.day,self.hour,minus];
+    self.selectTime = [NSString stringWithFormat:@"您期望的维修时间为:%@ %@",self.day,self.hour];
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];  //你需要更新的组数中的cell
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+    self.selectReportTime = [NSString stringWithFormat:@"%@%@",self.day,self.hour];
 }
 
-//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
--(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (component == 0) {
-        return [self.yearArr objectAtIndex:row];
-    } else if (component == 1){
-        return [self.monthArr objectAtIndex:row];
-        
-    } else if (component == 2){
-        return [self.dayArr objectAtIndex:row];
-        
-    }else if (component == 3){
-        return [self.hourArr objectAtIndex:row];
-        
-    }else {
-        return [self.minusArr objectAtIndex:row];
-        
-    }
-    
-}
+////返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
+//-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+//{
+//    if (component == 0) {
+//        return [self.yearArr objectAtIndex:row];
+//    } else if (component == 1){
+//        return [self.monthArr objectAtIndex:row];
+//        
+//    } else if (component == 2){
+//        return [self.dayArr objectAtIndex:row];
+//        
+//    }else if (component == 3){
+//        return [self.hourArr objectAtIndex:row];
+//        
+//    }else {
+//        return [self.minusArr objectAtIndex:row];
+//        
+//    }
+//    
+//}
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0f, 0.0f, [pickerView rowSizeForComponent:component].width-12, [pickerView rowSizeForComponent:component].height)];
     if (component == 0) {
-        [label setText:[self.yearArr objectAtIndex:row]];
-    }else if (component == 1){
-        [label setText:[self.monthArr objectAtIndex:row]];
-    }
-    else if (component == 2){
         [label setText:[self.dayArr objectAtIndex:row]];
-    }
-    else if (component == 3){
+    }else if (component == 1){
         [label setText:[self.hourArr objectAtIndex:row]];
-    }
-    else if (component == 4){
-        [label setText:[self.minusArr objectAtIndex:row]];
     }
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -581,14 +681,27 @@ static NSString* photoCellid = @"photo_cell";
     return _imageArr;
 }
 - (void)reportRepair:(UIButton*)sender {
-    sender.enabled = false;
     YJRepairBaseInfoTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    if (cell.nameField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你的姓名"];
+        return;
+    }
+    if (cell.telNumberField.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你的电话号码"];
+        return;
+    }
     NSString *name = [cell.nameField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString *telephone = [cell.telNumberField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-//    NSString *address = [cell.addressField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *address =@"";
+    if (self.titleView.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你的报修内容"];
+        return;
+    }
     NSString *details = [self.titleView.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *processingTime = [[self.selectTime substringFromIndex:10]stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    if (self.selectReportTime.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请选择你期望的保修时间"];
+        return;
+    }
+    NSString *processingTime = [self.selectReportTime stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 
 //http://192.168.1.55:8080/smarthome/mobileapi/repair/addRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC
 //    &cname=风雪
@@ -597,9 +710,16 @@ static NSString* photoCellid = @"photo_cell";
 //    &details=屋顶漏水
 //    &type=1
 //    &processingTime=2017-05-08%2020:09:50
+//http://192.168.1.55:8080/smarthome/mobileapi/repair/addRecord.do?token=ACDCE729BCE6FABC50881A867CAFC1BC（改过的）
+//    &cname=风雪
+//    &telephone=18782931356
+//    &familyId =
+//    &details=屋顶漏水
+//    &type=1
+//    &processingTime=2017-05-08%2020:09:50
+    sender.enabled = false;
     [SVProgressHUD show];// 动画开始
-    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/addRecord.do?token=%@&cname=%@&telephone=%@&address=%@&details=%@&type=%@&processingTime=%@",mPrefixUrl,mDefineToken1,name,telephone,address,details,self.repairTypeId,processingTime];
-    
+    NSString *reportUrlStr = [NSString stringWithFormat:@"%@/mobileapi/repair/addRecord.do?token=%@&cname=%@&telephone=%@&familyId=%ld&details=%@&type=%@&processingTime=%@",mPrefixUrl,mDefineToken1,name,telephone,self.familyId,details,self.repairTypeId,processingTime];    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager POST:reportUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //  图片上传

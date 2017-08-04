@@ -8,12 +8,10 @@
 
 #import "YJFriendStateTableViewCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
 #import "YJImageDisplayCollectionViewCell.h"
 #import "YJRepairRecordFlowLayout.h"
 #import <HUPhotoBrowser.h>
 #import <UIImageView+WebCache.h>
-#import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 #import "YJFriendStatesFlowLayout.h"
 
 static NSString* collectionCellid = @"collection_cell";
@@ -30,7 +28,7 @@ static NSString* photoCellid = @"photo_cell";
 @property (nonatomic, weak) UILabel* likeNumberLabel;
 @property (nonatomic, weak) UILabel* commentNumberLabel;
 @property(nonatomic,strong)NSArray *imagesArr;
-//@property(nonatomic,strong)NSMutableArray *urlStrs;
+
 @end
 @implementation YJFriendStateTableViewCell
 
@@ -51,6 +49,10 @@ static NSString* photoCellid = @"photo_cell";
     self.nameLabel.text = model.userName;
     self.typeLabel.text = model.cname;
     self.conentLabel.text = model.content;
+    CGSize textSize = [model.content boundingRectWithSize:CGSizeMake(kScreenW-20*kiphone6, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]} context:nil].size;
+    [self.conentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(textSize.height);
+    }];//计算文字内容高度，更新约束
     self.timeLabel.text = model.createTimeString;
     self.areaLabel.text = model.rname;
     self.commentNumberLabel.text = [NSString stringWithFormat:@"%ld",model.commentNum];
@@ -95,6 +97,9 @@ static NSString* photoCellid = @"photo_cell";
     }else{
         [self.likeBtn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
     }
+    [self layoutIfNeeded];//更新cell整体约束
+    
+    self.cellHeight = CGRectGetMaxY(self.likeBtn.frame) + 15*kiphone6;//取最底部的空间最大Y值加距离底部的距离为cell的高度
 }
 - (void)configCellWithModel:(YJFriendNeighborStateModel *)model indexPath:(NSIndexPath *)indexPath{
     self.model = model;
@@ -153,7 +158,7 @@ static NSString* photoCellid = @"photo_cell";
         make.top.equalTo(contentLabel.mas_bottom).offset(10*kiphone6);
         make.left.equalTo(nameLabel);
         make.right.offset(-10*kiphone6);
-        make.height.offset(93*kiphone6);
+        make.height.offset(0);
     }];
     UILabel *timeLabel = [UILabel labelWithText:@"1小时前" andTextColor:[UIColor colorWithHexString:@"#999999"] andFontSize:10];//维修时间
     [self.contentView addSubview:timeLabel];
@@ -187,10 +192,7 @@ static NSString* photoCellid = @"photo_cell";
     [likeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(commentNumberLabel);
         make.right.equalTo(likeNumberLabel.mas_left).offset(-5*kiphone6);
-        make.bottom.offset(-15*kiphone6);
     }];
-//    self.hyb_lastViewInCell = likeBtn;//从上到下最后一个控件
-//    self.hyb_bottomOffsetToCell = 15*kiphone6;//最后一个控件到cell底部的距离
     UIView *line = [[UIView alloc]init];//添加line
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     [self.contentView addSubview:line];
@@ -268,9 +270,7 @@ static NSString* photoCellid = @"photo_cell";
     // 去缓存池找
     YJImageDisplayCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:photoCellid forIndexPath:indexPath];
     NSString *urlStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.imagesArr[indexPath.row]];
-//    [self.urlStrs addObject:urlStr];
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
-//    cell.photo = [UIImage imageNamed:@"icon"];
     return cell;
     
 }

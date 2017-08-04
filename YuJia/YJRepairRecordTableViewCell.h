@@ -11,5 +11,8 @@
 
 @interface YJRepairRecordTableViewCell : UITableViewCell
 @property(nonatomic,strong)YJReportRepairRecordModel *model;
-@property(nonatomic,copy)void (^clickBtnBlock)(NSString *state);
+@property(nonatomic,copy)void (^clickBtnBlock)();//cell中的取消按钮点击事件
+@property(nonatomic,strong)NSMutableArray *urlStrs;//用来放大图片的数据源
+
+@property (nonatomic, assign) CGFloat cellHeight;//cell的行高属性
 @end

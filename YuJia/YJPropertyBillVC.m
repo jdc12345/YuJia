@@ -56,7 +56,7 @@ static NSString* billCellid = @"bill_cell";
 - (void)loadData {
 //    CcUserModel *userModel = [CcUserModel defaultClient];
 //    NSString *token = userModel.userToken;
-//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主地址
+//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主(认证通过的家庭地址)地址
     http://localhost:8080/smarthome/mobileapi/family/findMyFamilyAddress.do?token=49491B920A9DD107E146D961F4BDA50E
     [SVProgressHUD show];// 动画开始
     NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findMyFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];

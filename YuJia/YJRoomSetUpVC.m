@@ -213,7 +213,8 @@ static NSString *headerViewIdentifier =@"hederview";
         [header addSubview:addBtn];
         [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(16*kiphone6);
-            make.top.equalTo(headerView.mas_bottom).offset(10*kiphone6);
+//            make.top.equalTo(headerView.mas_bottom).offset(10*kiphone6);
+            make.centerY.equalTo(headerView.mas_bottom).offset(25*kiphone6);
             make.size.mas_equalTo(CGSizeMake((rect.size.width +5)*kiphone6,14*kiphone6));
         }];
 //        [addBtn addTarget:self action:@selector(roomBtnClick) forControlEvents:UIControlEventTouchUpInside];//设备添加按钮的点击事件
