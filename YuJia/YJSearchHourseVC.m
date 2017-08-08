@@ -328,6 +328,7 @@ static NSString *dentifier=@"cellforappliancelist";
     NSString *urlStr = [NSString string];
     if (self.searchCayegory==1) {//输入小区
 //    http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findRname.do?city=涿州市&rname=名流
+        http://localhost:8080/smarthome/mobilepub/residentialQuarters/findRname.do?areaCode=130681&rname=翡翠
         urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findRname.do?city=%@&rname=%@",mPrefixUrl,self.city,searchString];
     }else if(self.searchCayegory==0){
 //        http://192.168.1.55:8080/smarthome/mobilepub/baseArea/getList.do?areaName=北

@@ -63,6 +63,15 @@ static NSString* tableCellid = @"table_cell";
 @property (nonatomic, copy)   AMapGeoPoint *location;//中心点坐标。
 @property (nonatomic, strong)   NSString *name;//根据名称进行行政区划数据搜索的名称
 @property (nonatomic, assign)   BOOL isExchangeCity;//是否更换了城市。
+@property(nonatomic,strong)NSString *areaCode;//乡镇一级编码
+@property(nonatomic,strong)NSString *codeUpperLevel;//县级市，县，区一级编码
+@property(nonatomic,strong)NSString *codeUpperTwo;//市一级编码
+@property (nonatomic, assign)   NSInteger rent;//租金。
+@property (nonatomic, assign)   NSInteger rentalTyoe;//出租方式1=整租2=合租
+@property(nonatomic,strong)NSString *residentialQuarters;//小区名字
+@property(nonatomic,strong)NSString *apartmentLayout;//房屋户型
+@property(nonatomic,strong)NSString *direction;//朝向
+
 @end
 
 @implementation YJHouseSearchListVC
@@ -94,6 +103,18 @@ static NSString* tableCellid = @"table_cell";
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithCustomView:postBtn];
     [rightItemArr addObject:rightBarItem];
     self.navigationItem.rightBarButtonItems = rightItemArr;//导航栏右侧按钮
+    //初始化搜索各个参数
+    self.areaCode = @"0";
+    self.codeUpperLevel = @"0";
+    self.codeUpperTwo = @"0";
+    self.residentialQuarters = @"0";
+    self.apartmentLayout = @"0";
+    self.direction = @"0";
+    self.rent = 0;
+    self.rentalTyoe = 0;
+    //初始化更多按钮下的条件数据
+    NSArray *moreArr = @[@{@"typeArr":@[@"1室",@"2室",@"3室",@"4室",@"4室以上"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
+    self.moreArr = moreArr;
     //头部视图
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 88.5*kiphone6)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -147,14 +168,16 @@ static NSString* tableCellid = @"table_cell";
                 [localBtn setTitle:@"无定位" forState:UIControlStateNormal];
             }else{
                 [localBtn setTitle:regeocode.district forState:UIControlStateNormal];
+                self.codeUpperLevel = regeocode.adcode;//定位之后查的是定位地的房源数据，所以显示adcode
                 //                        self.currentCity = localBtn.titleLabel.text;
                 [self loadData];//先根据定位的城市搜索并显示房源，再根据城市编码确定行政区划数据
+                [self setupUI];
                 self.isExchangeCity=true;//第一次城市初次定位，需要确定下级行政区域，所以为true
                 //设置行政区划查询参数并发起行政区划查询
                 self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
                 self.search.delegate = self;
                 AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
-                dist.keywords = regeocode.citycode;
+                dist.keywords = regeocode.citycode;//查询行政数据，所以传citycode
                 dist.requireExtension = YES;
                 [self.search AMapDistrictSearch:dist];                
             }
@@ -252,14 +275,13 @@ static NSString* tableCellid = @"table_cell";
     {
         
 //        NSLog(@"%@,name:%@ 下级行政区域数：%ld ///返回数目%ld",dist.level,dist.name,dist.districts.count,response.count);
-        if (self.isExchangeCity) {//改变了城市二级区域才要更新secTableview数据源
+        if (self.isExchangeCity) {//改变了城市一级区域才要更新secTableview数据源
             self.secArr = [NSMutableArray arrayWithObject:dist];//第二个数组第一个元素
             // sub(二级)
             for (AMapDistrict *subdist in dist.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
             {
 //                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
                 [self.secArr addObject:subdist];//第二个数组的第一个元素之后元素
-                
             }
             [self.secTableView reloadData];
             self.isExchangeCity = false;//每次查询之后必须设为false，只有在改变了城市之后才会改为true
@@ -271,7 +293,6 @@ static NSString* tableCellid = @"table_cell";
             {
                 //                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
                 [self.thirdArr addObject:subdist];//第三个数组的第一个元素之后元素
-                
             }
         }
         [self.thirdTableView reloadData];
@@ -295,6 +316,10 @@ static NSString* tableCellid = @"table_cell";
 }
 
 - (void)choiceCondition:(UIButton*)sender{//搜索房源的条件
+    if (self.firArr.count==0) {
+        [SVProgressHUD showInfoWithStatus:@"正在请求该区域的下级行政区域数据，请稍后再试"];
+        return;
+    }
     sender.selected = !sender.selected;
     //大蒙布View
     if (!self.backGrayView) {
@@ -321,7 +346,6 @@ static NSString* tableCellid = @"table_cell";
             make.height.offset(self.tableHeight);
             make.left.right.offset(0);
         }];
-        
     }
     switch (sender.tag) {
         case 1:
@@ -409,7 +433,7 @@ static NSString* tableCellid = @"table_cell";
                 self.typeTableView.hidden=true;
                 self.moreTableView.hidden = true;
                 if (!self.priceTableView) {
-                    NSArray *priceArr = @[@"不限",@"1500元以下",@"1500-2500元以下",@"2500-4000元以下",@"4000-5500元以下",@"5500-7000元以下",@"7000元以上"];
+                    NSArray *priceArr = @[@"不限",@"1500元以下",@"1500-2500元",@"2500-4000元",@"4000-5500元",@"5500-7000元",@"7000元以上"];
                     self.priceArr = priceArr;
                     UITableView *priceTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
                     priceTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -427,7 +451,6 @@ static NSString* tableCellid = @"table_cell";
                     NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.priceTableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
                 }
-                
                 break;
             case 3:
                 self.areaBackView.hidden = true;
@@ -453,7 +476,6 @@ static NSString* tableCellid = @"table_cell";
                     NSIndexPath* path = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.typeTableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
                 }
-
                 break;
             case 4:
                 self.areaBackView.hidden = true;
@@ -461,8 +483,6 @@ static NSString* tableCellid = @"table_cell";
                 self.typeTableView.hidden = true;
                 self.moreTableView.hidden = false;
                 if (!self.moreTableView) {
-                    NSArray *moreArr = @[@{@"typeArr":@[@"1居",@"2居",@"3居",@"4居",@"4居以上"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
-                    self.moreArr = moreArr;
                     UITableView *moreTableView=[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
                     moreTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                     moreTableView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -491,7 +511,7 @@ static NSString* tableCellid = @"table_cell";
                     clearBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
                     [clearBtn setTitle:@"清空条件" forState:UIControlStateNormal];
                     clearBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-                    [clearBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
+                    [clearBtn setTitleColor:[UIColor colorWithHexString:@"#cccccc"] forState:UIControlStateNormal];
                     [clearBtn addTarget:self action:@selector(moreTableViewClearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
                     UIButton *determineBtn = [[UIButton alloc]init];//确定按钮
                     [footView addSubview:determineBtn];
@@ -521,7 +541,7 @@ static NSString* tableCellid = @"table_cell";
         self.moreTableView.hidden = true;
     }
 }
-//moreTableView按钮点击事件
+//moreTableView清除条件按钮点击事件
 - (void)moreTableViewClearBtnClick:(UIButton*)sender {
     YJHouseSearchMoreTVCell *cell1 = [self.moreTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     for (UIButton *btn in cell1.contentView.subviews) {
@@ -531,45 +551,71 @@ static NSString* tableCellid = @"table_cell";
     for (UIButton *btn in cell2.contentView.subviews) {
         btn.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     }
+    self.apartmentLayout = @"0";
+    self.direction = @"0";
 }
+//根据更多按钮下筛选条件发起请求搜索房源
 - (void)moreTableViewDetermineBtnClick:(UIButton*)sender {
-    //根据筛选条件发起请求搜索房源
+    
+    [self loadData];
 }
 
 - (void)loadData{
-//http://localhost:8080/smarthome/mobileapi/rental/findPage.do?token=EC9CDB5177C01F016403DFAAEE3C1182
-//    &cyty=%E6%B6%BF%E5%B7%9E
-//    &residentialQuarters=%E5%90%8D%E6%B5%81%E4%B8%80%E5%93%81%E5%B0%8F%E5%8C%BA  小区可不传,此处不传
-//    &lstart=0
-//    &limit=1
+http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491B920A9DD107E146D961F4BDA50E
+//    &start=0
+//    &limit=20
+//    &codeUpperTwo=110000
+//    &areaCode=0
+//    &codeUpperLevel=0
+//    &residentialQuarters=0
+//    &apartmentLayout=0
+//    &direction=0
+//    &rent=0
+//    &rentalTyoe=0
+//    参数：       参数名                 参数类型                 备注
+//    areaCode                   String      乡镇一级编码
+//    codeUpperLevel        String      县级市，县，区一级编码
+//    codeUpperTwo        String      市一级的编码
+//    residentialQuarters      String      小区名字
+//    apartmentLayout        String      房屋户型
+//    direction              String      朝向
+//    rent            Integer      租金
+//    rentalTyoe              Integer      出租方式1=整租2=合租
+//    token                  令牌
+//    start              起始页数
+//    limit              每页总数
     [SVProgressHUD show];// 动画开始
-    NSString *rname = self.LocationBtn.titleLabel.text;
-    rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,rname];
-    [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
+//    areaCode = [areaCode stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSString *houseUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findconditionAll.do?token=%@&areaCode=%@&codeUpperLevel=%@&codeUpperTwo=%@&residentialQuarters=%@&apartmentLayout=%@&direction=%@&rent=%ld&rentalTyoe=%ld&start=0&limit=10",mPrefixUrl,mDefineToken1,self.areaCode,self.codeUpperLevel,self.codeUpperTwo,self.residentialQuarters,self.apartmentLayout,self.direction,self.rent,self.rentalTyoe];
+    houseUrlStr = [houseUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [[HttpClient defaultClient]requestWithPath:houseUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"]isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
-            if (arr.count>0) {
-                NSMutableArray *mArr = [NSMutableArray array];
+        NSString *total = responseObject[@"total"];
+         NSMutableArray *mArr = [NSMutableArray array];
+        if ([total integerValue]>0) {
+            NSArray *arr = responseObject[@"rows"];
+            
                 for (NSDictionary *dic in arr) {
                     YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
                     [mArr addObject:infoModel];
                 }
-                self.houseArr = mArr;
-                start = self.houseArr.count;
-                [self setupUI];
-            }else{
-                [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
-            }
+            
+        }else{
+//            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
+        }
+        self.houseArr = mArr;
+        start = self.houseArr.count;
+        [self.tableView reloadData];
+        if ([responseObject[@"code"]isEqualToString:@"-1"]) {
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-  
+
 }
 //返回按钮点击事件
 - (void)backBtnClick:(UIButton*)sender {
@@ -704,9 +750,10 @@ static NSString* tableCellid = @"table_cell";
                     [self.houseArr addObjectsFromArray:mArr];
                     start = self.houseArr.count;
                 [self.tableView reloadData];
-                }else{
-                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
                 }
+//                else{
+//                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
+//                }
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
 //                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
@@ -797,7 +844,6 @@ static NSString* tableCellid = @"table_cell";
             }else{
                 cell.textLabel.text=dist.name;
             }
-            
         }
         cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
         UIView *line = [[UIView alloc]init];
@@ -836,20 +882,28 @@ static NSString* tableCellid = @"table_cell";
             cell.itemLabel.textColor = [UIColor colorWithHexString:@"#333333"];
             //            cell.accessoryType = UITableViewCellAccessoryNone;
         }//cell单选
-        
         return cell;
     }
     else if (self.moreTableView==tableView){
         YJHouseSearchMoreTVCell *cell = [[YJHouseSearchMoreTVCell alloc]init];
-        cell.baseTag = indexPath.row+10;
         cell.dic = self.moreArr[indexPath.row];
-        
+        cell.baseTag = (indexPath.row*10)+10;//因为每个cell上有多个btn，必须区分开cell
+        cell.clickBtnBlock = ^(NSString *title){
+            if (indexPath.row==0) {
+                if ([title isEqualToString:@"不限"]) {//不限户型传0
+                    self.apartmentLayout = @"0";
+                }else{
+                    self.apartmentLayout = title;
+                }
+            }else{
+                self.direction = title;
+            }
+        };
         return cell;
     }
     YJHouseListTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.model = self.houseArr[indexPath.row];
     return cell;
-    
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView==self.moreTableView) {
@@ -875,9 +929,11 @@ static NSString* tableCellid = @"table_cell";
             self.thirdArr = [NSMutableArray array];
             [self.thirdTableView reloadData];
         }
+        //第一级不需要发起数据请求
+        return;
     }
     else if(self.secTableView ==tableView){
-        if (![self.secArr[indexPath.row] isKindOfClass:[NSString class]]) {//点“附近按钮”时候
+        if (![self.secArr[indexPath.row] isKindOfClass:[NSString class]]) {
             AMapDistrict *cellDist = self.secArr[indexPath.row];
             if (indexPath.row>0) {
                 //把点击区域的acode改变，并发起行政区域查询
@@ -886,19 +942,23 @@ static NSString* tableCellid = @"table_cell";
                 dist.keywords = cellDist.adcode;
                 dist.requireExtension = YES;
                 [self.search AMapDistrictSearch:dist];
-                
+                self.codeUpperLevel = cellDist.adcode;
+            }else{
+                self.codeUpperTwo = cellDist.citycode;//row等于0时候为“全xx市”
             }
+        }else{//点“附近按钮”时候
+            
         }
-        
         [self.areaBtn setTitle:cell.textLabel.text forState:UIControlStateNormal];
         
     }
     else if(self.thirdTableView ==tableView){
-//        AMapDistrict *dist = self.thirdArr[indexPath.row];
-//        if (indexPath.row>0) {
-//            //把点击区域的acode改变，并发起行政区域查询
-//            
-//        }
+        AMapDistrict *dist = self.thirdArr[indexPath.row];
+        if (indexPath.row>0) {
+            self.areaCode = dist.name;//三级没有编码，直接传名字
+        }else{
+            self.codeUpperLevel = dist.adcode;//row等于0时候为“全xx区(县)”
+        }
 //        if (self.thirdArr.count>0) {
 //            self.sThirdArr=self.thirdArr[indexPath.row];//设计thirdTableView数据源对应secTableView对应位置区域的下级行政区域
 //            [self.thirdTableView reloadData];
@@ -922,9 +982,11 @@ static NSString* tableCellid = @"table_cell";
             self .pricePath = indexPath;
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];//cell单选
-
+        
+        self.rent = indexPath.row;//租金条件：刚好对应(0表示全部 1=0--1500 2= 1500--2500  3=2500--4000 4=4000--5500 5=5500--7000 6=7000 以上)
         YJHousePriceTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [self.priceBtn setTitle:cell.price forState:UIControlStateNormal];
+        
     }
     if (self.typeTableView==tableView){
         NSInteger newRow = [indexPath row];
@@ -939,10 +1001,25 @@ static NSString* tableCellid = @"table_cell";
             self .typePath = indexPath;
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];//cell单选
-        
+        self.rentalTyoe = indexPath.row;//租赁方式条件：刚好对应(0表示不限 1=整租2=合租)
+        switch (self.rentalTyoe) {//租赁方式条件改变，户型选择也要改变
+            case 0:
+                self.moreArr = @[@{@"typeArr":@[@"不限"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
+                break;
+            case 1:
+                self.moreArr = @[@{@"typeArr":@[@"1室",@"2室",@"3室",@"4室",@"4室以上"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
+                break;
+            case 2:
+                self.moreArr = @[@{@"typeArr":@[@"主卧",@"次卧",@"隔断"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
+                break;
+            default:
+                break;
+        }
+        [self.moreTableView reloadData];//更换了数据源需要刷新数据
         YJHousePriceTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [self.typeBtn setTitle:cell.price forState:UIControlStateNormal];
     }
+    [self loadData];//根据条件筛选
     if (tableView == self.tableView) {//匹配的房源cell
         YJHouseDetailVC *detailVc = [[YJHouseDetailVC alloc]init];
         YJHouseListTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];

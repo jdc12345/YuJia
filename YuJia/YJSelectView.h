@@ -10,7 +10,7 @@
 
 @interface YJSelectView : UIView
 @property (weak, nonatomic) IBOutlet UIButton *areaBtn;
-@property (weak, nonatomic) IBOutlet UITextField *villageField;
+@property (weak, nonatomic) IBOutlet UIButton *villageBtn;
 @property (weak, nonatomic) IBOutlet UITextField *roomField;
 @property (weak, nonatomic) IBOutlet UITextField *hallField;
 @property (weak, nonatomic) IBOutlet UITextField *guardsField;

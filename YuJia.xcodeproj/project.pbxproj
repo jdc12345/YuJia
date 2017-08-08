@@ -152,6 +152,7 @@
 		16DD44521F1DEFAD000823AD /* YJHousePriceTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD44511F1DEFAD000823AD /* YJHousePriceTVCell.m */; };
 		16DD44551F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16DD44541F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m */; };
 		16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */; };
+		16F1897A1F384B2700797BF3 /* YJPostHouseVillageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F189791F384B2700797BF3 /* YJPostHouseVillageModel.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
 		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
@@ -567,6 +568,8 @@
 		16DD44541F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHouseSearchMoreTVCell.m; sourceTree = "<group>"; };
 		16EBB5381F0B714C006D178C /* YJBillHeaderViewTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJBillHeaderViewTVCell.h; sourceTree = "<group>"; };
 		16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJBillHeaderViewTVCell.m; sourceTree = "<group>"; };
+		16F189781F384B2700797BF3 /* YJPostHouseVillageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPostHouseVillageModel.h; sourceTree = "<group>"; };
+		16F189791F384B2700797BF3 /* YJPostHouseVillageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPostHouseVillageModel.m; sourceTree = "<group>"; };
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
 		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
@@ -1010,6 +1013,8 @@
 				161C4D9A1F29F24800952B4F /* YJLifePayInfiModel.m */,
 				16CCBBDA1F2B1B3700C0D9CB /* YJLifePayRecoderModel.h */,
 				16CCBBDB1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m */,
+				16F189781F384B2700797BF3 /* YJPostHouseVillageModel.h */,
+				16F189791F384B2700797BF3 /* YJPostHouseVillageModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -2146,6 +2151,7 @@
 				3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */,
 				3E984F661EB831170094CBE4 /* UIBarButtonItem+Helper.m in Sources */,
 				3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */,
+				16F1897A1F384B2700797BF3 /* YJPostHouseVillageModel.m in Sources */,
 				16211D451F09E98900F1E9EF /* YJHomeSceneFlowLayout.m in Sources */,
 				3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */,
 				1640BE941ED9123C00E3AE00 /* YJCityListModel.m in Sources */,

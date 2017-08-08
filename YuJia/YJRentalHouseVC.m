@@ -18,10 +18,15 @@
 #import <HUPhotoBrowser.h>
 #import <AFNetworking.h>
 
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+#import "YJPostHouseVillageModel.h"
+
 static NSString* tableCell = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
-@interface YJRentalHouseVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface YJRentalHouseVC ()<UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,HUImagePickerViewControllerDelegate,UINavigationControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,AMapSearchDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)YJBackView *backView;
@@ -39,14 +44,25 @@ static NSString* photoCellid = @"photo_cell";
 @property(nonatomic,strong)NSArray *oneArr;
 @property(nonatomic,strong)NSDictionary *areaDic;
 @property(nonatomic,strong)NSArray *oneLevelArr;
-@property(nonatomic,strong)NSArray *twoLevelArr;
+@property(nonatomic,strong)NSMutableArray *twoLevelArr;//区域选择pickerview二级数据
+@property(nonatomic,strong)NSMutableArray *threeLevelArr;//区域选择pickerview三级级数据
 @property(nonatomic,strong)NSString *oneLevelArea;
 @property(nonatomic,strong)NSString *twoLevelArea;
+@property(nonatomic,strong)NSString *threeLevelArea;
+@property(nonatomic,strong)NSString *areaCode;//乡镇一级没有编码，直接传名字
+@property(nonatomic,strong)NSString *codeUpperLevel;//县级市，县，区一级编码
+@property(nonatomic,strong)NSString *codeUpperTwo;//市一级编码
+@property(nonatomic,strong)NSArray *yards;//选中城市对应的小区
 @property(nonatomic,assign)NSInteger pickFlag;
 @property(nonatomic,weak)UIToolbar * topView;
 @property (nonatomic, strong)NSString *houseAllocation;//房屋配置
 @property(nonatomic,weak)UILabel *noticeLabel;//本月可发布房源label
 @property(nonatomic,assign)NSInteger number;//本月已发布房源次数
+
+@property (nonatomic, strong) AMapSearchAPI *search;//搜索实体类
+@property (nonatomic, copy)   AMapGeoPoint *location;//中心点坐标。
+@property (nonatomic, strong)   NSString *name;//根据名称进行行政区划数据搜索的名称
+@property (nonatomic, assign)   BOOL isExchangeCity;//是否更换了一级城市。
 @end
 
 @implementation YJRentalHouseVC
@@ -58,6 +74,79 @@ static NSString* photoCellid = @"photo_cell";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setupUI];
     [self loadPostLimiteNumber];
+    //设置行政区划查询参数并发起行政区划查询
+    self.isExchangeCity = true;
+//    self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安市"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
+    self.oneLevelArr = @[@"保定市",@"北京市"];
+//    self.twoLevelArr = self.areaDic[@"北京市"];
+    self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+    self.search.delegate = self;
+    AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+//    if ([cityName isEqualToString:@"保定市"]) {
+//        dist.keywords = @"0312";
+//    }else if ([cityName isEqualToString:@"北京市"]){
+//        dist.keywords = @"110100";
+//    }
+    dist.keywords = @"0312";
+    dist.requireExtension = YES;
+    [self.search AMapDistrictSearch:dist];
+}
+#pragma AMapSearchDelegate
+/* 行政区划数据查询回调. */
+- (void)onDistrictSearchDone:(AMapDistrictSearchRequest *)request response:(AMapDistrictSearchResponse *)response
+{
+    
+    if (response == nil)
+    {
+        return;
+    }
+    //当前区域数据
+    
+    //解析response获取行政区划，具体解析见 Demo
+    for (AMapDistrict *dist in response.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+    {
+        self.threeLevelArr = [NSMutableArray array];//此时三级数据源是空的
+        //        NSLog(@"%@,name:%@ 下级行政区域数：%ld ///返回数目%ld",dist.level,dist.name,dist.districts.count,response.count);
+        if (self.isExchangeCity) {//改变了城市一级区域才要更新secTableview数据源
+//            self.twoLevelArr = [NSMutableArray arrayWithObject:dist];//第二个数组第一个元素
+            self.twoLevelArr = [NSMutableArray array];
+            // sub(二级)
+            for (AMapDistrict *subdist in dist.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+            {
+                //                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
+                [self.twoLevelArr addObject:subdist];//第二个数组的第一个元素之后元素
+                
+            }
+            [self.onePickerView reloadComponent:1];
+            self.isExchangeCity = false;//每次查询之后必须设为false，只有在改变了一级城市之后才会改为true
+            
+        }else{//两种执行情况：1.执行更新secTableview数据源之后，选取第一个下级行政区域数据源作为thirdTableView数据源 2.点击了secTableview的cell需要更新对应的thirdTableView数据源
+            self.threeLevelArr = [NSMutableArray arrayWithObject:dist];//第三个数组第一个元素
+            // sub(三级)
+            for (AMapDistrict *subdist in dist.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
+            {
+                //                NSLog(@"区域编号：%@,区域名字：%@ 下级行政区域数：%ld",subdist.adcode,subdist.name,subdist.districts.count);
+                [self.threeLevelArr addObject:subdist];//第三个数组的第一个元素之后元素
+            }
+        }
+        [self.onePickerView reloadComponent:2];
+//        self.firArr = @[@{@"secArr":@[@"不限",@"1000米内",@"1500米内",@"2000米内"],@"name":@"附近"},@{@"secArr":self.secArr,@"name":@"区域"}];
+//        self.tableHeight = 0;
+//        for (int i=0; i<self.firArr.count; i++) {
+//            NSArray *secArr = self.firArr[i][@"secArr"];
+//            self.tableHeight = self.tableHeight<(secArr.count*45*kiphone6)?(secArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
+//        }
+//        self.tableHeight = self.tableHeight<(self.thirdArr.count*45*kiphone6)?(self.thirdArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
+//        self.tableHeight = self.tableHeight>(kScreenH-88.5*kiphone6-64*kiphone6)?(kScreenH-88.5*kiphone6-64*kiphone6):self.tableHeight;//如果超出屏幕可视区域需要把可视区域的高度作为区域按钮下tableview所在背景的高度，否则有可能无法完全scrollw整个tableview
+        break;//大for循环只执行一次
+    }
+    
+}
+//当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
+- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", error);
+    [SVProgressHUD showErrorWithStatus:error.description];
 }
 -(void)loadPostLimiteNumber{
 //    http://192.168.1.55:8080/smarthome/mobileapi/rental/findNumber.do?token=C4D5B4E19A6D642DAEB38130C7D8A68A 带number的借口不能发起请求？？？
@@ -77,16 +166,13 @@ static NSString* photoCellid = @"photo_cell";
             }else{
                 self.noticeLabel.text = @"您本月可发帖8条，当前免费发帖次数已用完";
             }
-            
         }else{
             
         }
-        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error.description);
         return ;
-    }];
- 
+    }]; 
 }
 - (void)setupUI {
     self.flag = 1;
@@ -177,6 +263,8 @@ static NSString* photoCellid = @"photo_cell";
     [selectView.areaBtn addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
     UIButton *payType=(UIButton *)[selectView viewWithTag:24];
     [payType addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *villageBtn=(UIButton *)[selectView viewWithTag:189];
+    [villageBtn addTarget:self action:@selector(pickerView:) forControlEvents:UIControlEventTouchUpInside];
     //房屋配置按钮点击事件
 
     //添加大tableView
@@ -223,13 +311,16 @@ static NSString* photoCellid = @"photo_cell";
 -(void)pickerView:(UIButton*)sender{
     if (sender.tag==101) {
         self.pickFlag = 101;
-        self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安市"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
-        self.oneLevelArr = [self.areaDic allKeys];
-        self.twoLevelArr = self.areaDic[@"北京市"];
-
-        [self pickerView:self.onePickerView titleForRow:0 forComponent:0];
-        [self pickerView:self.onePickerView didSelectRow:0 inComponent:0];//第二列需要刷新数据
-        [self pickerView:self.onePickerView titleForRow:0 forComponent:1];
+        if (!self.oneLevelArea) {//初次显示暂定显示保定市
+            self.oneLevelArea = @"保定市";
+        }
+//        self.twoLevelArr = [NSMutableArray array];
+        self.threeLevelArr = [NSMutableArray array];
+        if ([self.oneLevelArea isEqualToString:@"保定市"]) {
+            [self.onePickerView selectRow:0 inComponent:0 animated:YES];
+        }else if ([self.oneLevelArea isEqualToString:@"北京市"]){
+            [self.onePickerView selectRow:1 inComponent:0 animated:YES];
+        }
     }else if (sender.tag==102){
         self.pickFlag = 102;
         self.oneArr = @[@"东",@"南",@"西",@"北",@"东西",@"南北"];
@@ -240,6 +331,57 @@ static NSString* photoCellid = @"photo_cell";
         self.pickFlag = 24;
         self.oneArr = @[@"押一付一",@"押一付三",@"半年付",@"年付"];
     }
+    if (sender.tag==189){
+        self.pickFlag = 189;
+        if (!self.areaCode) {
+            [SVProgressHUD showErrorWithStatus:@"请选择你要发布房源所在的地区"];
+            return;
+        }
+//    http://localhost:8080/smarthome/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=130681
+//        参数：       参数名    参数类型    备注
+//        areaCode    String      城市编码
+//        返回值：
+//        propertyId    Long      物业单位ID
+//        id      Long      该条小区记录ID
+//        areaCode    String      城市编码
+//        city    String      城市名称
+//        rname    String      小区名称
+
+        //    [SVProgressHUD show];// 动画开始
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=%@",mPrefixUrl,self.areaCode];
+         urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            //            [SVProgressHUD dismiss];// 动画结束
+            
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                NSArray *arr = responseObject[@"result"];
+                NSMutableArray *mArr = [NSMutableArray array];
+                for (NSDictionary *dic in arr) {
+                    YJPostHouseVillageModel *infoModel = [YJPostHouseVillageModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                }
+                if (mArr.count==0) {
+                    [SVProgressHUD showInfoWithStatus:@"你所选地区暂未开放该功能"];
+                    return ;
+                }
+                self.oneArr = mArr;
+                [self addOnePicker];
+                [self.onePickerView reloadAllComponents];
+            }else{
+                [SVProgressHUD showInfoWithStatus:@"你所选地区暂未开放该功能"];
+                return;
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error.description);
+            return ;
+        }]; 
+
+    }else{
+        [self addOnePicker];
+    }
+}
+-(void)addOnePicker{
     if (self.coverView) {
         
         [self.onePickerView reloadAllComponents];
@@ -248,33 +390,33 @@ static NSString* photoCellid = @"photo_cell";
         self.onePickerView.hidden = false;
         self.coverView.hidden = false;
     }else{
-    //大蒙布View
-    UIView *coverView = [[UIView alloc]init];
-    coverView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
-    coverView.alpha = 0.3;
-    [self.view addSubview:coverView];
-    self.coverView = coverView;
-    [coverView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.right.offset(0);
-    }];
-    coverView.userInteractionEnabled = YES;
-    //添加tap手势：
-    //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
-    //将手势添加至需要相应的view中
-    //    [backView addGestureRecognizer:tapGesture];
-    
-    UIPickerView *pickView = [[UIPickerView alloc]init];
-    [self.view addSubview:pickView];
-    [self.view bringSubviewToFront:pickView];
-    [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.offset(0);
-        make.height.offset(200*kiphone6);
-    }];
-    pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    pickView.dataSource = self;
-    pickView.delegate = self;
-    pickView.showsSelectionIndicator = YES;
-    self.onePickerView = pickView;
+        //大蒙布View
+        UIView *coverView = [[UIView alloc]init];
+        coverView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+        coverView.alpha = 0.3;
+        [self.view addSubview:coverView];
+        self.coverView = coverView;
+        [coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.bottom.right.offset(0);
+        }];
+        coverView.userInteractionEnabled = YES;
+        //添加tap手势：
+        //    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(event:)];
+        //将手势添加至需要相应的view中
+        //    [backView addGestureRecognizer:tapGesture];
+        
+        UIPickerView *pickView = [[UIPickerView alloc]init];
+        [self.view addSubview:pickView];
+        [self.view bringSubviewToFront:pickView];
+        [pickView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.bottom.offset(0);
+            make.height.offset(200*kiphone6);
+        }];
+        pickView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        pickView.dataSource = self;
+        pickView.delegate = self;
+        pickView.showsSelectionIndicator = YES;
+        self.onePickerView = pickView;
         UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 40)];
         [topView setBarStyle:UIBarStyleDefault];
         UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
@@ -292,21 +434,17 @@ static NSString* photoCellid = @"photo_cell";
         [topView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.offset(0);
             make.bottom.equalTo(pickView.mas_top);
-//            make.height.offset(200*kiphone6);
+            //            make.height.offset(200*kiphone6);
         }];
-
+        
     }
-//    //            设置初始默认值
-//    [self pickerView:self.onePickerView didSelectRow:0 inComponent:0];
-//    [self.onePickerView selectRow:0 inComponent:0 animated:true];
-//    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+  
 }
-
 #pragma mark - pickView
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     if (self.pickFlag == 101) {
-        return 2;
+        return 3;
     }
     return 1;
 }
@@ -317,6 +455,8 @@ static NSString* photoCellid = @"photo_cell";
             return self.oneLevelArr.count;
         }if (component==1) {
             return self.twoLevelArr.count;
+        }if (component==2) {
+            return self.threeLevelArr.count;
         }
     }
     return self.oneArr.count;
@@ -328,7 +468,10 @@ static NSString* photoCellid = @"photo_cell";
 //    if (component==0) {
 //        return pickerView.bounds.size.width*0.5;
 //    }
-    return 120;
+    if (self.pickFlag == 101) {
+        return pickerView.bounds.size.width*0.33;
+    }
+    return 160;
 }
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
 
@@ -340,20 +483,54 @@ static NSString* photoCellid = @"photo_cell";
 // 返回选中的行
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-
     if (self.pickFlag==101) {
         
         if (component==0) {
+            self.isExchangeCity = true;
+                //把点击区域的acode改变，并发起行政区域查询
+                //设置行政区划查询参数并发起行政区划查询
+            AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+                if ([self.oneLevelArr[row] isEqualToString:@"保定市"]) {
+                    dist.keywords = @"0312";
+                    self.codeUpperTwo = @"0312";
+                }else if ([self.oneLevelArr[row] isEqualToString:@"北京市"]){
+                    dist.keywords = @"110100";
+                    self.codeUpperTwo = @"110100";
+                }
+            dist.requireExtension = YES;
+            [self.search AMapDistrictSearch:dist];
             self.oneLevelArea = self.oneLevelArr[row];
-            self.twoLevelArr = self.areaDic[self.oneLevelArr[row]];
-            [pickerView reloadComponent:1];
-            self.twoLevelArea = self.twoLevelArr[0];
+            self.twoLevelArea = @"";//改变了一级城市，二三级都要从新选择,同时改变的还有区域编码
+            self.codeUpperLevel = @"";
+            self.threeLevelArea = @"";
+            self.areaCode = @"";
         }else if (component==1) {
-            self.twoLevelArea = self.twoLevelArr[row];
+            AMapDistrict *cellDist = self.twoLevelArr[row];
+            //把点击区域的acode改变，并发起行政区域查询
+            //设置行政区划查询参数并发起行政区划查询
+            AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
+            dist.requireExtension = YES;
+            dist.keywords = cellDist.adcode;
+            [self.search AMapDistrictSearch:dist];
+            self.twoLevelArea = cellDist.name;
+            self.codeUpperLevel = cellDist.adcode;
+            self.threeLevelArea = @"";//改变了二级城市，三级要从新选择,同时改变的还有区域编码
+            self.areaCode = @"";
+        }
+        else if (component==2) {
+            AMapDistrict *cellDist = self.threeLevelArr[row];
+            if (row==0) {
+                self.threeLevelArea = @"城区";
+                self.areaCode = cellDist.adcode;//选中的地区编码,必须选到第三级
+            }else{
+                self.threeLevelArea = cellDist.name;
+                self.areaCode = cellDist.name;//选中的地区编码,必须选到第三级
+            }
             
         }
-//    NSString *allArea = [NSString stringWithFormat:@"%@%@",self.oneLevelArea,self.twoLevelArea];
-        [self.selectView.areaBtn setTitle:self.twoLevelArea forState:UIControlStateNormal];
+    NSString *allArea = [NSString stringWithFormat:@"%@%@%@",self.oneLevelArea,self.twoLevelArea,self.threeLevelArea];
+        [self.selectView.areaBtn setTitle:allArea forState:UIControlStateNormal];
+        [self.selectView.villageBtn setTitle:@"请选择所在小区" forState:UIControlStateNormal];
     }else if (self.pickFlag==102) {
         [self.selectView.directionBtn setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
     }else if (self.pickFlag==103) {
@@ -362,6 +539,9 @@ static NSString* photoCellid = @"photo_cell";
     }else if (self.pickFlag==24) {
         UIButton *payType=(UIButton *)[self.selectView viewWithTag:24];
         [payType setTitle:[NSString stringWithFormat:@"%@",self.oneArr[row]] forState:UIControlStateNormal];
+    }else if (self.pickFlag==189) {
+        YJPostHouseVillageModel *infoModel = self.oneArr[row];
+        [self.selectView.villageBtn setTitle:infoModel.rname forState:UIControlStateNormal];
     }
     
 }
@@ -374,13 +554,23 @@ static NSString* photoCellid = @"photo_cell";
         if (component==0) {
             return self.oneLevelArr[row];
         }else if (component==1) {
-        
-            return self.twoLevelArr[row];
+            AMapDistrict *cellDist = self.twoLevelArr[row];
+            return cellDist.name;
             
         }
+        else if (component==2) {
+            AMapDistrict *cellDist = self.threeLevelArr[row];
+            if (row==0) {
+                return [NSString stringWithFormat:@"%@城区",cellDist.name];
+            }
+            
+            return cellDist.name;
+        }
     }
-    
-
+    if (self.pickFlag==189) {
+        YJPostHouseVillageModel *infoModel = self.oneArr[row];
+        return infoModel.rname;
+    }
     return self.oneArr[row];
 }
 //- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
@@ -410,7 +600,9 @@ static NSString* photoCellid = @"photo_cell";
 }
 -(void)submitAddress:(UIButton*)sender{
 
+//    47.发布租房信息接口
 //localhost:8080/smarthome/mobileapi/rental/PublishRental.do?token=EC9CDB5177C01F016403DFAAEE3C1182
+//    
 //    参数：       参数名    参数类型    备注
 //    token         String    令牌
 //    rentalTyoe        Integer    出租方式1=整租2=合租
@@ -427,12 +619,25 @@ static NSString* photoCellid = @"photo_cell";
 //    paymentMethod      String    付款方式
 //    contacts       String    联系人姓名
 //    telephone       Long      联系人电话
-//    返回值：    返回值名称  返回值类型    备注
+//    areaCode        String    乡镇一级编码
+//    codeUpperLevel  String              县级市，县，区一级编码（上一级）
+//    codeUpperTwo   String      市一级编码 （上两级）
+//    返回值：  返回值名称          返回值类型    备注
 //    code           0添加成功-1表示添加失败
+//    
+//    
+//    注：新增areaCode（乡镇一级编码）、codeUpperLevel（县级市，县，区一级编码）、codeUpperTwo（市一级编码）
+//    1、上传乡、镇一级编码时需要必传上一级编码和上两级编码
+//    2、上传县级市、县、区一级编码时，必需要传市一级编码，下一级编码传“0”
+//    3、上传市一级编码时，下一级和下两级编码传“0”
     //此处接提交地址接口！！！！！
     [SVProgressHUD show];// 动画开始
-    NSString *cyty = [self.selectView.areaBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
-    NSString *residentialQuarters = [self.selectView.villageField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
+    NSString *cyty = [self.selectView.areaBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区所在地区
+    NSString *residentialQuarters = [self.selectView.villageBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
+    if (residentialQuarters.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请选择你发布房源的小区"];
+        return;
+    }
     NSString *apartmentLayout = [NSString string];
     if (self.flag==1) {
         apartmentLayout = [NSString stringWithFormat:@"%@室%@厅%@卫",self.selectView.roomField.text,self.selectView.hallField.text,self.selectView.guardsField.text];
@@ -440,10 +645,16 @@ static NSString* photoCellid = @"photo_cell";
         
     }else if (self.flag==2){
         apartmentLayout = [self.roomType.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//户型
-        
     }
-    
+    if (apartmentLayout.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的户型"];
+        return;
+    }
     NSString *direction = [self.selectView.directionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//方向
+    if (apartmentLayout.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的朝向"];
+        return;
+    }
     NSString *houseAllocation = [NSString string];//房屋配置
     if (self.selectView.tvBtn.selected) {
         houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.tvBtn.titleLabel.text];
@@ -476,13 +687,32 @@ static NSString* photoCellid = @"photo_cell";
         houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.sofaBtn.titleLabel.text];
     }
      houseAllocation = [houseAllocation stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+    if (houseAllocation.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的配置"];
+        return;
+    }
    NSString *paymentMethod = [self.selectView.conditionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+    if (paymentMethod.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的支付方式"];
+        return;
+    }
     YJRentPersonInfoTVCell *contactsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     NSString *contacts = [contactsCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系人
+    if (contacts.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的联系人"];
+        return;
+    }
     YJRentPersonInfoTVCell *telephoneCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     NSString *telephone = [telephoneCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系电话
+    if (telephone.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的联系电话"];
+        return;
+    }
+    NSString *areaCode = [self.areaCode stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//乡镇一级编码
+    NSString *codeUpperLevel = [self.codeUpperLevel stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//县级市，县，区一级编码
+    NSString *codeUpperTwo = [self.codeUpperTwo stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//市一级编码
     
-    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/PublishRental.do?token=%@&rentalTyoe=%ld&cyty=%@&residentialQuarters=%@&apartmentLayout=%@&housingArea=%@&floor=%@&floord=%@&direction=%@&houseAllocation=%@&rent=%@&paymentMethod=%@&contacts=%@&telephone=%@",mPrefixUrl,mDefineToken1,self.flag,cyty,residentialQuarters,apartmentLayout,self.selectView.houseArea.text,self.selectView.floor.text,self.selectView.allFloor.text,direction,houseAllocation,self.selectView.rentMoney.text,paymentMethod,contacts,telephone];
+    NSString *postUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/PublishRental.do?token=%@&rentalTyoe=%ld&cyty=%@&residentialQuarters=%@&apartmentLayout=%@&housingArea=%@&floor=%@&floord=%@&direction=%@&houseAllocation=%@&rent=%@&paymentMethod=%@&contacts=%@&telephone=%@&areaCode=%@&codeUpperLevel=%@&codeUpperTwo=%@",mPrefixUrl,mDefineToken1,self.flag,cyty,residentialQuarters,apartmentLayout,self.selectView.houseArea.text,self.selectView.floor.text,self.selectView.allFloor.text,direction,houseAllocation,self.selectView.rentMoney.text,paymentMethod,contacts,telephone,areaCode,codeUpperLevel,codeUpperTwo];
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager POST:postUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {

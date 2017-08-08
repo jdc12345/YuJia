@@ -43,12 +43,37 @@
     _dic = dic;
     self.itemLabel.text = dic[@"item"];
     NSArray *typeArr = dic[@"typeArr"];
-    [self.firstBtn setTitle:typeArr[0] forState:UIControlStateNormal];
-    [self.secondBtn setTitle:typeArr[1] forState:UIControlStateNormal];
-    [self.thirdlBtn setTitle:typeArr[2] forState:UIControlStateNormal];
-    [self.fourthBtn setTitle:typeArr[3] forState:UIControlStateNormal];
-    [self.fifthBtn setTitle:typeArr[4] forState:UIControlStateNormal];
+    if (typeArr.count==1){//选择了不限
+      [self.firstBtn setTitle:typeArr[0] forState:UIControlStateNormal];
+        self.firstBtn.hidden = false;
+        self.secondBtn.hidden = true;
+        self.thirdlBtn.hidden = true;
+        self.fourthBtn.hidden = true;
+        self.fifthBtn.hidden = true;
+    }
+    if (typeArr.count==3){//选择了合租
+        [self.firstBtn setTitle:typeArr[0] forState:UIControlStateNormal];
+        [self.secondBtn setTitle:typeArr[1] forState:UIControlStateNormal];
+        [self.thirdlBtn setTitle:typeArr[2] forState:UIControlStateNormal];
+        self.firstBtn.hidden = false;
+        self.secondBtn.hidden = false;
+        self.thirdlBtn.hidden = false;
+        self.fourthBtn.hidden = true;
+        self.fifthBtn.hidden = true;
+    }
     
+    if (typeArr.count==5) {//选择了整租
+        [self.firstBtn setTitle:typeArr[0] forState:UIControlStateNormal];
+        [self.secondBtn setTitle:typeArr[1] forState:UIControlStateNormal];
+        [self.thirdlBtn setTitle:typeArr[2] forState:UIControlStateNormal];
+        [self.fourthBtn setTitle:typeArr[3] forState:UIControlStateNormal];
+        [self.fifthBtn setTitle:typeArr[4] forState:UIControlStateNormal];
+        self.firstBtn.hidden = false;
+        self.secondBtn.hidden = false;
+        self.thirdlBtn.hidden = false;
+        self.fourthBtn.hidden = false;
+        self.fifthBtn.hidden = false;
+    }
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
@@ -116,14 +141,13 @@
         [self.contentView addSubview:btn];
         [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];
         }
-    
-
     self.itemLabel = itemLabel;
     self.hyb_lastViewInCell = self.fifthBtn;
     self.hyb_bottomOffsetToCell = 15*kiphone6;
 }
 - (void)clickBtn:(UIButton*)sender{
     sender.selected = !sender.selected;
+    self.clickBtnBlock(sender.titleLabel.text);//把点击按钮的标题回传给controller
     if (sender.selected) {
         sender.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
         for (UIButton *btn in self.contentView.subviews) {

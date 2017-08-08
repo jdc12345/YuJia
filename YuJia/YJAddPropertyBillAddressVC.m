@@ -511,11 +511,9 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
                 cell.city = model.rname;
                 self.yardName = model.rname;
                 self.yardid = model.info_id;
-
     }
     
 }
-
 //返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
 //-(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 //{

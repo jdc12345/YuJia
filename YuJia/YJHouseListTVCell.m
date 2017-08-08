@@ -15,7 +15,7 @@
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* detailLabel;
 @property (nonatomic, weak) UILabel* priceLabel;
-
+@property (nonatomic, weak) UILabel* typeLabel;
 @end
 @implementation YJHouseListTVCell
 
@@ -35,6 +35,16 @@
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
     self.detailLabel.text = [NSString stringWithFormat:@"%@ %@ %ld㎡ %@ %@",model.residentialQuarters,model.apartmentLayout,model.housingArea,model.paymentMethod,model.direction];
     self.priceLabel.text = [NSString stringWithFormat:@"%ld元/月",model.rent];
+    switch (model.rentalTyoe) {
+        case 1:
+            self.typeLabel.text = @"整租";
+            break;
+        case 2:
+            self.typeLabel.text = @"合租";
+            break;
+        default:
+            break;
+    }
 }
 -(void)setupUI{
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];//去除cell点击效果
@@ -87,6 +97,7 @@
     self.iconView = iconView;
     self.detailLabel = detailLabel;
     self.priceLabel = priceLabel;
+    self.typeLabel = typeLabel;
     
     self.hyb_lastViewInCell = priceLabel;
     self.hyb_bottomOffsetToCell = 10*kiphone6;

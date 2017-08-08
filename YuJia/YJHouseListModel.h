@@ -5,25 +5,31 @@
 //  Created by 万宇 on 2017/5/27.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
-//"createTimeString": "2017-05-24 15:17:37",
-//"personalId": 10,
-//"updateTimeString": "",
-//"residentialQuarters": "名流一品小区",
-//"telephone": 18928293838,
-//"houseAllocation": "电视；冰箱；洗衣机；",
-//"floord": "6",
-//"rent": 4800,
-//"picture": "",
-//"cyty": "涿州",
-//"housingArea": 120,
-//"rentalTyoe": 1,
-//"paymentMethod": "月付",
-//"apartmentLayout": "3室2厅1厨一卫",
-//"id": 1,
-//"floor": "2",
-//"contacts": "刘先生",
-//"direction": "坐西向东"
 
+//"createTimeString": "2017-08-07 17:14:13",
+//"personalId": 10,
+//"codeUpperLevel": "130681",
+//"rent": 1258,
+//"number": 0,
+//"cyty": "保定市涿州市百尺竿镇",
+//"housingArea": 25,
+//"apartmentLayout": "主卧",
+//"startTime": null,
+//"id": 36,
+//"floor": "4",
+//"direction": "南",
+//"updateTimeString": "",
+//"residentialQuarters": "风景洋房小区",
+//"telephone": 13526575287,
+//"houseAllocation": "；电视；洗衣机",
+//"floord": "5",
+//"picture": "/static/image/201787/5eba8090df104a40a51fa756bdff3b08.png;/static/image/201787/56bdde90529f43a2bea01314485b1a84.png;",
+//"areaCode": "130681",
+//"rentalTyoe": 2,
+//"paymentMethod": "押一付三",
+//"codeUpperTwo": "(null)",
+//"endTime": null,
+//"contacts": "楞子"
 
 #import <Foundation/Foundation.h>
 
@@ -46,5 +52,8 @@
 @property (nonatomic, copy) NSString *floor;
 @property (nonatomic, copy) NSString *contacts;
 @property (nonatomic, copy) NSString * direction;
+@property (nonatomic, copy) NSString *codeUpperTwo;//城市编码
+@property (nonatomic, copy) NSString *areaCode;//街道乡镇编码
+@property (nonatomic, copy) NSString * codeUpperLevel;//区县编码
 
 @end
