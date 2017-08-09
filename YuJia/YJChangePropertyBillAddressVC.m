@@ -143,13 +143,15 @@ http://192.168.1.55:8080/smarthome/mobilepub/baseArea/findList.do 获取城市�
 }
 //获取小区列表
 -(void)loadAreaData{
-http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findAll.do?AreaCode=130681 获取小区列表
+http://localhost:8080/smarthome/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=0
+//    &codeUpperTwo=110000
+//    &codeUpperLevel=0
     [SVProgressHUD show];// 动画开始
     if (self.areaCode == nil) {
         [SVProgressHUD showErrorWithStatus:@"请选择城市"];
         return;
     }
-    NSString *getAreaUrlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findAll.do?AreaCode=%@",mPrefixUrl,self.areaCode];
+    NSString *getAreaUrlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=0&codeUpperLevel=%@&codeUpperTwo=0",mPrefixUrl,self.areaCode];
     [[HttpClient defaultClient]requestWithPath:getAreaUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束

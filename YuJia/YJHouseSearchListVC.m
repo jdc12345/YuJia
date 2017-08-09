@@ -63,7 +63,7 @@ static NSString* tableCellid = @"table_cell";
 @property (nonatomic, copy)   AMapGeoPoint *location;//中心点坐标。
 @property (nonatomic, strong)   NSString *name;//根据名称进行行政区划数据搜索的名称
 @property (nonatomic, assign)   BOOL isExchangeCity;//是否更换了城市。
-@property(nonatomic,strong)NSString *areaCode;//乡镇一级编码
+@property(nonatomic,strong)NSString *areaCode;//乡镇一级编码没有，传名字
 @property(nonatomic,strong)NSString *codeUpperLevel;//县级市，县，区一级编码
 @property(nonatomic,strong)NSString *codeUpperTwo;//市一级编码
 @property (nonatomic, assign)   NSInteger rent;//租金。
@@ -263,7 +263,6 @@ static NSString* tableCellid = @"table_cell";
 /* 行政区划数据查询回调. */
 - (void)onDistrictSearchDone:(AMapDistrictSearchRequest *)request response:(AMapDistrictSearchResponse *)response
 {
-    
     if (response == nil)
     {
         return;
@@ -559,7 +558,7 @@ static NSString* tableCellid = @"table_cell";
     
     [self loadData];
 }
-
+//搜索匹配条件的房源请求
 - (void)loadData{
 http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491B920A9DD107E146D961F4BDA50E
 //    &start=0
@@ -586,7 +585,7 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
 //    limit              每页总数
     [SVProgressHUD show];// 动画开始
 //    areaCode = [areaCode stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *houseUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findconditionAll.do?token=%@&areaCode=%@&codeUpperLevel=%@&codeUpperTwo=%@&residentialQuarters=%@&apartmentLayout=%@&direction=%@&rent=%ld&rentalTyoe=%ld&start=0&limit=10",mPrefixUrl,mDefineToken1,self.areaCode,self.codeUpperLevel,self.codeUpperTwo,self.residentialQuarters,self.apartmentLayout,self.direction,self.rent,self.rentalTyoe];
+    NSString *houseUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findconditionAll.do?token=%@&areaCode=%@&codeUpperLevel=%@&codeUpperTwo=%@&residentialQuarters=%@&apartmentLayout=%@&direction=%@&rent=%ld&rentalTyoe=%ld&start=%ld&limit=10",mPrefixUrl,mDefineToken1,self.areaCode,self.codeUpperLevel,self.codeUpperTwo,self.residentialQuarters,self.apartmentLayout,self.direction,self.rent,self.rentalTyoe,start];
     houseUrlStr = [houseUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [[HttpClient defaultClient]requestWithPath:houseUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -604,7 +603,11 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
         }else{
 //            [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
         }
-        self.houseArr = mArr;
+        if (start==0) {//根据条件发起请求或者下拉刷新
+            self.houseArr = mArr;
+        }else{//上拉加载
+            [self.houseArr addObjectsFromArray:mArr];
+        }
         start = self.houseArr.count;
         [self.tableView reloadData];
         if ([responseObject[@"code"]isEqualToString:@"-1"]) {
@@ -636,39 +639,24 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
         //设置行政区划查询参数并发起行政区划查询
         AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
         if ([cityName isEqualToString:@"保定市"]) {
-            dist.keywords = @"0312";
+            dist.keywords = @"130600";
+            self.codeUpperTwo = @"130600";
         }else if ([cityName isEqualToString:@"北京市"]){
             dist.keywords = @"110100";
+            self.codeUpperTwo = @"110100";
         }
-        
         dist.requireExtension = YES;
         [self.search AMapDistrictSearch:dist];
-        [SVProgressHUD show];// 动画开始
-        cityName = [cityName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,cityName];
-        [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            [SVProgressHUD dismiss];// 动画结束
-            if ([responseObject[@"code"]isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"result"];
-                if (arr.count>0) {
-                    NSMutableArray *mArr = [NSMutableArray array];
-                    for (NSDictionary *dic in arr) {
-                        YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
-                        [mArr addObject:infoModel];
-                    }
-                    self.houseArr = mArr;
-                    start = self.houseArr.count;
-//                    [self setupUI];
-                    [self.tableView reloadData];
-                }else{
-                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
-                }
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [SVProgressHUD showErrorWithStatus:@"加载失败"];
-            return ;
-        }];
+        //初始化切换城市返回该页面之后搜索各个参数
+        self.areaCode = @"0";
+        self.codeUpperLevel = @"0";
+//        self.codeUpperTwo = @"0";
+        self.residentialQuarters = @"0";
+        self.apartmentLayout = @"0";
+        self.direction = @"0";
+        self.rent = 0;
+        self.rentalTyoe = 0;
+        [self loadData];
     };
     [self.navigationController pushViewController:vc animated:true];
 }
@@ -677,6 +665,9 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
     YJSearchHourseVC *vc = [[YJSearchHourseVC alloc]init];
     vc.searchCayegory = 1;
     vc.city = self.LocationBtn.titleLabel.text;
+    vc.areaCode = self.areaCode;
+    vc.codeUpperTwo = self.codeUpperTwo;
+    vc.codeUpperLevel = self.codeUpperLevel;
     [self.navigationController pushViewController:vc animated:true];
 }
 //大tableview
@@ -697,72 +688,19 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
     tableView.dataSource = self;
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        // 进入刷新状态后会自动调用这个block
-        NSString *rname = self.LocationBtn.titleLabel.text;
-        rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=0&limit=10",mPrefixUrl,mDefineToken1,rname];
-        [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
-            
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            if ([responseObject[@"code"]isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"result"];
-                if (arr.count>0) {
-                    NSMutableArray *mArr = [NSMutableArray array];
-                    for (NSDictionary *dic in arr) {
-                        YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
-                        [mArr addObject:infoModel];
-                    }
-                    self.houseArr = mArr;
-                    start = self.houseArr.count;
-                [self.tableView reloadData];
-                }else{
-                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
-                }
-            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-            }
-            [weakSelf.tableView.mj_header endRefreshing];
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [weakSelf.tableView.mj_header endRefreshing];
-            return ;
-        }];
+        start=0;
+        [weakSelf loadData];
+        [weakSelf.tableView.mj_header endRefreshing];
     }];
     //设置上拉加载更多
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         // 进入加载状态后会自动调用这个block
-        if (self.houseArr.count==0) {
+        if (weakSelf.houseArr.count==0) {
             [weakSelf.tableView.mj_footer endRefreshing];
             return ;
         }
-        NSString *rname = self.LocationBtn.titleLabel.text;
-        rname = [rname stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-        NSString *bussinessUrlStr = [NSString stringWithFormat:@"%@/mobileapi/rental/findPage.do?token=%@&cyty=%@&start=%ld&limit=5",mPrefixUrl,mDefineToken1,rname,start];
-        [[HttpClient defaultClient]requestWithPath:bussinessUrlStr method:0 parameters:nil prepareExecute:^{
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            if ([responseObject[@"code"]isEqualToString:@"0"]) {
-                NSArray *arr = responseObject[@"result"];
-                if (arr.count>0) {
-                    NSMutableArray *mArr = [NSMutableArray array];
-                    for (NSDictionary *dic in arr) {
-                        YJHouseListModel *infoModel = [YJHouseListModel mj_objectWithKeyValues:dic];
-                        [mArr addObject:infoModel];
-                    }
-                    [self.houseArr addObjectsFromArray:mArr];
-                    start = self.houseArr.count;
-                [self.tableView reloadData];
-                }
-//                else{
-//                    [SVProgressHUD showErrorWithStatus:@"该城市暂未覆盖"];
-//                }
-            }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-//                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
-            }
-            [weakSelf.tableView.mj_footer endRefreshing];
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [weakSelf.tableView.mj_footer endRefreshing];
-            [SVProgressHUD showErrorWithStatus:@"刷新失败"];
-            return ;
-        }];
+        [weakSelf loadData];
+        [weakSelf.tableView.mj_footer endRefreshing];
     }];
 }
 - (void)postBtn:(UIButton*)sender {
@@ -943,8 +881,13 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
                 dist.requireExtension = YES;
                 [self.search AMapDistrictSearch:dist];
                 self.codeUpperLevel = cellDist.adcode;
+                self.areaCode = @"0";
             }else{
-                self.codeUpperTwo = cellDist.citycode;//row等于0时候为“全xx市”
+                self.codeUpperTwo = cellDist.adcode;//row等于0时候为“全xx市”
+                self.codeUpperLevel = @"0";
+                self.areaCode = @"0";
+                self.thirdArr = [NSMutableArray array];
+                [self.thirdTableView reloadData];//选择“全xx市”时候第三级没有数据
             }
         }else{//点“附近按钮”时候
             
@@ -958,6 +901,7 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
             self.areaCode = dist.name;//三级没有编码，直接传名字
         }else{
             self.codeUpperLevel = dist.adcode;//row等于0时候为“全xx区(县)”
+            self.areaCode = @"0";
         }
 //        if (self.thirdArr.count>0) {
 //            self.sThirdArr=self.thirdArr[indexPath.row];//设计thirdTableView数据源对应secTableView对应位置区域的下级行政区域
@@ -1019,6 +963,7 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
         YJHousePriceTVCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         [self.typeBtn setTitle:cell.price forState:UIControlStateNormal];
     }
+    start = 0;
     [self loadData];//根据条件筛选
     if (tableView == self.tableView) {//匹配的房源cell
         YJHouseDetailVC *detailVc = [[YJHouseDetailVC alloc]init];

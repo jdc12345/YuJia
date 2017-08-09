@@ -76,18 +76,12 @@ static NSString* photoCellid = @"photo_cell";
     [self loadPostLimiteNumber];
     //设置行政区划查询参数并发起行政区划查询
     self.isExchangeCity = true;
-//    self.areaDic = @{@"保定市":@[@"涿州市",@"易县",@"固安市"],@"北京市":@[@"顺义区",@"海淀区",@"崇文区"]};
     self.oneLevelArr = @[@"保定市",@"北京市"];
-//    self.twoLevelArr = self.areaDic[@"北京市"];
     self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
     self.search.delegate = self;
     AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
-//    if ([cityName isEqualToString:@"保定市"]) {
-//        dist.keywords = @"0312";
-//    }else if ([cityName isEqualToString:@"北京市"]){
-//        dist.keywords = @"110100";
-//    }
-    dist.keywords = @"0312";
+    dist.keywords = @"130600";//130600
+    self.codeUpperTwo =@"130600";
     dist.requireExtension = YES;
     [self.search AMapDistrictSearch:dist];
 }
@@ -130,14 +124,6 @@ static NSString* photoCellid = @"photo_cell";
             }
         }
         [self.onePickerView reloadComponent:2];
-//        self.firArr = @[@{@"secArr":@[@"不限",@"1000米内",@"1500米内",@"2000米内"],@"name":@"附近"},@{@"secArr":self.secArr,@"name":@"区域"}];
-//        self.tableHeight = 0;
-//        for (int i=0; i<self.firArr.count; i++) {
-//            NSArray *secArr = self.firArr[i][@"secArr"];
-//            self.tableHeight = self.tableHeight<(secArr.count*45*kiphone6)?(secArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
-//        }
-//        self.tableHeight = self.tableHeight<(self.thirdArr.count*45*kiphone6)?(self.thirdArr.count*45*kiphone6):self.tableHeight;//取出最大值作为区域按钮下tableview所在背景的高度
-//        self.tableHeight = self.tableHeight>(kScreenH-88.5*kiphone6-64*kiphone6)?(kScreenH-88.5*kiphone6-64*kiphone6):self.tableHeight;//如果超出屏幕可视区域需要把可视区域的高度作为区域按钮下tableview所在背景的高度，否则有可能无法完全scrollw整个tableview
         break;//大for循环只执行一次
     }
     
@@ -333,8 +319,8 @@ static NSString* photoCellid = @"photo_cell";
     }
     if (sender.tag==189){
         self.pickFlag = 189;
-        if (!self.areaCode) {
-            [SVProgressHUD showErrorWithStatus:@"请选择你要发布房源所在的地区"];
+        if (self.areaCode.length==0||[self.areaCode isEqualToString:@"0"]) {
+            [SVProgressHUD showErrorWithStatus:@"请选择你要发布房源详细地址"];
             return;
         }
 //    http://localhost:8080/smarthome/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=130681
@@ -348,7 +334,7 @@ static NSString* photoCellid = @"photo_cell";
 //        rname    String      小区名称
 
         //    [SVProgressHUD show];// 动画开始
-        NSString *urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=%@",mPrefixUrl,self.areaCode];
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findResidentialQuarters.do?areaCode=%@&codeUpperLevel=%@&codeUpperTwo=%@",mPrefixUrl,self.areaCode,self.codeUpperLevel,self.codeUpperTwo];
          urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -491,8 +477,8 @@ static NSString* photoCellid = @"photo_cell";
                 //设置行政区划查询参数并发起行政区划查询
             AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
                 if ([self.oneLevelArr[row] isEqualToString:@"保定市"]) {
-                    dist.keywords = @"0312";
-                    self.codeUpperTwo = @"0312";
+                    dist.keywords = @"130600";
+                    self.codeUpperTwo = @"130600";
                 }else if ([self.oneLevelArr[row] isEqualToString:@"北京市"]){
                     dist.keywords = @"110100";
                     self.codeUpperTwo = @"110100";
@@ -632,26 +618,30 @@ static NSString* photoCellid = @"photo_cell";
 //    3、上传市一级编码时，下一级和下两级编码传“0”
     //此处接提交地址接口！！！！！
     [SVProgressHUD show];// 动画开始
+    if (self.selectView.areaBtn.titleLabel.text.length==0) {
+        [SVProgressHUD showInfoWithStatus:@"请选择所在地区"];
+        return;
+    }
     NSString *cyty = [self.selectView.areaBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区所在地区
-    NSString *residentialQuarters = [self.selectView.villageBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
-    if (residentialQuarters.length==0) {
+    if ([self.selectView.villageBtn.titleLabel.text isEqualToString:@"请选择所在小区"]) {
         [SVProgressHUD showInfoWithStatus:@"请选择你发布房源的小区"];
         return;
     }
+    NSString *residentialQuarters = [self.selectView.villageBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//小区
+    
     NSString *apartmentLayout = [NSString string];
     if (self.flag==1) {
         apartmentLayout = [NSString stringWithFormat:@"%@室%@厅%@卫",self.selectView.roomField.text,self.selectView.hallField.text,self.selectView.guardsField.text];
         apartmentLayout = [apartmentLayout stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//户型
-        
     }else if (self.flag==2){
         apartmentLayout = [self.roomType.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//户型
     }
-    if (apartmentLayout.length==0) {
+    if (self.selectView.roomField.text.length==0||self.selectView.hallField.text==0||self.selectView.guardsField.text) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的户型"];
         return;
     }
     NSString *direction = [self.selectView.directionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//方向
-    if (apartmentLayout.length==0) {
+    if (self.selectView.directionBtn.titleLabel.text.length==0) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的朝向"];
         return;
     }
@@ -686,25 +676,26 @@ static NSString* photoCellid = @"photo_cell";
     if (self.selectView.sofaBtn.selected) {
         houseAllocation = [NSString stringWithFormat:@"%@；%@",houseAllocation,self.selectView.sofaBtn.titleLabel.text];
     }
-     houseAllocation = [houseAllocation stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
     if (houseAllocation.length==0) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的配置"];
         return;
     }
-   NSString *paymentMethod = [self.selectView.conditionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
-    if (paymentMethod.length==0) {
+     houseAllocation = [houseAllocation stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+    if (self.selectView.conditionBtn.titleLabel.text.length==0) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的支付方式"];
         return;
     }
+   NSString *paymentMethod = [self.selectView.conditionBtn.titleLabel.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//房屋配置
+    
     YJRentPersonInfoTVCell *contactsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     NSString *contacts = [contactsCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系人
-    if (contacts.length==0) {
+    if (contactsCell.contentField.text.length==0) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的联系人"];
         return;
     }
     YJRentPersonInfoTVCell *telephoneCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     NSString *telephone = [telephoneCell.contentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];//联系电话
-    if (telephone.length==0) {
+    if (telephoneCell.contentField.text.length==0) {
         [SVProgressHUD showInfoWithStatus:@"请填写你发布房源的联系电话"];
         return;
     }

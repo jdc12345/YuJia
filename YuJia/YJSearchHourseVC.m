@@ -328,8 +328,17 @@ static NSString *dentifier=@"cellforappliancelist";
     NSString *urlStr = [NSString string];
     if (self.searchCayegory==1) {//输入小区
 //    http://192.168.1.55:8080/smarthome/mobilepub/residentialQuarters/findRname.do?city=涿州市&rname=名流
-        http://localhost:8080/smarthome/mobilepub/residentialQuarters/findRname.do?areaCode=130681&rname=翡翠
-        urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findRname.do?city=%@&rname=%@",mPrefixUrl,self.city,searchString];
+    http://localhost:8080/smarthome/mobilepub/residentialQuarters/findRname.do?
+//        areaCode=0
+//        &rname=万
+//        &codeUpperTwo=110000
+//        &codeUpperLevel=0
+//        参数：       参数名    参数类型    备注
+//        codeUpperTwo  String      市一级城市编码
+//        codeUpperLevel  String      区／县／县级市一级编码
+//        areaCode    String      乡镇一级编码
+//        rname    String      输入的查询小区的内容
+        urlStr = [NSString stringWithFormat:@"%@/mobilepub/residentialQuarters/findRname.do?areaCode=%@&rname=%@&codeUpperTwo=%@&codeUpperLevel=%@",mPrefixUrl,self.areaCode,searchString,self.codeUpperTwo,self.codeUpperLevel];
     }else if(self.searchCayegory==0){
 //        http://192.168.1.55:8080/smarthome/mobilepub/baseArea/getList.do?areaName=北
 //        urlStr = [medicinalSearchInfo stringByAppendingString:searchString];
