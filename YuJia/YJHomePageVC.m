@@ -16,8 +16,12 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJHomepageTVCell.h"
 #import "YJRoomSetUpVC.h"
-#import "SightSettingViewController.h"
+//#import "SightSettingViewController.h"
 #import "YJSceneSetVC.h"
+#import "YJAddEquipmentVC.h"
+#import "YJSceneDetailModel.h"
+#import "YJRoomDetailModel.h"
+#import "YJEquipmentModel.h"
 
 static NSString* eqCellid = @"eq_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -29,8 +33,8 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIButton *mysceneBtn;
 @property(nonatomic,weak)UIButton *equipmentBtn;
 @property(nonatomic,strong)NSArray *imagesURLStrings;
-@property (nonatomic, strong) NSArray* mysceneListData;//情景列表
-@property (nonatomic, strong) NSArray* equipmentListData;//设备列表
+@property (nonatomic, strong) NSMutableArray* mysceneListData;//情景列表
+@property (nonatomic, strong) NSMutableArray* equipmentListData;//当前房间设备列表
 @property(nonatomic,weak)UIView *clearView;//添加和collectionview之间的透明view
 @property(nonatomic,assign)BOOL isMyscene;//判断是否处于我的情景页面,点击编辑按钮时候需要用到
 @property(nonatomic,weak)UIView *backGrayView;//半透明背景
@@ -39,6 +43,7 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)UIView *closeView;//底部取消view
 @property (nonatomic, strong) NSMutableArray* roomListData;//房间列表
 @property(nonatomic,weak)YJHeaderTitleBtn *roomBtn;//显示当前房间的btn
+@property (nonatomic, strong) YJRoomDetailModel* curruntRoomModel;//当前房间数据模型
 @end
 
 @implementation YJHomePageVC
@@ -46,8 +51,53 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self imageBg];
-    [self loadFunctionListData];
+    [self httpRequestHomeInfo];
     [self setUpUI];
+}
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mHomepageInfo,mDefineToken1] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *roomList = responseObject[@"roomList"];
+        NSArray *sceneList = responseObject[@"sceneList"];
+//        [self.roomDataSource removeAllObjects];
+//        [self.sightDataSource removeAllObjects];
+//
+        for (NSDictionary *sceneDict in sceneList) {
+            YJSceneDetailModel *sceneModel = [YJSceneDetailModel mj_objectWithKeyValues:sceneDict];
+            NSMutableArray *equipmentArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *equipmentDict in sceneModel.equipmentList) {
+                YJEquipmentModel *equipmentModel = [YJEquipmentModel mj_objectWithKeyValues:equipmentDict];
+                [equipmentArray addObject:equipmentModel];
+            }
+            sceneModel.equipmentList = equipmentArray;
+            [self.mysceneListData addObject:sceneModel];
+            
+        }
+        [self.mysceneColView reloadData];
+        for (NSDictionary *roomDict in roomList) {
+            YJRoomDetailModel *roomModel = [YJRoomDetailModel mj_objectWithKeyValues:roomDict];
+            NSMutableArray *equipmentArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *equipmentDict in roomModel.equipmentList) {
+                YJEquipmentModel *equipmentModel = [YJEquipmentModel mj_objectWithKeyValues:equipmentDict];
+                [equipmentArray addObject:equipmentModel];
+            }
+            roomModel.equipmentList = equipmentArray;
+            [self.roomListData addObject:roomModel];
+        }
+        if (self.roomListData.count>0) {
+            self.curruntRoomModel = self.roomListData[0];
+            if (self.roomBtn) {
+                [self.roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值
+            }
+            self.equipmentListData = [NSMutableArray arrayWithArray:self.curruntRoomModel.equipmentList];//默认房间设备列表
+            [self.equipmentColView reloadData];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 - (void)imageBg//把控制器背景设为图片
 {
@@ -66,7 +116,6 @@ static NSString* tableCellid = @"table_cell";
     return UIStatusBarStyleLightContent;
 }
 - (void)setUpUI {
-    self.roomListData = [NSMutableArray arrayWithObjects:@"房间1",@"房间2",@"房间3",@"房间4",@"房间5", nil];
     NSMutableArray* rightItemArr = [NSMutableArray array];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = -5;
@@ -125,6 +174,7 @@ static NSString* tableCellid = @"table_cell";
         make.width.offset(60*kiphone6);
         make.height.offset(25*kiphone6);
     }];
+    [addBtn addTarget:self action:@selector(addEquipmentBtn) forControlEvents:UIControlEventTouchUpInside];
     //添加中间透明view，用于滑动情景view
     UIView *clearView = [[UIView alloc]init];
     clearView.backgroundColor = [UIColor clearColor];
@@ -136,7 +186,7 @@ static NSString* tableCellid = @"table_cell";
     }];
     self.clearView = clearView;
     // 用来接收情景数据 方便设置数据源
-    self.mysceneListData = [self loadFunctionListData];
+//    self.mysceneListData = [self loadFunctionListData];
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
 //    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 218*kiphone6, kScreenW, kScreenH-self.tabBarController.tabBar.bounds.size.height-218*kiphone6) collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
     collectionView.backgroundColor = [UIColor clearColor];
@@ -231,7 +281,7 @@ static NSString* tableCellid = @"table_cell";
             [self.equipmentColView reloadData];
         }else{
             // 用来接收设备数据 方便设置数据源
-            self.equipmentListData = [NSArray objectListWithPlistName:@"YJEquipmentList.plist" clsName:@"YJEquipmentListModel"];;
+//            self.equipmentListData = [NSArray objectListWithPlistName:@"YJEquipmentList.plist" clsName:@"YJEquipmentListModel"];
             UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
             collectionView.backgroundColor = [UIColor clearColor];
             [self.view addSubview:collectionView];
@@ -252,11 +302,16 @@ static NSString* tableCellid = @"table_cell";
         }
     }
 }
-// 解析数据
-- (NSArray*)loadFunctionListData
-{
-    return [NSArray objectListWithPlistName:@"YJHomeSceneList.plist" clsName:@"YYPropertyFunctionList"];
+//添加设备按钮点击事件
+-(void)addEquipmentBtn{
+    YJAddEquipmentVC *addVc = [[YJAddEquipmentVC alloc]init];
+    [self.navigationController pushViewController:addVc animated:true];
 }
+//// 解析数据
+//- (NSArray*)loadFunctionListData
+//{
+//    return [NSArray objectListWithPlistName:@"YJHomeSceneList.plist" clsName:@"YYPropertyFunctionList"];
+//}
 //编辑按钮点击事件
 - (void)editBtnClick:(UIButton*)sender{
     if (self.isMyscene) {//处于我的情景页面
@@ -395,9 +450,9 @@ static NSString* tableCellid = @"table_cell";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YJHomepageTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     if (tableView==self.sceneTableView) {
-        cell.functionList = self.mysceneListData[indexPath.row];
+        cell.sceneDetailModel = self.mysceneListData[indexPath.row];
     }else{
-       cell.roomName = self.roomListData[indexPath.row];
+       cell.roomDetailModel = self.roomListData[indexPath.row];
     }
   return cell;
 }
@@ -411,7 +466,6 @@ static NSString* tableCellid = @"table_cell";
     [addBtn setBackgroundColor:[UIColor whiteColor]];
     if (tableView==self.sceneTableView) {
         [self setBtn:addBtn WithTitle:@"添加新情景" font:18 titleColor:@"#0ddcbc"];
-        
     }else{
         [self setBtn:addBtn WithTitle:@"添加新房间" font:18 titleColor:@"#0ddcbc"];
     }
@@ -443,12 +497,14 @@ static NSString* tableCellid = @"table_cell";
 //        SightSettingViewController *vc = [[SightSettingViewController alloc]init];
         vc.sceneName = cell.itemLabel.text;
         vc.equipmentListData = self.equipmentListData;
-        [self closeBtnClick];
         [self.navigationController pushViewController:vc animated:true];
     }else{
-        [self.roomBtn setTitle:cell.roomName forState:UIControlStateNormal];
+        self.curruntRoomModel = cell.roomDetailModel;//更换当前房间
+        self.equipmentListData = [NSMutableArray arrayWithArray:cell.roomDetailModel.equipmentList];
+        [self.equipmentColView reloadData];//更换不同房间的设备数据源
+//        [self.roomBtn setTitle:cell.roomDetailModel.roomName forState:UIControlStateNormal];//更换切换房间按钮名字
     }
-    
+    [self closeBtnClick];//隐藏房间列表
 }
 -(void)addSceneOrNewHouseClick{
     if (self.isMyscene) {
@@ -486,12 +542,12 @@ static NSString* tableCellid = @"table_cell";
     if (collectionView==self.mysceneColView) {
         // 去缓存池找
         YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
-        cell.functionList = self.mysceneListData[indexPath.row];
-        cell.selected = false;
+        cell.sceneDetailModel = self.mysceneListData[indexPath.row];
+//        cell.selected = false;
         return cell;
     }else{
         YJEquipmentrCollectionVCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
-        cell.functionList = self.equipmentListData[indexPath.row];
+        cell.equipmentModel = self.equipmentListData[indexPath.row];
 //        cell.alpha = 0.7;
         return cell;
     }
@@ -567,7 +623,11 @@ static NSString* tableCellid = @"table_cell";
         UICollectionReusableView *header=[collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:headerViewIdentifier forIndexPath:indexPath];
         //添加头视图的内容
         YJHeaderTitleBtn *roomBtn = [[YJHeaderTitleBtn alloc]init];
-        [roomBtn setTitle:@"客厅" forState:UIControlStateNormal];
+        if (self.roomListData.count>0) {
+            [roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值
+        }else{
+            [roomBtn setTitle:@"请添加房间" forState:UIControlStateNormal];
+        }
         [roomBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         roomBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [roomBtn setImage:[UIImage imageNamed:@"more_room"] forState:UIControlStateNormal];
@@ -600,6 +660,25 @@ static NSString* tableCellid = @"table_cell";
     }
     return CGSizeMake(kScreenW,30*kiphone6);
     
+}
+//懒加载
+-(NSMutableArray *)mysceneListData{
+    if (_mysceneListData == nil) {
+        _mysceneListData = [NSMutableArray array];
+    }
+    return _mysceneListData;
+}
+-(NSMutableArray *)roomListData{
+    if (_roomListData == nil) {
+        _roomListData = [NSMutableArray array];
+    }
+    return _roomListData;
+}
+-(NSMutableArray *)equipmentListData{
+    if (_equipmentListData == nil) {
+        _equipmentListData = [NSMutableArray array];
+    }
+    return _equipmentListData;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

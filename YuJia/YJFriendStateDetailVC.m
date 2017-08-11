@@ -375,12 +375,9 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.tableView) {
-        YJFriendNeighborStateModel *model = self.model;
-        return[YJFriendStateTableViewCell hyb_heightForTableView:tableView config:^(UITableViewCell *sourceCell) {
-            YJFriendStateTableViewCell *cell = (YJFriendStateTableViewCell *)sourceCell;
-            // 配置数据
-            [cell configCellWithModel:model indexPath:indexPath];
-        }];
+        YJFriendStateTableViewCell *commentCell = [tableView dequeueReusableCellWithIdentifier:tableCell];        commentCell.model = self.model;//赋值并在cell中计算
+        
+        return commentCell.cellHeight;
     }
     return UITableViewAutomaticDimension;
     

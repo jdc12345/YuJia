@@ -30,12 +30,55 @@
     [self setupUI];
 }
 
-- (void)setFunctionList:(YYPropertyFunctionList*)functionList
+- (void)setSceneDetailModel:(YJSceneDetailModel*)sceneDetailModel
 {
-    _functionList = functionList;
+    _sceneDetailModel = sceneDetailModel;
     // 把数据放在控件上
-    self.iconView.image = [UIImage imageNamed:functionList.icon];
-    self.nameLabel.text = functionList.name;
+    NSString *imageName;
+    switch ([sceneDetailModel.sceneIcon integerValue]) {
+        case 0:
+            imageName = @"getup";
+            break;
+        case 1:
+            imageName = @"rest";
+            break;
+        case 2:
+            imageName = @"leave";
+            break;
+        case 3:
+            imageName = @"gohome";
+            break;
+        case 4:
+            imageName = @"playgame";
+            break;
+        case 5:
+            imageName = @"time_scene";
+            break;
+        case 6:
+            imageName = @"rain_scene";
+            break;
+        case 7:
+            imageName = @"eatting_scene";
+            break;
+        case 8:
+            imageName = @"music_scene";
+            break;
+        case 9:
+            imageName = @"fire_scene";
+            break;
+        case 10:
+            imageName = @"sunning_scene";
+            break;
+        default:
+            break;
+    }
+    self.iconView.image = [UIImage imageNamed:imageName];
+    self.nameLabel.text = sceneDetailModel.sceneName;
+    if ([sceneDetailModel.sceneState isEqualToString:@"0"]) {
+        self.selected = true;
+    }else if ([sceneDetailModel.sceneState isEqualToString:@"1"]){
+        self.selected = false;
+    }
 }
 -(void)setEquipmentListModels:(YJEquipmentListModel *)equipmentListModels{
     _equipmentListModels = equipmentListModels;

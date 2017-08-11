@@ -28,13 +28,56 @@
     [super awakeFromNib];
     [self setupUI];
 }
-
-- (void)setFunctionList:(YJEquipmentListModel*)functionList
-{
-    _functionList = functionList;
+-(void)setEquipmentModel:(YJEquipmentModel *)equipmentModel{
+    _equipmentModel = equipmentModel;
     // 把数据放在控件上
-    self.iconView.image = [UIImage imageNamed:functionList.icon];
-    self.nameLabel.text = functionList.name;
+    NSString *imageName;
+    switch ([equipmentModel.iconId integerValue]) {
+        case 0:
+            imageName = @"getup";
+            break;
+        case 1:
+            imageName = @"rest";
+            break;
+        case 2:
+            imageName = @"leave";
+            break;
+        case 3:
+            imageName = @"gohome";
+            break;
+        case 4:
+            imageName = @"playgame";
+            break;
+        case 5:
+            imageName = @"time_scene";
+            break;
+        case 6:
+            imageName = @"rain_scene";
+            break;
+        case 7:
+            imageName = @"eatting_scene";
+            break;
+        case 8:
+            imageName = @"music_scene";
+            break;
+        case 9:
+            imageName = @"fire_scene";
+            break;
+        case 10:
+            imageName = @"sunning_scene";
+            break;
+        default:
+            break;
+    }
+    self.iconView.image = [UIImage imageNamed:imageName];
+    self.nameLabel.text = equipmentModel.name;
+    if ([equipmentModel.state isEqualToString:@"0"]) {
+        [self.switch0 setOn:true];
+        self.alpha = 1;
+    }else if ([equipmentModel.state isEqualToString:@"1"]){
+        [self.switch0 setOn:false];
+        self.alpha = 0.7;
+    }
 }
 
 - (void)setupUI
@@ -86,6 +129,7 @@
     }];
     self.iconView = iconView;
     self.nameLabel = nameLabel;
+    self.switch0 = switch0;
 }
 -(void)setSelected:(BOOL)selected{
     //    [super setSelected:selected];

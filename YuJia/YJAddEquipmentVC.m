@@ -1,13 +1,13 @@
 //
-//  AddEquipmentViewController.m
+//  YJAddEquipmentVC.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/4.
+//  Created by 万宇 on 2017/8/10.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "AddEquipmentViewController.h"
-#import "ConnectWifiViewController.h"
+#import "YJAddEquipmentVC.h"
+#import "YJConnectWifiVC.h"
 #import <AVFoundation/AVFoundation.h>
 
 /**
@@ -22,7 +22,7 @@
 
 #define kScanRect CGRectMake(LEFT, TOP, 220, 220)
 
-@interface AddEquipmentViewController ()<AVCaptureMetadataOutputObjectsDelegate>{
+@interface YJAddEquipmentVC ()<AVCaptureMetadataOutputObjectsDelegate>{
     int num;
     BOOL upOrdown;
     NSTimer * timer;
@@ -36,48 +36,48 @@
 @property (nonatomic, strong) UIImageView * line;//扫描滚动的线
 @end
 
-@implementation AddEquipmentViewController
+@implementation YJAddEquipmentVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        self.title = @"添加设备";
+    self.title = @"添加设备";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self configView];
     
-//    UIButton *connectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [connectBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
-//    connectBtn.backgroundColor = [UIColor colorWithHexString:@"25f368"];
-//    [connectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    connectBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-//    [connectBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    
-//    UILabel *promptLabel = [[UILabel alloc]init];
-//    promptLabel.textColor = [UIColor colorWithHexString:@"999999"];
-//    promptLabel.font = [UIFont systemFontOfSize:15];
-//    promptLabel.textAlignment = NSTextAlignmentCenter;
-//    promptLabel.text = @"扫描二维码连接设备";
-//    
-//    [self.view addSubview:connectBtn];
-//    [self.view addSubview:promptLabel];
-//    
-//    WS(ws);
-//    [connectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.center.equalTo(ws.view);
-//        make.size.mas_equalTo(CGSizeMake(115 *kiphone6 ,40 *kiphone6));
-//    }];
-//    [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(connectBtn.mas_top).with.offset(-15 *kiphone6);
-//        make.left.equalTo(ws.view).with.offset(0);
-//        make.size.mas_equalTo(CGSizeMake(kScreenW  ,15 *kiphone6));
-//    }];
+    //    UIButton *connectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    [connectBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
+    //    connectBtn.backgroundColor = [UIColor colorWithHexString:@"25f368"];
+    //    [connectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //    connectBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    //    [connectBtn addTarget:self action:@selector(action) forControlEvents:UIControlEventTouchUpInside];
+    //
+    //
+    //    UILabel *promptLabel = [[UILabel alloc]init];
+    //    promptLabel.textColor = [UIColor colorWithHexString:@"999999"];
+    //    promptLabel.font = [UIFont systemFontOfSize:15];
+    //    promptLabel.textAlignment = NSTextAlignmentCenter;
+    //    promptLabel.text = @"扫描二维码连接设备";
+    //
+    //    [self.view addSubview:connectBtn];
+    //    [self.view addSubview:promptLabel];
+    //
+    //    WS(ws);
+    //    [connectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.center.equalTo(ws.view);
+    //        make.size.mas_equalTo(CGSizeMake(115 *kiphone6 ,40 *kiphone6));
+    //    }];
+    //    [promptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.bottom.equalTo(connectBtn.mas_top).with.offset(-15 *kiphone6);
+    //        make.left.equalTo(ws.view).with.offset(0);
+    //        make.size.mas_equalTo(CGSizeMake(kScreenW  ,15 *kiphone6));
+    //    }];
     // Do any additional setup after loading the view.
 }
 
 - (void)action{
-    ConnectWifiViewController *addEquipmentVC  = [[ConnectWifiViewController alloc]init];
+    YJConnectWifiVC *addEquipmentVC  = [[YJConnectWifiVC alloc]init];
     [self.navigationController pushViewController:addEquipmentVC animated:YES];
 }
 - (void)didReceiveMemoryWarning {
@@ -107,11 +107,11 @@
     }
     if (_device == nil) {
         //2.画扫描框的外围阴影半透明区
-            [self setCropRect:kScanRect];
+        [self setCropRect:kScanRect];
         //3.设置摄像头和相关配置
-            [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
+        [self performSelector:@selector(setupCamera) withObject:nil afterDelay:0.3];
     }
-
+    
     
 }
 
@@ -180,7 +180,7 @@
     CGFloat height = 220/SCREEN_HEIGHT;
     ///top 与 left 互换  width 与 height 互换
     [_output setRectOfInterest:CGRectMake(top,left, height, width)];
-        
+    
     // Session
     _session = [[AVCaptureSession alloc]init];
     [_session setSessionPreset:AVCaptureSessionPresetHigh];
@@ -232,8 +232,8 @@
             
             if (_session != nil && timer != nil) {
                 [self action];
-//                [_session startRunning];
-//                [timer setFireDate:[NSDate date]];
+                //                [_session startRunning];
+                //                [timer setFireDate:[NSDate date]];
                 [_session stopRunning];
                 [timer setFireDate:[NSDate distantFuture]];
             }
@@ -250,13 +250,13 @@
 
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

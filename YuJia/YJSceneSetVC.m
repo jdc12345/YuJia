@@ -211,7 +211,7 @@ static NSString* eqCellid = @"eq_cell";
 {
     if (indexPath.row<self.addedEquipmentListData.count-1) {
         YJEquipmentrCollectionVCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
-        cell.functionList = self.addedEquipmentListData[indexPath.row];
+        cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
         return cell;
     }
     // 去缓存池找

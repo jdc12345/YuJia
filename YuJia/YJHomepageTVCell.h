@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YYPropertyFunctionList.h"
+//#import "YYPropertyFunctionList.h"
+#import "YJSceneDetailModel.h"
+#import "YJRoomDetailModel.h"
 
 @interface YJHomepageTVCell : UITableViewCell
-@property (nonatomic, strong) YYPropertyFunctionList* functionList;//情景数据模型
-@property (nonatomic, strong) NSString* roomName;//房间名字
+@property (nonatomic, strong) YJSceneDetailModel* sceneDetailModel;//情景数据模型
+@property (nonatomic, strong) YJRoomDetailModel* roomDetailModel;//房间数据模型
 @property (nonatomic, weak) UILabel* itemLabel;
 @end

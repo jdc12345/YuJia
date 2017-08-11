@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YJEquipmentListModel.h"
+//#import "YJEquipmentListModel.h"
+#import "YJEquipmentModel.h"
+
 @interface YJEquipmentrCollectionVCell : UICollectionViewCell
-@property (nonatomic, strong) YJEquipmentListModel* functionList;
+//@property (nonatomic, strong) YJEquipmentListModel* functionList;
+@property (nonatomic, strong) YJEquipmentModel* equipmentModel;
 @end

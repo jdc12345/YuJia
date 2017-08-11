@@ -20,7 +20,7 @@
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 #import "OtherPeopleInfoViewController.h"
 #import "YJLikeActivitiesTVCell.h"
-
+#import "YJActiviesLikeModel.h"
 
 static NSString* tablecell = @"table_cell";
 @interface YJCommunityCarDetailVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -30,6 +30,7 @@ static NSString* tablecell = @"table_cell";
 @property(nonatomic,weak)UIButton *joinBtn;
 @property(nonatomic,strong)NSString *type;
 @property(nonatomic,strong)NSMutableArray *commentList;//评论的人们
+@property(nonatomic,strong)NSMutableArray *addList;//司机发起参与的乘客
 @property(nonatomic,assign)long isLike;//用户是否参加
 @property(nonatomic,strong)RKNotificationHub *barHub;//bage
 @property(nonatomic,assign)Boolean isHasMessage;//是否有消息
@@ -49,8 +50,8 @@ static NSString* tablecell = @"table_cell";
     [self checkHasMessade];
 
 }
+//添加右侧消息中心按钮
 -(void)checkHasMessade{
-    //添加右侧消息中心按钮
     UIButton *informationBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 15, 16)];
     [informationBtn setImage:[UIImage imageNamed:@"remind"] forState:UIControlStateNormal];
     [informationBtn addTarget:self action:@selector(informationBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -81,7 +82,12 @@ static NSString* tablecell = @"table_cell";
     }];
     
 }
-
+//消息按钮点击事件
+-(void)informationBtnClick:(UIButton*)sender{
+    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
+    vc.noticeType = 3;
+    [self.navigationController pushViewController:vc animated:true];
+}
 -(void)refrish{
     [SVProgressHUD show];// 动画开始
     NSString *activiesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/carpooling/findCarpoolingOne.do?token=%@&carpoolingId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
@@ -91,6 +97,12 @@ static NSString* tablecell = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            self.addList = [NSMutableArray array];
+            NSArray *addArr = bigDic[@"CarpoolingLogEntity"];//司机发起时候参加的人员信息集合
+            for (NSDictionary *dic in addArr) {
+                YJActiviesLikeModel *infoModel = [YJActiviesLikeModel mj_objectWithKeyValues:dic];
+                [self.addList addObject:infoModel];
+            }
             NSDictionary *detailDic = bigDic[@"carpoolingEntity"];
             self.model = [YJCommunityCarListModel mj_objectWithKeyValues:detailDic];
             NSArray *commentArr = bigDic[@"commentlist"];
@@ -113,6 +125,16 @@ static NSString* tablecell = @"table_cell";
     }];
 
 }
+/**
+ 从消息列表传过来id
+ 
+ @param carpoolingId 从消息列表传过来id
+ */
+-(void)setCarpoolingId:(long)carpoolingId{
+    _carpoolingId = carpoolingId;
+    //    self.model.info_id = carpoolingId;
+    [self loadData];
+}
 -(void)loadData{
 //http://localhost:8080/smarthome/mobileapi/carpooling/findCarpoolingOne.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &carpoolingId=1
@@ -124,6 +146,12 @@ static NSString* tablecell = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            self.addList = [NSMutableArray array];
+            NSArray *addArr = bigDic[@"CarpoolingLogEntity"];//司机发起时候参加的人员信息集合
+            for (NSDictionary *dic in addArr) {
+                YJActiviesLikeModel *infoModel = [YJActiviesLikeModel mj_objectWithKeyValues:dic];
+                [self.addList addObject:infoModel];
+            }
             NSDictionary *detailDic = bigDic[@"carpoolingEntity"];
             self.model = [YJCommunityCarListModel mj_objectWithKeyValues:detailDic];
             if (!self.userId) {//第一次加载数据需要判断userId是否为空
@@ -357,13 +385,13 @@ static NSString* tablecell = @"table_cell";
     if (self.model.ctype==2) {
         if (indexPath.row==0) {
             YJLikeActivitiesTVCell *cell = [[YJLikeActivitiesTVCell alloc]init];
-            //        cell.likeList = self.addList;
+            cell.likeList = self.addList;
             cell.image = @"blue-add";
             cell.clickAddBlock = ^(NSString *personalId) {
-                WS(ws);
-                OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
-                vc.info_id = personalId;
-                [ws.navigationController pushViewController:vc animated:true];
+            WS(ws);
+            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            vc.info_id = personalId;
+            [ws.navigationController pushViewController:vc animated:true];
             };
             return cell;
         }        
@@ -423,16 +451,7 @@ static NSString* tablecell = @"table_cell";
     return tableViewHeight;
 }
 
-/**
- 从消息列表传过来id
 
- @param carpoolingId 从消息列表传过来id
- */
--(void)setCarpoolingId:(long)carpoolingId{
-    _carpoolingId = carpoolingId;
-//    self.model.info_id = carpoolingId;
-    [self loadData];
-}
 
 /**
  从拼车活动列表传过来实体类
@@ -443,7 +462,7 @@ static NSString* tablecell = @"table_cell";
 //    _model = model;
 ////    self.carpoolingId = model.info_id;
 //}
-
+//参加拼车活动+接单按钮点击事件
 -(void)orderClick:(UIButton*)sender{
     //    [sender setBackgroundColor:[UIColor colorWithHexString:@"#cccccc"]];
     //    self.clickForAddBlock(sender);
@@ -490,6 +509,7 @@ static NSString* tablecell = @"table_cell";
                 self.model.participateNumber +=1;
                 self.model.islike = true;
                 sender.userInteractionEnabled = false;
+                [self refrish];//刷新参加列表
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
@@ -532,11 +552,7 @@ static NSString* tablecell = @"table_cell";
 //    }];
 //    
 //}
--(void)informationBtnClick:(UIButton*)sender{
-    YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeType = 3;
-    [self.navigationController pushViewController:vc animated:true];
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

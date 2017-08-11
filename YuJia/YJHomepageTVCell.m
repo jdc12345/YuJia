@@ -24,13 +24,13 @@
     [super awakeFromNib];
     [self setupUI];
 }
--(void)setFunctionList:(YYPropertyFunctionList *)functionList{
-    _functionList = functionList;
-    self.itemLabel.text = functionList.name;
+-(void)setSceneDetailModel:(YJSceneDetailModel *)sceneDetailModel{
+    _sceneDetailModel = sceneDetailModel;
+    self.itemLabel.text = sceneDetailModel.sceneName;
 }
--(void)setRoomName:(NSString *)roomName{
-    _roomName = roomName;
-    self.itemLabel.text = roomName;
+-(void)setRoomDetailModel:(YJRoomDetailModel *)roomDetailModel{
+    _roomDetailModel = roomDetailModel;
+    self.itemLabel.text = roomDetailModel.roomName;
 }
 
 -(void)setupUI{
@@ -48,8 +48,7 @@
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.contentView);
     }];
-    self.itemLabel = itemLabel;
-    
+    self.itemLabel = itemLabel;    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
