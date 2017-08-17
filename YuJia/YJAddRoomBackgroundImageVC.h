@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJAddRoomBackgroundImageVC : UIViewController
-
+@property (nonatomic, copy) void(^itemClick)(UIImage  *selectImage);//选中的图片用来回传父控制器
 @end

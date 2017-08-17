@@ -15,6 +15,7 @@
 #import "YJEquipmentModel.h"
 #import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 #import "YJAddRoomBackgroundImageVC.h"
+#import <SDWebImageManager.h>
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString *headerViewIdentifier =@"hederview";
@@ -31,7 +32,7 @@ static NSString* eqCellid = @"eq_cell";
     [super viewDidLoad];
     self.title = @"房间设置";
 //    self.automaticallyAdjustsScrollViewInsets = YES;
-    self.navigationController.navigationBar.translucent = false;
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo)];
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -119,10 +120,27 @@ static NSString* eqCellid = @"eq_cell";
 }
 
 - (void)setUPUI{
-    if (self.roomModel.pictures.length>0) {
-        [self setBackGroundColorWithImage:self.roomModel.pictures];//把控制器背景设为当前房间背景图片
+    if (self.roomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
+        if ([self.roomModel.pictures isEqualToString:@"1"]) {
+            [self setBackGroundColorWithImage:roomBackImages[0]];
+        }else if ([self.roomModel.pictures isEqualToString:@"1"]){
+            [self setBackGroundColorWithImage:roomBackImages[1]];
+        }else{
+            NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.roomModel.pictures];
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                NSLog(@"当前进度%ld",receivedSize/expectedSize);
+            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                NSLog(@"下载完成");
+                if (image) {
+                    [self setBackGroundColorWithImage:image];
+                }else{
+                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                }
+            }];
+        }
     }else{
-        [self setBackGroundColorWithImage:@"home_back"];
+        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
     }
     UIView *backGrayView = [[UIView alloc]init];//添加模糊视图
     backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
@@ -139,7 +157,7 @@ static NSString* eqCellid = @"eq_cell";
     [self.view addSubview:collectionView];
     [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(headerView.mas_bottom);
-        make.top.offset(64);
+        make.top.offset(0);
         make.left.right.offset(0);
         make.bottom.offset(0);
     }];
@@ -258,12 +276,12 @@ static NSString* eqCellid = @"eq_cell";
     return headView;
 }
 //把控制器背景设为图片
-- (void)setBackGroundColorWithImage:(NSString *)imageName
+- (void)setBackGroundColorWithImage:(UIImage *)image
 {
-    UIImage *oldImage = [UIImage imageNamed:imageName];
+    UIImage *oldImage = image;
     
-    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)), NO, 0.0);
-    [oldImage drawInRect:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height-64)];
+    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)), NO, 0.0);
+    [oldImage drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
@@ -272,6 +290,9 @@ static NSString* eqCellid = @"eq_cell";
 //选择背景图片
 -(void)selectBackgroundImage{
     YJAddRoomBackgroundImageVC *addImageVC = [[YJAddRoomBackgroundImageVC alloc]init];
+    addImageVC.itemClick = ^(UIImage *selectImage) {
+        [self setBackGroundColorWithImage:selectImage];//把block回传的图片设置为房间背景
+    };
     [self.navigationController pushViewController:addImageVC animated:true];
 }
 #pragma mark - UICollectionView
@@ -364,8 +385,10 @@ static NSString* eqCellid = @"eq_cell";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";    
+    self.navBarBgAlpha = @"1.0";
+    self.navigationController.navigationBar.translucent = false;
 }
+ 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

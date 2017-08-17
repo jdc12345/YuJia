@@ -16,12 +16,12 @@
 #import "YJHeaderTitleBtn.h"
 #import "YJHomepageTVCell.h"
 #import "YJRoomSetUpVC.h"
-//#import "SightSettingViewController.h"
 #import "YJSceneSetVC.h"
 #import "YJAddEquipmentVC.h"
 #import "YJSceneDetailModel.h"
 #import "YJRoomDetailModel.h"
 #import "YJEquipmentModel.h"
+#import <SDWebImageManager.h>
 
 static NSString* eqCellid = @"eq_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -44,13 +44,14 @@ static NSString* tableCellid = @"table_cell";
 @property (nonatomic, strong) NSMutableArray* roomListData;//房间列表
 @property(nonatomic,weak)YJHeaderTitleBtn *roomBtn;//显示当前房间的btn
 @property (nonatomic, strong) YJRoomDetailModel* curruntRoomModel;//当前房间数据模型
+
 @end
 
 @implementation YJHomePageVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self setBackGroundColorWithImage:@"home_back"];
+    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
     [self setUpUI];
 }
 //请求情景房间数据
@@ -90,10 +91,27 @@ static NSString* tableCellid = @"table_cell";
             [self.roomListData addObject:roomModel];
         }
         if (!self.isMyscene) {//进入页面时候当前页面处于房间页面时候需要根据当前房间更换房间背景
-            if (self.curruntRoomModel.pictures.length>0) {
-                [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+            if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
+                if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
+                    [self setBackGroundColorWithImage:roomBackImages[0]];
+                }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
+                    [self setBackGroundColorWithImage:roomBackImages[1]];
+                }else{
+                    NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
+                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                    [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                        NSLog(@"当前进度%ld",receivedSize/expectedSize);
+                    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                        NSLog(@"下载完成");
+                        if (image) {
+                            [self setBackGroundColorWithImage:image];
+                        }else{
+                            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                        }
+                    }];
+                }
             }else{
-                [self setBackGroundColorWithImage:@"home_back"];
+                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
             }
         }
         if (self.roomListData.count>0&&!self.curruntRoomModel) {//第一次请求数据
@@ -110,9 +128,9 @@ static NSString* tableCellid = @"table_cell";
     }];
 }
 //把控制器背景设为图片
-- (void)setBackGroundColorWithImage:(NSString *)imageName
+- (void)setBackGroundColorWithImage:(UIImage *)image
 {
-    UIImage *oldImage = [UIImage imageNamed:imageName];
+    UIImage *oldImage = image;
     
     UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)), NO, 0.0);
     [oldImage drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)];
@@ -197,9 +215,7 @@ static NSString* tableCellid = @"table_cell";
     }];
     self.clearView = clearView;
     // 用来接收情景数据 方便设置数据源
-//    self.mysceneListData = [self loadFunctionListData];
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
-//    UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 218*kiphone6, kScreenW, kScreenH-self.tabBarController.tabBar.bounds.size.height-218*kiphone6) collectionViewLayout:[[YJHomeSceneFlowLayout alloc]init]];
     collectionView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:collectionView];
     [collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -267,7 +283,7 @@ static NSString* tableCellid = @"table_cell";
         make.top.offset(74*kiphone6);
     }];
     if (sender.tag == 31) {
-        [self setBackGroundColorWithImage:@"home_back"];//把控制器背景设为情景背景图片
+        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];//把控制器背景设为情景背景图片
         self.isMyscene = true;
         [self.equipmentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mysceneBtn.mas_right).offset(18);
@@ -280,10 +296,27 @@ static NSString* tableCellid = @"table_cell";
         [self.mysceneColView reloadData];
         
     }else{
-        if (self.curruntRoomModel.pictures.length>0) {
-            [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+        if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
+            if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
+                [self setBackGroundColorWithImage:roomBackImages[0]];
+            }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
+                [self setBackGroundColorWithImage:roomBackImages[1]];
+            }else{
+                NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
+                SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                    NSLog(@"当前进度%ld",receivedSize/expectedSize);
+                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    NSLog(@"下载完成");
+                    if (image) {
+                        [self setBackGroundColorWithImage:image];
+                    }else{
+                        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                    }
+                }];
+            }
         }else{
-            [self setBackGroundColorWithImage:@"home_back"];
+            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
         }
         self.isMyscene = false;
         [self.mysceneBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -519,10 +552,27 @@ static NSString* tableCellid = @"table_cell";
         [self.navigationController pushViewController:vc animated:true];
     }else{
         self.curruntRoomModel = cell.roomDetailModel;//更换当前房间
-        if (self.curruntRoomModel.pictures.length>0) {
-            [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+        if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
+            if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
+                [self setBackGroundColorWithImage:roomBackImages[0]];
+            }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
+                [self setBackGroundColorWithImage:roomBackImages[1]];
+            }else{
+                NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
+                SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                    NSLog(@"当前进度%ld",receivedSize/expectedSize);
+                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    NSLog(@"下载完成");
+                    if (image) {
+                        [self setBackGroundColorWithImage:image];
+                    }else{
+                        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                    }
+                }];
+            }
         }else{
-            [self setBackGroundColorWithImage:@"home_back"];
+            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
         }
         self.equipmentListData = [NSMutableArray arrayWithArray:cell.roomDetailModel.equipmentList];
         [self.equipmentColView reloadData];//更换不同房间的设备数据源
