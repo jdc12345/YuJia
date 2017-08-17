@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSString *sceneName;
 @property (nonatomic, strong) NSString *sceneIcon;
 @property (nonatomic, copy) NSArray *equipmentList;
-@property (nonatomic, strong) NSString *repeatMode;
+@property (nonatomic, strong) NSString *repeatMode;//情景模式类型,1=手动开启关闭，2=定时开启关闭，3=根据位置开启关闭
 @property (nonatomic, strong) NSString *sceneState;
 @property (nonatomic, strong) NSString *sceneModel;
 

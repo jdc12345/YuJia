@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YJRoomDetailModel.h"
 
 @interface YJRoomSetUpVC : UIViewController
-@property (nonatomic, strong) NSString* roomName;//传过来的房间名字
-@property (nonatomic, strong) NSArray* equipmentListData;//传过来的房间设备列表
+//@property (nonatomic, strong) NSString* roomName;//传过来的房间名字
+//@property (nonatomic, strong) NSArray* equipmentListData;//传过来的房间设备列表
+@property (nonatomic, strong) YJRoomDetailModel* roomModel;//编辑传过来的房间数据模型
 @end

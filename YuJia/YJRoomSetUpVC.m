@@ -11,10 +11,14 @@
 #import "UIViewController+Cloudox.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
-#import "YJEquipmentListModel.h"
+#import "YJEquipmentrCollectionVCell.h"
+#import "YJEquipmentModel.h"
+#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
+#import "YJAddRoomBackgroundImageVC.h"
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString *headerViewIdentifier =@"hederview";
+static NSString* eqCellid = @"eq_cell";
 @interface YJRoomSetUpVC ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property(nonatomic, weak) UITextField *roomNameTF;//房间名称
 @property(nonatomic,weak)UICollectionView *equipmentColView;//情景collectionView
@@ -26,22 +30,100 @@ static NSString *headerViewIdentifier =@"hederview";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"房间设置";
-//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.automaticallyAdjustsScrollViewInsets = YES;
     self.navigationController.navigationBar.translucent = false;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(action:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo)];
     self.view.backgroundColor = [UIColor whiteColor];
+    
 }
--(void)setEquipmentListData:(NSArray *)equipmentListData{
-    _equipmentListData = equipmentListData;
-    YJEquipmentListModel *model = [[YJEquipmentListModel alloc]init];//添加按钮的model
+-(void)changeInfo{
+//    保存或更新房间信息接口
+//    添加或修改房间信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+//Method:POST
+//    参数列表:
+//    |参数名          |类型      |必需  |描述
+//    |-----          |----     |---- |----
+//    |token          |String   |Y    |令牌
+//    |id             |Long     |Y    |编号
+//    |roomName       |String   |Y    |房间名称
+//    |pictures       |String   |N    |房间图片
+//    |oid            |Integer  |N    |序号
+//    |familyId       |Long     |Y    |家的编号--外键--家庭表
+//    返回值：
+//    |参数名          |类型      |描述
+//    |code           |String   |响应代码
+//    |result         |String   |响应说明
+//    |Room           |Object   |房间实体类
+    
+    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];
+    [self.addedEquipmentListData removeLastObject];
+    // NSMutableArray --> NSArray
+    self.roomModel.equipmentList = [self.addedEquipmentListData copy];
+    for (YJEquipmentModel *equipment in self.roomModel.equipmentList) {
+        [equipmentList addObject: [equipment properties_aps]];
+    }
+    NSLog(@"%@",equipmentList);
+    if (self.roomNameTF.text.length >0) {
+        self.roomModel.roomName = self.roomNameTF.text;
+    }
+    if (!self.roomModel.info_id) {
+        self.roomModel.info_id = @"";
+    }
+    if (!self.roomModel.oid) {
+        self.roomModel.oid = @"";
+    }
+    if (!self.roomModel.pictures) {
+        [SVProgressHUD showErrorWithStatus:@"请选择房间背景图片"];
+        return;
+    }
+    if (!self.roomModel.roomName) {
+        [SVProgressHUD showErrorWithStatus:@"请填写房间名字"];
+        return;
+    }
+    NSData *picData = UIImageJPEGRepresentation([UIImage imageNamed:self.roomModel.pictures], 0.5);
+    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+    NSDictionary *dict = @{
+                           @"id":self.roomModel.info_id,
+                           @"token":mDefineToken,
+                           @"equipmentList":jsonString,
+                           @"roomName":self.roomModel.roomName,
+                           @"oid":self.roomModel.oid,
+                           @"familyId":self.roomModel.familyId,
+                           @"file":picData
+                           };
+    
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+        YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
+        model.name = @"添加";
+        model.iconId = @"0";
+        [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
+    }];
+}
+-(void)setRoomModel:(YJRoomDetailModel *)roomModel{
+    _roomModel = roomModel;
+    YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
     model.name = @"添加";
-    model.icon = @"add_home";
-    self.addedEquipmentListData = [NSMutableArray arrayWithArray:equipmentListData];
+    model.iconId = @"0";
+    self.addedEquipmentListData = [NSMutableArray arrayWithArray:roomModel.equipmentList];
     [self.addedEquipmentListData addObject:model];
     [self setUPUI];
 }
+
 - (void)setUPUI{
-    [self imageBg];//添加背景图
+    if (self.roomModel.pictures.length>0) {
+        [self setBackGroundColorWithImage:self.roomModel.pictures];//把控制器背景设为当前房间背景图片
+    }else{
+        [self setBackGroundColorWithImage:@"home_back"];
+    }
     UIView *backGrayView = [[UIView alloc]init];//添加模糊视图
     backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
     backGrayView.alpha = 0.5;
@@ -65,17 +147,42 @@ static NSString *headerViewIdentifier =@"hederview";
     collectionView.delegate = self;
     self.equipmentColView = collectionView;
     // 注册单元格
-    [collectionView registerClass:[YJHomeSceneCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];
-    //注册头视图
-    [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewIdentifier];
-
+    [collectionView registerClass:[YJEquipmentrCollectionVCell class] forCellWithReuseIdentifier:eqCellid];
+    [collectionView registerClass:[YJHomeSceneCollectionViewCell class] forCellWithReuseIdentifier:collectionCellid];[collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerViewIdentifier];
     collectionView.showsHorizontalScrollIndicator = false;
     collectionView.showsVerticalScrollIndicator = false;
+    //长按手势添加到self.collectionView上面
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lonePressDelete:)];
+    [collectionView addGestureRecognizer:longPress];
+    [self.view addSubview:collectionView];
 
 }
-- (void)action:(NSString *)actionStr{
-    NSLog(@"点什么点");
+//长按删除设备
+- (void)lonePressDelete:(UILongPressGestureRecognizer *)longPress
+{
+    //获取目标cell
+    NSIndexPath *selectIndexPath = [self.equipmentColView indexPathForItemAtPoint:[longPress locationInView:self.equipmentColView]];
+    YJEquipmentrCollectionVCell *cell = (YJEquipmentrCollectionVCell *)[self.equipmentColView cellForItemAtIndexPath:selectIndexPath];
+    if(longPress.state==UIGestureRecognizerStateBegan){
+        //删除操作
+        if(self.addedEquipmentListData.count>1){//已添加了设备
+            NSIndexPath *index =[self.equipmentColView indexPathForCell:cell];
+            if (index.row!=self.addedEquipmentListData.count-1) {//不能是最后一个添加设备的按钮
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"删除该设备" message:@"你确定要删除该设备?" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                    [self.addedEquipmentListData removeObjectAtIndex:index.row];
+                    NSArray* deletearr=@[index];
+                    [self.equipmentColView deleteItemsAtIndexPaths:deletearr];
+                }];
+                [alert addAction:cancelAction];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }
+    }
 }
+//产生collectionview头部试图
 - (UIView *)personInfomation{
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 130*kiphone6)];
     headView.backgroundColor = [UIColor whiteColor];
@@ -90,7 +197,7 @@ static NSString *headerViewIdentifier =@"hederview";
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"#333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-    sightNameText.text = self.roomName;
+    sightNameText.text = self.roomModel.roomName;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
@@ -101,7 +208,7 @@ static NSString *headerViewIdentifier =@"hederview";
     [selectPictureBtn setTitle:@"选择" forState:UIControlStateNormal];
     [selectPictureBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     [selectPictureBtn setBackgroundColor:[UIColor colorWithHexString:@"#00eac6"]];
-    [selectPictureBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
+    [selectPictureBtn addTarget:self action:@selector(selectBackgroundImage) forControlEvents:UIControlEventTouchUpInside];
     selectPictureBtn.layer.masksToBounds = YES;
     selectPictureBtn.layer.cornerRadius = 3;
     
@@ -150,16 +257,22 @@ static NSString *headerViewIdentifier =@"hederview";
     
     return headView;
 }
-- (void)imageBg//把控制器背景设为图片
+//把控制器背景设为图片
+- (void)setBackGroundColorWithImage:(NSString *)imageName
 {
-    UIImage *oldImage = [UIImage imageNamed:@"home_back"];
+    UIImage *oldImage = [UIImage imageNamed:imageName];
     
-    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, kScreenH)), NO, 0.0);
-    [oldImage drawInRect:CGRectMake(0, 64, self.view.frame.size.width, kScreenH-64)];
+    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)), NO, 0.0);
+    [oldImage drawInRect:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height-64)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:newImage];
+}
+//选择背景图片
+-(void)selectBackgroundImage{
+    YJAddRoomBackgroundImageVC *addImageVC = [[YJAddRoomBackgroundImageVC alloc]init];
+    [self.navigationController pushViewController:addImageVC animated:true];
 }
 #pragma mark - UICollectionView
 // 有多少行
@@ -174,15 +287,29 @@ static NSString *headerViewIdentifier =@"hederview";
 {
     // 去缓存池找
     YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
-    cell.equipmentListModels = self.addedEquipmentListData[indexPath.row];
-//    cell.selected = false;
+    cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
+    //    cell.selected = false;
     return cell;
 }
 
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-  
+    WS(ws);
+    if (indexPath.row==self.addedEquipmentListData.count-1) {//添加设备按钮点击事件
+        YJAddEquipmentToCurruntSceneOrRoomVC *sVC = [[YJAddEquipmentToCurruntSceneOrRoomVC alloc]init];
+        sVC.equipmentList = self.addedEquipmentListData;//把已有设备传过去
+        sVC.itemClick = ^(YJEquipmentModel *index) {
+            if (ws.addedEquipmentListData.count>0) {
+                [ws.addedEquipmentListData insertObject:index atIndex:self.addedEquipmentListData.count-1];
+            }else{
+                [ws.addedEquipmentListData insertObject:index atIndex:0];
+            }
+            [ws.equipmentColView reloadData];
+//            self.sceneNameTF.text = self.sceneModel.sceneName;
+        };
+        [self.navigationController pushViewController:sVC animated:true];
+    }
     
 }
 //  返回头视图

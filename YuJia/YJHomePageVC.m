@@ -50,12 +50,12 @@ static NSString* tableCellid = @"table_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self imageBg];
-    [self httpRequestHomeInfo];
+    [self setBackGroundColorWithImage:@"home_back"];
     [self setUpUI];
 }
+//请求情景房间数据
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mHomepageInfo,mDefineToken1] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mHomepageInfo,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -84,24 +84,35 @@ static NSString* tableCellid = @"table_cell";
                 [equipmentArray addObject:equipmentModel];
             }
             roomModel.equipmentList = equipmentArray;
+            if ([roomModel.info_id isEqualToString:self.curruntRoomModel.info_id]) {//如果修改了当前房间要更换当前房间数据源
+                self.curruntRoomModel = roomModel;
+            }
             [self.roomListData addObject:roomModel];
         }
-        if (self.roomListData.count>0) {
-            self.curruntRoomModel = self.roomListData[0];
-            if (self.roomBtn) {
-                [self.roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值
+        if (!self.isMyscene) {//进入页面时候当前页面处于房间页面时候需要根据当前房间更换房间背景
+            if (self.curruntRoomModel.pictures.length>0) {
+                [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+            }else{
+                [self setBackGroundColorWithImage:@"home_back"];
             }
-            self.equipmentListData = [NSMutableArray arrayWithArray:self.curruntRoomModel.equipmentList];//默认房间设备列表
-            [self.equipmentColView reloadData];
         }
+        if (self.roomListData.count>0&&!self.curruntRoomModel) {//第一次请求数据
+            self.curruntRoomModel = self.roomListData[0];
+        }
+        if (self.roomBtn) {
+            [self.roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值
+        }
+        self.equipmentListData = [NSMutableArray arrayWithArray:self.curruntRoomModel.equipmentList];//当前房间设备列表
+        [self.equipmentColView reloadData];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
 }
-- (void)imageBg//把控制器背景设为图片
+//把控制器背景设为图片
+- (void)setBackGroundColorWithImage:(NSString *)imageName
 {
-    UIImage *oldImage = [UIImage imageNamed:@"home_back"];
+    UIImage *oldImage = [UIImage imageNamed:imageName];
     
     UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)), NO, 0.0);
     [oldImage drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-self.tabBarController.tabBar.bounds.size.height)];
@@ -256,6 +267,7 @@ static NSString* tableCellid = @"table_cell";
         make.top.offset(74*kiphone6);
     }];
     if (sender.tag == 31) {
+        [self setBackGroundColorWithImage:@"home_back"];//把控制器背景设为情景背景图片
         self.isMyscene = true;
         [self.equipmentBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mysceneBtn.mas_right).offset(18);
@@ -268,6 +280,11 @@ static NSString* tableCellid = @"table_cell";
         [self.mysceneColView reloadData];
         
     }else{
+        if (self.curruntRoomModel.pictures.length>0) {
+            [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+        }else{
+            [self setBackGroundColorWithImage:@"home_back"];
+        }
         self.isMyscene = false;
         [self.mysceneBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.equipmentBtn.mas_right).offset(18);
@@ -349,8 +366,8 @@ static NSString* tableCellid = @"table_cell";
             }
     }else{//处于我的设备页面
         YJRoomSetUpVC *setVC = [[YJRoomSetUpVC alloc]init];
-        setVC.roomName = self.roomBtn.titleLabel.text;
-        setVC.equipmentListData = self.equipmentListData;
+//        setVC.roomName = self.roomBtn.titleLabel.text;
+        setVC.roomModel = self.curruntRoomModel;
         [self.navigationController pushViewController:setVC animated:true];
     }
 }
@@ -495,11 +512,18 @@ static NSString* tableCellid = @"table_cell";
         //跳转情景设置页面
         YJSceneSetVC *vc = [[YJSceneSetVC alloc]init];
 //        SightSettingViewController *vc = [[SightSettingViewController alloc]init];
-        vc.sceneName = cell.itemLabel.text;
-        vc.equipmentListData = self.equipmentListData;
+//        vc.sceneName = cell.itemLabel.text;
+//        vc.equipmentListData = self.equipmentListData;
+        YJSceneDetailModel *sceneModel = self.mysceneListData[indexPath.row];
+        vc.sceneModel = sceneModel;//当前选中情景模型数据
         [self.navigationController pushViewController:vc animated:true];
     }else{
         self.curruntRoomModel = cell.roomDetailModel;//更换当前房间
+        if (self.curruntRoomModel.pictures.length>0) {
+            [self setBackGroundColorWithImage:self.curruntRoomModel.pictures];//把控制器背景设为当前房间背景图片
+        }else{
+            [self setBackGroundColorWithImage:@"home_back"];
+        }
         self.equipmentListData = [NSMutableArray arrayWithArray:cell.roomDetailModel.equipmentList];
         [self.equipmentColView reloadData];//更换不同房间的设备数据源
 //        [self.roomBtn setTitle:cell.roomDetailModel.roomName forState:UIControlStateNormal];//更换切换房间按钮名字
@@ -512,13 +536,14 @@ static NSString* tableCellid = @"table_cell";
         YJSceneSetVC *vc = [[YJSceneSetVC alloc]init];
         //        SightSettingViewController *vc = [[SightSettingViewController alloc]init];
 //        vc.sceneName = cell.itemLabel.text;
-        vc.equipmentListData = [NSArray array];
+//        vc.equipmentListData = [NSArray array];
+        vc.sceneModel = [[YJSceneDetailModel alloc]init];
         [self closeBtnClick];
         [self.navigationController pushViewController:vc animated:true];
     }else{//处于我的设备页面
         YJRoomSetUpVC *setVC = [[YJRoomSetUpVC alloc]init];
 //        setVC.roomName = self.roomBtn.titleLabel.text;
-        setVC.equipmentListData = [NSArray array];
+        setVC.roomModel = [[YJRoomDetailModel alloc]init];
         [self closeBtnClick];
         [self.navigationController pushViewController:setVC animated:true];
     }
@@ -631,9 +656,9 @@ static NSString* tableCellid = @"table_cell";
         [roomBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
         roomBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [roomBtn setImage:[UIImage imageNamed:@"more_room"] forState:UIControlStateNormal];
-        roomBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+//        roomBtn.titleLabel.textAlignment = NSTextAlignmentRight;
         //    localBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -30);
-        roomBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+//        roomBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         for (UIView *view in header.subviews) {
             [view removeFromSuperview];
         } // 防止复用分区头
@@ -685,6 +710,13 @@ static NSString* tableCellid = @"table_cell";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
     self.navigationController.navigationBar.translucent = true;
+    if (self.mysceneListData.count>0) {
+        [self.mysceneListData removeAllObjects];
+    }
+    if (self.equipmentListData.count>0) {
+        [self.equipmentListData removeAllObjects];
+    }
+    [self httpRequestHomeInfo];//请求刷新数据
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

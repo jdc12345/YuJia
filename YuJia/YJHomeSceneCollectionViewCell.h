@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "YYPropertyFunctionList.h"
-#import "YJEquipmentListModel.h"
 #import "YJSceneDetailModel.h"
+#import "YJEquipmentModel.h"
 
 @interface YJHomeSceneCollectionViewCell : UICollectionViewCell
-@property (nonatomic, strong) YJSceneDetailModel* sceneDetailModel;
-@property (nonatomic, strong) YJEquipmentListModel* equipmentListModels;//设备模型
+@property (nonatomic, strong) YJSceneDetailModel* sceneDetailModel;//场景模型
+@property (nonatomic, strong) YJEquipmentModel* equipmentModel;//设备模型(用以添加最后的添加按钮)
 @end

@@ -80,11 +80,37 @@
         self.selected = false;
     }
 }
--(void)setEquipmentListModels:(YJEquipmentListModel *)equipmentListModels{
-    _equipmentListModels = equipmentListModels;
+-(void)setEquipmentModel:(YJEquipmentModel *)equipmentModel{
+    _equipmentModel = equipmentModel;
     // 把数据放在控件上
-    self.iconView.image = [UIImage imageNamed:equipmentListModels.icon];
-    self.nameLabel.text = equipmentListModels.name;
+    NSString *imageName;
+    switch ([equipmentModel.iconId integerValue]) {
+        case 0:
+            imageName = @"add_home";
+            break;
+        case 1:
+            imageName = @"socket";
+            break;
+        case 2:
+            imageName = @"light";
+            break;
+        case 3:
+            imageName = @"tv";
+            break;
+        case 4:
+            imageName = @"curtain";
+            break;
+        case 5:
+            imageName = @"aircondition";
+            break;
+        case 6:
+            imageName = @"lock";
+            break;
+        default:
+            break;
+    }
+    self.iconView.image = [UIImage imageNamed:imageName];
+    self.nameLabel.text = equipmentModel.name;
 }
 - (void)setupUI
 {

@@ -1,31 +1,58 @@
 //
-//  SelectEquipmentViewController.m
+//  YJAddEquipmentToCurruntSceneOrRoomVC.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/18.
+//  Created by 万宇 on 2017/8/15.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "SelectEquipmentViewController.h"
+#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
+#import "YJEquipmentListTVCell.h"
 
-#import "EquipmentManagerTableViewCell.h"
-@interface SelectEquipmentViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface YJAddEquipmentToCurruntSceneOrRoomVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
+
 @end
 
+@implementation YJAddEquipmentToCurruntSceneOrRoomVC
 
-@implementation SelectEquipmentViewController
 
-- (NSMutableArray *)dataSource{
-    if (_dataSource == nil) {
-        _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
-    }
-    return _dataSource;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"设备管理";
+    self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    self.navigationController.navigationBar.translucent = false;
+    [self httpRequestHomeInfo];
 }
+//请求所有设备数据
+- (void)httpRequestHomeInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllEquipment,mDefineToken2] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *equipmentList= responseObject[@"equipmentList"];
+        for(NSDictionary *eDict in equipmentList){
+            YJEquipmentModel *eModel = [YJEquipmentModel mj_objectWithKeyValues:eDict];
+            [self.dataSource addObject:eModel];
+            for (YJEquipmentModel *model in self.equipmentList) {
+                if ([eModel.name isEqualToString:model.name]) {
+                    [self.dataSource removeObject:eModel];//把已经存在的设备去除
+                }
+            }
+        }
+        if (self.dataSource.count==0) {
+            [SVProgressHUD showInfoWithStatus:@"没有设备可以添加了"];
+        }
+        [self tableView];        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+//布局列表
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -35,7 +62,7 @@
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
-        [_tableView registerClass:[EquipmentManagerTableViewCell class] forCellReuseIdentifier:@"EquipmentManagerTableViewCell"];
+        [_tableView registerClass:[YJEquipmentListTVCell class] forCellReuseIdentifier:@"EquipmentManagerTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
@@ -44,20 +71,18 @@
     }
     return _tableView;
 }
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = @"设备管理";
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    [self httpRequestHomeInfo];
-    // Do any additional setup after loading the view.
-}
 - (UIView *)personInfomation{
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 10)];
     headView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     return headView;
     
+}
+//懒加载
+- (NSMutableArray *)dataSource{
+    if (_dataSource == nil) {
+        _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
+    }
+    return _dataSource;
 }
 #pragma mark -
 #pragma mark ------------TableView Delegeta----------------------
@@ -72,8 +97,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    EquipmentModel *equipmentModel = self.dataSource[indexPath.row];
-    self.itemClick(equipmentModel);
+    YJEquipmentModel *equipmentModel = self.dataSource[indexPath.row];
+    self.itemClick(equipmentModel);//把选中的设备数据
     [self.navigationController popViewControllerAnimated:YES];
     
 }
@@ -87,45 +112,32 @@
     return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    EquipmentModel *equipmentModel = self.dataSource[indexPath.row];
+    YJEquipmentModel *equipmentModel = self.dataSource[indexPath.row];
     
     //    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
-    EquipmentManagerTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentManagerTableViewCell" forIndexPath:indexPath];
+    YJEquipmentListTVCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentManagerTableViewCell" forIndexPath:indexPath];
     homeTableViewCell.titleLabel.text = equipmentModel.name;
-    if (equipmentModel.iconUrl.length >0) {
+    if (equipmentModel.iconUrl.length >0) {//????
+        
     }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue]]];
     }
-    [homeTableViewCell cellMode:YES];
-    homeTableViewCell.switch0.hidden = YES;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
 }
-- (void)action:(NSString *)actionStr{
-    NSLog(@"点什么点");
-}
-
+//- (void)action:(NSString *)actionStr{
+//    NSLog(@"点什么点");
+//}
+//-(void)viewWillAppear:(BOOL)animated{
+//    [super viewWillAppear:animated];
+//    self.navBarBgAlpha = @"1.0";
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllEquipment,mDefineToken2] method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray *equipmentList= responseObject[@"equipmentList"];
-        for(NSDictionary *eDict in equipmentList){
-            EquipmentModel *eModel = [EquipmentModel mj_objectWithKeyValues:eDict];
-            [self.dataSource addObject:eModel];
-        }
-        [self tableView];
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-    }];
-}
+
 /*
  #pragma mark - Navigation
  
@@ -137,3 +149,4 @@
  */
 
 @end
+

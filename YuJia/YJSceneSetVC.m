@@ -11,19 +11,21 @@
 #import "UIViewController+Cloudox.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
-#import "YJEquipmentListModel.h"
 #import "YJEquipmentrCollectionVCell.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "UILabel+Addition.h"
+#import "YJAddScenePictureVC.h"
+#import "YJEquipmentModel.h"
+#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 
 #define inputW 254*[UIScreen mainScreen].bounds.size.width/375.0 // 输入框宽度
 #define inputH 30*[UIScreen mainScreen].bounds.size.width/375.0  // 输入框高度
 static NSString* collectionCellid = @"collection_cell";
 static NSString *headerViewIdentifier =@"hederview";
 static NSString* eqCellid = @"eq_cell";
-@interface YJSceneSetVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
-@property(nonatomic, weak) UITextField *roomNameTF;//房间名称
+@interface YJSceneSetVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate,AccountDelegate>
+@property(nonatomic, weak) UITextField *sceneNameTF;//情景名称
 @property(nonatomic,weak)UICollectionView *equipmentColView;//情景collectionView
 @property (nonatomic, strong) NSMutableArray* addedEquipmentListData;//添加过设备的房间设备列表，也是数据源
 //@property (nonatomic, strong) NSMutableArray *dataSource;
@@ -34,7 +36,7 @@ static NSString* eqCellid = @"eq_cell";
  */
 @property (nonatomic, copy) UIButton *curAccount;//启动条件按钮
 @property (nonatomic, weak) UIButton *openBtn;//
-
+@property (nonatomic, weak) UIButton *selectPicBtn;//选择图标的btn
 @property (nonatomic, strong) ZYAlertSView *alertView;
 
 @property (nonatomic, strong) UIPickerView *pickerView;
@@ -74,12 +76,12 @@ static NSString* eqCellid = @"eq_cell";
     self.selectStart = @[@"定时启动",@"定位启动"];
     [self setUPUI];
 }
--(void)setEquipmentListData:(NSArray *)equipmentListData{
-    _equipmentListData = equipmentListData;
-    YJEquipmentListModel *model = [[YJEquipmentListModel alloc]init];//添加按钮的model
+-(void)setSceneModel:(YJSceneDetailModel *)sceneModel{
+    _sceneModel = sceneModel;
+    YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
     model.name = @"添加";
-    model.icon = @"add_home";
-    self.addedEquipmentListData = [NSMutableArray arrayWithArray:equipmentListData];
+    model.iconId = @"0";
+    self.addedEquipmentListData = [NSMutableArray arrayWithArray:sceneModel.equipmentList];
     [self.addedEquipmentListData addObject:model];
     [self.equipmentColView reloadData];
 }
@@ -104,10 +106,51 @@ static NSString* eqCellid = @"eq_cell";
     
     collectionView.showsHorizontalScrollIndicator = false;
     collectionView.showsVerticalScrollIndicator = false;
+    //长按手势添加到self.collectionView上面
+   UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lonePressDelete:)];
+    [collectionView addGestureRecognizer:longPress];
+    [self.view addSubview:collectionView];
     
 }
+//长按删除设备
+- (void)lonePressDelete:(UILongPressGestureRecognizer *)longPress
+{
+    //获取目标cell
+    NSIndexPath *selectIndexPath = [self.equipmentColView indexPathForItemAtPoint:[longPress locationInView:self.equipmentColView]];
+    YJEquipmentrCollectionVCell *cell = (YJEquipmentrCollectionVCell *)[self.equipmentColView cellForItemAtIndexPath:selectIndexPath];
+    if(longPress.state==UIGestureRecognizerStateBegan){
+        //删除操作
+        if(self.addedEquipmentListData.count>1){//已添加了设备
+            NSIndexPath *index =[self.equipmentColView indexPathForCell:cell];
+            if (index.row!=self.addedEquipmentListData.count-1) {//不能是最后一个添加设备的按钮
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"删除该设备" message:@"你确定要删除该设备?" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                    [self.addedEquipmentListData removeObjectAtIndex:index.row];
+                    NSArray* deletearr=@[index];
+                    [self.equipmentColView deleteItemsAtIndexPaths:deletearr];
+                }];
+                [alert addAction:cancelAction];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }else{
+            [self.equipmentColView reloadData];
+        }
+    }
+}
+//点击更换图标按钮事件
 - (void)action:(UIButton *)sender{
-    NSLog(@"点什么点");
+    YJAddScenePictureVC *presentedVC = [[YJAddScenePictureVC alloc]init];
+    if (self.sceneModel.sceneIcon) {
+            presentedVC.curruntPicNum = [self.sceneModel.sceneIcon integerValue];
+        }
+    presentedVC.clickBtnBlock = ^(NSInteger curruntPicNum) {
+        self.sceneModel.sceneIcon = [NSString stringWithFormat:@"%ld",curruntPicNum];
+        NSString *picName = [self getPicName];
+        [self.selectPicBtn setImage:[UIImage imageNamed:picName] forState:UIControlStateNormal];
+    };
+    [self.navigationController pushViewController:presentedVC animated:true];
 }
 - (UIView *)personInfomation{
     UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 205*kiphone6)];
@@ -123,20 +166,22 @@ static NSString* eqCellid = @"eq_cell";
                                           context:nil];
     UILabel *picselectLabel = [UILabel labelWithText:picSelect andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
     UIButton *selectPictureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [selectPictureBtn setImage:[UIImage imageNamed:@"add_home"] forState:UIControlStateNormal];
+    self.selectPicBtn = selectPictureBtn;
+    NSString *picName = [self getPicName];
+    [selectPictureBtn setImage:[UIImage imageNamed:picName] forState:UIControlStateNormal];
     [selectPictureBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
 //    selectPictureBtn.layer.masksToBounds = YES;
 //    selectPictureBtn.layer.cornerRadius = 3;
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"#333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-    sightNameText.text = self.sceneName;
+    sightNameText.text = self.sceneModel.sceneName;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"#f1f1f1"].CGColor;
-    self.roomNameTF = sightNameText;
-    
+    self.sceneNameTF = sightNameText;
+    sightNameText.delegate = self;
     _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 254*kiphone6, 30*kiphone6)];
     
     CGRect frame = CGRectMake(0, 0, 10.0, 30*kiphone6);
@@ -199,6 +244,52 @@ static NSString* eqCellid = @"eq_cell";
     [self setPopMenu];
     return headView;
 }
+//根据图标序号确定图标
+-(NSString *)getPicName{
+    NSString *picName;
+    if (self.sceneModel.sceneIcon) {//编辑已有情景
+        switch ([self.sceneModel.sceneIcon integerValue]) {
+            case 0:
+                picName = @"getup";
+                break;
+            case 1:
+                picName = @"rest";
+                break;
+            case 2:
+                picName = @"leave";
+                break;
+            case 3:
+                picName = @"gohome";
+                break;
+            case 4:
+                picName = @"playgame";
+                break;
+            case 5:
+                picName = @"time_scene";
+                break;
+            case 6:
+                picName = @"rain_scene";
+                break;
+            case 7:
+                picName = @"eatting_scene";
+                break;
+            case 8:
+                picName = @"music_scene";
+                break;
+            case 9:
+                picName = @"fire_scene";
+                break;
+            case 10:
+                picName = @"sunning_scene";
+                break;
+            default:
+                break;
+        }
+    }else{//添加新情景
+        picName = @"add_home";
+    }
+    return picName;
+}
 #pragma mark - UICollectionView
 // 有多少行
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
@@ -216,7 +307,7 @@ static NSString* eqCellid = @"eq_cell";
     }
     // 去缓存池找
     YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
-    cell.equipmentListModels = self.addedEquipmentListData[indexPath.row];
+    cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
     //    cell.selected = false;
     return cell;
 }
@@ -224,8 +315,21 @@ static NSString* eqCellid = @"eq_cell";
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    
-    
+    WS(ws);
+    if (indexPath.row==self.addedEquipmentListData.count-1) {//添加设备按钮点击事件
+        YJAddEquipmentToCurruntSceneOrRoomVC *sVC = [[YJAddEquipmentToCurruntSceneOrRoomVC alloc]init];
+        sVC.equipmentList = self.addedEquipmentListData;//把已有设备传过去
+        sVC.itemClick = ^(YJEquipmentModel *index) {
+            if (ws.addedEquipmentListData.count>0) {
+                [ws.addedEquipmentListData insertObject:index atIndex:self.addedEquipmentListData.count-1];
+            }else{
+                [ws.addedEquipmentListData insertObject:index atIndex:0];
+            }
+            [ws.equipmentColView reloadData];
+            self.sceneNameTF.text = self.sceneModel.sceneName;
+        };
+        [self.navigationController pushViewController:sVC animated:true];
+    }
 }
 //  返回头视图
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -275,8 +379,6 @@ static NSString* eqCellid = @"eq_cell";
     return CGSizeMake(kScreenW,255*kiphone6);
     
 }
-
-
 /**
  * 设置下拉菜单
  */
@@ -356,7 +458,7 @@ static NSString* eqCellid = @"eq_cell";
  * 弹出关闭账号选择列表
  */
 - (void)openAccountList {
-    NSLog(@"123123");
+//    NSLog(@"123123");
     [self.view bringSubviewToFront:_accountList.view];
     _accountList.isOpen = !_accountList.isOpen;
     self.openBtn.selected = _accountList.isOpen;
@@ -425,15 +527,11 @@ static NSString* eqCellid = @"eq_cell";
         make.size.mas_equalTo(CGSizeMake(120 ,14));
     }];
     
-    
-    
-    
     [lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView);
         make.bottom.equalTo(titleView);
         make.size.mas_equalTo(CGSizeMake(alertW ,1));
     }];
-    
     
     CGFloat btnW_Change = (kScreenW - 375)/4.0;
     NSArray *btnText_Array = @[@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日",@"全部"];
@@ -460,10 +558,6 @@ static NSString* eqCellid = @"eq_cell";
         NSLog(@"x = %d  y = %ld",i%4,213 +row *45);
     }
     
-    
-    
-    
-    
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sureBtn.frame = CGRectMake(10, 16, 190, 44);
     [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
@@ -483,14 +577,6 @@ static NSString* eqCellid = @"eq_cell";
     }];
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
     [alertV show];
     self.alertView = alertV;
@@ -506,12 +592,15 @@ static NSString* eqCellid = @"eq_cell";
     NSString *title = self.selectStart[index];
     [_curAccount setTitle:title forState:UIControlStateNormal];
     if ([title isEqualToString:@"定时启动"]) {
+        self.sceneModel.sceneModel = @"2";
         [self back_click];
         self.selectStart = @[@"一键启动",@"定位启动"];
     }else if([title isEqualToString:@"定位启动"]){
+        self.sceneModel.sceneModel = @"3";
         [self back_click_location];
         self.selectStart = @[@"一键启动",@"定时启动"];
     }else{
+        self.sceneModel.sceneModel = @"1";
         self.selectStart = @[@"定时启动",@"定位启动"];
     }
     _accountList.accountSource = self.selectStart;
@@ -569,6 +658,7 @@ static NSString* eqCellid = @"eq_cell";
 {
     if (component == 0) {
         NSString  *_proNameStr = [_proHourTimeList objectAtIndex:row];
+        
         NSLog(@"nameStr=%@",_proNameStr);
     } else {
         NSString  *_proTimeStr = [_proMinuteTimeList objectAtIndex:row];
@@ -674,6 +764,13 @@ static NSString* eqCellid = @"eq_cell";
         return NO;
     }
 }
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    self.sceneModel.sceneName = textField.text;
+}
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    self.sceneModel.sceneName = textField.text;
+    return YES;
+}
 
 - (void)surePost{
     // 定位启动
@@ -718,9 +815,85 @@ static NSString* eqCellid = @"eq_cell";
 //        NSLog(@"%@",error);
 //    }];
 }
--(void)changeInfo{;
+-(void)changeInfo{
+    //    保存或更新情景模式信息接口
+    //    添加或修改情景模式信息接口
+    //http://192.168.1.168:8080/smarthome/mobileapi/scene/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    //Method:POST
+    //    参数列表:
+    //    |参数名          |类型      |必需  |描述
+    //    |-----          |----     |---- |----
+    //    |token          |String   |Y    |令牌
+    //    |id             |Long     |Y    |编号
+    //    |sceneName      |String   |N    |情景模式名称
+    //    |sceneState     |Integer  |N    |情景模式状态,0=开启,1=关闭
+    //    |sceneModel     |Integer  |N    |情景模式类型,1=手动开启关闭，2=定时开启关闭，3=根据位置开启关闭
+    //    |oid            |Integer  |N    |情景模式序号
+    //    |sceneTime      |String   |N    |定时开启关闭时间
+    //    |sceneDistance  |Integer  |N    |根据位置开启关闭的距离
+    //    |familyId       |Long     |Y    |家的编号
+    //    |repeatMode     |String   |N    |重复方式，空或0代表全部，1=周一，2=周二，等等，多个选项使用逗号分隔，如：1,2,3,4,5,6,7
+    //    |sceneIcon      |Integer  |N    |情景图标编号
+    //    返回值：
+    //    |参数名          |类型      |描述
+    //    |code           |String   |响应代码
+    //    |result         |String   |响应说明
+    //    |Scene          |Object   |情景模式实体类
+
+        NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];
+        [self.addedEquipmentListData removeLastObject];
+    // NSMutableArray --> NSArray
+        self.sceneModel.equipmentList = [self.addedEquipmentListData copy];
+        for (YJEquipmentModel *equipment in self.sceneModel.equipmentList) {
+            [equipmentList addObject: [equipment properties_aps]];
+        }
+        NSLog(@"%@",equipmentList);
+        if (self.sightNameF.text.length >0) {
+            self.sceneModel.sceneName = self.sightNameF.text;
+        }
+    if (!self.sceneModel.info_id) {
+        self.sceneModel.info_id = @"";
+    }
+    if (!self.sceneModel.sceneIcon) {
+        [SVProgressHUD showErrorWithStatus:@"请选择情景图标"];
+        return;
+    }
+//    if (!self.sceneModel.sceneModel) {
+//        [SVProgressHUD showErrorWithStatus:@"请选择情景模式类型"];
+//        return;
+//    }
+    
+        NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
+        NSDictionary *dict = @{
+                               @"id":self.sceneModel.info_id,
+                               @"token":mDefineToken2,
+                               @"equipmentList":jsonString,
+                               @"sceneName":self.sceneModel.sceneName,
+                               @"sceneIcon":self.sceneModel.sceneIcon,
+                               @"sceneModel":@"1",//self.sceneModel.sceneModel
+                               @"sceneTime":@"12:30",
+                               @"sceneDistance":@"11111",
+                               @"repeatMode":@"1,2,3"
+                               };
+    
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
+    
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
+    
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+            YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
+            model.name = @"添加";
+            model.iconId = @"0";
+            [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
+        }];
+
+//    删除情景接口
 //    NSDictionary *dict = @{
-//                           @"ids":self.sightModel.info_id,
+//                           @"ids":self.sceneModel.info_id,
 //                           @"token":mDefineToken
 //                           };
 //    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveSigh] method:1 parameters:dict prepareExecute:^{

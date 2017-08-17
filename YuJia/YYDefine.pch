@@ -36,9 +36,9 @@
  5=空调
  6=门锁
  */
-#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"air-condition",@"lock",@""]
+#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"aircondition",@"lock",@""]
 #define mName @[@"",@"开关",@"灯",@"电视",@"窗帘",@"空调",@"门锁",@""]
-
+#define roomBackImages @[@"home_back",@"home_backTwo"]
 
 #pragma mark  ------------WeakSelf------------------
 #define WS(weakSelf) __weak typeof(self) weakSelf = self;

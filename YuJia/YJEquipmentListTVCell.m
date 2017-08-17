@@ -1,14 +1,15 @@
 //
-//  EquipmentManagerTableViewCell.m
+//  YJEquipmentListTVCell.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/15.
+//  Created by 万宇 on 2017/8/15.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "EquipmentManagerTableViewCell.h"
+#import "YJEquipmentListTVCell.h"
 
-@implementation EquipmentManagerTableViewCell
+@implementation YJEquipmentListTVCell
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -71,42 +72,8 @@
         make.size.mas_equalTo(CGSizeMake(100 *kiphone6, 14 *kiphone6));
     }];
     
-    UISwitch *switch0 = [[UISwitch alloc]init];
-    switch0.onTintColor= [UIColor colorWithHexString:@"00bfff"];
-    switch0.tintColor = [UIColor colorWithHexString:@"cccccc"];
-    // 控件大小，不能设置frame，只能用缩放比例
-    switch0.transform= CGAffineTransformMakeScale(0.8,0.75);
-    [self.cardView addSubview:switch0];
-    [switch0 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.cardView);
-        make.right.equalTo(self.cardView).with.offset(-10 *kiphone6);
-        //        make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
-    }];
-    
-    
-    
-    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"disclosure-arrow-拷贝-2"]];
-    [self.cardView addSubview:imageV];
-    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.cardView);
-        make.right.equalTo(self.cardView).with.offset(-10 *kiphone6);
-        make.size.mas_equalTo(CGSizeMake(7.5 *kiphone6, 13 *kiphone6));
-    }];
-    
-    
-    self.imageV = imageV;
-    self.switch0 = switch0;
-    
 }
-- (void)cellMode:(BOOL)isSwitch{
-    if (isSwitch) {
-        self.imageV.hidden = YES;
-        self.switch0.hidden = NO;
-    }else{
-        self.switch0.hidden = YES;
-        self.imageV.hidden = NO;
-    }
-}
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];

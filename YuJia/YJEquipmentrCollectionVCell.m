@@ -34,37 +34,25 @@
     NSString *imageName;
     switch ([equipmentModel.iconId integerValue]) {
         case 0:
-            imageName = @"getup";
+            imageName = @"add_home";
             break;
         case 1:
-            imageName = @"rest";
+            imageName = @"socket";
             break;
         case 2:
-            imageName = @"leave";
+            imageName = @"light";
             break;
         case 3:
-            imageName = @"gohome";
+            imageName = @"tv";
             break;
         case 4:
-            imageName = @"playgame";
+            imageName = @"curtain";
             break;
         case 5:
-            imageName = @"time_scene";
+            imageName = @"aircondition";
             break;
         case 6:
-            imageName = @"rain_scene";
-            break;
-        case 7:
-            imageName = @"eatting_scene";
-            break;
-        case 8:
-            imageName = @"music_scene";
-            break;
-        case 9:
-            imageName = @"fire_scene";
-            break;
-        case 10:
-            imageName = @"sunning_scene";
+            imageName = @"lock";
             break;
         default:
             break;
