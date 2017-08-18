@@ -16,14 +16,16 @@
 #import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 #import "YJAddRoomBackgroundImageVC.h"
 #import <SDWebImageManager.h>
+#import <AFNetworking.h>
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString *headerViewIdentifier =@"hederview";
 static NSString* eqCellid = @"eq_cell";
-@interface YJRoomSetUpVC ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface YJRoomSetUpVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>
 @property(nonatomic, weak) UITextField *roomNameTF;//房间名称
 @property(nonatomic,weak)UICollectionView *equipmentColView;//情景collectionView
 @property (nonatomic, strong) NSMutableArray* addedEquipmentListData;//添加过设备的房间设备列表，也是数据源
+@property(nonatomic, strong) UIImage *selectImage;//选中背景图片
 @end
 
 @implementation YJRoomSetUpVC
@@ -33,11 +35,11 @@ static NSString* eqCellid = @"eq_cell";
     self.title = @"房间设置";
 //    self.automaticallyAdjustsScrollViewInsets = YES;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor whiteColor];
     
 }
--(void)changeInfo{
+-(void)changeInfo:(UIButton*)sender{
 //    保存或更新房间信息接口
 //    添加或修改房间信息接口
 //http://192.168.1.55:8080/smarthome/mobileapi/room/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
@@ -56,7 +58,7 @@ static NSString* eqCellid = @"eq_cell";
 //    |code           |String   |响应代码
 //    |result         |String   |响应说明
 //    |Room           |Object   |房间实体类
-    
+    sender.enabled = false;
     NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];
     [self.addedEquipmentListData removeLastObject];
     // NSMutableArray --> NSArray
@@ -65,50 +67,102 @@ static NSString* eqCellid = @"eq_cell";
         [equipmentList addObject: [equipment properties_aps]];
     }
     NSLog(@"%@",equipmentList);
+    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];//设备列表
     if (self.roomNameTF.text.length >0) {
         self.roomModel.roomName = self.roomNameTF.text;
     }
-    if (!self.roomModel.info_id) {
-        self.roomModel.info_id = @"";
-    }
-    if (!self.roomModel.oid) {
-        self.roomModel.oid = @"";
-    }
-    if (!self.roomModel.pictures) {
-        [SVProgressHUD showErrorWithStatus:@"请选择房间背景图片"];
-        return;
-    }
+
     if (!self.roomModel.roomName) {
         [SVProgressHUD showErrorWithStatus:@"请填写房间名字"];
+        sender.enabled = true;
         return;
     }
-    NSData *picData = UIImageJPEGRepresentation([UIImage imageNamed:self.roomModel.pictures], 0.5);
-    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
-    NSDictionary *dict = @{
-                           @"id":self.roomModel.info_id,
-                           @"token":mDefineToken,
-                           @"equipmentList":jsonString,
-                           @"roomName":self.roomModel.roomName,
-                           @"oid":self.roomModel.oid,
-                           @"familyId":self.roomModel.familyId,
-                           @"file":picData
-                           };
+    NSData *picData;
+    if (!self.roomModel.pictures) {//用户自定义图片或者没有选择图片
+        if (self.selectImage) {
+            picData = UIImageJPEGRepresentation(self.selectImage, 0.5);
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"请选择房间背景图片"];
+            sender.enabled = true;
+            return;
+        }
+    }
+    NSString *postUrlStr;
+    if (self.roomModel.info_id&&self.roomModel.oid&&self.roomModel.oid) {//添加房间
+        postUrlStr = [NSString stringWithFormat:@"%@&token=%@&id=%@&equipmentList=%@&roomName=%@&oid=%@&familyId=%@&pictures=%@",mRoomSave,mDefineToken2,self.roomModel.info_id,jsonString,self.roomModel.roomName,self.roomModel.oid,self.roomModel.familyId,self.roomModel.pictures];
+    }else{//修改房间
+        postUrlStr = [NSString stringWithFormat:@"%@&token=%@&equipmentList=%@&roomName=%@&pictures=%@",mRoomSave,mDefineToken2,jsonString,self.roomModel.roomName,self.roomModel.pictures];
+    }
+    postUrlStr = [postUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+    [SVProgressHUD show];
+        [manager POST:postUrlStr parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            if (picData) {
+                //  图片上传
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                formatter.dateFormat = @"yyyyMMddHHmmss";
+                NSString *fileName = [NSString stringWithFormat:@"room%@.png", [formatter stringFromDate:[NSDate date]]];
+                [formData appendPartWithFileData:picData name:@"uploadFile" fileName:fileName mimeType:@"image/png"];
+            }
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                    [SVProgressHUD dismiss];
+            NSString *message = responseObject[@"message"];
+            [message stringByRemovingPercentEncoding];
+            NSLog(@"房间图片上传== %@,%@", responseObject,message);
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [SVProgressHUD showSuccessWithStatus:@"修改成功!"];
+                [self.navigationController popViewControllerAnimated:true];//修改添加房间成功后返回上级页面
+                sender.enabled = true;
+            }else{
+                [SVProgressHUD showErrorWithStatus:message];
+                sender.enabled = true;
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"错误信息=====%@", error.description);
+                    [SVProgressHUD dismiss];
+            [SVProgressHUD showErrorWithStatus:@"请求失败!"];
+            sender.enabled = true;
+            YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
+            model.name = @"添加";
+            model.iconId = @"0";
+            [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
+        }];
+//    }
+//    else{
+//        [[HttpClient defaultClient]requestWithPath:postUrlStr method:0 parameters:nil prepareExecute:^{
+//            
+//        } success:^(NSURLSessionDataTask *task, id responseObject) {
+//            NSString *message = responseObject[@"message"];
+//            [message stringByRemovingPercentEncoding];
+//            NSLog(@"%@,%@", responseObject,message);
+//            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//                [SVProgressHUD showSuccessWithStatus:@"修改成功!"];
+//                [self.navigationController popViewControllerAnimated:true];//修改添加房间成功后返回上级页面
+//                sender.enabled = true;
+//            }else{
+//                [SVProgressHUD showErrorWithStatus:message];
+//                sender.enabled = true;
+//            }
+//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//            NSLog(@"错误信息=====%@", error.description);
+//            //        [SVProgressHUD dismiss];
+//            [SVProgressHUD showErrorWithStatus:@"请求失败!"];
+//            sender.enabled = true;
+//            YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
+//            model.name = @"添加";
+//            model.iconId = @"0";
+//            [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
+//        }];
+//
+//    }
     
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-        YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
-        model.name = @"添加";
-        model.iconId = @"0";
-        [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
-    }];
 }
+//传过来的房间实体类
 -(void)setRoomModel:(YJRoomDetailModel *)roomModel{
     _roomModel = roomModel;
     YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
@@ -122,9 +176,9 @@ static NSString* eqCellid = @"eq_cell";
 - (void)setUPUI{
     if (self.roomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
         if ([self.roomModel.pictures isEqualToString:@"1"]) {
-            [self setBackGroundColorWithImage:roomBackImages[0]];
-        }else if ([self.roomModel.pictures isEqualToString:@"1"]){
-            [self setBackGroundColorWithImage:roomBackImages[1]];
+            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+        }else if ([self.roomModel.pictures isEqualToString:@"2"]){
+            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
         }else{
             NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.roomModel.pictures];
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
@@ -218,6 +272,7 @@ static NSString* eqCellid = @"eq_cell";
     sightNameText.text = self.roomModel.roomName;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
+    sightNameText.delegate = self;
     sightNameText.layer.borderWidth = 1;
     sightNameText.layer.borderColor = [UIColor colorWithHexString:@"#f1f1f1"].CGColor;
     self.roomNameTF = sightNameText;
@@ -259,7 +314,7 @@ static NSString* eqCellid = @"eq_cell";
     [selectPictureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sightNameText.mas_bottom).with.offset(20*kiphone6);
         make.left.equalTo(headView).with.offset(35*kiphone6 +rect.size.width*kiphone6);
-        make.size.mas_equalTo(CGSizeMake(100*kiphone6 ,40*kiphone6));
+        make.size.mas_equalTo(CGSizeMake(100*kiphone6 ,30*kiphone6));
     }];
     
     [sightNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -275,6 +330,11 @@ static NSString* eqCellid = @"eq_cell";
     
     return headView;
 }
+//确保刷新collectionview后已经设置的房间名字还在
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    self.roomModel.roomName = textField.text;
+}
+
 //把控制器背景设为图片
 - (void)setBackGroundColorWithImage:(UIImage *)image
 {
@@ -290,8 +350,19 @@ static NSString* eqCellid = @"eq_cell";
 //选择背景图片
 -(void)selectBackgroundImage{
     YJAddRoomBackgroundImageVC *addImageVC = [[YJAddRoomBackgroundImageVC alloc]init];
-    addImageVC.itemClick = ^(UIImage *selectImage) {
-        [self setBackGroundColorWithImage:selectImage];//把block回传的图片设置为房间背景
+    addImageVC.itemClick = ^(UIImage *selectImage,NSInteger defaultImageNum) {
+        WS(ws);
+        if (defaultImageNum==1) {
+            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+            ws.roomModel.pictures=@"1";
+        }else if (defaultImageNum==2){
+            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
+            ws.roomModel.pictures=@"2";
+        }else{
+            [ws setBackGroundColorWithImage:selectImage];//把block回传的图片设置为房间背景
+            ws.roomModel.pictures=NULL;//NULL代表要传的是图片数据
+            ws.selectImage = selectImage;//要上传的背景照片
+        }
     };
     [self.navigationController pushViewController:addImageVC animated:true];
 }
@@ -320,14 +391,14 @@ static NSString* eqCellid = @"eq_cell";
     if (indexPath.row==self.addedEquipmentListData.count-1) {//添加设备按钮点击事件
         YJAddEquipmentToCurruntSceneOrRoomVC *sVC = [[YJAddEquipmentToCurruntSceneOrRoomVC alloc]init];
         sVC.equipmentList = self.addedEquipmentListData;//把已有设备传过去
-        sVC.itemClick = ^(YJEquipmentModel *index) {
+        sVC.itemClick = ^(YJEquipmentModel *index) {//选择了要添加的设备回传到房间设置页面
             if (ws.addedEquipmentListData.count>0) {
                 [ws.addedEquipmentListData insertObject:index atIndex:self.addedEquipmentListData.count-1];
             }else{
                 [ws.addedEquipmentListData insertObject:index atIndex:0];
             }
             [ws.equipmentColView reloadData];
-//            self.sceneNameTF.text = self.sceneModel.sceneName;
+            self.roomNameTF.text = self.roomModel.roomName;
         };
         [self.navigationController pushViewController:sVC animated:true];
     }

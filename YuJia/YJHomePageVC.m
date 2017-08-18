@@ -74,9 +74,11 @@ static NSString* tableCellid = @"table_cell";
             }
             sceneModel.equipmentList = equipmentArray;
             [self.mysceneListData addObject:sceneModel];
-            
         }
-        [self.mysceneColView reloadData];
+        [self.mysceneColView reloadData];//刷新情景开关列表
+        if (self.sceneTableView) {
+            [self.sceneTableView reloadData];//刷新情景名字列表
+        }
         for (NSDictionary *roomDict in roomList) {
             YJRoomDetailModel *roomModel = [YJRoomDetailModel mj_objectWithKeyValues:roomDict];
             NSMutableArray *equipmentArray = [[NSMutableArray alloc]init];
@@ -93,9 +95,9 @@ static NSString* tableCellid = @"table_cell";
         if (!self.isMyscene) {//进入页面时候当前页面处于房间页面时候需要根据当前房间更换房间背景
             if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
                 if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
-                    [self setBackGroundColorWithImage:roomBackImages[0]];
-                }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
-                    [self setBackGroundColorWithImage:roomBackImages[1]];
+                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                }else if ([self.curruntRoomModel.pictures isEqualToString:@"2"]){
+                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
                 }else{
                     NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
                     SDWebImageManager *manager = [SDWebImageManager sharedManager];
@@ -119,9 +121,10 @@ static NSString* tableCellid = @"table_cell";
         }
         if (self.roomBtn) {
             [self.roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值
+            [self.roomTableView reloadData];//刷新房间列表
         }
         self.equipmentListData = [NSMutableArray arrayWithArray:self.curruntRoomModel.equipmentList];//当前房间设备列表
-        [self.equipmentColView reloadData];
+        [self.equipmentColView reloadData];//刷新当前房间设备列表
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
@@ -145,6 +148,14 @@ static NSString* tableCellid = @"table_cell";
     return UIStatusBarStyleLightContent;
 }
 - (void)setUpUI {
+    UIView *backGrayView = [[UIView alloc]init];//添加模糊视图
+    backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
+    backGrayView.alpha = 0.5;
+    [self.view addSubview:backGrayView];
+    [backGrayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.right.offset(0);
+    }];
+    backGrayView.userInteractionEnabled = YES;
     NSMutableArray* rightItemArr = [NSMutableArray array];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = -5;
@@ -298,9 +309,9 @@ static NSString* tableCellid = @"table_cell";
     }else{
         if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
             if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
-                [self setBackGroundColorWithImage:roomBackImages[0]];
-            }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
-                [self setBackGroundColorWithImage:roomBackImages[1]];
+                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+            }else if ([self.curruntRoomModel.pictures isEqualToString:@"2"]){
+                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
             }else{
                 NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
                 SDWebImageManager *manager = [SDWebImageManager sharedManager];
@@ -554,9 +565,9 @@ static NSString* tableCellid = @"table_cell";
         self.curruntRoomModel = cell.roomDetailModel;//更换当前房间
         if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
             if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
-                [self setBackGroundColorWithImage:roomBackImages[0]];
-            }else if ([self.curruntRoomModel.pictures isEqualToString:@"1"]){
-                [self setBackGroundColorWithImage:roomBackImages[1]];
+                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+            }else if ([self.curruntRoomModel.pictures isEqualToString:@"2"]){
+                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
             }else{
                 NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
                 SDWebImageManager *manager = [SDWebImageManager sharedManager];
@@ -765,6 +776,9 @@ static NSString* tableCellid = @"table_cell";
     }
     if (self.equipmentListData.count>0) {
         [self.equipmentListData removeAllObjects];
+    }
+    if (self.roomListData.count>0) {
+        [self.roomListData removeAllObjects];
     }
     [self httpRequestHomeInfo];//请求刷新数据
 }

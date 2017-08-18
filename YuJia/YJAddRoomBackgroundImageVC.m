@@ -45,6 +45,7 @@
         make.top.offset(25*kiphone6);
     }];
     UIButton *oneImageBtn = [[UIButton alloc]init];
+    oneImageBtn.tag = 11;
     [oneImageBtn setImage:[UIImage imageNamed:roomBackImages[0]] forState:UIControlStateNormal];
     [self.view addSubview:oneImageBtn];
     [oneImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -54,6 +55,7 @@
         make.height.offset(200*kiphone6);
     }];
     UIButton *twoImageBtn = [[UIButton alloc]init];
+    twoImageBtn.tag = 12;
     [twoImageBtn setImage:[UIImage imageNamed:roomBackImages[1]] forState:UIControlStateNormal];
     [self.view addSubview:twoImageBtn];
     [twoImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,6 +64,8 @@
         make.width.offset(112.5*kiphone6);
         make.height.offset(200*kiphone6);
     }];
+    [oneImageBtn addTarget:self action:@selector(selectDefaultImage:) forControlEvents:UIControlEventTouchUpInside];
+    [twoImageBtn addTarget:self action:@selector(selectDefaultImage:) forControlEvents:UIControlEventTouchUpInside];
     //拍摄照片
     UILabel *shotPhotoLabel = [UILabel labelWithText:@"拍摄照片" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
     [self.view addSubview:shotPhotoLabel];
@@ -136,6 +140,15 @@
         make.right.offset(-20*kiphone6);
         make.centerY.equalTo(albumView);
     }];
+}
+//选择本地存储的房间图片
+-(void)selectDefaultImage:(UIButton*)sender{
+    if (sender.tag==11) {
+       self.itemClick(sender.imageView.image,1);//1代表选择了第一张默认图片
+    }else if (sender.tag==12){
+       self.itemClick(sender.imageView.image,2);//2代表选择了第二张默认图片
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - 相册操作
 //访问相册，取得相机胶卷的数量和首张图片
@@ -304,7 +317,7 @@
 //确定设置图片
 -(void)setBtnClick{
     [self.imageView removeFromSuperview];
-    self.itemClick(self.image);//给block赋值
+    self.itemClick(self.image,0);//0代表选择了相册和拍照的图片
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {

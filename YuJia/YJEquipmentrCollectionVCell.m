@@ -93,7 +93,7 @@
     [self.contentView addSubview:nameLabel];
     UISwitch *switch0 = [[UISwitch alloc]init];
     switch0.onTintColor= [UIColor colorWithHexString:@"#0ddcbc"];
-    switch0.tintColor = [UIColor colorWithHexString:@"#cccccc"];
+    switch0.tintColor = [UIColor colorWithHexString:@"#8e9096"];
     // 控件大小，不能设置frame，只能用缩放比例
     switch0.transform= CGAffineTransformMakeScale(0.8,0.75);
     [self.contentView addSubview:switch0];

@@ -19,6 +19,16 @@
 #import "YJEquipmentModel.h"
 #import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 
+#import "YJLightSettingVC.h"
+#import "YJCurtainSettingVC.h"
+//#import "LightSettingViewController.h"
+#import "AirConditioningViewController.h"
+#import "TVSettingViewController.h"
+#import "DoorLockViewController.h"
+#import "SocketSettingViewController.h"
+//#import "CurtainSettingViewController.h"
+//#import "SelectEquipmentViewController.h"
+
 #define inputW 254*[UIScreen mainScreen].bounds.size.width/375.0 // 输入框宽度
 #define inputH 30*[UIScreen mainScreen].bounds.size.width/375.0  // 输入框高度
 static NSString* collectionCellid = @"collection_cell";
@@ -71,7 +81,7 @@ static NSString* eqCellid = @"eq_cell";
     self.title = @"情景设置";
     //    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.translucent = false;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     self.selectStart = @[@"定时启动",@"定位启动"];
     [self setUPUI];
@@ -329,6 +339,58 @@ static NSString* eqCellid = @"eq_cell";
             self.sceneNameTF.text = self.sceneModel.sceneName;
         };
         [self.navigationController pushViewController:sVC animated:true];
+    }else{
+        YJEquipmentModel *equipmentModel;
+        equipmentModel = self.sceneModel.equipmentList[indexPath.row];
+        
+        NSLog(@"点击了第几个%ld",[equipmentModel.iconId integerValue]);
+        switch ([equipmentModel.iconId integerValue]) {
+            case 2:{
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 1:{
+                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 3:{
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 4:{
+                YJCurtainSettingVC *sightVC = [[YJCurtainSettingVC alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 5:{
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                
+                break;
+            case 6:{
+                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
+                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+                
+            default:
+                break;
+        }
+        
     }
 }
 //  返回头视图
@@ -767,10 +829,6 @@ static NSString* eqCellid = @"eq_cell";
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     self.sceneModel.sceneName = textField.text;
 }
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-    self.sceneModel.sceneName = textField.text;
-    return YES;
-}
 
 - (void)surePost{
     // 定位启动
@@ -815,7 +873,8 @@ static NSString* eqCellid = @"eq_cell";
 //        NSLog(@"%@",error);
 //    }];
 }
--(void)changeInfo{
+-(void)changeInfo:(UIButton*)sender{
+    sender.enabled = false;
     //    保存或更新情景模式信息接口
     //    添加或修改情景模式信息接口
     //http://192.168.1.168:8080/smarthome/mobileapi/scene/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
@@ -856,12 +915,9 @@ static NSString* eqCellid = @"eq_cell";
     }
     if (!self.sceneModel.sceneIcon) {
         [SVProgressHUD showErrorWithStatus:@"请选择情景图标"];
+        sender.enabled = true;
         return;
     }
-//    if (!self.sceneModel.sceneModel) {
-//        [SVProgressHUD showErrorWithStatus:@"请选择情景模式类型"];
-//        return;
-//    }
     
         NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
         NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
@@ -876,19 +932,22 @@ static NSString* eqCellid = @"eq_cell";
                                @"sceneDistance":@"11111",
                                @"repeatMode":@"1,2,3"
                                };
-    
+    [SVProgressHUD show];
         [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
     
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];
             NSLog(@"%@",responseObject);
             [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
     
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
+            [SVProgressHUD dismiss];
             YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
             model.name = @"添加";
             model.iconId = @"0";
             [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
+            sender.enabled = true;
         }];
 
 //    删除情景接口
