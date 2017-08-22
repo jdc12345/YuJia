@@ -5,11 +5,12 @@
 // #import "UIImage+Common.h"
 #import "YYTabBar.h"
 #import "YYNavigationController.h"
-#import "HomePageViewController.h"
+//#import "HomePageViewController.h"
 #import "YJHomePageVC.h"
 #import "PropertyViewController.h"
 #import "CircleGroupViewController.h"
-#import "PersonalViewController.h"
+#import "YJPersonalVC.h"
+//#import "PersonalViewController.h"
 
 #define kTabbarItemTag 100
 @interface YYTabBarController () <UITabBarControllerDelegate>
@@ -63,7 +64,7 @@
     [self addChildViewControllerAtIndex:2 childViewController:consultVC title:@"圈子" normalImage:@"circle" selectedImage:@"circleselected"];
     
     // 个人
-    PersonalViewController *personalVC = [[PersonalViewController alloc] init];
+    YJPersonalVC *personalVC = [[YJPersonalVC alloc] init];
     [self addChildViewControllerAtIndex:3 childViewController:personalVC title:@"个人" normalImage:@"myCenter" selectedImage:@"myCenterselected"];
 }
 

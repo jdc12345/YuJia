@@ -16,7 +16,7 @@
 #import "AllHomeModel.h"
 #define inputW 20 // 输入框宽度
 #define inputH 50  // 输入框高度
-@interface MYHomeViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface MYHomeViewController ()<UITableViewDataSource, UITableViewDelegate,AccountDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -255,7 +255,7 @@
     [self openAccountList];
 }
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllHome,mDefineToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllHome,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);

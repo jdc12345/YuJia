@@ -16,8 +16,8 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     CGRect imageRect = self.imageView.frame;
-    imageRect.size = CGSizeMake(18, 18);
-    imageRect.origin.x = (self.frame.size.width - 18) * 0.5;
+    imageRect.size = CGSizeMake(20, 20);
+    imageRect.origin.x = (self.frame.size.width - 20) * 0.5;
     imageRect.origin.y = 25;
     
     

@@ -21,11 +21,13 @@
 
 #import "YJLightSettingVC.h"
 #import "YJCurtainSettingVC.h"
+#import "YJSocketSettingVC.h"
+
 //#import "LightSettingViewController.h"
 #import "AirConditioningViewController.h"
 #import "TVSettingViewController.h"
 #import "DoorLockViewController.h"
-#import "SocketSettingViewController.h"
+//#import "SocketSettingViewController.h"
 //#import "CurtainSettingViewController.h"
 //#import "SelectEquipmentViewController.h"
 
@@ -341,7 +343,8 @@ static NSString* eqCellid = @"eq_cell";
         [self.navigationController pushViewController:sVC animated:true];
     }else{
         YJEquipmentModel *equipmentModel;
-        equipmentModel = self.sceneModel.equipmentList[indexPath.row];
+//        equipmentModel = self.sceneModel.equipmentList[indexPath.row];
+        equipmentModel = self.addedEquipmentListData[indexPath.row];
         
         NSLog(@"点击了第几个%ld",[equipmentModel.iconId integerValue]);
         switch ([equipmentModel.iconId integerValue]) {
@@ -353,7 +356,7 @@ static NSString* eqCellid = @"eq_cell";
                 
                 break;
             case 1:{
-                SocketSettingViewController *sightVC = [[SocketSettingViewController alloc]init];
+                YJSocketSettingVC *sightVC = [[YJSocketSettingVC alloc]init];
                 //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
                 [self.navigationController pushViewController:sightVC animated:YES];
             }

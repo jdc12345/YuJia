@@ -49,13 +49,13 @@
     }];
     [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).with.offset(15 );
-        make.size.mas_equalTo(CGSizeMake(15 *kiphone6, 15 *kiphone6));
+        make.left.equalTo(self.contentView).offset(15 );
+//        make.size.mas_equalTo(CGSizeMake(15 *kiphone6, 15 *kiphone6));
     }];
 
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.iconV.mas_right).with.offset(10 *kiphone6);
+        make.left.equalTo(self.iconV.mas_right).with.offset(20 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(100 *kiphone6, 14 *kiphone6));
     }];
     

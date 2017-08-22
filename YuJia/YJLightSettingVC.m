@@ -121,7 +121,7 @@
     
     UILabel *leftLabel = [[UILabel alloc]init];
     leftLabel.text = @"暗";
-    leftLabel.textColor = [UIColor colorWithHexString:@"#f5f5f5"];
+    leftLabel.textColor = [UIColor grayColor];
     leftLabel.font = [UIFont systemFontOfSize:12];
     
     [self.view addSubview:leftLabel];
@@ -134,7 +134,7 @@
     
     UILabel *rightLabel = [[UILabel alloc]init];
     rightLabel.text = @"亮";
-    rightLabel.textColor = [UIColor colorWithHexString:@"#f5f5f5"];
+    rightLabel.textColor = [UIColor grayColor];
     rightLabel.font = [UIFont systemFontOfSize:12];
     
     [self.view addSubview:rightLabel];

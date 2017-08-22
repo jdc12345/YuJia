@@ -27,7 +27,7 @@
 		16211D3E1F09E96700F1E9EF /* YJHomePageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D3D1F09E96700F1E9EF /* YJHomePageVC.m */; };
 		16211D441F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D401F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m */; };
 		16211D451F09E98900F1E9EF /* YJHomeSceneFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 16211D421F09E98900F1E9EF /* YJHomeSceneFlowLayout.m */; };
-		16211D461F09E98900F1E9EF /* YJHomeSceneList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16211D431F09E98900F1E9EF /* YJHomeSceneList.plist */; };
+		16211D461F09E98900F1E9EF /* YJMyHomeFunctionList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16211D431F09E98900F1E9EF /* YJMyHomeFunctionList.plist */; };
 		16239DC21ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16239DC11ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m */; };
 		16239DC51ECD9DCB00CF6F4C /* YJFriendStateCommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16239DC41ECD9DCB00CF6F4C /* YJFriendStateCommentModel.m */; };
 		163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */; };
@@ -129,6 +129,11 @@
 		16750B361EC828C2002296EE /* YJCommunityCarTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16750B351EC828C2002296EE /* YJCommunityCarTVCell.m */; };
 		16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16750B3B1EC8454A002296EE /* YJCommunityCarDetailVC.m */; };
 		1675FBFB1F1C4E2D000991D8 /* YJCitySelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1675FBFA1F1C4E2D000991D8 /* YJCitySelectVC.m */; };
+		167B11EC1F4A6DED00A06274 /* YJSocketSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B11EB1F4A6DED00A06274 /* YJSocketSettingVC.m */; };
+		167B11F21F4A788900A06274 /* YJPersonalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B11F11F4A788900A06274 /* YJPersonalVC.m */; };
+		167B11F51F4A864200A06274 /* YJPersonalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B11F41F4A864200A06274 /* YJPersonalModel.m */; };
+		167B11F81F4ACC7400A06274 /* YJMyhomeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B11F71F4ACC7400A06274 /* YJMyhomeVC.m */; };
+		167B11FB1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B11FA1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m */; };
 		167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 167EC1B91ECED99A00D8FF9E /* YJCityDetailModel.m */; };
 		167EC1BD1ECEE55F00D8FF9E /* YJAreaDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 167EC1BC1ECEE55F00D8FF9E /* YJAreaDetailModel.m */; };
 		1681276D1ECD2B66003EBC9F /* YJNearbyShopDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1E91ECC6F2D003BBA58 /* YJNearbyShopDetailVC.m */; };
@@ -347,7 +352,7 @@
 		16211D401F09E98900F1E9EF /* YJHomeSceneCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHomeSceneCollectionViewCell.m; sourceTree = "<group>"; };
 		16211D411F09E98900F1E9EF /* YJHomeSceneFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomeSceneFlowLayout.h; sourceTree = "<group>"; };
 		16211D421F09E98900F1E9EF /* YJHomeSceneFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHomeSceneFlowLayout.m; sourceTree = "<group>"; };
-		16211D431F09E98900F1E9EF /* YJHomeSceneList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = YJHomeSceneList.plist; sourceTree = "<group>"; };
+		16211D431F09E98900F1E9EF /* YJMyHomeFunctionList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = YJMyHomeFunctionList.plist; sourceTree = "<group>"; };
 		1621A4321EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJRepairRecordTableViewCell.h; sourceTree = "<group>"; };
 		1621A4331EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRepairRecordTableViewCell.m; sourceTree = "<group>"; };
 		16239DC01ECD9D9A00CF6F4C /* YJFriendStateLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendStateLikeModel.h; sourceTree = "<group>"; };
@@ -547,6 +552,16 @@
 		16750B3B1EC8454A002296EE /* YJCommunityCarDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarDetailVC.m; sourceTree = "<group>"; };
 		1675FBF91F1C4E2D000991D8 /* YJCitySelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCitySelectVC.h; sourceTree = "<group>"; };
 		1675FBFA1F1C4E2D000991D8 /* YJCitySelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCitySelectVC.m; sourceTree = "<group>"; };
+		167B11EA1F4A6DED00A06274 /* YJSocketSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSocketSettingVC.h; sourceTree = "<group>"; };
+		167B11EB1F4A6DED00A06274 /* YJSocketSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSocketSettingVC.m; sourceTree = "<group>"; };
+		167B11F01F4A788900A06274 /* YJPersonalVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPersonalVC.h; sourceTree = "<group>"; };
+		167B11F11F4A788900A06274 /* YJPersonalVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPersonalVC.m; sourceTree = "<group>"; };
+		167B11F31F4A864200A06274 /* YJPersonalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPersonalModel.h; sourceTree = "<group>"; };
+		167B11F41F4A864200A06274 /* YJPersonalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPersonalModel.m; sourceTree = "<group>"; };
+		167B11F61F4ACC7400A06274 /* YJMyhomeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJMyhomeVC.h; sourceTree = "<group>"; };
+		167B11F71F4ACC7400A06274 /* YJMyhomeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJMyhomeVC.m; sourceTree = "<group>"; };
+		167B11F91F4AE9A900A06274 /* YJMyHomeColFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJMyHomeColFlowLayout.h; sourceTree = "<group>"; };
+		167B11FA1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJMyHomeColFlowLayout.m; sourceTree = "<group>"; };
 		167EC1B81ECED99A00D8FF9E /* YJCityDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCityDetailModel.h; sourceTree = "<group>"; };
 		167EC1B91ECED99A00D8FF9E /* YJCityDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCityDetailModel.m; sourceTree = "<group>"; };
 		167EC1BB1ECEE55F00D8FF9E /* YJAreaDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAreaDetailModel.h; sourceTree = "<group>"; };
@@ -954,7 +969,8 @@
 				16415AEA1F46DD2300A1587F /* YJLightSettingVC.m */,
 				16415AEC1F46F70A00A1587F /* YJCurtainSettingVC.h */,
 				16415AED1F46F70A00A1587F /* YJCurtainSettingVC.m */,
-				16211D431F09E98900F1E9EF /* YJHomeSceneList.plist */,
+				167B11EA1F4A6DED00A06274 /* YJSocketSettingVC.h */,
+				167B11EB1F4A6DED00A06274 /* YJSocketSettingVC.m */,
 				164388481F2F126200BC3CEB /* YJEquipmentList.plist */,
 			);
 			name = C;
@@ -1350,6 +1366,42 @@
 			name = "Community Car";
 			sourceTree = "<group>";
 		};
+		167B11ED1F4A782F00A06274 /* M */ = {
+			isa = PBXGroup;
+			children = (
+				167B11F31F4A864200A06274 /* YJPersonalModel.h */,
+				167B11F41F4A864200A06274 /* YJPersonalModel.m */,
+				3E6468531ECEC66D003E785B /* AllHomeModel.h */,
+				3E6468541ECEC66D003E785B /* AllHomeModel.m */,
+				16211D431F09E98900F1E9EF /* YJMyHomeFunctionList.plist */,
+			);
+			name = M;
+			sourceTree = "<group>";
+		};
+		167B11EE1F4A783B00A06274 /* V */ = {
+			isa = PBXGroup;
+			children = (
+				3E984F861EB9BF640094CBE4 /* MMButton.h */,
+				3E984F871EB9BF640094CBE4 /* MMButton.m */,
+				3E984F7B1EB89E210094CBE4 /* YYPersonalTableViewCell.h */,
+				3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */,
+				167B11F91F4AE9A900A06274 /* YJMyHomeColFlowLayout.h */,
+				167B11FA1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m */,
+			);
+			name = V;
+			sourceTree = "<group>";
+		};
+		167B11EF1F4A784100A06274 /* C */ = {
+			isa = PBXGroup;
+			children = (
+				167B11F01F4A788900A06274 /* YJPersonalVC.h */,
+				167B11F11F4A788900A06274 /* YJPersonalVC.m */,
+				167B11F61F4ACC7400A06274 /* YJMyhomeVC.h */,
+				167B11F71F4ACC7400A06274 /* YJMyhomeVC.m */,
+			);
+			name = C;
+			sourceTree = "<group>";
+		};
 		16A992DE1EF272D80088774D /* HYBMasonryAutoCellHeight */ = {
 			isa = PBXGroup;
 			children = (
@@ -1447,8 +1499,6 @@
 		3E94398A1ECBE773001FE471 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3E6468531ECEC66D003E785B /* AllHomeModel.h */,
-				3E6468541ECEC66D003E785B /* AllHomeModel.m */,
 				3E94398B1ECBE77C001FE471 /* CcUserModel.h */,
 				3E94398C1ECBE77C001FE471 /* CcUserModel.m */,
 			);
@@ -1667,6 +1717,9 @@
 		3E984F231EB829FA0094CBE4 /* PersonalPage */ = {
 			isa = PBXGroup;
 			children = (
+				167B11EF1F4A784100A06274 /* C */,
+				167B11EE1F4A783B00A06274 /* V */,
+				167B11ED1F4A782F00A06274 /* M */,
 				3E9439911ECBE79A001FE471 /* View */,
 				3E94398A1ECBE773001FE471 /* Model */,
 				3E94394B1ECAA077001FE471 /* HomeInfo */,
@@ -1674,8 +1727,6 @@
 				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
 				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
 				3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */,
-				3E984F7B1EB89E210094CBE4 /* YYPersonalTableViewCell.h */,
-				3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */,
 				3E20B3471EC5874800C77B58 /* MYHomeViewController.h */,
 				3E20B3481EC5874800C77B58 /* MYHomeViewController.m */,
 				3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */,
@@ -1728,8 +1779,6 @@
 				3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */,
 				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
 				3E9439301EC9B913001FE471 /* PersonalModel.m */,
-				3E984F861EB9BF640094CBE4 /* MMButton.h */,
-				3E984F871EB9BF640094CBE4 /* MMButton.m */,
 				3E984F801EB9BD7F0094CBE4 /* MyBtnView.h */,
 				3E984F811EB9BD7F0094CBE4 /* MyBtnView.m */,
 			);
@@ -1929,7 +1978,7 @@
 				169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */,
 				3E9439601ECAA087001FE471 /* city.plist in Resources */,
 				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,
-				16211D461F09E98900F1E9EF /* YJHomeSceneList.plist in Resources */,
+				16211D461F09E98900F1E9EF /* YJMyHomeFunctionList.plist in Resources */,
 				3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */,
 				1695197F1ED42B4400C2C380 /* HouseConfigureList.plist in Resources */,
 			);
@@ -2013,6 +2062,7 @@
 				166B42621ED03BF600E8FEF0 /* YJRenovationViewController.m in Sources */,
 				3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */,
 				165545CA1F42E33B0076EF64 /* YJAddEquipmentToCurruntSceneOrRoomVC.m in Sources */,
+				167B11EC1F4A6DED00A06274 /* YJSocketSettingVC.m in Sources */,
 				16430A681F3D8A6C00E9CCB7 /* YJEquipmentModel.m in Sources */,
 				165221641EC5626B0033FB8A /* YJCommunityActivitiesVC.m in Sources */,
 				1606D99B1EC01CDC00A74938 /* YJPayItemTableViewCell.m in Sources */,
@@ -2081,6 +2131,7 @@
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
 				16CCBBDC1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m in Sources */,
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
+				167B11FB1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
 				3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */,
@@ -2097,9 +2148,11 @@
 				3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */,
 				16430A621F3D619200E9CCB7 /* YJSceneDetailModel.m in Sources */,
 				3E8970E31ED3CA2200C9DEB1 /* LockRecardTableViewCell.m in Sources */,
+				167B11F51F4A864200A06274 /* YJPersonalModel.m in Sources */,
 				161C4D981F29C36800952B4F /* YJLifePayAddressModel.m in Sources */,
 				1661FE1C1EB86D8F00583A7F /* YYFunctionCollectionViewCell.m in Sources */,
 				166B425C1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m in Sources */,
+				167B11F21F4A788900A06274 /* YJPersonalVC.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
 				3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */,
 				16B991EB1F4179DC003DC9EC /* YJAddScenePicFlowLayout.m in Sources */,
@@ -2113,6 +2166,7 @@
 				3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */,
 				167130331EB9F7DD00CC2394 /* YJPhotoFlowLayout.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
+				167B11F81F4ACC7400A06274 /* YJMyhomeVC.m in Sources */,
 				3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */,
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
 				1668688E1F0634F0008C3DFC /* UIViewController+Cloudox.m in Sources */,

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PersonalModel.h"
+#import "YJPersonalModel.h"
 
 @interface YYFeedbackViewController : UIViewController
-@property (nonatomic, strong) PersonalModel *personalModel;
+@property (nonatomic, strong) YJPersonalModel *personalModel;
 @end
