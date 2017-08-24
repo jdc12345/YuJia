@@ -34,7 +34,6 @@ static NSString* eqCellid = @"eq_cell";
     [super viewDidLoad];
     self.title = @"房间设置";
 //    self.automaticallyAdjustsScrollViewInsets = YES;
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor whiteColor];
     

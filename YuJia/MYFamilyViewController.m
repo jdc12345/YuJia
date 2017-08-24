@@ -23,7 +23,7 @@
 
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"eeeeee"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -37,9 +37,6 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
-        if (self.dataSource.count == 0) {
-            _tableView.tableFooterView = [self createTableFootView];
-        }
         
     }
     return _tableView;
@@ -55,15 +52,15 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"我的家人管理";
-    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
 //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 5 *kiphone6)];
 //    headView.backgroundColor = [UIColor clearColor];
 //    self.tableView.tableHeaderView = headView;
-    [self httpRequestHomeInfo];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
+    [self tableView];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(pushToAdd)];
     // Do any additional setup after loading the view.
 }
+
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -90,6 +87,19 @@
     MYFamilyTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"MYFamilyTableViewCell" forIndexPath:indexPath];
     [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,personalModel.avatar]]];;
     homeTableViewCell.titleLabel.text = personalModel.userName;
+//    switch ([personalModel.userType integerValue]) {
+//        case 0:
+//            homeTableViewCell.introduceLabel.text = @"家庭成员";
+//            break;
+//        case 1:
+//            homeTableViewCell.introduceLabel.text = @"租客";
+//            break;
+//        case 2:
+//            homeTableViewCell.introduceLabel.text = @"访客";
+//            break;
+//        default:
+//            break;
+//    }
     homeTableViewCell.introduceLabel.text = personalModel.comment;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
@@ -104,16 +114,25 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
+        if (self.dataSource.count>0) {
+            [self.dataSource removeAllObjects];
+        }
         NSArray *personalList= responseObject[@"personalList"];
         for(NSDictionary *eDict in personalList){
             PersonalModel *personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
             [self.dataSource addObject:personalModel];
         }
-        [self tableView];
+        if (self.dataSource.count == 0) {
+            _tableView.tableFooterView = [self createTableFootView];
+        }else{
+            _tableView.tableFooterView = nil;
+            
+        }
+        [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
@@ -172,6 +191,10 @@
 }
 - (void)emptyClick{
 
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self httpRequestHomeInfo];
 }
 /*
  #pragma mark - Navigation

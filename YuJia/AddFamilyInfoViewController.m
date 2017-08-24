@@ -11,7 +11,9 @@
 #import "PopListTableViewController.h"
 #import <UIImageView+WebCache.h>
 #import "UIBarButtonItem+Helper.h"
-@interface AddFamilyInfoViewController ()<UITableViewDataSource, UITableViewDelegate>
+#import "MYFamilyViewController.h"
+
+@interface AddFamilyInfoViewController ()<UITableViewDataSource, UITableViewDelegate,AccountDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -55,7 +57,7 @@
 }
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64 , kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0 , kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -84,11 +86,27 @@
     
     self.selectStart = @[@"家人",@"租户",@"访客",@"自定义"];
     
-    
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestInfo)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestInfo)];
     //    [self.view addSubview:[self personInfomation]];
     [self tableView];
-    // Do any additional setup after loading the view.
+    UIButton *btn = [[UIButton alloc]init];
+    btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    [btn setTitle:@"确认添加" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(httpRequestInfo) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#00eac6"] forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
+    btn.layer.masksToBounds = true;
+    btn.layer.cornerRadius = 3;
+    btn.layer.borderWidth =  1;
+    btn.layer.borderColor = [UIColor colorWithHexString:@"#0ddcbc"].CGColor;
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.offset(-40*kiphone6);
+        make.centerX.equalTo(self.view);
+        make.width.offset(150*kiphone6);
+        make.height.offset(45*kiphone6);
+    }];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -108,21 +126,19 @@
     //    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
     //    [personV addGestureRecognizer:tapGest];
     
-    UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
-    [iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
+    UIImageView *iconV = [[UIImageView alloc]init];
+    [iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] placeholderImage:[UIImage imageNamed:@"avatar.jpg"]];
     iconV.layer.cornerRadius = 30;
     iconV.clipsToBounds = YES;
     //
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = @"LIM   家人";
     nameLabel.text = [NSString stringWithFormat:@"%@  %@",self.personalModel.userName,self.personalModel.comment];
-    nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    nameLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     nameLabel.font = [UIFont systemFontOfSize:14];
     //
     UILabel *idName = [[UILabel alloc]init];
-    idName.text = @"18328887563";
-    nameLabel.text = [NSString stringWithFormat:@"%@",self.personalModel.telephone];
-    idName.textColor = [UIColor colorWithHexString:@"333333"];
+    idName.text = [NSString stringWithFormat:@"%@",self.personalModel.telephone];
+    idName.textColor = [UIColor colorWithHexString:@"#333333"];
     idName.font = [UIFont systemFontOfSize:14];
     //
     [personV addSubview:iconV];
@@ -137,7 +153,7 @@
     //
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(personV).with.offset(23.5 );
-        make.left.equalTo(iconV.mas_right).with.offset(15);
+        make.left.equalTo(iconV.mas_right).offset(15);
         make.size.mas_equalTo(CGSizeMake(140 , 14 ));
     }];
     //
@@ -174,7 +190,7 @@
     _curAccount.backgroundColor = [UIColor redColor];
     [remarksView addSubview:_curAccount];
     [_curAccount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(remarksView).with.offset(0);
+        make.centerY.equalTo(remarksView);
         make.left.equalTo(remarkLabel.mas_right).with.offset(30);
         make.size.mas_equalTo(CGSizeMake(185 , 30));
     }];
@@ -248,10 +264,7 @@
         make.left.equalTo(personV).with.offset(10);
         make.size.mas_equalTo(CGSizeMake(50 ,12));
     }];
-    
-    
-    
-    
+  
     UILabel *lineLabel = [[UILabel alloc]init];
     lineLabel.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
@@ -340,14 +353,14 @@
  *  监听代理更新下拉菜单
  */
 - (void)updateListH {
-    CGFloat listH;
-    // 数据大于3个现实3个半的高度，否则显示完整高度
-    if (_dataSource.count > 3) {
-        listH = inputH * 3.5;
-    }else{
-        listH = inputH * _dataSource.count;
-    }
-    _listFrame = CGRectMake(100, 184 +30, 185, 120);
+//    CGFloat listH;
+//    // 数据大于3个现实3个半的高度，否则显示完整高度
+//    if (_dataSource.count > 3) {
+//        listH = inputH * 3.5;
+//    }else{
+//        listH = inputH * _dataSource.count;
+//    }
+    _listFrame = CGRectMake(100, 150, 185, 120);
     _accountList.view.frame = _listFrame;
 }
 /**
@@ -409,7 +422,7 @@
     }
     NSLog(@"array = %@",self.personalModel.info_id);
     NSDictionary *dict2 = @{
-                            @"token":mDefineToken,
+                            @"token":mDefineToken2,
                             @"homePersonalId":self.personalModel.info_id,
                             @"comment":self.currentTitle,
                             @"pmsnCtrlDevice":pmsnArray[0],
@@ -423,8 +436,15 @@
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
-        
-        
+        [SVProgressHUD showSuccessWithStatus:@"添加成员成功"];
+        for (UIViewController *vc in self.navigationController.childViewControllers) {
+            if ([vc isKindOfClass:[MYFamilyViewController class]]) {
+                [self.navigationController popToViewController:vc animated:true];
+
+                break;
+                
+            }
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];

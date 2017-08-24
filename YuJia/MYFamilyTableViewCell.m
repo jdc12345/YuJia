@@ -27,7 +27,8 @@
 //    self.cardView.layer.shadowRadius = 1 *kiphone6;
 //    self.cardView.layer.shadowOffset = CGSizeMake(1, 1);
 //    self.cardView.layer.shadowOpacity = 1;
-    
+    self.cardView.layer.cornerRadius = 4;
+    self.cardView.layer.masksToBounds = YES;
     [self.contentView addSubview:self.cardView];
     
     [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -38,12 +39,12 @@
     
     
     self.iconV = [[UIImageView alloc]init];
-    self.iconV.layer.cornerRadius = 15;
+    self.iconV.layer.cornerRadius = 15*kiphone6;
     self.iconV.clipsToBounds = YES;
     
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.font = [UIFont systemFontOfSize:15];
-    self.titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    self.titleLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     
     
     
@@ -53,7 +54,7 @@
     
     WS(ws);
     [self.iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(ws.cardView).with.offset(0);
+        make.centerY.equalTo(ws.cardView);
         make.left.equalTo(ws.cardView).with.offset(15 *kiphone6);
         make.size.mas_equalTo(CGSizeMake(30 *kiphone6, 30 *kiphone6));
     }];
@@ -65,14 +66,14 @@
     
     self.introduceLabel = [[UILabel alloc]init];
     self.introduceLabel.font = [UIFont systemFontOfSize:14];
-    self.introduceLabel.textColor = [UIColor colorWithHexString:@"333333"];
+    self.introduceLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     self.introduceLabel.textAlignment = NSTextAlignmentRight;
     self.introduceLabel.text = @"家人";
     [self.cardView addSubview:self.introduceLabel];
     [self.introduceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.cardView);
-        make.right.equalTo(self.cardView).with.offset(-15);
-        make.size.mas_equalTo(CGSizeMake(100 , 14));
+        make.right.equalTo(self.cardView).with.offset(-15*kiphone6);
+        make.size.mas_equalTo(CGSizeMake(100*kiphone6 , 14*kiphone6));
     }];
 //    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"more_myhome"]];
 //    [imageV sizeToFit];

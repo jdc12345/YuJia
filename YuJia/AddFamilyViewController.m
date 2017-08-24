@@ -24,22 +24,21 @@
         self.title = @"添加家人";
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认添加" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认添加" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(pushToAdd)];
     [self createSubViews];
     // Do any additional setup after loading the view.
 }
 - (void)createSubViews{
     UIImageView *iconImageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
-    iconImageV.layer.cornerRadius = 15;
+    iconImageV.layer.cornerRadius = 15*kiphone6;
     iconImageV.clipsToBounds = YES;
     
     [self.view addSubview:iconImageV];
     
     [iconImageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(84);
-        make.centerX.equalTo(self.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(30 ,30));
+        make.top.equalTo(self.view).with.offset(20*kiphone6);
+        make.centerX.equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(30*kiphone6 ,30*kiphone6));
     }];
     
     
@@ -67,16 +66,16 @@
     [self.view addSubview:titleLabel];
     
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(iconImageV.mas_bottom).with.offset(20);
-        make.centerX.equalTo(self.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(170 ,14));
+        make.top.equalTo(iconImageV.mas_bottom).offset(20*kiphone6);
+        make.centerX.equalTo(self.view).offset(0);
+        make.size.mas_equalTo(CGSizeMake(170*kiphone6 ,14*kiphone6));
     }];
     
     
     UITextField *nameTextF = [[UITextField alloc]init];
-    nameTextF.font = [UIFont systemFontOfSize:15];
-    nameTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    nameTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
+    nameTextF.font = [UIFont systemFontOfSize:14];
+    nameTextF.textColor = [UIColor colorWithHexString:@"#333333"];
+    nameTextF.layer.borderColor = [UIColor colorWithHexString:@"#cccccc"].CGColor;
     nameTextF.layer.borderWidth = 1;
     nameTextF.layer.cornerRadius = 2.5;
     nameTextF.clipsToBounds = YES;
@@ -87,16 +86,16 @@
     [self.view addSubview:nameTextF];
     
     [nameTextF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom).with.offset(15);
-        make.centerX.equalTo(self.view).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(270 ,30));
+        make.top.equalTo(titleLabel.mas_bottom).offset(15*kiphone6);
+        make.centerX.equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(270*kiphone6 ,30*kiphone6));
     }];
     
     
     UITextField *phoneTextF = [[UITextField alloc]init];
-    phoneTextF.font = [UIFont systemFontOfSize:15];
-    phoneTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    phoneTextF.layer.borderColor = [UIColor colorWithHexString:@"cccccc"].CGColor;
+    phoneTextF.font = [UIFont systemFontOfSize:14];
+    phoneTextF.textColor = [UIColor colorWithHexString:@"#333333"];
+    phoneTextF.layer.borderColor = [UIColor colorWithHexString:@"#cccccc"].CGColor;
     phoneTextF.layer.borderWidth = 1;
     phoneTextF.layer.cornerRadius = 2.5;
     phoneTextF.clipsToBounds = YES;
@@ -108,18 +107,18 @@
     [self.view addSubview:phoneTextF];
     
     [phoneTextF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(nameTextF.mas_bottom).with.offset(25);
-        make.centerX.equalTo(self.view).with.offset(0 -50);
-        make.size.mas_equalTo(CGSizeMake(170 ,30));
+        make.top.equalTo(nameTextF.mas_bottom).with.offset(25*kiphone6);
+        make.centerX.equalTo(self.view).offset(-50*kiphone6);
+        make.size.mas_equalTo(CGSizeMake(170*kiphone6 ,30*kiphone6));
     }];
     
 
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sureBtn.frame = CGRectMake(10, 16, 190, 44);
     [sureBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
-    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    [sureBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
@@ -127,9 +126,9 @@
     
     [self.view addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.top.equalTo(phoneTextF).with.offset(0);
+        make.bottom.top.equalTo(phoneTextF);
         make.left.equalTo(phoneTextF.mas_right).with.offset(-1);
-        make.size.width.mas_equalTo(100);
+        make.width.offset(100*kiphone6);
     }];
 //    
 //    
@@ -201,18 +200,23 @@
 }
 - (void)httpRequestInfo{
     NSDictionary *dict2 = @{
-                           @"token":mDefineToken,
+                           @"token":mDefineToken2,
                            @"telephone":self.phoneTF.text,
                            };
     
     
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobileapi/personal/addvcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:mAddFamilyVcode method:1 parameters:dict2 prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject[@"code"] isEqualToString:@"-1"]) {//号码没有注册
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            return ;
+        }else{
+            self.vcodeTF.text = responseObject[@"result"];
+        }
         
-        self.vcodeTF.text = responseObject[@"result"];
         NSDictionary *dict = @{
-                               @"token":mDefineToken,
+                               @"token":mDefineToken2,
                                @"telephone":self.phoneTF.text,
                                @"addvcode":self.vcodeTF.text
                                };

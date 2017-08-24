@@ -8,7 +8,7 @@
 
 #import "YJCityTableViewCell.h"
 #import "UILabel+Addition.h"
-#import "UIColor+colorValues.h"
+
 @interface YJCityTableViewCell()
 @property (nonatomic, weak) UILabel* itemLabel;
 @property (nonatomic, weak) UILabel* contentLabel;

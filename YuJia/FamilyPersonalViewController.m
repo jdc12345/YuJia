@@ -7,7 +7,8 @@
 //
 
 #import "FamilyPersonalViewController.h"
-#import "FamilyPersonalTableViewCell.h"
+//#import "FamilyPersonalTableViewCell.h"
+#import "AddFamilyInfoTableViewCell.h"
 #import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
 #import "UIBarButtonItem+Helper.h"
@@ -31,7 +32,7 @@
 }
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64 , kScreenW, kScreenH) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0 , kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -41,7 +42,7 @@
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
-        [_tableView registerClass:[FamilyPersonalTableViewCell class] forCellReuseIdentifier:@"FamilyPersonalTableViewCell"];
+        [_tableView registerClass:[AddFamilyInfoTableViewCell class] forCellReuseIdentifier:@"FamilyPersonalTableViewCell"];
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
@@ -58,12 +59,26 @@
     
     
     [self.dataSource addObjectsFromArray:@[@"控制我的设备",@"控制我的门锁",@"添加设备到我的家",@"从我的家删除设备"]];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestChangeInfo)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestChangeInfo)];
     
     [self httpRequestHomeInfo];
-//    [self.view addSubview:[self personInfomation]];
-
-    // Do any additional setup after loading the view.
+    UIButton *btn = [[UIButton alloc]init];
+    btn.backgroundColor = [UIColor clearColor];
+    [btn setTitle:@"删除" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(httpRequestDelete) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTitleColor:[UIColor colorWithHexString:@"#e00610"] forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:17];
+    btn.layer.masksToBounds = true;
+    btn.layer.cornerRadius = 3;
+    btn.layer.borderWidth =  1;
+    btn.layer.borderColor = [UIColor colorWithHexString:@"#e00610"].CGColor;
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.offset(-40*kiphone6);
+        make.centerX.equalTo(self.view);
+        make.width.offset(150*kiphone6);
+        make.height.offset(45*kiphone6);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,13 +104,13 @@
     iconV.clipsToBounds = YES;
     //
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = @"LIM   家人";
+//    nameLabel.text = @"LIM   家人";
     nameLabel.text = [NSString stringWithFormat:@"%@  %@",self.personalModel.userName,self.personalModel.comment];
     nameLabel.textColor = [UIColor colorWithHexString:@"333333"];
     nameLabel.font = [UIFont systemFontOfSize:14];
     //
     UILabel *idName = [[UILabel alloc]init];
-    idName.text = @"18328887563";
+//    idName.text = @"18328887563";
     idName.text = self.telePhone;
     idName.textColor = [UIColor colorWithHexString:@"333333"];
     idName.font = [UIFont systemFontOfSize:14];
@@ -137,7 +152,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 //    [self.navigationController pushViewController:[[FamilyPersonalViewController alloc]init] animated:YES];
-    FamilyPersonalTableViewCell *familyCell = [tableView cellForRowAtIndexPath:indexPath];
+    AddFamilyInfoTableViewCell *familyCell = [tableView cellForRowAtIndexPath:indexPath];
     familyCell.iconBtn.selected  = !familyCell.iconBtn.selected;
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
@@ -194,7 +209,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    FamilyPersonalTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"FamilyPersonalTableViewCell" forIndexPath:indexPath];
+    AddFamilyInfoTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"FamilyPersonalTableViewCell" forIndexPath:indexPath];
     
     homeTableViewCell.titleLabel.text = self.dataSource[indexPath.row];
 //    homeTableViewCell.iconV.image = [UIImage imageNamed:self.iconList[indexPath.row]];
@@ -204,7 +219,7 @@
 
 // 获取家人权限
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mseeFamilyInfo,mDefineToken,self.homeID] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mseeFamilyInfo,mDefineToken2,self.homeID] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -216,7 +231,7 @@
         NSMutableArray *pmsnArray = [[NSMutableArray alloc]initWithObjects:self.personalModel.pmsnCtrlDevice,self.personalModel.pmsnCtrlDoor,self.personalModel.pmsnCtrlAdd,self.personalModel.pmsnCtrlDel, nil];
         for (int i = 0; i<4; i++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            FamilyPersonalTableViewCell *familyCell = [self.tableView cellForRowAtIndexPath:indexPath];
+            AddFamilyInfoTableViewCell *familyCell = [self.tableView cellForRowAtIndexPath:indexPath];
             if ([pmsnArray[i] isEqualToString:@"1"]) {
                 familyCell.iconBtn.selected = YES;
             }
@@ -227,14 +242,49 @@
 }
 // 修改家人权限
 - (void)httpRequestChangeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@&id=%@",mseeFamilyInfo,mDefineToken,self.homeID] method:0 parameters:nil prepareExecute:^{
+    NSMutableArray *pmsnArray = [[NSMutableArray alloc]initWithCapacity:2];;
+    for (int i = 0; i<4; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        AddFamilyInfoTableViewCell *familyCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        if(familyCell.iconBtn.selected){
+            [pmsnArray addObject:@"1"];
+        }else{
+            [pmsnArray addObject:@"0"];
+        }
+    }
+    NSDictionary *dict2 = @{
+                            @"token":mDefineToken2,
+                            @"pmsnCtrlDevice":pmsnArray[0],
+                            @"pmsnCtrlDoor":pmsnArray[1],
+                            @"pmsnCtrlAdd":pmsnArray[2],
+                            @"pmsnCtrlDel":pmsnArray[3]
+                            };
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@id=%@",mChangeFamilyInfo,self.homeID] method:1 parameters:dict2 prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
+//        [self.navigationController popViewControllerAnimated:true];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
+}
+//删除我的家人接口
+- (void)httpRequestDelete{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@ids=%@&token=%@",mRemoveFamily,self.homeID,mDefineToken2] method:1 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.navigationController popViewControllerAnimated:true];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+//在页面消失时候请求更改权限设置
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self httpRequestChangeInfo];
 }
 /*
 #pragma mark - Navigation

@@ -27,12 +27,11 @@
     [self.contentView addSubview:self.cardView];
     
     [self.cardView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).with.offset(0 );
+        make.top.equalTo(self.contentView);
         make.left.equalTo(self.contentView).with.offset(10 );
         make.size.mas_equalTo(CGSizeMake(kScreenW - 20 , 50));
     }];
-    
-    
+        
     UILabel *lineLabel = [[UILabel alloc]init];
     lineLabel.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     
@@ -46,11 +45,11 @@
     
     self.iconBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    [self.iconBtn setImage:[UIImage imageNamed:@"unselected_family"] forState:UIControlStateNormal];
-    [self.iconBtn setImage:[UIImage imageNamed:@"selected_family"] forState:UIControlStateSelected];
+    [self.iconBtn setImage:[UIImage imageNamed:@"homeAddress_unselected"] forState:UIControlStateNormal];
+    [self.iconBtn setImage:[UIImage imageNamed:@"homeAddress_select"] forState:UIControlStateSelected];
     
     [self.iconBtn sizeToFit];
-    
+    [self.iconBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.titleLabel = [[UILabel alloc]init];
     self.titleLabel.font = [UIFont systemFontOfSize:15];
     self.titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -72,12 +71,13 @@
         make.left.equalTo(ws.iconBtn.mas_right).with.offset(10);
         make.size.mas_equalTo(CGSizeMake(150 , 15));
     }];
-    
-    
-    
+  
 }
 
-
+-(void)selectBtnClick:(UIButton*)sender{
+    sender.selected = !sender.selected;
+    
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

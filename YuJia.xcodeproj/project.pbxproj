@@ -33,6 +33,8 @@
 		163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780531EC59FDF00AE104B /* YJActivitesPhotoTVCell.m */; };
 		163780571EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */; };
 		1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */; };
+		163BA27E1F4C01990093DCE7 /* YJHomeAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 163BA27D1F4C01990093DCE7 /* YJHomeAddressVC.m */; };
+		163BA2811F4C07DA0093DCE7 /* YJHomeAddressTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 163BA2801F4C07DA0093DCE7 /* YJHomeAddressTVCell.m */; };
 		163DA8F81ED7C56800313DD0 /* YJCommunityCarListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163DA8F71ED7C56800313DD0 /* YJCommunityCarListModel.m */; };
 		163DA8FB1ED82BB500313DD0 /* YJChangePropertyBillAddressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 163DA8FA1ED82BB500313DD0 /* YJChangePropertyBillAddressVC.m */; };
 		163DA8FE1ED82F3800313DD0 /* YJPropertyDetailAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 163DA8FD1ED82F3800313DD0 /* YJPropertyDetailAddressModel.m */; };
@@ -99,6 +101,9 @@
 		166CD8FD1ED27B4F00CC4F11 /* YJBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166CD8FC1ED27B4F00CC4F11 /* YJBackView.m */; };
 		166CD9011ED28FB400CC4F11 /* YJSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 166CD9001ED28FB400CC4F11 /* YJSelectView.m */; };
 		166CD9031ED28FE700CC4F11 /* YJSelectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 166CD9021ED28FE700CC4F11 /* YJSelectView.xib */; };
+		166FA4FF1F4C24100042D7CF /* YJAddhomeInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 166FA4FE1F4C24100042D7CF /* YJAddhomeInfoVC.m */; };
+		166FA5021F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 166FA5011F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m */; };
+		166FA5051F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 166FA5041F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m */; };
 		166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1621A4331EBB2C6200BDAF10 /* YJRepairRecordTableViewCell.m */; };
 		166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F83FF1EBAC3DF002318A6 /* UIView+Extension.m */; };
 		166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164F84021EBB06EA002318A6 /* YJRepairSectionTwoTableViewCell.m */; };
@@ -212,7 +217,6 @@
 		3E94391F1EC95A9B001FE471 /* MYFamilyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94391E1EC95A9B001FE471 /* MYFamilyTableViewCell.m */; };
 		3E9439221EC95AB8001FE471 /* MYFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439211EC95AB8001FE471 /* MYFamilyViewController.m */; };
 		3E9439251EC95EBA001FE471 /* FamilyPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439241EC95EBA001FE471 /* FamilyPersonalViewController.m */; };
-		3E9439281EC98434001FE471 /* FamilyPersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439271EC98434001FE471 /* FamilyPersonalTableViewCell.m */; };
 		3E94392B1EC99095001FE471 /* EquipmentManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */; };
 		3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */; };
 		3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439301EC9B913001FE471 /* PersonalModel.m */; };
@@ -365,6 +369,10 @@
 		163780561EC5AD1000AE104B /* YJActivitesPhotoFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActivitesPhotoFlowLayout.m; sourceTree = "<group>"; };
 		1639CFE71ECBE7C80015F8AA /* YJFriendNeighborStateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJFriendNeighborStateModel.h; sourceTree = "<group>"; };
 		1639CFE81ECBE7C80015F8AA /* YJFriendNeighborStateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJFriendNeighborStateModel.m; sourceTree = "<group>"; };
+		163BA27C1F4C01990093DCE7 /* YJHomeAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomeAddressVC.h; sourceTree = "<group>"; };
+		163BA27D1F4C01990093DCE7 /* YJHomeAddressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHomeAddressVC.m; sourceTree = "<group>"; };
+		163BA27F1F4C07DA0093DCE7 /* YJHomeAddressTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJHomeAddressTVCell.h; sourceTree = "<group>"; };
+		163BA2801F4C07DA0093DCE7 /* YJHomeAddressTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJHomeAddressTVCell.m; sourceTree = "<group>"; };
 		163DA8F61ED7C56800313DD0 /* YJCommunityCarListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCommunityCarListModel.h; sourceTree = "<group>"; };
 		163DA8F71ED7C56800313DD0 /* YJCommunityCarListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCommunityCarListModel.m; sourceTree = "<group>"; };
 		163DA8F91ED82BB500313DD0 /* YJChangePropertyBillAddressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJChangePropertyBillAddressVC.h; sourceTree = "<group>"; };
@@ -498,6 +506,12 @@
 		166CD8FF1ED28FB400CC4F11 /* YJSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJSelectView.h; sourceTree = "<group>"; };
 		166CD9001ED28FB400CC4F11 /* YJSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJSelectView.m; sourceTree = "<group>"; };
 		166CD9021ED28FE700CC4F11 /* YJSelectView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YJSelectView.xib; sourceTree = "<group>"; };
+		166FA4FD1F4C24100042D7CF /* YJAddhomeInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAddhomeInfoVC.h; sourceTree = "<group>"; };
+		166FA4FE1F4C24100042D7CF /* YJAddhomeInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJAddhomeInfoVC.m; sourceTree = "<group>"; };
+		166FA5001F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAddHomeAddressPickerTVCell.h; sourceTree = "<group>"; };
+		166FA5011F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJAddHomeAddressPickerTVCell.m; sourceTree = "<group>"; };
+		166FA5031F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAddHomeAddressTextFieldTVCell.h; sourceTree = "<group>"; };
+		166FA5041F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJAddHomeAddressTextFieldTVCell.m; sourceTree = "<group>"; };
 		166FF4941EBC09B300846A59 /* NSString+unicode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSString+unicode.m"; path = "YuJia/NSString+unicode.m"; sourceTree = "<group>"; };
 		166FF4951EBC09CB00846A59 /* YYTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YYTabBar.m; path = YuJia/YYTabBar.m; sourceTree = "<group>"; };
 		166FF4981EBC210D00846A59 /* YJPropertyBillVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPropertyBillVC.h; sourceTree = "<group>"; };
@@ -708,8 +722,6 @@
 		3E9439211EC95AB8001FE471 /* MYFamilyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYFamilyViewController.m; sourceTree = "<group>"; };
 		3E9439231EC95EBA001FE471 /* FamilyPersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FamilyPersonalViewController.h; sourceTree = "<group>"; };
 		3E9439241EC95EBA001FE471 /* FamilyPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FamilyPersonalViewController.m; sourceTree = "<group>"; };
-		3E9439261EC98434001FE471 /* FamilyPersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FamilyPersonalTableViewCell.h; sourceTree = "<group>"; };
-		3E9439271EC98434001FE471 /* FamilyPersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FamilyPersonalTableViewCell.m; sourceTree = "<group>"; };
 		3E9439291EC99095001FE471 /* EquipmentManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentManagerViewController.h; sourceTree = "<group>"; };
 		3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentManagerViewController.m; sourceTree = "<group>"; };
 		3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentManagerTableViewCell.h; sourceTree = "<group>"; };
@@ -1374,6 +1386,8 @@
 				3E6468531ECEC66D003E785B /* AllHomeModel.h */,
 				3E6468541ECEC66D003E785B /* AllHomeModel.m */,
 				16211D431F09E98900F1E9EF /* YJMyHomeFunctionList.plist */,
+				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
+				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -1387,6 +1401,16 @@
 				3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */,
 				167B11F91F4AE9A900A06274 /* YJMyHomeColFlowLayout.h */,
 				167B11FA1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m */,
+				163BA27F1F4C07DA0093DCE7 /* YJHomeAddressTVCell.h */,
+				163BA2801F4C07DA0093DCE7 /* YJHomeAddressTVCell.m */,
+				166FA5001F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.h */,
+				166FA5011F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m */,
+				166FA5031F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.h */,
+				166FA5041F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m */,
+				3E94391D1EC95A9A001FE471 /* MYFamilyTableViewCell.h */,
+				3E94391E1EC95A9B001FE471 /* MYFamilyTableViewCell.m */,
+				3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */,
+				3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -1398,6 +1422,18 @@
 				167B11F11F4A788900A06274 /* YJPersonalVC.m */,
 				167B11F61F4ACC7400A06274 /* YJMyhomeVC.h */,
 				167B11F71F4ACC7400A06274 /* YJMyhomeVC.m */,
+				163BA27C1F4C01990093DCE7 /* YJHomeAddressVC.h */,
+				163BA27D1F4C01990093DCE7 /* YJHomeAddressVC.m */,
+				166FA4FD1F4C24100042D7CF /* YJAddhomeInfoVC.h */,
+				166FA4FE1F4C24100042D7CF /* YJAddhomeInfoVC.m */,
+				3E9439201EC95AB8001FE471 /* MYFamilyViewController.h */,
+				3E9439211EC95AB8001FE471 /* MYFamilyViewController.m */,
+				3E9439231EC95EBA001FE471 /* FamilyPersonalViewController.h */,
+				3E9439241EC95EBA001FE471 /* FamilyPersonalViewController.m */,
+				3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */,
+				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
+				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
+				3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1731,26 +1767,12 @@
 				3E20B3481EC5874800C77B58 /* MYHomeViewController.m */,
 				3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */,
 				3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */,
-				3E9439201EC95AB8001FE471 /* MYFamilyViewController.h */,
-				3E9439211EC95AB8001FE471 /* MYFamilyViewController.m */,
-				3E94391D1EC95A9A001FE471 /* MYFamilyTableViewCell.h */,
-				3E94391E1EC95A9B001FE471 /* MYFamilyTableViewCell.m */,
-				3E9439231EC95EBA001FE471 /* FamilyPersonalViewController.h */,
-				3E9439241EC95EBA001FE471 /* FamilyPersonalViewController.m */,
-				3E9439261EC98434001FE471 /* FamilyPersonalTableViewCell.h */,
-				3E9439271EC98434001FE471 /* FamilyPersonalTableViewCell.m */,
 				3E9439291EC99095001FE471 /* EquipmentManagerViewController.h */,
 				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
 				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
 				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
 				3E6468501ECE887B003E785B /* YYFeedbackViewController.h */,
 				3E6468511ECE887B003E785B /* YYFeedbackViewController.m */,
-				3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */,
-				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
-				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
-				3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */,
-				3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */,
-				3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */,
 				3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */,
 				3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */,
 				3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */,
@@ -1777,8 +1799,6 @@
 				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
 				3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */,
 				3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */,
-				3E94392F1EC9B913001FE471 /* PersonalModel.h */,
-				3E9439301EC9B913001FE471 /* PersonalModel.m */,
 				3E984F801EB9BD7F0094CBE4 /* MyBtnView.h */,
 				3E984F811EB9BD7F0094CBE4 /* MyBtnView.m */,
 			);
@@ -2108,6 +2128,7 @@
 				16DD44551F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m in Sources */,
 				1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */,
 				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
+				163BA27E1F4C01990093DCE7 /* YJHomeAddressVC.m in Sources */,
 				16742BED1EC1593D0016DDD9 /* YJFriendStateTableViewCell.m in Sources */,
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
 				169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */,
@@ -2131,6 +2152,7 @@
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
 				16CCBBDC1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m in Sources */,
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
+				163BA2811F4C07DA0093DCE7 /* YJHomeAddressTVCell.m in Sources */,
 				167B11FB1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
@@ -2167,6 +2189,7 @@
 				167130331EB9F7DD00CC2394 /* YJPhotoFlowLayout.m in Sources */,
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
 				167B11F81F4ACC7400A06274 /* YJMyhomeVC.m in Sources */,
+				166FA5021F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m in Sources */,
 				3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */,
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
 				1668688E1F0634F0008C3DFC /* UIViewController+Cloudox.m in Sources */,
@@ -2219,9 +2242,9 @@
 				3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */,
 				169E04A41ED301570002FDB2 /* YJRentPersonInfoTVCell.m in Sources */,
 				163DA8F81ED7C56800313DD0 /* YJCommunityCarListModel.m in Sources */,
+				166FA4FF1F4C24100042D7CF /* YJAddhomeInfoVC.m in Sources */,
 				1672D7A31EC2BE7500F5970C /* YJSelfReplyTableViewCell.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
-				3E9439281EC98434001FE471 /* FamilyPersonalTableViewCell.m in Sources */,
 				3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */,
 				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
@@ -2259,6 +2282,7 @@
 				16B991E81F4148CF003DC9EC /* YJScenePicCollectionVCell.m in Sources */,
 				164D9F591F3C6D1E00D62606 /* YJSuccessConnectVC.m in Sources */,
 				3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */,
+				166FA5051F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */,
 				168B7E071F21EC96003AC13C /* YJPayPropertyVC.m in Sources */,

@@ -234,7 +234,6 @@
     NSArray *nameList = @[@"我的家",@"我的圈子",@"我的活动",@"我的消息"];
     NSArray *iconList = @[@"myhome",@"mycircle",@"myactivities",@"mynews"];
     
-    
     CGFloat btnW = kScreenW/4.0;
     for (int i = 0 ; i<4 ;  i++) {
         MMButton *leftNavBtn = [MMButton buttonWithType:UIButtonTypeCustom];
@@ -290,9 +289,7 @@
     }else{
         
     }
-    
-    
-    
+
     //    }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     //    [self.navigationController popToRootViewControllerAnimated:YES];

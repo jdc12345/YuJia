@@ -7,32 +7,18 @@
 //
 
 #import "YJMyhomeVC.h"
-//#import "UIBarButtonItem+Helper.h"
 #import "UIViewController+Cloudox.h"
-//#import "YJHomeSceneFlowLayout.h"
-#import "YJHomeSceneCollectionViewCell.h"
-//#import "YJEquipmentrCollectionVCell.h"
+//#import "YJHomeSceneCollectionViewCell.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "UILabel+Addition.h"
-#import "YJAddScenePictureVC.h"
-#import "YJEquipmentModel.h"
-#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 
-#import "YJLightSettingVC.h"
-#import "YJCurtainSettingVC.h"
-#import "YJSocketSettingVC.h"
-
-//#import "LightSettingViewController.h"
-#import "AirConditioningViewController.h"
-#import "TVSettingViewController.h"
-#import "DoorLockViewController.h"
-
-//#import "YYFunctionListFlowLayout.h"
 #import "YYFunctionCollectionViewCell.h"
 #import "NSArray+Addition.h"
 #import "AllHomeModel.h"
 #import "YJMyHomeColFlowLayout.h"
+#import "YJHomeAddressVC.h"
+#import "MYFamilyViewController.h"
 
 #define inputH 60  // 输入框高度
 static NSString* collectionCellid = @"collection_cell";
@@ -135,57 +121,23 @@ static NSString *headerViewIdentifier =@"hederview";
 // cell点击事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
-        YJEquipmentModel *equipmentModel;
-        //        equipmentModel = self.sceneModel.equipmentList[indexPath.row];
-//        equipmentModel = self.addedEquipmentListData[indexPath.row];
-    
-        NSLog(@"点击了第几个%ld",[equipmentModel.iconId integerValue]);
-        switch ([equipmentModel.iconId integerValue]) {
-            case 2:{
-                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 1:{
-                YJSocketSettingVC *sightVC = [[YJSocketSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 3:{
-                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 4:{
-                YJCurtainSettingVC *sightVC = [[YJCurtainSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 5:{
-                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 6:{
-                DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                break;
-                
-            default:
-                break;
+    switch (indexPath.row) {
+        case 0:
+        {
+            YJHomeAddressVC *homeVC = [[YJHomeAddressVC alloc]init];
+            [self.navigationController pushViewController:homeVC animated:YES];
         }
+            break;
+        case 1:
+        {
+            MYFamilyViewController *homeVC = [[MYFamilyViewController alloc]init];
+            [self.navigationController pushViewController:homeVC animated:YES];
+        }
+            break;
+    
+        default:
+            break;
+    }
 }
 //  返回头视图
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -329,18 +281,35 @@ static NSString *headerViewIdentifier =@"hederview";
     NSString *title = self.selectStart[index];
     [_curAccount setTitle:title forState:UIControlStateNormal];
     _accountList.accountSource = self.selectStart;
-    //    [_accountList reloadDataSource];
-    //    if (index == 0) {
-    //        [self back_click];
-    //    }else{
-    //        [self back_click_location];
-    //    }
-    
+        [_accountList reloadDataSource];
+//        if (index == 0) {
+//            [self back_click];
+//        }else{
+//            [self back_click_location];
+//        }
+    [self requestExchangeHomeInfoWithIntger:index];
     
     [_icon setImage:[UIImage imageNamed:@""]];
     // 关闭菜单
     [self openAccountList];
 }
+//请求切换家庭
+-(void)requestExchangeHomeInfoWithIntger:(NSInteger)index{
+//    http://192.168.1.55:8080/smarthome/mobileapi/personal/setFamily.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&familyId=123&personalId=123234
+    AllHomeModel *homeModel = self.dataSource[index];
+    NSString *urlStr = [NSString stringWithFormat:@"%@token=%@&familyId=%@&personalId=%@",mSetFamily,mDefineToken2,homeModel.familyId,homeModel.personalId];
+    [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if ([responseObject[@"code"] isEqualToString:@"0"]) {
+            [SVProgressHUD showSuccessWithStatus:@"切换家庭成功"];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
+}
+//请求所有的和我有关的家庭
 - (void)httpRequestHomeInfo{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllHome,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
