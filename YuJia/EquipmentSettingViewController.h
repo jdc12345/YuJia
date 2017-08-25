@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SightModel.h"
-#import "EquipmentModel.h"
+#import "YJEquipmentModel.h"
 
 @interface EquipmentSettingViewController : UIViewController
 @property (nonatomic, strong) NSString *equipmentName;
 @property (nonatomic, strong) NSString *sightName;
 @property (nonatomic, strong) SightModel *sightModel;
-@property (nonatomic, strong) EquipmentModel *eqipmentModel;
+@property (nonatomic, strong) YJEquipmentModel *eqipmentModel;
 @end

@@ -99,7 +99,7 @@
 
 //删除设备接口
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
-// #define mFamilyList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/homeUser/findList.do?"]
+ #define mDeleteEquipment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/delete.do?"]
 
 //获取所有设备列表
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE

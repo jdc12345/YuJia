@@ -19,6 +19,7 @@
 #import "YJMyHomeColFlowLayout.h"
 #import "YJHomeAddressVC.h"
 #import "MYFamilyViewController.h"
+#import "EquipmentManagerViewController.h"
 
 #define inputH 60  // 输入框高度
 static NSString* collectionCellid = @"collection_cell";
@@ -131,6 +132,12 @@ static NSString *headerViewIdentifier =@"hederview";
         case 1:
         {
             MYFamilyViewController *homeVC = [[MYFamilyViewController alloc]init];
+            [self.navigationController pushViewController:homeVC animated:YES];
+        }
+            break;
+        case 2:
+        {
+            EquipmentManagerViewController *homeVC = [[EquipmentManagerViewController alloc]init];
             [self.navigationController pushViewController:homeVC animated:YES];
         }
             break;

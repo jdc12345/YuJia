@@ -63,7 +63,7 @@
 }
 - (UITableView *)tableView{
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH -64) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
         _tableView.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
@@ -89,7 +89,7 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     NSLog(@"设备 %@",mName[[self.eqipmentModel.iconId integerValue]]);
-    self.selectStart = @[@"定时启动",@"定位启动"];
+    self.selectStart = @[@"房间1",@"房间2"];
     [self tableView];
     // Do any additional setup after loading the view.
 }

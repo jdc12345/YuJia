@@ -56,6 +56,7 @@
 		16430A621F3D619200E9CCB7 /* YJSceneDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16430A611F3D619200E9CCB7 /* YJSceneDetailModel.m */; };
 		16430A651F3D7F1B00E9CCB7 /* YJRoomDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16430A641F3D7F1B00E9CCB7 /* YJRoomDetailModel.m */; };
 		16430A681F3D8A6C00E9CCB7 /* YJEquipmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16430A671F3D8A6C00E9CCB7 /* YJEquipmentModel.m */; };
+		16434EFA1F501EA900470765 /* YJEquipmentSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16434EF91F501EA900470765 /* YJEquipmentSettingVC.m */; };
 		164388491F2F126200BC3CEB /* YJEquipmentList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 164388481F2F126200BC3CEB /* YJEquipmentList.plist */; };
 		164388501F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */; };
 		164D9F531F3C6ADB00D62606 /* YJAddEquipmentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 164D9F521F3C6ADB00D62606 /* YJAddEquipmentVC.m */; };
@@ -415,6 +416,8 @@
 		16430A641F3D7F1B00E9CCB7 /* YJRoomDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRoomDetailModel.m; sourceTree = "<group>"; };
 		16430A661F3D8A6C00E9CCB7 /* YJEquipmentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJEquipmentModel.h; sourceTree = "<group>"; };
 		16430A671F3D8A6C00E9CCB7 /* YJEquipmentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJEquipmentModel.m; sourceTree = "<group>"; };
+		16434EF81F501EA900470765 /* YJEquipmentSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJEquipmentSettingVC.h; sourceTree = "<group>"; };
+		16434EF91F501EA900470765 /* YJEquipmentSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJEquipmentSettingVC.m; sourceTree = "<group>"; };
 		164388481F2F126200BC3CEB /* YJEquipmentList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = YJEquipmentList.plist; sourceTree = "<group>"; };
 		1643884E1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJEquipmentrCollectionVCell.h; sourceTree = "<group>"; };
 		1643884F1F2F186B00BC3CEB /* YJEquipmentrCollectionVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJEquipmentrCollectionVCell.m; sourceTree = "<group>"; };
@@ -1411,6 +1414,8 @@
 				3E94391E1EC95A9B001FE471 /* MYFamilyTableViewCell.m */,
 				3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */,
 				3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */,
+				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
+				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
 			);
 			name = V;
 			sourceTree = "<group>";
@@ -1434,6 +1439,10 @@
 				3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */,
 				3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */,
 				3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */,
+				3E9439291EC99095001FE471 /* EquipmentManagerViewController.h */,
+				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
+				16434EF81F501EA900470765 /* YJEquipmentSettingVC.h */,
+				16434EF91F501EA900470765 /* YJEquipmentSettingVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1706,8 +1715,6 @@
 				3E984F971EBB1C1B0094CBE4 /* SuccessConnectViewController.m */,
 				3E984F991EBB1C280094CBE4 /* FailConnectViewController.h */,
 				3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */,
-				3E984FA21EBB383C0094CBE4 /* EquipmentSettingViewController.h */,
-				3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */,
 				3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */,
 				3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */,
 				3E90B7281EC1C7A500CC49D7 /* SocketSettingViewController.h */,
@@ -1720,6 +1727,8 @@
 				3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */,
 				3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */,
 				3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */,
+				3E984FA21EBB383C0094CBE4 /* EquipmentSettingViewController.h */,
+				3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */,
 				3E90B7371EC3F41300CC49D7 /* SubController */,
 				3E984F6A1EB87BA90094CBE4 /* 用到 */,
 			);
@@ -1767,10 +1776,6 @@
 				3E20B3481EC5874800C77B58 /* MYHomeViewController.m */,
 				3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */,
 				3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */,
-				3E9439291EC99095001FE471 /* EquipmentManagerViewController.h */,
-				3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */,
-				3E94392C1EC990B9001FE471 /* EquipmentManagerTableViewCell.h */,
-				3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */,
 				3E6468501ECE887B003E785B /* YYFeedbackViewController.h */,
 				3E6468511ECE887B003E785B /* YYFeedbackViewController.m */,
 				3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */,
@@ -2212,6 +2217,7 @@
 				168900021F147ED10025F1E0 /* YJFriendStatesFlowLayout.m in Sources */,
 				160F011A1F2584EE006EE0A2 /* YJPayRecoderVC.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
+				16434EFA1F501EA900470765 /* YJEquipmentSettingVC.m in Sources */,
 				16239DC21ECD9D9A00CF6F4C /* YJFriendStateLikeModel.m in Sources */,
 				3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */,
 				3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */,

@@ -11,10 +11,9 @@
 @interface EquipmentManagerTableViewCell : UITableViewCell
 @property (nonatomic, strong) UIImageView *iconV;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIImageView *nextImageV;
 @property (nonatomic, strong) UIView *cardView;
-@property (nonatomic, weak) UIImageView *imageV;
-@property (nonatomic, weak) UISwitch *switch0;
-
-- (void)cellMode:(BOOL)isSwitch;
+@property (nonatomic, weak) UIButton *selectBtn;
+@property (nonatomic, assign) BOOL isSelecting;//判断是否正在选择设备
+@property (nonatomic, assign) BOOL isAllSelected;//判断是否全选
+//- (void)cellMode:(BOOL)isSwitch;
 @end

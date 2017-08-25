@@ -97,8 +97,8 @@
     }else{
         homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
     }
-    [homeTableViewCell cellMode:YES];
-    homeTableViewCell.switch0.hidden = YES;
+//    [homeTableViewCell cellMode:YES];
+//    homeTableViewCell.switch0.hidden = YES;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
 }
