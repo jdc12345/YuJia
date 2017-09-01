@@ -76,7 +76,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 
     //评论框
     UIView *fieldBackView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenH-49*kiphone6, kScreenW, 49*kiphone6)];
-    fieldBackView.backgroundColor = [UIColor colorWithHexString:@"f2f1f1"];
+    fieldBackView.backgroundColor = [UIColor colorWithHexString:@"#f2f1f1"];
     self.fieldBackView = fieldBackView;
     self.fieldBackView.hidden = true;
     [self.view addSubview:fieldBackView];
@@ -129,7 +129,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
     [sendBtn setBackgroundColor:[UIColor colorWithHexString:@"#373840"]];
     [sendBtn addTarget:self action:@selector(sendBtnClick) forControlEvents:UIControlEventTouchUpInside];
 }
--(void)setStateId:(long)stateId{
+-(void)setStateId:(NSString*)stateId{
     _stateId = stateId;
     [self loadData];
 }
@@ -156,7 +156,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5177C01F016403DFAAEE3C1182
 //    &stateId=1
     [SVProgressHUD show];// 动画开始
-    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.stateId];
+    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%@",mPrefixUrl,mDefineToken1,self.stateId];
     [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{        
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
@@ -165,7 +165,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
             NSDictionary *detailDic = bigDic[@"stateEntity"];
             YJFriendNeighborStateModel *model = [YJFriendNeighborStateModel mj_objectWithKeyValues:detailDic];
             if (!self.userId) {//第一次加载数据需要判断userId是否为空
-                self.userId = model.info_id;
+                self.userId = [model.info_id integerValue];
             }
             self.model = model;//解析状态详情数据
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -561,7 +561,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 -(void)informationBtnClick:(UIButton *)sender{
 http://192.168.1.55:8080/smarthome/mobileapi/state/delteState.do?token=ACDCE729BCE6FABC50881A867CAFC1BC&stateId=34
     [SVProgressHUD show];// 动画开始
-    NSString *deleUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/delteState.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    NSString *deleUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/delteState.do?token=%@&stateId=%@",mPrefixUrl,mDefineToken1,self.model.info_id];
     [[HttpClient defaultClient]requestWithPath:deleUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {

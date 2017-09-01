@@ -207,6 +207,7 @@
     self.teleNumberLabel = teleNumberLabel;
     self.conentLabel = conentLabel;
     self.stateLabel = stateLabel;
+    self.addressLabel = AddressLabel;
 }
 
 

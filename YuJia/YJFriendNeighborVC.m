@@ -54,7 +54,7 @@ static NSString* tableCellid = @"table_cell";
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self checkHasMessade];
-    [self loadData];
+    [self loadAreaData];
 }
 -(void)checkHasMessade{    //添加右侧消息中心按钮+发状态按钮
     NSMutableArray* itemArr = [NSMutableArray array];
@@ -74,7 +74,7 @@ static NSString* tableCellid = @"table_cell";
     
     self.navigationItem.rightBarButtonItems = itemArr;
     //  http://192.168.1.55:8080/smarthome/mobileapi/message/hasmessage.do?msgType=&token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgTypeBegin=2&msgTypeEnd=3
-    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@&msgTypeBegin=11&msgTypeEnd=30",mPrefixUrl,mDefineToken1];
+    NSString *checkUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/hasmessage.do?msgType=&token=%@",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:checkUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -98,7 +98,7 @@ static NSString* tableCellid = @"table_cell";
     }];
     
 }
--(void)loadData{
+-(void)loadAreaData{
     [SVProgressHUD show];// 动画开始
     //    http://192.168.1.55:8080/smarthome/mobileapi/residentialQuarters/findRQ.do?token=EC9CDB5177C01F016403DFAAEE3C1182  获取小区
     NSString *areaUrlStr = [NSString stringWithFormat:@"%@/mobileapi/residentialQuarters/findRQ.do?token=%@",mPrefixUrl,mDefineToken1];
@@ -107,19 +107,17 @@ static NSString* tableCellid = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             self.areaArr = responseObject[@"result"];
-            [self setupUI];
-        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
-            [SVProgressHUD showErrorWithStatus:@"您还未登陆，请登录后再试"];
-        }else if ([responseObject[@"code"] isEqualToString:@"-2"]){
-            [SVProgressHUD showErrorWithStatus:@"您的信息还不够完善，请完善信息"];
+            [self loadStatesData];
+        }else{
+            [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
 }
--(void)setupUI{
-http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+-(void)loadStatesData{
+//http://192.168.1.55:8080/smarthome/mobileapi/state/findstate.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
     //    &residentialQuartersId=2
     //    &visibleRange=1
     //    &start=0

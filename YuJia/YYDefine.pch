@@ -59,7 +59,8 @@
 
 
 #define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
-#define mDefineToken1 @"49491B920A9DD107E146D961F4BDA50E"
+//#define mDefineToken1 @"49491B920A9DD107E146D961F4BDA50E"
+#define mDefineToken1 [CcUserModel defaultClient].userToken
 #define mDefineToken2 [CcUserModel defaultClient].userToken
 
 // 首页数据接口
@@ -104,7 +105,9 @@
 //获取所有设备列表
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
  #define mAllEquipment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/findList.do?"]
-
+//查询情景模式列表接口
+//http://192.168.1.168:8080/smarthome/mobileapi/scene/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mAllScene [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
 //分享钥匙接口
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/doorShareKey.do?id=1&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mShareLock [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/doorShareKey.do?"]
@@ -136,6 +139,9 @@
 //保存我的房屋信息接口
 //http://192.168.1.55:8080/smarthome/mobileapi/family/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&ownerName=333&ownerTelephone=13717883005
 #define mSaveMyHomeInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/save.do?"]
+//删除我的房屋信息接口
+//http://192.168.1.55:8080/smarthome/mobileapi/family/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mDeleHouseInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/family/delete.do?"]
 ////////////////////／/////////////////////////////////////
 //删除情景模式接口
 //http://192.168.1.55:8080/smarthome/mobileapi/scene/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
@@ -144,7 +150,9 @@
 //删除房间接口
 //http://192.168.1.55:8080/smarthome/mobileapi/room/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mRemoveRoom [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/delete.do?"]
-
+//查询房间列表接口
+//http://192.168.1.55:8080/smarthome/mobileapi/room/findList.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+#define mFindRoomList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/findList.do?"]
 
 //添加意见反馈接口
 //http://192.168.1.55:8080/smarthome/mobileapi/feedback/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE

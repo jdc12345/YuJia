@@ -18,14 +18,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // 背景
-    self.view.backgroundColor = [UIColor orangeColor];
+    self.view.backgroundColor = [UIColor clearColor];
     // 清除多余的分割线
     [self.tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
     //  边界
-//    self.tableView.layer.borderWidth = 0.5;
+    self.tableView.bounces = NO;
     self.tableView.layer.cornerRadius = 2.5;
     self.tableView.clipsToBounds = YES;
-    self.tableView.layer.borderWidth = 1.5;
+    self.tableView.layer.borderWidth = 1;
     self.tableView.layer.borderColor = [UIColor colorWithHexString:@"#e9e9e9"].CGColor;
     // 默认关闭下拉列表
     _isOpen = NO;

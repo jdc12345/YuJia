@@ -12,37 +12,33 @@
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "UILabel+Addition.h"
-#import "YJAddScenePictureVC.h"
+//#import "YJAddScenePictureVC.h"
 #import "YJEquipmentModel.h"
-#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
+//#import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
+#import "YJRoomDetailModel.h"
 
 #define inputW 254*[UIScreen mainScreen].bounds.size.width/375.0 // 输入框宽度
 #define inputH 30*[UIScreen mainScreen].bounds.size.width/375.0  // 输入框高度
-//static NSString* collectionCellid = @"collection_cell";
-//static NSString *headerViewIdentifier =@"hederview";
-//static NSString* eqCellid = @"eq_cell";
+
 @interface YJEquipmentSettingVC ()<UITextFieldDelegate,AccountDelegate>
 @property(nonatomic, weak) UITextField *sceneNameTF;//情景名称
 //@property(nonatomic,weak)UICollectionView *equipmentColView;//情景collectionView
 @property (nonatomic, strong) NSMutableArray* addedEquipmentListData;//添加过设备的房间设备列表，也是数据源
-//@property (nonatomic, strong) NSMutableArray *dataSource;
+@property (nonatomic, strong) NSMutableArray *roomModelArr;//房间模型列表
 @property (nonatomic, assign) CGFloat leftPodding;//启动条件下拉列表左侧距离屏幕距离
 
 /**
  * 启动条件选择框
  */
-@property (nonatomic, copy) UIButton *curAccount;//启动条件按钮
+@property (nonatomic, copy) UIButton *curAccount;//房间选择按钮
 @property (nonatomic, weak) UIButton *openBtn;//
 @property (nonatomic, weak) UIButton *selectPicBtn;//选择图标的btn
 @property (nonatomic, strong) ZYAlertSView *alertView;
 
-@property (nonatomic, strong) UIPickerView *pickerView;
-@property (nonatomic, copy) NSArray *proHourTimeList;
-@property (nonatomic, copy) NSArray *proMinuteTimeList;
-@property (nonatomic, weak) UITextField *sightNameF;//情景名称
+//@property (nonatomic, weak) UITextField *sightNameF;//情景名称
 
 
-@property (nonatomic, copy) NSArray *selectStart;//启动条件列表
+@property (nonatomic, copy) NSMutableArray *selectStart;//启动条件列表
 @property (nonatomic, weak) UILabel *startModelLabel;
 ///**
 // * 当前账号头像
@@ -71,8 +67,9 @@
     self.navigationController.navigationBar.translucent = false;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
-    self.selectStart = @[@"房间1",@"房间2"];
-    [self setUPUI];
+//    self.selectStart = @[@"房间1",@"房间2"];
+    [self httpRoomInfo];
+//    [self setUPUI];
 }
 
 - (void)setUPUI{
@@ -103,7 +100,8 @@
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"#333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-    sightNameText.text = mName[[self.eqipmentModel.iconId integerValue]];
+//    sightNameText.text = mName[[self.eqipmentModel.iconId integerValue]];
+    sightNameText.text = self.eqipmentModel.name;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
     sightNameText.layer.borderWidth = 1;
@@ -111,7 +109,11 @@
     self.sceneNameTF = sightNameText;
     sightNameText.delegate = self;
     _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 254*kiphone6, 30*kiphone6)];
-    
+    for (YJRoomDetailModel *roomModel in self.roomModelArr) {
+        if (self.eqipmentModel.roomId == roomModel.info_id) {
+            [_curAccount setTitle:roomModel.roomName forState:UIControlStateNormal];
+        }
+    }
     CGRect frame = CGRectMake(0, 0, 10.0, 30*kiphone6);
     UIView *leftview = [[UIView alloc] initWithFrame:frame];
     sightNameText.leftViewMode = UITextFieldViewModeAlways;
@@ -174,16 +176,16 @@
 }
 //点击更换图标按钮事件
 - (void)action:(UIButton *)sender{
-    YJAddScenePictureVC *presentedVC = [[YJAddScenePictureVC alloc]init];
-//    if (self.sceneModel.sceneIcon) {
-//        presentedVC.curruntPicNum = [self.sceneModel.sceneIcon integerValue];
-//    }
-//    presentedVC.clickBtnBlock = ^(NSInteger curruntPicNum) {
-//        self.sceneModel.sceneIcon = [NSString stringWithFormat:@"%ld",curruntPicNum];
-//        NSString *picName = [self getPicName];
-//        [self.selectPicBtn setImage:[UIImage imageNamed:picName] forState:UIControlStateNormal];
-//    };
-    [self.navigationController pushViewController:presentedVC animated:true];
+//    YJAddScenePictureVC *presentedVC = [[YJAddScenePictureVC alloc]init];
+////    if (self.sceneModel.sceneIcon) {
+////        presentedVC.curruntPicNum = [self.sceneModel.sceneIcon integerValue];
+////    }
+////    presentedVC.clickBtnBlock = ^(NSInteger curruntPicNum) {
+////        self.sceneModel.sceneIcon = [NSString stringWithFormat:@"%ld",curruntPicNum];
+////        NSString *picName = [self getPicName];
+////        [self.selectPicBtn setImage:[UIImage imageNamed:picName] forState:UIControlStateNormal];
+////    };
+//    [self.navigationController pushViewController:presentedVC animated:true];
 }
 
 /**
@@ -196,8 +198,14 @@
     //    _curAccount.center = CGPointMake(self.view.center.x, 200);
     // 默认当前账号为已有账号的第一个
     //    Account *acc = _dataSource[0];
-    [_curAccount setTitle:@"一键启动" forState:UIControlStateNormal];
-    
+    for (YJRoomDetailModel *roomModel in self.roomModelArr) {
+        if (roomModel.info_id == self.eqipmentModel.roomId) {
+            [_curAccount setTitle:roomModel.roomName forState:UIControlStateNormal];
+        }
+//        else{
+//            [_curAccount setTitle:@"所属房间" forState:UIControlStateNormal];
+//        }
+    }    
     _curAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _curAccount.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     // 字体
@@ -238,7 +246,7 @@
     _accountList.accountSource = self.selectStart;
     _accountList.isOpen = NO;
     _accountList.isCenter = NO;
-    _accountList.cellHigh = 30*kiphone6;
+    _accountList.cellHigh = inputH;
     // 初始化frame
     [self updateListH];
     // 隐藏下拉菜单
@@ -251,14 +259,14 @@
  *  监听代理更新下拉菜单
  */
 - (void)updateListH {
-    //    CGFloat listH;
-    //    // 数据大于3个现实3个半的高度，否则显示完整高度
-    //    if (_dataSource.count > 3) {
-    //        listH = inputH * 3.5;
-    //    }else{
-    //        listH = inputH * _dataSource.count;
-    //    }
-    _listFrame = CGRectMake(_leftPodding, 180*kiphone6, inputW, 2*inputH);
+        CGFloat listH;
+        // 数据大于3个现实3个半的高度，否则显示完整高度
+        if (self.selectStart.count > 3) {
+            listH = inputH * 3.5;
+        }else{
+            listH = inputH * self.selectStart.count;
+        }
+    _listFrame = CGRectMake(_leftPodding, 180*kiphone6, inputW, listH);
     _accountList.view.frame = _listFrame;
 }
 /**
@@ -276,119 +284,6 @@
         _accountList.view.frame = CGRectZero;
     }
 }
-//- (void)back_click{
-//    
-//    CGFloat alertW = kScreenW;
-//    CGFloat alertH = 390*kiphone6;
-//    
-//    // titleView
-//    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, alertW, alertH)];
-//    UILabel *titleLabel = [[UILabel alloc]init];
-//    titleLabel.text = @"选择时间段";
-//    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    titleLabel.font = [UIFont systemFontOfSize:14];
-//    
-//    UIPickerView *pickerView = [[UIPickerView alloc] init];
-//    // 显示选中框
-//    pickerView.showsSelectionIndicator=YES;
-//    pickerView.dataSource = self;
-//    pickerView.delegate = self;
-//    [self.view addSubview:pickerView];
-//    
-//    _proHourTimeList = [[NSArray alloc]initWithObjects:@"0时",@"1时",@"2时",@"3时",@"4时",@"5时",@"6时",@"7时",@"8时",@"9时",@"10时",@"11时",@"12时",@"13时",@"14时",@"15时",@"16时",@"17时",@"18时",@"19时",@"20时",@"21时",@"22时",@"23时",nil];
-//    
-//    NSMutableArray *minute = [[NSMutableArray alloc]initWithCapacity:2];
-//    for (int i = 0 ; i<60 ; i++) {
-//        NSString *minuteStr = [NSString stringWithFormat:@"%d分",i];
-//        [minute addObject:minuteStr];
-//    }
-//    _proMinuteTimeList = minute;
-//    
-//    UILabel *repeatLabel = [[UILabel alloc]init];
-//    repeatLabel.text = @"重复";
-//    repeatLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    repeatLabel.font = [UIFont systemFontOfSize:14];
-//    
-//    UILabel *lineLabel = [[UILabel alloc]init];
-//    lineLabel.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
-//    
-//    [titleView addSubview:titleLabel];
-//    [titleView addSubview:pickerView];
-//    [titleView addSubview:repeatLabel];
-//    [titleView addSubview:lineLabel];
-//    
-//    //    WS(ws);
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView).with.offset(20);
-//        make.top.equalTo(titleView).with.offset(25);;
-//        make.size.mas_equalTo(CGSizeMake(120 ,14));
-//    }];
-//    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView);
-//        make.top.equalTo(titleLabel).with.offset(20);;
-//        make.size.mas_equalTo(CGSizeMake(kScreenW ,90));
-//    }];
-//    [repeatLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView).with.offset(20);
-//        make.top.equalTo(titleLabel).with.offset(135);;
-//        make.size.mas_equalTo(CGSizeMake(120 ,14));
-//    }];
-//    
-//    [lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView);
-//        make.bottom.equalTo(titleView);
-//        make.size.mas_equalTo(CGSizeMake(alertW ,1));
-//    }];
-//    
-//    CGFloat btnW_Change = (kScreenW - 375)/4.0;
-//    NSArray *btnText_Array = @[@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日",@"全部"];
-//    
-//    for (int i = 0;  i<8 ; i++) {
-//        NSInteger row = 0;
-//        if (i >= 4)
-//            row = 1;
-//        
-//        UIButton *weekBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        weekBtn.frame = CGRectMake(20 + (76 +10 +btnW_Change)*(i%4), 213 +row *45, 76 +btnW_Change, 30);
-//        weekBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-//        [weekBtn setTitle:btnText_Array[i] forState:UIControlStateNormal];
-//        weekBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-//        [weekBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
-//        [weekBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateSelected];
-//        weekBtn.layer.borderColor = [UIColor colorWithHexString:@"#f1f1f1"].CGColor;
-//        weekBtn.layer.borderWidth = 1;
-//        weekBtn.layer.cornerRadius = 10;
-//        weekBtn.clipsToBounds = YES;
-//        [weekBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-//        [titleView addSubview:weekBtn];
-//        
-//        NSLog(@"x = %d  y = %ld",i%4,213 +row *45);
-//    }
-//    
-//    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    sureBtn.frame = CGRectMake(10, 16, 190, 44);
-//    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
-//    [sureBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
-//    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-//    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
-//    [sureBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
-//    sureBtn.layer.cornerRadius = 2.5;
-//    sureBtn.clipsToBounds = YES;
-//    sureBtn.layer.cornerRadius = 20;
-//    sureBtn.layer.masksToBounds = true;
-//    [titleView addSubview:sureBtn];
-//    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(titleView).with.offset(-30);
-//        make.centerX.equalTo(titleView);
-//        make.size.mas_equalTo(CGSizeMake(190, 44));
-//    }];
-//    
-//    
-//    ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
-//    [alertV show];
-//    self.alertView = alertV;
-//    
-//}
 /**
  * 监听代理选定cell获取选中账号
  */
@@ -397,19 +292,21 @@
     //    Account *acc = _dataSource[index];
     
     NSString *title = self.selectStart[index];
+    YJRoomDetailModel *roomModel = self.roomModelArr[index];
+    self.eqipmentModel.roomId = roomModel.info_id;//赋值所选房间的id
     [_curAccount setTitle:title forState:UIControlStateNormal];
-    if ([title isEqualToString:@"定时启动"]) {
-//        self.sceneModel.sceneModel = @"2";
-//        [self back_click];
-        self.selectStart = @[@"一键启动",@"定位启动"];
-    }else if([title isEqualToString:@"定位启动"]){
-//        self.sceneModel.sceneModel = @"3";
-        [self back_click_location];
-        self.selectStart = @[@"一键启动",@"定时启动"];
-    }else{
-//        self.sceneModel.sceneModel = @"1";
-        self.selectStart = @[@"定时启动",@"定位启动"];
-    }
+//    if ([title isEqualToString:@"定时启动"]) {
+////        self.sceneModel.sceneModel = @"2";
+////        [self back_click];
+////        self.selectStart = @[@"一键启动",@"定位启动"];
+//    }else if([title isEqualToString:@"定位启动"]){
+////        self.sceneModel.sceneModel = @"3";
+//        [self back_click_location];
+////        self.selectStart = @[@"一键启动",@"定时启动"];
+//    }else{
+////        self.sceneModel.sceneModel = @"1";
+////        self.selectStart = @[@"定时启动",@"定位启动"];
+//    }
     _accountList.accountSource = self.selectStart;
     [_accountList reloadDataSource];
     //    if (index == 0) {
@@ -435,77 +332,6 @@
 
 - (void)back_click_location{
     
-//    CGFloat alertW = kScreenW;
-//    CGFloat alertH = 258;
-//    
-//    // titleView
-//    UIView *titleView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, alertW, alertH)];
-//    UILabel *titleLabel = [[UILabel alloc]init];
-//    titleLabel.text = @"启动条件 距家";
-//    titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
-//    titleLabel.font = [UIFont systemFontOfSize:14];
-//    
-//    UIPickerView *pickerView = [[UIPickerView alloc] init];
-//    // 显示选中框
-//    pickerView.showsSelectionIndicator=YES;
-//    pickerView.dataSource = self;
-//    pickerView.delegate = self;
-//    [self.view addSubview:pickerView];
-//    
-//    
-//    NSMutableArray *minute = [[NSMutableArray alloc]initWithCapacity:2];
-//    for (int i = 0 ; i<10 ; i++) {
-//        NSString *minuteStr = [NSString stringWithFormat:@"%dm",i*100];
-//        [minute addObject:minuteStr];
-//    }
-//    _proMinuteTimeList = minute;
-//    
-//    NSMutableArray *kmArray = [[NSMutableArray alloc]initWithCapacity:2];
-//    for (int i = 0 ; i<10 ; i++) {
-//        NSString *minuteStr = [NSString stringWithFormat:@"%dkm",i];
-//        [kmArray addObject:minuteStr];
-//    }
-//    _proHourTimeList = kmArray;
-//    
-//    
-//    [titleView addSubview:titleLabel];
-//    [titleView addSubview:pickerView];
-//    
-//    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView).with.offset(20);
-//        make.top.equalTo(titleView).with.offset(25);;
-//        make.size.mas_equalTo(CGSizeMake(120 ,14));
-//    }];
-//    [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(titleView);
-//        make.top.equalTo(titleLabel.mas_bottom).with.offset(20);;
-//        make.size.mas_equalTo(CGSizeMake(kScreenW ,90));
-//    }];
-//    
-//    
-//    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    sureBtn.frame = CGRectMake(10, 16, 190, 44);
-//    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
-//    [sureBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
-//    sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-//    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#00eac6"];
-//    [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
-//    sureBtn.layer.cornerRadius = 2.5;
-//    sureBtn.clipsToBounds = YES;
-//    sureBtn.layer.cornerRadius = 20;
-//    sureBtn.layer.masksToBounds = true;
-//    
-//    [titleView addSubview:sureBtn];
-//    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(titleView).with.offset(-30);
-//        make.centerX.equalTo(titleView);
-//        make.size.mas_equalTo(CGSizeMake(190, 44));
-//    }];
-//    
-//    
-//    ZYAlertSView *alertV = [[ZYAlertSView alloc]initWithContentSize:CGSizeMake(alertW, alertH) TitleView:titleView selectView:nil sureView:nil andIsCenter:NO];
-//    [alertV show];
-//    self.alertView = alertV;
     
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
@@ -522,142 +348,84 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField{
 //    self.sceneModel.sceneName = textField.text;
 }
-
-- (void)surePost{
-    // 定位启动
-    if (_proHourTimeList.count == 10) {
-        
-        
-    }else{  // 定时启动
-        
-    }
+//请求用户房间数据
+- (void)httpRoomInfo{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFindRoomList,mDefineToken2] method:0 parameters:nil prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+//        NSMutableArray *roomArray = [[NSMutableArray alloc]init];
+        NSArray *roomList = responseObject[@"result"];
+        for (NSDictionary *roomDict in roomList) {
+            YJRoomDetailModel *roomModel = [YJRoomDetailModel mj_objectWithKeyValues:roomDict];
+            [self.selectStart addObject:roomModel.roomName];//用以让列表显示房间名字
+            [self.roomModelArr addObject:roomModel];//房间列表
+        }
+//        self.selectStart = roomArray;
+        [self setUPUI];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"请求失败，请重试"];
+    }];
 }
-
-- (void)httpRequestInfo{
-    //    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];;
-    //    for (EquipmentModel *equipment in self.sightModel.equipmentList) {
-    //        [equipmentList addObject: [equipment properties_aps]];
-    //    }
-    //    NSLog(@"%@",equipmentList);
-    //    if (self.sightNameF.text.length >0) {
-    //        self.sightModel.sceneName = self.sightNameF.text;
-    //    }
-    //
-    //
-    //    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
-    //    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
-    //    NSDictionary *dict = @{
-    //                           @"id":self.sightModel.info_id,
-    //                           @"token":mDefineToken,
-    //                           @"equipmentList":jsonString,
-    //                           @"sceneName":self.sightModel.sceneName,
-    //                           @"sceneModel":@"1",
-    //                           @"sceneTime":@"12:30",
-    //                           @"sceneDistance":@"11111",
-    //                           @"repeatMode":@"1,2,3"
-    //                           };
-    //
-    //    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
-    //
-    //    } success:^(NSURLSessionDataTask *task, id responseObject) {
-    //        NSLog(@"%@",responseObject);
-    //
-    //    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-    //        NSLog(@"%@",error);
-    //    }];
-}
+//改变设备设置
 -(void)changeInfo:(UIButton*)sender{
     sender.enabled = false;
-    //    保存或更新情景模式信息接口
-    //    添加或修改情景模式信息接口
-    //http://192.168.1.168:8080/smarthome/mobileapi/scene/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+    self.eqipmentModel.name = self.sceneNameTF.text;
+   //保存或更新设备接口  // 单一设备改变状态
     //Method:POST
-    //    参数列表:
-    //    |参数名          |类型      |必需  |描述
-    //    |-----          |----     |---- |----
-    //    |token          |String   |Y    |令牌
-    //    |id             |Long     |Y    |编号
-    //    |sceneName      |String   |N    |情景模式名称
-    //    |sceneState     |Integer  |N    |情景模式状态,0=开启,1=关闭
-    //    |sceneModel     |Integer  |N    |情景模式类型,1=手动开启关闭，2=定时开启关闭，3=根据位置开启关闭
-    //    |oid            |Integer  |N    |情景模式序号
-    //    |sceneTime      |String   |N    |定时开启关闭时间
-    //    |sceneDistance  |Integer  |N    |根据位置开启关闭的距离
-    //    |familyId       |Long     |Y    |家的编号
-    //    |repeatMode     |String   |N    |重复方式，空或0代表全部，1=周一，2=周二，等等，多个选项使用逗号分隔，如：1,2,3,4,5,6,7
-    //    |sceneIcon      |Integer  |N    |情景图标编号
-    //    返回值：
-    //    |参数名          |类型      |描述
-    //    |code           |String   |响应代码
-    //    |result         |String   |响应说明
-    //    |Scene          |Object   |情景模式实体类
-    
-//    NSMutableArray *equipmentList = [[NSMutableArray alloc]initWithCapacity:2];
-//    [self.addedEquipmentListData removeLastObject];
-//    // NSMutableArray --> NSArray
-//    self.sceneModel.equipmentList = [self.addedEquipmentListData copy];
-//    for (YJEquipmentModel *equipment in self.sceneModel.equipmentList) {
-//        [equipmentList addObject: [equipment properties_aps]];
-//    }
-//    NSLog(@"%@",equipmentList);
-//    if (self.sightNameF.text.length >0) {
-//        self.sceneModel.sceneName = self.sightNameF.text;
-//    }
-//    if (!self.sceneModel.info_id) {
-//        self.sceneModel.info_id = @"";
-//    }
-//    if (!self.sceneModel.sceneIcon) {
-//        [SVProgressHUD showErrorWithStatus:@"请选择情景图标"];
-//        sender.enabled = true;
-//        return;
-//    }
-//    
-//    NSData *dictData = [NSJSONSerialization dataWithJSONObject:equipmentList options:NSJSONWritingPrettyPrinted error:nil];
-//    NSString *jsonString = [[NSString alloc]initWithData:dictData encoding:NSUTF8StringEncoding];
-//    NSDictionary *dict = @{
-//                           @"id":self.sceneModel.info_id,
-//                           @"token":mDefineToken2,
-//                           @"equipmentList":jsonString,
-//                           @"sceneName":self.sceneModel.sceneName,
-//                           @"sceneIcon":self.sceneModel.sceneIcon,
-//                           @"sceneModel":@"1",//self.sceneModel.sceneModel
-//                           @"sceneTime":@"12:30",
-//                           @"sceneDistance":@"11111",
-//                           @"repeatMode":@"1,2,3"
-//                           };
-//    [SVProgressHUD show];
-//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:dict prepareExecute:^{
-//        
-//    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//        [SVProgressHUD dismiss];
-//        NSLog(@"%@",responseObject);
-//        [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
-//        
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        NSLog(@"%@",error);
-//        [SVProgressHUD dismiss];
-//        YJEquipmentModel *model = [[YJEquipmentModel alloc]init];//添加按钮的model
-//        model.name = @"添加";
-//        model.iconId = @"0";
-//        [self.addedEquipmentListData addObject:model];//失败了需要停留在这个页面，所以需要在最后保留添加按钮
-//        sender.enabled = true;
-//    }];
-//    
-//    //    删除情景接口
-//    //    NSDictionary *dict = @{
-//    //                           @"ids":self.sceneModel.info_id,
-//    //                           @"token":mDefineToken
-//    //                           };
-//    //    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mRemoveSigh] method:1 parameters:dict prepareExecute:^{
-//    //
-//    //    } success:^(NSURLSessionDataTask *task, id responseObject) {
-//    //        NSLog(@"%@",responseObject);
-//    //
-//    //    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//    //        NSLog(@"%@",error);
-//    //    }];
-}
+//    参数列表:
+//    |参数名          |类型      |必需  |描述
+//    |-----          |----     |---- |----
+//    |token          |String   |Y    |令牌
+//    |id             |Long     |Y    |编号
+//    |name           |String   |Y    |设备名称
+//    |iconId         |Long     |N    |设备图标编号
+//    |iconUrl        |String   |N    |设备图标URL
+//    |state          |Integer  |Y    |状态0=开1=关
+//    |roomId         |Long     |Y    |房间编号外键
+//    |serialNumber   |String   |N    |设备序列号唯一标识符
+//    |extendState    |String   |N    |扩展状态控制，如灯的亮度，空调的温度等
+//    |familyId       |Long     |Y    |家庭编号
 
+    NSDictionary *dict = @{
+                           @"id":self.eqipmentModel.info_id,
+                           @"token":mDefineToken2,
+                           @"name":self.eqipmentModel.name,
+                           @"iconId":self.eqipmentModel.iconId,
+                           @"iconUrl":self.eqipmentModel.iconUrl,
+                           @"state":self.eqipmentModel.state,
+                           @"roomId":self.eqipmentModel.roomId,
+                           @"serialNumber":self.eqipmentModel.serialNumber,
+                           @"extendState":self.eqipmentModel.toExtendState,
+                           @"familyId":self.eqipmentModel.familyId,
+
+                           };
+//    [SVProgressHUD show];
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mEquipmentSave] method:1 parameters:dict prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];
+        NSLog(@"%@",responseObject);
+        [self.navigationController popViewControllerAnimated:true];//修改添加情景成功后返回上级页面
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
+        sender.enabled = true;
+    }];
+//
+}
+//懒加载
+-(NSMutableArray *)selectStart{
+    if (_selectStart == nil) {
+        _selectStart = [NSMutableArray array];
+    }
+    return _selectStart;
+}
+-(NSMutableArray *)roomModelArr{
+    if (_roomModelArr == nil) {
+        _roomModelArr = [NSMutableArray array];
+    }
+    return _roomModelArr;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

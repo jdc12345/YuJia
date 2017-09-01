@@ -22,7 +22,7 @@
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>情景设置</string>
+		<string>情景管理</string>
 		<key>icon</key>
 		<string>myhome_sceneManager</string>
 	</dict>

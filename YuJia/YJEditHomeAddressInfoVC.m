@@ -1,12 +1,12 @@
 //
-//  YJAddhomeInfoVC.m
+//  YJEditHomeAddressInfoVC.m
 //  YuJia
 //
-//  Created by 万宇 on 2017/8/22.
+//  Created by 万宇 on 2017/8/30.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "YJAddhomeInfoVC.h"
+#import "YJEditHomeAddressInfoVC.h"
 #import "YJCityDetailModel.h"
 #import "YJAreaDetailModel.h"
 //改
@@ -20,7 +20,7 @@
 
 static NSString* cityCellid = @"city_cell";
 static NSString* detailInfoCellid = @"detailInfo_cell";
-@interface YJAddhomeInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,AMapSearchDelegate>
+@interface YJEditHomeAddressInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,AMapSearchDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 
 @property(nonatomic,weak)UIView *backGrayView;//时间选择器半透明背景
@@ -38,29 +38,33 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 @property(nonatomic, strong)NSString *yardName;
 @property(nonatomic, strong)NSArray *areaNames;//可选街道乡镇数组
 @property (nonatomic, assign) long residentialQuartersId;//所选小区id
+
 @end
 
-@implementation YJAddhomeInfoVC
+@implementation YJEditHomeAddressInfoVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"添加房屋信息";
+    self.title = @"编辑房屋信息";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     [self setupUI];
-//    [self loadCityData];
+    //    [self loadCityData];
     
-        //    -------------------------(用高德本地请求)
-        [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
-        //设置行政区划查询参数并发起行政区划查询
-        self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
-        self.search.delegate = self;
+    //    -------------------------(用高德本地请求)
+    [AMapServices sharedServices].apiKey =@"380748c857866280e77da5bb813e13c5";
+    //设置行政区划查询参数并发起行政区划查询
+    self.search = [[AMapSearchAPI alloc] init];//实例化搜索对象
+    self.search.delegate = self;
     AMapDistrictSearchRequest *dist = [[AMapDistrictSearchRequest alloc] init];
     self.areaCode = @"130681";
     dist.keywords = self.areaCode;//(用高德本地请求)
     dist.requireExtension = YES;
     [self.search AMapDistrictSearch:dist];
-
-    
+  
+}
+-(void)setHouseModel:(YJHomeHouseInfoModel *)houseModel{
+    _houseModel = houseModel;
+    [self.tableView reloadData];
 }
 //获取小区列表,在小区cell的选择按钮的点击block回调中会使用
 -(void)loadAreaData{
@@ -176,7 +180,6 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             make.left.right.bottom.offset(0);
             make.height.offset(150*kiphone6);
         }];
-        
     }else{
         self.backGrayView.hidden = false;
         self.topView.hidden = false;
@@ -236,46 +239,46 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
     NSString *ownerTelephone = telNumberCell.contentField.text;
     
     NSString *areaName = [NSString stringWithFormat:@"河北省 保定市 涿州市 %@",self.areaName];
-
-//    参数列表:
-//    |参数名          |类型      |必需  |描述
-//    |-----          |----     |---- |----
-//    |token          |String   |Y    |令牌
-//    |id             |Long     |N    |编号
-//    |familyName     |String   |N    |家名称
-//    |createTime     |java.sql.Timestamp|N    |家创建时间
-//    |address        |String   |N    |家的地址所属省市区县，街道，小区；楼号，几单元，几层，几室；
-//    |familyState    |Integer  |N    |审核状态"0=家与地址不符合，不能用1=地址符合，正常使用"
-//    |residentialQuartersId|Long     |N    |小区编号--外键--小区表
-//    |areaCode       |Long     |N    |地区编码省市区县三级
-//    |areaName       |String   |N    |地区名称
-//    |buildingNumber |String   |N    |楼号
-//    |unitNumber     |String   |N    |单元号
-//    |roomNumber     |String   |N    |房间号
-//    |lng            |Double   |N    |经度值
-//    |lat            |Double   |N    |纬度值
-//    |ownerName      |String   |N    |业主姓名
-//    |ownerTelephone |Long     |N    |业主电话
-//    |city           |String   |N    |城市
-//    |floor          |String   |N    |楼层
-//    |residentialQuartersName|String   |N    |小区名称
-//    |userType       |Integer  |N    |业主身份；0=业主，1=租客，2=访客
-//    //此处接提交地址接口！！！！！
-//    [SVProgressHUD show];// 动画开始
-    NSString *reportUrlStr = [NSString stringWithFormat:@"%@token=%@&address=%@&ownerName=%@&ownerTelephone=%@&areaCode=%@&areaName=%@&userType=%ld&residentialQuartersName=%@&residentialQuartersId=%ld",mSaveMyHomeInfo,mDefineToken2,address,ownerName,ownerTelephone,self.areaCode,areaName,(long)self.userType,self.yardName,self.residentialQuartersId];
+    
+    //    参数列表:
+    //    |参数名          |类型      |必需  |描述
+    //    |-----          |----     |---- |----
+    //    |token          |String   |Y    |令牌
+    //    |id             |Long     |N    |编号
+    //    |familyName     |String   |N    |家名称
+    //    |createTime     |java.sql.Timestamp|N    |家创建时间
+    //    |address        |String   |N    |家的地址所属省市区县，街道，小区；楼号，几单元，几层，几室；
+    //    |familyState    |Integer  |N    |审核状态"0=家与地址不符合，不能用1=地址符合，正常使用"
+    //    |residentialQuartersId|Long     |N    |小区编号--外键--小区表
+    //    |areaCode       |Long     |N    |地区编码省市区县三级
+    //    |areaName       |String   |N    |地区名称
+    //    |buildingNumber |String   |N    |楼号
+    //    |unitNumber     |String   |N    |单元号
+    //    |roomNumber     |String   |N    |房间号
+    //    |lng            |Double   |N    |经度值
+    //    |lat            |Double   |N    |纬度值
+    //    |ownerName      |String   |N    |业主姓名
+    //    |ownerTelephone |Long     |N    |业主电话
+    //    |city           |String   |N    |城市
+    //    |floor          |String   |N    |楼层
+    //    |residentialQuartersName|String   |N    |小区名称
+    //    |userType       |Integer  |N    |业主身份；0=业主，1=租客，2=访客
+    //    //此处接提交地址接口！！！！！
+    //    [SVProgressHUD show];// 动画开始
+    NSString *reportUrlStr = [NSString stringWithFormat:@"%@token=%@&address=%@&ownerName=%@&ownerTelephone=%@&areaCode=%@&areaName=%@&userType=%ld&residentialQuartersName=%@&id=%@&residentialQuartersId=%ld",mSaveMyHomeInfo,mDefineToken2,address,ownerName,ownerTelephone,self.areaCode,areaName,(long)self.userType,self.yardName,self.houseModel.info_id,self.residentialQuartersId];
     reportUrlStr = [reportUrlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[HttpClient defaultClient]requestWithPath:reportUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-//            for (UIViewController *controller in self.navigationController.viewControllers) {
-//                if ([controller isKindOfClass:[YJModifyAddressVC class]]) {
-//                    YJModifyAddressVC *revise =(YJModifyAddressVC *)controller;
-//                    [revise loadData];//更新新添加的数据
-//                    [self.navigationController popToViewController:revise animated:YES];
-//                }
-//            }
+            //            for (UIViewController *controller in self.navigationController.viewControllers) {
+            //                if ([controller isKindOfClass:[YJModifyAddressVC class]]) {
+            //                    YJModifyAddressVC *revise =(YJModifyAddressVC *)controller;
+            //                    [revise loadData];//更新新添加的数据
+            //                    [self.navigationController popToViewController:revise animated:YES];
+            //                }
+            //            }
         }else {
             [SVProgressHUD showInfoWithStatus:responseObject[@"message"]];
         }
@@ -285,8 +288,8 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-//
-//    
+    //
+    //
 }
 #pragma mark - UITableView
 
@@ -300,12 +303,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         if (indexPath.row==1) {
             cell.contentField.keyboardType = UIKeyboardTypeNumberPad;
             [self addToolSender:cell.contentField];
+            cell.contentField.text = self.houseModel.ownerTelephone;//电话号码
         }else{
             cell.contentField.keyboardType = UIKeyboardTypeDefault;
+            cell.contentField.text = self.houseModel.ownerName;//姓名
         }
         if (indexPath.row==6) {
             cell.contentField.placeholder = @"请填写详细地址，如：*号楼 *单元 ***";
-//            [self addToolSender:cell.contentField];
+            cell.contentField.text = self.houseModel.address;//详细地址
         }
         cell.item = itemArr[indexPath.row];
         return cell;
@@ -314,10 +319,39 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
         YJAddHomeAddressPickerTVCell *cell = [tableView dequeueReusableCellWithIdentifier:cityCellid forIndexPath:indexPath];
         cell.item = itemArr[indexPath.row];
         cell.selectBtn.tag = 20+indexPath.row;
-        if (indexPath.row==3) {
-            cell.imageName = @"gray_address";
-        }else{
-            cell.imageName = @"";
+        switch (indexPath.row) {
+            case 2:
+                cell.imageName = @"";
+                switch ([self.houseModel.userType integerValue]) {
+                    case 0:
+                        cell.contentLabel.text = @"访客";
+                        break;
+                    case 1:
+                        cell.contentLabel.text = @"业主";
+                        break;
+                    case 2:
+                        cell.contentLabel.text = @"租户";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 3:
+                cell.imageName = @"gray_address";
+                break;
+            case 4:
+                cell.imageName = @"";
+                if (self.houseModel.areaName.length>12) {//请求的数据前缀为@"河北省 保定市 涿州市 "，需要去除
+                    cell.contentLabel.text = [self.houseModel.areaName substringFromIndex:12];
+                    self.areaName = cell.contentLabel.text;
+                }
+                break;
+            case 5:
+                cell.imageName = @"";
+                cell.contentLabel.text = self.houseModel.residentialQuartersName;
+                break;
+            default:
+                break;
         }
         WS(ws);
         cell.clickSelectBtnBlock = ^(NSInteger currentIndex) {//cell上选择按钮的点击事件
@@ -338,9 +372,9 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
                     break;
                 case 5://小区
                     [self loadAreaData];
-//                    ws.pickerDatas = @[@"水岸花城",@"名流一品小区",@"名流一品小区2"];//需要根据街道请求数据
-//                    [ws setBackView];
-//                    [ws.pickerView reloadAllComponents];
+                    //                    ws.pickerDatas = @[@"水岸花城",@"名流一品小区",@"名流一品小区2"];//需要根据街道请求数据
+                    //                    [ws setBackView];
+                    //                    [ws.pickerView reloadAllComponents];
                     break;
                     
                 default:
@@ -367,14 +401,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 // pickerView 每列个数
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     
-        return self.pickerDatas.count;
- 
+    return self.pickerDatas.count;
+    
 }
 // 每列宽度
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     
-        return kScreenW;
-  
+    return kScreenW;
+    
 }
 -(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component{
     return 50*kiphone6;
@@ -394,12 +428,12 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             self.areaName = cell.contentLabel.text;//地区名称
             break;
         case 5:
-            {//选择小区的数据源存的是小区数据模型
-                YJPostHouseVillageModel *infoModel = self.pickerDatas[row];
-                cell.contentLabel.text = infoModel.rname;
-                self.yardName = cell.contentLabel.text;//小区名称
-                self.residentialQuartersId = infoModel.info_id;//小区ID
-            }
+        {//选择小区的数据源存的是小区数据模型
+            YJPostHouseVillageModel *infoModel = self.pickerDatas[row];
+            cell.contentLabel.text = infoModel.rname;
+            self.yardName = cell.contentLabel.text;//小区名称
+            self.residentialQuartersId = infoModel.info_id;//小区ID
+        }
             break;
         default:
             break;
@@ -443,14 +477,14 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 /* 行政区划数据查询回调. */
 - (void)onDistrictSearchDone:(AMapDistrictSearchRequest *)request response:(AMapDistrictSearchResponse *)response
 {
-
+    
     if (response == nil)
     {
         return;
     }
     //当前区域数据
     NSMutableArray *citys = [NSMutableArray array];//第二个数组
-
+    
     //解析response获取行政区划，具体解析见 Demo
     for (AMapDistrict *dist in response.districts)//NSArray<AMapDistrict *> *districts下级行政区域数组
     {
@@ -459,10 +493,10 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             [citys addObject:subDist.name];//第二个数组
             
         }
-
+        
     }
     self.areaNames = citys;
-
+    
 }
 ////当检索失败时，会进入 didFailWithError 回调函数，通过该回调函数获取产生的失败的原因。
 //- (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
@@ -506,7 +540,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 //}
 //#pragma mark - 键盘通知
 //- (void)addNoticeForKeyboard {
-//    
+//
 //    //注册键盘出现的通知
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(keyboardWillShow:)
@@ -542,7 +576,7 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 //- (void) keyboardWillHide:(NSNotification *)notify {
 //    // 键盘动画时间
 //    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-//    
+//
 //    //视图下沉恢复原状
 //    [UIView animateWithDuration:duration animations:^{
 //        self.tableView.frame = CGRectMake(0, 5*kiphone6, self.tableView.frame.size.width, self.tableView.frame.size.height);
@@ -551,15 +585,15 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     //注册键盘通知
-//    [self addNoticeForKeyboard];
+    //    [self addNoticeForKeyboard];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //移除键盘监听
-//    //移除键盘监听 直接按照通知名字去移除键盘通知, 这是正确方式
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    //    //移除键盘监听 直接按照通知名字去移除键盘通知, 这是正确方式
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -577,4 +611,3 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
  */
 
 @end
-

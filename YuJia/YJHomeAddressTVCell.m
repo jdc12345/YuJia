@@ -8,7 +8,9 @@
 
 #import "YJHomeAddressTVCell.h"
 #import "UILabel+Addition.h"
+@interface YJHomeAddressTVCell ()
 
+@end
 @implementation YJHomeAddressTVCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -19,6 +21,27 @@
         [self createDetailView];
     }
     return self;
+}
+-(void)setHouseModle:(YJHomeHouseInfoModel *)houseModle{
+    _houseModle = houseModle;
+    self.selectBtn.selected = houseModle.defaults;//是否是默认的地址
+    self.nameLabel.text = houseModle.ownerName;
+    switch ([houseModle.userType integerValue]) {
+        case 0:
+            self.typeLabel.text = @"业主";
+            break;
+        case 1:
+            self.typeLabel.text = @"租客";
+            break;
+        case 2:
+            self.typeLabel.text = @"访客";
+            break;
+        default:
+            break;
+    }
+    self.teleLabel.text = houseModle.ownerTelephone;
+    self.addressLabel.text = [NSString stringWithFormat:@"%@ %@%@",houseModle.areaName,houseModle.residentialQuartersName,houseModle.address];
+    
 }
 - (void)createDetailView{
     self.contentView.backgroundColor = [UIColor colorWithHexString:@"#eeeeee"];
@@ -40,7 +63,7 @@
     [selectBtn addTarget:self action:@selector(selectBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 //    [selectBtn sizeToFit];
     [backView addSubview:selectBtn];
-//    self.openBtn = openBtn;
+    self.selectBtn = selectBtn;
     [selectBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(backView.mas_top).offset(25*kiphone6);
         make.left.offset(20*kiphone6);
@@ -55,10 +78,10 @@
     //删除地址的按钮
     UIButton *deleteBtn = [[UIButton alloc]init];
     [deleteBtn setImage:[UIImage imageNamed:@"homeAddress_delete"] forState:UIControlStateNormal];
-    //    [openBtn addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
     [deleteBtn sizeToFit];
     [backView addSubview:deleteBtn];
-    //    self.openBtn = openBtn;
+    self.deleteBtn = deleteBtn;
+    [self.deleteBtn addTarget:self action:@selector(deleteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(selectBtn);
         make.right.offset(-20*kiphone6);
@@ -70,11 +93,12 @@
     //    [openBtn addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
     [editBtn sizeToFit];
     [backView addSubview:editBtn];
-    //    self.openBtn = openBtn;
+    self.editBtn = editBtn;
     [editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(selectBtn);
         make.right.equalTo(deleteBtn.mas_left).offset(-40*kiphone6);
     }];
+    [self.editBtn addTarget:self action:@selector(editBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     //..邪恶的分割线
     UILabel *lineL = [[UILabel alloc]init];
@@ -87,6 +111,7 @@
     }];
     //姓名
     UILabel *nameLabel = [UILabel labelWithText:@"用户姓名" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    self.nameLabel = nameLabel;
     [backView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineL.mas_bottom).offset(15*kiphone6);
@@ -94,6 +119,7 @@
     }];
     //业主类型
     UILabel *typeLabel = [UILabel labelWithText:@"业主" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    self.typeLabel = typeLabel;
     [backView addSubview:typeLabel];
     [typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineL.mas_bottom).offset(15*kiphone6);
@@ -101,6 +127,7 @@
     }];
     //联系电话
     UILabel *numLabel = [UILabel labelWithText:@"17000000000" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    self.teleLabel = numLabel;
     [backView addSubview:numLabel];
     [numLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lineL.mas_bottom).offset(15*kiphone6);
@@ -108,6 +135,7 @@
     }];
     //地址
     UILabel *addressLabel = [UILabel labelWithText:@"河北省 保定市 涿州市 范阳中路 名流一品小区 一号楼 一单元 102" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
+    self.addressLabel = addressLabel;
     addressLabel.numberOfLines = 0;
     [backView addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -118,8 +146,14 @@
 
 }
 -(void)selectBtnClick:(UIButton*)sender{
-    sender.selected = !sender.selected;
-    
+//    sender.selected = !sender.selected;
+    self.selectedBlock(self.houseModle);
+}
+-(void)deleteBtnClick:(UIButton*)sender{
+    self.deleBlock(self.houseModle);
+}
+-(void)editBtnClick:(UIButton*)sender{
+    self.editBlock(self.houseModle);
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

@@ -191,9 +191,6 @@
         make.size.mas_equalTo(CGSizeMake(50 ,12));
     }];
     
-    
-    
-    
     UILabel *lineLabel = [[UILabel alloc]init];
     lineLabel.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     

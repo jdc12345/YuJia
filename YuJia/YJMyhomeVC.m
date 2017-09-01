@@ -20,6 +20,8 @@
 #import "YJHomeAddressVC.h"
 #import "MYFamilyViewController.h"
 #import "EquipmentManagerViewController.h"
+#import "YJRoomManagerVC.h"
+#import "YJSceneManagerVC.h"
 
 #define inputH 60  // 输入框高度
 static NSString* collectionCellid = @"collection_cell";
@@ -68,7 +70,7 @@ static NSString *headerViewIdentifier =@"hederview";
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
 //    self.selectStart = @[@"定时启动",@"定位启动"];
-    [self httpRequestHomeInfo];
+//    [self httpRequestHomeInfo];
     [self setUPUI];
 }
 - (void)setUPUI{
@@ -141,6 +143,18 @@ static NSString *headerViewIdentifier =@"hederview";
             [self.navigationController pushViewController:homeVC animated:YES];
         }
             break;
+        case 3:
+        {
+            YJSceneManagerVC *sceneVC = [[YJSceneManagerVC alloc]init];
+            [self.navigationController pushViewController:sceneVC animated:YES];
+        }
+            break;
+        case 4:
+        {
+            YJRoomManagerVC *roomVC = [[YJRoomManagerVC alloc]init];
+            [self.navigationController pushViewController:roomVC animated:YES];
+        }
+            break;
     
         default:
             break;
@@ -171,14 +185,14 @@ static NSString *headerViewIdentifier =@"hederview";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
     
-    return CGSizeMake(kScreenW,70);
+    return CGSizeMake(kScreenW,60);
     
 }
 //collectionview的头部试图
 - (UIView *)personInfomation{
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 60)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
-    _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, inputH)];
+    _curAccount = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 60)];
     [headerView addSubview:_curAccount];
 //    [_curAccount mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.bottom.equalTo(headerView);
@@ -197,8 +211,12 @@ static NSString *headerViewIdentifier =@"hederview";
     //    _curAccount.center = CGPointMake(self.view.center.x, 200);
     // 默认当前账号为已有账号的第一个
     //    Account *acc = _dataSource[0];
-    [_curAccount setTitle:@"我创建的家" forState:UIControlStateNormal];
-    
+    [_curAccount setTitle:@"请选择当前默认家" forState:UIControlStateNormal];
+    for (AllHomeModel *homeModel in self.dataSource) {
+        if ([homeModel.currentFamilyId isEqualToString:homeModel.familyId]) {
+            [_curAccount setTitle:homeModel.familyName forState:UIControlStateNormal];
+        }
+    }
     _curAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     _curAccount.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
     // 字体
@@ -207,8 +225,8 @@ static NSString *headerViewIdentifier =@"hederview";
 //    // 边框
 //    _curAccount.layer.cornerRadius = 2.5;
 //    _curAccount.clipsToBounds = YES;
-//    _curAccount.layer.borderWidth = 0.5;
-//    _curAccount.layer.borderColor = [UIColor colorWithHexString:@"#e9e9e9"].CGColor;
+    _curAccount.layer.borderWidth = 1;
+    _curAccount.layer.borderColor = [UIColor colorWithHexString:@"#e9e9e9"].CGColor;
 //    // 显示框背景色
 //    [_curAccount setBackgroundColor:[UIColor whiteColor]];
 //    [_curAccount addTarget:self action:@selector(openAccountList) forControlEvents:UIControlEventTouchUpInside];
@@ -227,7 +245,7 @@ static NSString *headerViewIdentifier =@"hederview";
     [_curAccount addSubview:openBtn];
     self.openBtn = openBtn;
     [openBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_curAccount.mas_centerY).with.offset(0);
+        make.centerY.equalTo(_curAccount.mas_centerY);
         make.right.offset(-20);
     }];
     
@@ -260,7 +278,7 @@ static NSString *headerViewIdentifier =@"hederview";
     }else{
         listH = inputH * _dataSource.count;
     }
-    _listFrame = CGRectMake(0, 50, kScreenW, listH);
+    _listFrame = CGRectMake(0, 60, kScreenW, listH);
     _accountList.view.frame = _listFrame;
 }
 /**
@@ -322,17 +340,19 @@ static NSString *headerViewIdentifier =@"hederview";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
+        if (self.dataSource.count>0) {
+            [self.dataSource removeAllObjects];
+        }
         NSArray *allHome = responseObject[@"mapList"];
-        NSMutableArray *nameList = [[NSMutableArray alloc]initWithCapacity:2];
+        NSMutableArray *nameList = [[NSMutableArray alloc]init];
         for (NSDictionary *dict in allHome) {
             AllHomeModel *homeModel = [AllHomeModel mj_objectWithKeyValues:dict];
             [self.dataSource addObject:homeModel];//请求回来的家的数据
             [nameList addObject:homeModel.familyName];
         }
-        
         self.selectStart = nameList;
-//        _tableView.tableHeaderView = [self personInfomation];
         [self.funCollectionView reloadData];
+//        [_accountList reloadDataSource];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -346,9 +366,14 @@ static NSString *headerViewIdentifier =@"hederview";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";
+//    self.navBarBgAlpha = @"1.0";
+    [self httpRequestHomeInfo];
 }
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.accountList removeFromParentViewController];
+    [self.accountList.view removeFromSuperview];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

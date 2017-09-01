@@ -10,6 +10,8 @@
 #import "YJHomeAddressTVCell.h"
 #import "UIBarButtonItem+Helper.h"
 #import "YJAddhomeInfoVC.h"
+#import "YJHomeHouseInfoModel.h"
+#import "YJEditHomeAddressInfoVC.h"
 
 @interface YJHomeAddressVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -25,7 +27,7 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         _tableView.indicatorStyle =
-        _tableView.rowHeight = 150*kiphone6;
+        _tableView.rowHeight = 160*kiphone6;
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.showsVerticalScrollIndicator = NO;
@@ -39,7 +41,7 @@
 }
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
-        _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
+        _dataSource = [[NSMutableArray alloc]init];
     }
     return _dataSource;
 }
@@ -48,9 +50,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"房屋信息";
-    //    self.selectStart = @[@"lim创建的家",@"zzz创建的家"];
     [self tableView];
-    [self httpRequestHomeInfo];
+//    [self httpRequestHomeInfo];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加房屋信息" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(addHomeInfo)];
 }
 -(void)addHomeInfo{
@@ -62,16 +63,15 @@
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
-//        NSDictionary *eDict = responseObject[@"Personal"];
-//        self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
-//        self.nameLabel.text = self.personalModel.trueName;
-//        if (self.personalModel.avatar.length>0) {
-//            [self.iconView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
-//        }
-//        if ([self.personalModel.gender isEqualToString:@"1"]) {
-//            self.genderV.image = [UIImage imageNamed:@"man"];
-//        }
-        
+        if (self.dataSource.count>0) {
+            [self.dataSource removeAllObjects];
+        }
+        NSArray *addressArr = responseObject[@"result"];
+        for (NSDictionary *aDict in addressArr) {
+            YJHomeHouseInfoModel *houseModel = [YJHomeHouseInfoModel mj_objectWithKeyValues:aDict];
+            [self.dataSource addObject:houseModel];
+        }
+        [self.tableView reloadData];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
@@ -92,7 +92,7 @@
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return self.dataSource.count;
 }
 //- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    
@@ -100,21 +100,55 @@
 //}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     YJHomeAddressTVCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
-//    if (indexPath.row == 0) {
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"house_myhome"]];
-//        homeTableViewCell.titleLabel.text = @"我的房屋信息";
-//        
-//    }else if(indexPath.row == 1){
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"Family_myhome"]];
-//        homeTableViewCell.titleLabel.text = @"我的家人管理";
-//    }else{
-//        homeTableViewCell.iconV.image = [UIImage imageNamed:[NSString stringWithFormat:@"equipmentmanagement_myhome"]];
-//        homeTableViewCell.titleLabel.text = @"我的设备管理";
-//    }
-    //    homeTableViewCell.backgroundColor = [UIColor blackColor];
+    YJHomeHouseInfoModel *model = self.dataSource[indexPath.row];
+    homeTableViewCell.houseModle = model;
+    WS(ws);
+    //切换默认地址
+    homeTableViewCell.selectedBlock = ^(YJHomeHouseInfoModel *houseModel) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@token=%@&familyId=%@&personalId=%@",mSetFamily,mDefineToken2,houseModel.info_id,houseModel.personalId];
+        [SVProgressHUD show];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+                [SVProgressHUD showSuccessWithStatus:@"选择默认地址成功"];
+                [ws httpRequestHomeInfo];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    };
+    //编辑地址
+    homeTableViewCell.editBlock = ^(YJHomeHouseInfoModel *houseModel) {
+        YJEditHomeAddressInfoVC *vc = [[YJEditHomeAddressInfoVC alloc]init];
+        vc.houseModel = houseModel;
+        [ws.navigationController pushViewController:vc animated:YES];
+    };
+    //删除地址
+    homeTableViewCell.deleBlock = ^(YJHomeHouseInfoModel *houseModel) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@ids=%@&token=%@",mDeleHouseInfo,houseModel.info_id,mDefineToken2];
+        [SVProgressHUD show];
+        [[HttpClient defaultClient]requestWithPath:urlStr method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            if ([responseObject[@"code"] isEqualToString:@"0"]) {
+//                [SVProgressHUD showSuccessWithStatus:@"删除地址成功"];
+                [SVProgressHUD dismiss];
+                [ws httpRequestHomeInfo];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    };
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
     
+ }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self httpRequestHomeInfo];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

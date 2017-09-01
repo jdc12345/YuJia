@@ -231,7 +231,7 @@ static NSString* photoCellid = @"photo_cell";
     }
 //    http://192.168.1.55:8080/smarthome/mobileapi/state/LikeStat.do?token=EC9CDB5177C01F016403DFAAEE3C1182&stateId=9
 //    [SVProgressHUD show];// 动画开始
-    NSString *likeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/LikeStat.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+    NSString *likeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/LikeStat.do?token=%@&stateId=%@",mPrefixUrl,mDefineToken1,self.model.info_id];
     [[HttpClient defaultClient]requestWithPath:likeUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {

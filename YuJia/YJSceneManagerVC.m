@@ -1,20 +1,19 @@
 //
-//  EquipmentManagerViewController.m
+//  YJSceneManagerVC.m
 //  YuJia
 //
-//  Created by wylt_ios_1 on 2017/5/15.
+//  Created by 万宇 on 2017/8/28.
 //  Copyright © 2017年 wylt_ios_1. All rights reserved.
 //
 
-#import "EquipmentManagerViewController.h"
-#import "YJEquipmentModel.h"
+#import "YJSceneManagerVC.h"
 #import "EquipmentManagerTableViewCell.h"
 #import "EquipmentSettingViewController.h"
 #import "UIBarButtonItem+Helper.h"
-#import "YJAddEquipmentVC.h"
-#import "YJEquipmentSettingVC.h"
+#import "YJSceneDetailModel.h"
+#import "YJSceneSetVC.h"
 
-@interface EquipmentManagerViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface YJSceneManagerVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, assign) BOOL isSelecting;//判断是否正在选择设备
@@ -22,9 +21,11 @@
 @property (nonatomic, weak) UIButton *deletSelectedBtn;//删除所选btn
 @property (nonatomic, weak) UIButton *deletedBtn;//删除btn
 @property (nonatomic, weak) UIButton *addBtn;//添加btn
+
 @end
 
-@implementation EquipmentManagerViewController
+@implementation YJSceneManagerVC
+
 - (NSMutableArray *)dataSource{
     if (_dataSource == nil) {
         _dataSource = [[NSMutableArray alloc]initWithCapacity:2];
@@ -47,14 +48,14 @@
         [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
         [self.view addSubview:_tableView];
         [self.view sendSubviewToBack:_tableView];
-//        _tableView.tableHeaderView = [self personInfomation];
+        //        _tableView.tableHeaderView = [self personInfomation];
         
     }
     return _tableView;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"设备管理";
+    self.title = @"情景管理";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.isSelecting = NO;
@@ -66,7 +67,7 @@
     UIButton *deletBtn = [[UIButton alloc]init];
     [self.view addSubview:deletBtn];
     [self.view bringSubviewToFront:deletBtn];
-    [deletBtn setTitle:@"删除设备" forState:UIControlStateNormal];
+    [deletBtn setTitle:@"删除情景" forState:UIControlStateNormal];
     deletBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [deletBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     [deletBtn setBackgroundColor:[UIColor colorWithHexString:@"#f34a52"]];
@@ -81,7 +82,7 @@
     UIButton *addBtn = [[UIButton alloc]init];
     [self.view addSubview:addBtn];
     [self.view bringSubviewToFront:addBtn];
-    [addBtn setTitle:@"添加设备" forState:UIControlStateNormal];
+    [addBtn setTitle:@"添加情景" forState:UIControlStateNormal];
     addBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [addBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     [addBtn setBackgroundColor:[UIColor colorWithHexString:@"#0ddcbc"]];
@@ -96,7 +97,7 @@
     UIButton *deletSelectedBtn = [[UIButton alloc]init];
     [self.view addSubview:deletSelectedBtn];
     [self.view bringSubviewToFront:deletSelectedBtn];
-    [deletSelectedBtn setTitle:@"删除设备" forState:UIControlStateNormal];
+    [deletSelectedBtn setTitle:@"删除情景" forState:UIControlStateNormal];
     deletSelectedBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [deletSelectedBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
     [deletSelectedBtn setBackgroundColor:[UIColor colorWithHexString:@"#f34a52"]];
@@ -111,48 +112,52 @@
 #pragma mark -btnClick
 //删除设备
 -(void)deletedBtnClick:(UIButton*)sender{
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"全选" normalColor:[UIColor colorWithHexString:@"#c5c5c5"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(selectAllEquipment:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"全选" normalColor:[UIColor colorWithHexString:@"#c5c5c5"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(selectAllEquipment:)];
     self.deletSelectedBtn.hidden = NO;
     self.isSelecting = YES;
     [self.tableView reloadData];
 }
 //添加设备
 -(void)addBtnClick:(UIButton*)sender{
-    YJAddEquipmentVC *addVc = [[YJAddEquipmentVC alloc]init];
-    [self.navigationController pushViewController:addVc animated:true];
+    //跳转情景设置页面
+    YJSceneSetVC *vc = [[YJSceneSetVC alloc]init];
+    vc.sceneModel = [[YJSceneDetailModel alloc]init];
+    [self.navigationController pushViewController:vc animated:true];
+//    YJAddEquipmentVC *addVc = [[YJAddEquipmentVC alloc]init];
+//    [self.navigationController pushViewController:addVc animated:true];
 }
 //删除所选
 -(void)deletSelectedBtnClick:(UIButton*)sender{
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" normalColor:[UIColor colorWithHexString:@"#c5c5c5"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"" normalColor:[UIColor colorWithHexString:@"#c5c5c5"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:nil];
     self.deletSelectedBtn.hidden = YES;
     self.isSelecting = NO;
     
-    //删除所选设备
+    //删除所选情景
     NSString *ids = @"";
     for (int i = 0; i<self.dataSource.count; i++) {
-        YJEquipmentModel *equipmentModel = self.dataSource[i];
+        YJSceneDetailModel *sceneModel = self.dataSource[i];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         EquipmentManagerTableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         if(cell.selectBtn.selected){
             if (ids.length>0) {
-                ids = [NSString stringWithFormat:@"%@,%@",ids,equipmentModel.info_id];
+                ids = [NSString stringWithFormat:@"%@,%@",ids,sceneModel.info_id];
             }else{
-                ids = [NSString stringWithFormat:@"%@",equipmentModel.info_id];
+                ids = [NSString stringWithFormat:@"%@",sceneModel.info_id];
             }
         }
     }
     if (ids.length>0) {//有选中设备，需要删除
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@ids=%@&token=%@",mDeleteEquipment,ids,mDefineToken2] method:0 parameters:nil prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.dataSource removeAllObjects];
-        [self httpRequestHomeInfo];
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-    }];
-  }
+        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@ids=%@&token=%@",mRemoveSigh,ids,mDefineToken2] method:0 parameters:nil prepareExecute:^{
+            
+        } success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSLog(@"%@",responseObject);
+            [self.dataSource removeAllObjects];
+            [self httpRequestHomeInfo];
+            
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"%@",error);
+        }];
+    }
     self.isAllSelected = NO;
     [self.tableView reloadData];
 }
@@ -172,7 +177,7 @@
         UIButton *btn = self.navigationItem.rightBarButtonItem.customView;
         btn.selected = NO;
     }
-//    [sender setTitleColor:[UIColor colorWithHexString:@"#0ddcbc"] forState:UIControlStateNormal];
+    //    [sender setTitleColor:[UIColor colorWithHexString:@"#0ddcbc"] forState:UIControlStateNormal];
 }
 #pragma mark -
 #pragma mark ------------TableView Delegeta----------------------
@@ -181,12 +186,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (!self.isSelecting) {
-        YJEquipmentModel *equipmentModel = self.dataSource[indexPath.row];
-        YJEquipmentSettingVC *eVC = [[YJEquipmentSettingVC alloc]init];
-        eVC.eqipmentModel = equipmentModel;
-        [self.navigationController pushViewController:eVC animated:YES];
-    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
@@ -198,44 +198,89 @@
     return self.dataSource.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    YJEquipmentModel *equipmentModel = self.dataSource[indexPath.row];
+    YJSceneDetailModel *sceneModel = self.dataSource[indexPath.row];
     
     //    NSLog(@"第%ld row个数 %ld",tableView.tag -100,indexPath.row);
     // 图标  情景设置setting  灯light 电视tv 插座socket
     EquipmentManagerTableViewCell *homeTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"EquipmentManagerTableViewCell" forIndexPath:indexPath];
-    homeTableViewCell.titleLabel.text = equipmentModel.name;
-    if (equipmentModel.iconUrl.length >0) {
-    }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
-    }
+    homeTableViewCell.titleLabel.text = sceneModel.sceneName;
+    NSString *imageName = [self getPicNameWith:sceneModel];
+    homeTableViewCell.iconV.image = [UIImage imageNamed:imageName];
+    
     homeTableViewCell.isSelecting = self.isSelecting;//是否处于正在选择状态
     homeTableViewCell.isAllSelected = self.isAllSelected;//是否全选
-//    [homeTableViewCell cellMode:YES];
-//    homeTableViewCell.switch0.hidden = YES;
+    //    [homeTableViewCell cellMode:YES];
+    //    homeTableViewCell.switch0.hidden = YES;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
 }
+//根据图标序号确定图标
+-(NSString *)getPicNameWith:(YJSceneDetailModel*)sceneModel{
+    NSString *picName;
+    if (sceneModel.sceneIcon) {//编辑已有情景
+        switch ([sceneModel.sceneIcon integerValue]) {
+            case 0:
+                picName = @"getup";
+                break;
+            case 1:
+                picName = @"rest";
+                break;
+            case 2:
+                picName = @"leave";
+                break;
+            case 3:
+                picName = @"gohome";
+                break;
+            case 4:
+                picName = @"playgame";
+                break;
+            case 5:
+                picName = @"time_scene";
+                break;
+            case 6:
+                picName = @"rain_scene";
+                break;
+            case 7:
+                picName = @"eatting_scene";
+                break;
+            case 8:
+                picName = @"music_scene";
+                break;
+            case 9:
+                picName = @"fire_scene";
+                break;
+            case 10:
+                picName = @"sunning_scene";
+                break;
+            default:
+                break;
+        }
+    }else{//添加新情景
+        picName = @"add_home";
+    }
+    return picName;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-//请求所有设备
+//请求所有情景数据
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllEquipment,mDefineToken2] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllScene,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         if (self.dataSource.count>0) {
             [self.dataSource removeAllObjects];
         }
-        NSArray *equipmentList= responseObject[@"equipmentList"];
-        for(NSDictionary *eDict in equipmentList){
-            YJEquipmentModel *eModel = [YJEquipmentModel mj_objectWithKeyValues:eDict];
-            [self.dataSource addObject:eModel];
+        NSArray *sceneList= responseObject[@"sceneList"];
+        for(NSDictionary *sDict in sceneList){
+            YJSceneDetailModel *sModel = [YJSceneDetailModel mj_objectWithKeyValues:sDict];
+            [self.dataSource addObject:sModel];
         }
         [self.tableView reloadData];
         

@@ -8,22 +8,22 @@
 
 #import "YJPersonalVC.h"
 #import "UIViewController+Cloudox.h"
-#import "UIColor+Extension.h"
+//#import "UIColor+Extension.h"
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
-//#import "MYHomeViewController.h"
 #import "PersonalSettingViewController.h"
-//#import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
 #import "CirleAndActiveViewController.h"
-//#import "NotficViewController.h"
 #import "YJNoticeListTableVC.h"
 #import "YJPersonalModel.h"
 #import "UILabel+Addition.h"
 #import "YJMyhomeVC.h"
+#import "YJSetPersonalVC.h"
+#import "YJMyCircleFriendVC.h"
+#import "YJMyActivitiesVC.h"
 
 @interface YJPersonalVC ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -143,8 +143,8 @@
 //    
 //    [headerView addSubview:personV];
     
-    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-    ;
+//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
+//    ;
     
 //    UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
 //    iconV.layer.cornerRadius = 32.5 *kiphone6;
@@ -279,15 +279,16 @@
     //        }
     //
     //    }else if(indexPath.section == 0){
-    if (indexPath.row == 0) {
+    if (indexPath.row == 1) {
         [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
-    }else if(indexPath.row == 1){
+    }else if(indexPath.row == 2){
         
         YYFeedbackViewController *feedBackVC = [[YYFeedbackViewController alloc]init];
         feedBackVC.personalModel = self.personalModel;
         [self.navigationController pushViewController:feedBackVC animated:YES];
     }else{
-        
+        YJSetPersonalVC *setVC = [[YJSetPersonalVC alloc]init];
+        [self.navigationController pushViewController:setVC animated:YES];
     }
 
     //    }
@@ -338,10 +339,10 @@
             [self.navigationController pushViewController:[[YJMyhomeVC alloc]init] animated:YES];
             break;
         case 1:
-            [self.navigationController pushViewController:[[CirleAndActiveViewController alloc]init] animated:YES];
+            [self.navigationController pushViewController:[[YJMyCircleFriendVC alloc]init] animated:YES];
             break;
         case 2:
-            
+            [self.navigationController pushViewController:[[YJMyActivitiesVC alloc]init] animated:YES];
             break;
         case 3:
             

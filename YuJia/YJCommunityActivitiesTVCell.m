@@ -218,6 +218,7 @@
     self.addBtn = addBtn;
     self.addNumberLabel = addNumberLabel;
     self.activitieStateLabel = activitieStateLabel;
+    self.addressLabel = AddressLabel;
     [likeBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn addTarget:self action:@selector(addBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }

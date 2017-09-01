@@ -28,7 +28,7 @@
 @property (nonatomic, assign) long personalId;
 @property (nonatomic, assign) long likeNum;
 @property (nonatomic, assign) long commentNum;
-@property (nonatomic, assign) long info_id;//和id重名
+@property (nonatomic, copy) NSString *info_id;//和id重名
 @property (nonatomic, assign) BOOL islike;
 @property (nonatomic, assign) BOOL shouldUpdateCache;//是否更新cell缓存行高
 @end
