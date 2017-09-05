@@ -120,6 +120,15 @@ static NSString* detailInfoCellid = @"detailInfo_cell";
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
                 [self.addresses removeObjectAtIndex:self.index.row];
                 [self.tableView deleteRowsAtIndexPaths:@[self.index] withRowAnimation:UITableViewRowAnimationAutomatic];
+                if (self.addresses.count==0) {//地址删完了
+                    for (UIViewController *controller in self.navigationController.viewControllers) {
+                        if ([controller isKindOfClass:[YJLifepaymentVC class]]) {
+                            YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+                            revise.isBill = false;//更新新添加的数据
+//                            [self.navigationController popToViewController:revise animated:YES];
+                        }
+                    }
+                }
             }else{
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }

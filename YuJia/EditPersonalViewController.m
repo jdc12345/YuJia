@@ -11,7 +11,7 @@
 #import  <AFNetworking.h>
 #import <UIImageView+WebCache.h>
 
-@interface EditPersonalViewController ()<UIImagePickerControllerDelegate>
+@interface EditPersonalViewController ()<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property (nonatomic, weak) UIImageView *iconV;
 @property (nonatomic, weak) UISegmentedControl *genderSel;
 
@@ -33,7 +33,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(changeInfo)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(changeInfo)];
     [self createSubViews];
     // Do any additional setup after loading the view.
 }
@@ -46,38 +46,38 @@
     [self.view addSubview:iconImageV];
     
     [iconImageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(94);
-        make.centerX.equalTo(self.view).with.offset(0);
+        make.top.equalTo(self.view).offset(94);
+        make.centerX.equalTo(self.view).offset(0);
         make.size.mas_equalTo(CGSizeMake(90 ,90));
     }];
     self.iconV = iconImageV;
     
     UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [changeBtn setTitle:@"更改头像" forState:UIControlStateNormal];
-    [changeBtn setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+    [changeBtn setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
     changeBtn.titleLabel.font = [UIFont systemFontOfSize:11];
     [changeBtn addTarget:self action:@selector(changeIconImage) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:changeBtn];
     
     [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(iconImageV.mas_bottom).with.offset(10);
-        make.centerX.equalTo(self.view).with.offset(0);
+        make.top.equalTo(iconImageV.mas_bottom).offset(10);
+        make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(60 ,11));
     }];
     
     
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.text = @"用户名";
-    titleLabel.textColor = [UIColor colorWithHexString:@"666666"];
+    titleLabel.textColor = [UIColor colorWithHexString:@"#666666"];
     titleLabel.font = [UIFont systemFontOfSize:14];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     
     [self.view addSubview:titleLabel];
     
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(changeBtn.mas_bottom).with.offset(30);
-        make.centerX.equalTo(self.view).with.offset(0);
+        make.top.equalTo(changeBtn.mas_bottom).offset(30);
+        make.centerX.equalTo(self.view).offset(0);
         make.size.mas_equalTo(CGSizeMake(70 ,11));
     }];
     
@@ -94,8 +94,8 @@
     [self.view addSubview:nameTextF];
     
     [nameTextF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleLabel.mas_bottom).with.offset(15);
-        make.centerX.equalTo(self.view).with.offset(0);
+        make.top.equalTo(titleLabel.mas_bottom).offset(15);
+        make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(185 ,30));
     }];
     
@@ -109,8 +109,8 @@
     [self.view addSubview:genderLabel];
     
     [genderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(nameTextF.mas_bottom).with.offset(30);
-        make.centerX.equalTo(self.view).with.offset(0);
+        make.top.equalTo(nameTextF.mas_bottom).offset(30);
+        make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(70 ,11));
     }];
     
@@ -120,7 +120,7 @@
     /*
      这个是设置按下按钮时的颜色
      */
-    segmentedControl.tintColor = [UIColor colorWithHexString:@"00bfff"];
+    segmentedControl.tintColor = [UIColor colorWithHexString:@"#0ddcbc"];
     segmentedControl.selectedSegmentIndex = 0;//默认选中的按钮索引、
     [segmentedControl addTarget:self action:@selector(segmentAction) forControlEvents:UIControlEventValueChanged];
     

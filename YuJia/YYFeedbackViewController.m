@@ -25,7 +25,7 @@
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     self.title = @"意见反馈";
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(sendFeedBack)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(sendFeedBack)];
     [self createSubView];
     // Do any additional setup after loading the view.
 }

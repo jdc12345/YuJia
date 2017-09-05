@@ -410,7 +410,7 @@ static NSString* tableCellid = @"table_cell";
 -(void)informationBtnClick:(UIButton*)sender{
     
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeType = 2;
+//    vc.noticeType = 2;
     [self.navigationController pushViewController:vc animated:true];
 }
 

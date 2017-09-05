@@ -26,7 +26,7 @@ static NSString* payCellid = @"pay_cell";
 @interface YJLifepaymentVC ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,weak)UITableView *emptyTableView;
 @property(nonatomic,weak)UITableView *payTableView;
-@property(nonatomic,assign)BOOL isBill;
+
 @property(nonatomic,strong)NSArray *payItemArr;
 
 @property(nonatomic,strong)NSMutableArray *addresses;//地址
@@ -73,6 +73,7 @@ static NSString* payCellid = @"pay_cell";
             }
             self.addresses = mArr;
             if (mArr.count>0) {
+                self.isBill = true;
                 NSMutableArray* rightItemArr = [NSMutableArray array];
                 UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
                 negativeSpacer.width = -5;
@@ -93,6 +94,7 @@ static NSString* payCellid = @"pay_cell";
             }
         }else{
             if ([responseObject[@"code"] isEqualToString:@"-1"]) {
+                [self addAddress];
             }
         }
         [SVProgressHUD dismiss];// 动画结束
@@ -196,6 +198,7 @@ static NSString* payCellid = @"pay_cell";
             make.centerY.equalTo(headerBtn);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
+        [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
 //        self.clickBtnBlock = ^(NSString *address) {
 //            addressLabel.text = address;
 //            //此处需要根据新地址刷新账单
@@ -221,6 +224,7 @@ static NSString* payCellid = @"pay_cell";
             make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
             make.left.equalTo(imageView.mas_right).offset(10*kiphone6);
         }];
+        [headerBtn addTarget:self action:@selector(modifyAddress) forControlEvents:UIControlEventTouchUpInside];
         __weak typeof(self) weakSelf = self;
         self.clickBtnBlock = ^(YJLifePayAddressModel *model) {//将地址管理页面返回的地址更新
             addressLabel.text = model.detailAddress;
@@ -234,7 +238,6 @@ static NSString* payCellid = @"pay_cell";
         make.right.offset(-10*kiphone6);
         make.centerY.equalTo(headerBtn);
     }];
-    [headerBtn addTarget:self action:@selector(goAddAddress) forControlEvents:UIControlEventTouchUpInside];
     return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -322,18 +325,21 @@ static NSString* payCellid = @"pay_cell";
     [self.navigationController pushViewController:vc animated:true];
 }
 - (void)goAddAddress{
-    YJModifyAddressVC *vc = [[YJModifyAddressVC alloc]init];
+    YJAddPropertyBillAddressVC *vc = [[YJAddPropertyBillAddressVC alloc] init];
     [self.navigationController pushViewController:vc animated:true];
 
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navBarBgAlpha = @"1.0";
-    if (self.emptyTableView&&self.isBill) {
+    if (self.emptyTableView&&self.isBill) {//第一次添加地址后返回该页面
         [self.emptyTableView removeFromSuperview];
         [self loadData];
     }
-    
+    if (self.payTableView&&!self.isBill) {//地址被删除完了之后返回该页面
+        [self.payTableView removeFromSuperview];
+        [self loadData];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

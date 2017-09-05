@@ -24,7 +24,7 @@
     self.title = @"修改绑定手机号";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(httpRequestInfo)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(httpRequestInfo)];
     [self settingSubView];
     // Do any additional setup after loading the view.
 }
@@ -44,7 +44,8 @@
     
     
     UILabel *titleLabel = [[UILabel alloc]init];
-    titleLabel.text = @"当前手机号：17600000000";
+    NSString *telNum = [CcUserModel defaultClient].telephoneNum;
+    titleLabel.text = [NSString stringWithFormat:@"当前手机号：%@",telNum];
 //    titleLabel.backgroundColor = [UIColor redColor];
     [titleLabel sizeToFit];
     titleLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -82,11 +83,7 @@
         make.left.right.bottom.equalTo(self.view).with.offset(0);
         
     }];
-    
-    
-    
-    
-    
+       
     UILabel *newNumberLabel = [[UILabel alloc]init];
     newNumberLabel.text = @"填写新手机号";
 //    newNumberLabel.backgroundColor = [UIColor redColor];
@@ -158,7 +155,7 @@
         make.centerY.equalTo(newNumberLabel).with.offset(0);
         make.left.equalTo(footView).with.offset(115);
         make.right.equalTo(footView).with.offset(-15);
-        make.size.height.mas_equalTo(30);
+        make.height.offset(30);
     }];
     
     
@@ -178,7 +175,7 @@
         make.centerY.equalTo(passwordLabel).with.offset(0);
         make.left.equalTo(footView).with.offset(115);
         make.right.equalTo(footView).with.offset(-15);
-        make.size.height.mas_equalTo(30);
+        make.height.offset(30);
     }];
     
     UITextField *yanLabelTextF = [[UITextField alloc]init];
@@ -194,10 +191,10 @@
     [footView addSubview:yanLabelTextF];
     
     [yanLabelTextF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(yanLabel).with.offset(0);
-        make.left.equalTo(footView).with.offset(115);
-        make.right.equalTo(footView).with.offset(-15 -100);
-        make.size.height.mas_equalTo(30);
+        make.centerY.equalTo(yanLabel);
+        make.left.equalTo(footView).offset(115);
+        make.right.equalTo(footView).offset(-15 -100);
+        make.height.offset(30);
     }];
     
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -205,7 +202,7 @@
     [sureBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;

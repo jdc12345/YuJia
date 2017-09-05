@@ -17,6 +17,7 @@
 #import <MJRefresh.h>
 #import "RKNotificationHub.h"
 #import "UILabel+Addition.h"
+#import <UIImageView+WebCache.h>
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -172,8 +173,8 @@ static NSString* tableCellid = @"table_cell";
     self.scrollowHeaderView = headerView;
     //添加头像
     UIImageView *iconView = [[UIImageView alloc]init];
-    UIImage *iconImage = [UIImage imageNamed:self.personal[@"avatar"]];
-    iconView.image = iconImage;
+    NSString *imageStr = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personal[@"avatar"]];
+    [iconView sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@"icon"]];
     [headerView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(headerView);
@@ -604,7 +605,7 @@ static NSString* tableCellid = @"table_cell";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     // 2 .给tableview缓存行高属性赋值并计算
     YJFriendNeighborStateModel *comModel = self.statesArr[indexPath.row];// 2.1 找到这个cell对应的数据模型
-    NSString *thisId = [NSString stringWithFormat:@"%ld",comModel.info_id];// 2.2 取出模型对应id作为cell缓存行高对应key
+    NSString *thisId = [NSString stringWithFormat:@"%@",comModel.info_id];// 2.2 取出模型对应id作为cell缓存行高对应key
     CGFloat cacheHeight = [[self.cellHeightCache valueForKey:thisId] doubleValue];// 2.3 根据这个key取这个cell的高度
     if (cacheHeight) {// 2.4 如果取得到就说明已经存过了，不需要再计算，直接返回这个高度
         return cacheHeight;
@@ -663,7 +664,7 @@ static NSString* tableCellid = @"table_cell";
 -(void)informationBtnClick:(UIButton*)sender{
     
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeType = 1;
+//    vc.noticeType = 1;
     [self.navigationController pushViewController:vc animated:true];
     
 }

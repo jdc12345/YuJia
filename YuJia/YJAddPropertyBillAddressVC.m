@@ -337,6 +337,11 @@ http://localhost:8080/smarthome/mobileapi/family/addAddress.do?token=ACDCE729BCE
                     [revise loadData];//更新新添加的数据
                     [self.navigationController popToViewController:revise animated:YES];
                 }
+                if ([controller isKindOfClass:[YJLifepaymentVC class]]) {//第一次添加地址
+                    YJLifepaymentVC *revise =(YJLifepaymentVC *)controller;
+                    revise.isBill = true;//更新新添加的数据
+                    [self.navigationController popToViewController:revise animated:YES];
+                }
             }
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             [SVProgressHUD showInfoWithStatus:responseObject[@"message"]];

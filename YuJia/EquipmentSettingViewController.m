@@ -438,7 +438,7 @@
     [titleView addSubview:repeatLabel];
     [titleView addSubview:lineLabel];
     
-    WS(ws);
+//    WS(ws);
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView).with.offset(20);
         make.top.equalTo(titleView).with.offset(25);;

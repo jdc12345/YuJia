@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 #import "YJNoticeListModel.h"
 @interface YJCommunityCarNoticesCenterVC : UIViewController
-@property(nonatomic,strong)YJNoticeListModel *model;
+@property(nonatomic,strong)NSMutableArray *carNoticesArr;//拼车消息数据源
 @end

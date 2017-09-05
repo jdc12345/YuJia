@@ -52,8 +52,31 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的圈子";
-    self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     self.navigationController.navigationBar.translucent = false;
+    //添加空页面视图
+    UIImageView *backView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nostatus"]];
+    backView.userInteractionEnabled = true;
+    [self.view addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_centerY).offset(-5*kiphone6);
+        make.width.height.offset(160*kiphone6);
+    }];
+    UILabel *noticeLabel = [[UILabel alloc]init];
+    noticeLabel.text = @"你还没有发布任何状态哦！去添加吧!";
+    noticeLabel.font = [UIFont systemFontOfSize:13];
+    noticeLabel.textColor = [UIColor colorWithHexString:@"#c6c6c6"];
+    noticeLabel.numberOfLines = 0;
+    noticeLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:noticeLabel];
+    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view.mas_centerY).offset(5*kiphone6);
+        make.width.offset(150*kiphone6);
+        
+    }];
+
     self.isSelecting = NO;
     [self loadAreaData];
     [self setUPTabView];
@@ -96,7 +119,13 @@ static NSString* tableCellid = @"table_cell";
                     [weakSelf.statesArr addObject:mArr];
                 }
                 start = weakSelf.statesArr.count;
-                [weakSelf.tableView reloadData];
+                if (weakSelf.statesArr.count>0) {
+                    weakSelf.tableView.hidden = false;
+                    [weakSelf.tableView reloadData];
+                }else{
+                    weakSelf.tableView.hidden = true;
+                }
+                
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 //                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }
@@ -323,8 +352,15 @@ static NSString* tableCellid = @"table_cell";
                 [mArr addObject:infoModel];
                 [self.statesArr addObject:mArr];
             }
+            
             start = self.statesArr.count;
-            [self.tableView reloadData];
+            if (self.statesArr.count>0) {
+                self.tableView.hidden = false;
+                [self.tableView reloadData];
+            }else{
+                self.tableView.hidden = true;
+            }
+            
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }

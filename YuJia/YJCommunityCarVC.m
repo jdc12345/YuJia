@@ -381,7 +381,6 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
 }
 -(void)informationBtnClick:(UIButton*)sender{
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeType = 3;
     [self.navigationController pushViewController:vc animated:true];
 }
 

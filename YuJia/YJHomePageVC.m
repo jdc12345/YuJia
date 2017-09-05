@@ -45,6 +45,9 @@ static NSString* tableCellid = @"table_cell";
 @property(nonatomic,weak)YJHeaderTitleBtn *roomBtn;//显示当前房间的btn
 @property (nonatomic, strong) YJRoomDetailModel* curruntRoomModel;//当前房间数据模型
 
+@property(nonatomic,weak)UIImageView *emptyImageView;//提示没有设备图片
+@property(nonatomic,weak)UILabel *noticeLabel;//提示添加设备label
+@property(nonatomic,copy)NSString *familyId;//当前家庭Id
 @end
 
 @implementation YJHomePageVC
@@ -53,6 +56,52 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
     [self setUpUI];
+}
+//请求所有设备
+- (void)httpRequestAllEquipment{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mAllEquipment,mDefineToken] method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray *equipmentList= responseObject[@"equipmentList"];
+        if (equipmentList.count==0) {
+            //添加无设备提示图标
+            UIImageView *backView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nohousing"]];
+            backView.userInteractionEnabled = true;
+            self.emptyImageView = backView;
+            [self.view.window addSubview:backView];
+            [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.view.window);
+                make.top.equalTo(self.view.window.mas_centerY);
+                make.width.height.offset(160*kiphone6);
+            }];
+            UILabel *noticeLabel = [[UILabel alloc]init];
+            self.noticeLabel = noticeLabel;
+            noticeLabel.text = @"还没有添加房屋信息，去添加吧!";
+            noticeLabel.font = [UIFont systemFontOfSize:13];
+            noticeLabel.textColor = [UIColor colorWithHexString:@"#c6c6c6"];
+            noticeLabel.numberOfLines = 0;
+            noticeLabel.textAlignment = NSTextAlignmentCenter;
+            [self.view.window addSubview:noticeLabel];
+            [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerX.equalTo(self.view.window);
+                make.top.equalTo(backView.mas_bottom).offset(10*kiphone6);
+                make.width.offset(150*kiphone6);
+                
+            }];
+            if (self.isMyscene) {
+                self.mysceneColView.hidden = true;
+            }
+        }else{
+            [self httpRequestHomeInfo];//请求刷新数据
+            if (self.isMyscene) {
+                self.mysceneColView.hidden = false;
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 //请求情景房间数据
 - (void)httpRequestHomeInfo{
@@ -90,7 +139,14 @@ static NSString* tableCellid = @"table_cell";
             if ([roomModel.info_id isEqualToString:self.curruntRoomModel.info_id]) {//如果修改了当前房间要更换当前房间数据源
                 self.curruntRoomModel = roomModel;
             }
+            if (![self.familyId isEqualToString:roomModel.familyId]) {
+                self.curruntRoomModel = roomModel;
+            }
             [self.roomListData addObject:roomModel];
+        }
+        if (!self.familyId) {
+            YJRoomDetailModel *roomModel = self.roomListData[0];
+            self.familyId = roomModel.familyId;
         }
         if (!self.isMyscene) {//进入页面时候当前页面处于房间页面时候需要根据当前房间更换房间背景
             if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
@@ -215,6 +271,7 @@ static NSString* tableCellid = @"table_cell";
         make.height.offset(25*kiphone6);
     }];
     [addBtn addTarget:self action:@selector(addEquipmentBtn) forControlEvents:UIControlEventTouchUpInside];
+    
     //添加中间透明view，用于滑动情景view
     UIView *clearView = [[UIView alloc]init];
     clearView.backgroundColor = [UIColor clearColor];
@@ -780,7 +837,12 @@ static NSString* tableCellid = @"table_cell";
     if (self.roomListData.count>0) {
         [self.roomListData removeAllObjects];
     }
-    [self httpRequestHomeInfo];//请求刷新数据
+    [self httpRequestAllEquipment];//请求所有设备数据(用来判断是否有设备)
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.emptyImageView removeFromSuperview];
+    [self.noticeLabel removeFromSuperview];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

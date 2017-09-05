@@ -23,7 +23,7 @@
     self.title = @"修改密码";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"00bfff"] highlightedColor:[UIColor colorWithHexString:@"00bfff"] target:self action:@selector(pushToAdd)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确认更改" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(pushToAdd)];
     [self settingSubView];
     // Do any additional setup after loading the view.
 }
@@ -89,9 +89,7 @@
                            };
     
     NSAttributedString *attributeStr3 = [[NSAttributedString alloc] initWithString:@"填写旧密码" attributes:dic3];
- 
-    
-    
+  
     UILabel *newNumberLabel = [[UILabel alloc]init];
     newNumberLabel.text = @"填写旧密码";
     //    newNumberLabel.backgroundColor = [UIColor redColor];
@@ -162,7 +160,7 @@
         make.centerY.equalTo(newNumberLabel).with.offset(0);
         make.left.equalTo(footView).with.offset(115);
         make.right.equalTo(footView).with.offset(-15);
-        make.size.height.mas_equalTo(30);
+        make.height.offset(30);
     }];
     
     
@@ -182,7 +180,7 @@
         make.centerY.equalTo(passwordLabel).with.offset(0);
         make.left.equalTo(footView).with.offset(115);
         make.right.equalTo(footView).with.offset(-15);
-        make.size.height.mas_equalTo(30);
+        make.height.offset(30);
     }];
     
     MMTextField *yanLabelTextF = [[MMTextField alloc]init];
@@ -201,26 +199,26 @@
         make.centerY.equalTo(yanLabel).with.offset(0);
         make.left.equalTo(footView).with.offset(115);
         make.right.equalTo(footView).with.offset(-15);
-        make.size.height.mas_equalTo(30);
+        make.height.offset(30);
     }];
     
-    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sureBtn.frame = CGRectMake(10, 16, 190, 44);
-    [sureBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
-    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
-    sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
-    [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
-    sureBtn.layer.cornerRadius = 2.5;
-    sureBtn.clipsToBounds = YES;
-    
-    
-    [footView addSubview:sureBtn];
-    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.top.equalTo(yanLabelTextF).with.offset(0);
-        make.left.equalTo(yanLabelTextF.mas_right).with.offset(-1);
-        make.right.equalTo(footView).with.offset(-15);
-    }];
+//    UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    sureBtn.frame = CGRectMake(10, 16, 190, 44);
+//    [sureBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
+//    [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+//    sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+//    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+//    [sureBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
+//    sureBtn.layer.cornerRadius = 2.5;
+//    sureBtn.clipsToBounds = YES;
+//    
+//    
+//    [footView addSubview:sureBtn];
+//    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.top.equalTo(yanLabelTextF).with.offset(0);
+//        make.left.equalTo(yanLabelTextF.mas_right).with.offset(-1);
+//        make.right.equalTo(footView).with.offset(-15);
+//    }];
     
     [footView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).with.offset(74);
@@ -234,9 +232,9 @@
     
     
 }
-- (void)surePost{
-    
-}
+//- (void)surePost{
+//    
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -18,7 +18,8 @@
 static NSInteger start = 0;
 static NSString* tableCell = @"table_cell";
 @interface YJNoticeListTableVC ()
-@property(nonatomic,strong)NSMutableArray *noticesArr;//消息数据源
+@property(nonatomic,strong)NSMutableArray *noticesArr;//全部消息数据源
+@property(nonatomic,strong)NSMutableArray *carNoticesArr;//拼车消息数据源
 @end
 
 @implementation YJNoticeListTableVC
@@ -27,41 +28,40 @@ static NSString* tableCell = @"table_cell";
     [super viewDidLoad];
     self.title = @"消息";
     self.automaticallyAdjustsScrollViewInsets = NO;
+    [self loadNoticeData];
     [self.tableView registerClass:[YJNoticeListTVCell class] forCellReuseIdentifier:tableCell];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 90;
+    self.tableView.estimatedRowHeight = 90*kiphone6;
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         // 进入刷新状态后会自动调用这个block
-        NSString *noticeUrlStr = [NSString string];
-        if (_noticeType == 1) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=11&msgTypeEnd=30&start=0&limit=10",mPrefixUrl,mDefineToken1];
-        }
-        if (_noticeType == 2) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=31&msgTypeEnd=50&start=0&limit=10",mPrefixUrl,mDefineToken1];
-        }
-        if (_noticeType == 3) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=51&msgTypeEnd=70&start=0&limit=10",mPrefixUrl,mDefineToken1];
-        }
-
+        NSString *noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&start=0&limit=10",mPrefixUrl,mDefineToken1];
         [[HttpClient defaultClient]requestWithPath:noticeUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [weakSelf.carNoticesArr removeAllObjects];//从新请求需要更新数据
             NSString *total = responseObject[@"total"];
             if ([total integerValue]>0) {
                 NSArray *arr = responseObject[@"rows"];
                 NSMutableArray *mArr = [NSMutableArray array];
+                BOOL token = false;
                 for (NSDictionary *dic in arr) {
                     YJNoticeListModel *infoModel = [YJNoticeListModel mj_objectWithKeyValues:dic];
-                    [mArr addObject:infoModel];
+                    if (infoModel.msgType<51) {//拼车以外消息
+                        [mArr addObject:infoModel];
+                    }else{//拼车消息
+                        //只执行一次
+                        if (!token) {
+                            [mArr insertObject:infoModel atIndex:0];
+                            token = true;
+                        }
+                        [weakSelf.carNoticesArr addObject:infoModel];//拼车消息数据源
+                    }
                 }
-                self.noticesArr = mArr;
-                start = self.noticesArr.count;
-                [self.tableView reloadData];
+                weakSelf.noticesArr = mArr;
+                start = weakSelf.noticesArr.count;
+                [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }else{
@@ -81,33 +81,30 @@ static NSString* tableCell = @"table_cell";
             [weakSelf.tableView.mj_footer endRefreshing];
             return ;
         }
-        NSString *noticeUrlStr = [NSString string];
-        if (_noticeType == 1) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=11&msgTypeEnd=30&start=%ld&limit=5",mPrefixUrl,mDefineToken1,start];
-        }
-        if (_noticeType == 2) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=31&msgTypeEnd=50&start=%ld&limit=5",mPrefixUrl,mDefineToken1,start];
-        }
-        if (_noticeType == 3) {
-            //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-            noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=51&msgTypeEnd=70&start=%ld&limit=5",mPrefixUrl,mDefineToken1,start];
-        }
-
+        NSString *noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&start=%ld&limit=10",mPrefixUrl,mDefineToken1,start];
         [[HttpClient defaultClient]requestWithPath:noticeUrlStr method:0 parameters:nil prepareExecute:^{
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             NSString *total = responseObject[@"total"];
             if ([total integerValue]>0) {
                 NSArray *arr = responseObject[@"rows"];
                 NSMutableArray *mArr = [NSMutableArray array];
+                BOOL token = false;
                 for (NSDictionary *dic in arr) {
                     YJNoticeListModel *infoModel = [YJNoticeListModel mj_objectWithKeyValues:dic];
-                    [mArr addObject:infoModel];
+                    if (infoModel.msgType<51) {//拼车以外消息
+                        [mArr addObject:infoModel];
+                    }else{//拼车消息
+                        //只执行一次
+                        if (!token&&weakSelf.carNoticesArr.count==0) {
+                            [mArr insertObject:infoModel atIndex:0];
+                            token = true;
+                        }
+                        [weakSelf.carNoticesArr addObject:infoModel];//拼车消息数据源
+                    }
                 }
-                [self.noticesArr addObjectsFromArray:mArr];
-                start = self.noticesArr.count;
-                [self.tableView reloadData];
+                [weakSelf.noticesArr addObjectsFromArray:mArr];
+                start = weakSelf.noticesArr.count;
+                [weakSelf.tableView reloadData];
             }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
             }else{
@@ -121,23 +118,10 @@ static NSString* tableCell = @"table_cell";
         }];
     }];
 }
--(void)setNoticeType:(NSInteger)noticeType{
-    _noticeType = noticeType;
+//首次请求数据
+-(void)loadNoticeData{
     [SVProgressHUD show];// 动画开始
-    NSString *noticeUrlStr = [NSString string];
-    noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&start=0&limit=10",mPrefixUrl,mDefineToken1];
-//    if (noticeType == 1) {
-//        //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-//        noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=11&msgTypeEnd=30&start=0&limit=10",mPrefixUrl,mDefineToken1];
-//    }
-//    if (noticeType == 2) {
-//        //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-//        noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=31&msgTypeEnd=50&start=0&limit=10",mPrefixUrl,mDefineToken1];
-//    }
-//    if (noticeType == 3) {
-//        //    http://192.168.1.55:8080/smarthome/mobileapi/message/findPage.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE&msgType=&msgTypeBegin=2&msgTypeEnd=3
-//        noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&msgType=&msgTypeBegin=51&msgTypeEnd=70&start=0&limit=10",mPrefixUrl,mDefineToken1];
-//    }
+    NSString *noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/message/findPage.do?token=%@&start=0&limit=10",mPrefixUrl,mDefineToken1];
     [[HttpClient defaultClient]requestWithPath:noticeUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -146,20 +130,20 @@ static NSString* tableCell = @"table_cell";
         if ([total integerValue]>0) {
             NSArray *arr = responseObject[@"rows"];
             NSMutableArray *mArr = [NSMutableArray array];
+            BOOL token = false;
             for (NSDictionary *dic in arr) {
                 YJNoticeListModel *infoModel = [YJNoticeListModel mj_objectWithKeyValues:dic];
-                if (infoModel.msgType<51) {//拼车消息
+                if (infoModel.msgType<51) {//拼车以外消息
                     
                     [mArr addObject:infoModel];
-                }
-                static dispatch_once_t token;
-                //只执行一次
-                dispatch_once(&token, ^{
-                    if (50<infoModel.msgType&&infoModel.msgType<71) {//拼车消息
+                }else{//拼车消息
+                    //只执行一次
+                    if (!token) {
                         [mArr insertObject:infoModel atIndex:0];
+                        token = true;
                     }
-                    
-                });
+                    [self.carNoticesArr addObject:infoModel];//拼车消息数据源
+                }
             }
             self.noticesArr = mArr;
             start = self.noticesArr.count;
@@ -173,6 +157,7 @@ static NSString* tableCell = @"table_cell";
         [SVProgressHUD dismiss];// 动画结束
         return ;
     }];
+
 }
 
 #pragma mark - Table view data source
@@ -182,33 +167,41 @@ static NSString* tableCell = @"table_cell";
     return self.noticesArr.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     YJNoticeListTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
-    cell.model = self.noticesArr[indexPath.row];
+    YJNoticeListModel *infoModel = self.noticesArr[indexPath.row];
+    if (self.carNoticesArr.count>0) {//存在拼车消息
+        if (indexPath.row==0) {
+            infoModel.avatar = @"car_notice";
+        }
+    }
+    cell.model = infoModel;
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     YJNoticeListModel *model = self.noticesArr[indexPath.row];
-    if (self.noticeType == 1) {
+    if (model.msgType > 10&&model.msgType < 31) {
         YJFriendStateDetailVC *vc = [[YJFriendStateDetailVC alloc]init];
         vc.stateId = [NSString stringWithFormat:@"%ld",model.referId];
         [self.navigationController pushViewController:vc animated:true];
-    }else if (self.noticeType == 2){
+    }else if (model.msgType > 30&&model.msgType < 51){
         YJActivitiesDetailsVC *vc = [[YJActivitiesDetailsVC alloc]init];
         vc.activityId = model.referId;
         [self.navigationController pushViewController:vc animated:true];
-    }else if (self.noticeType == 3){
-        if (model.msgType == 52 || model.msgType == 53) {//52=司机接单，53=乘客加入
-            YJCommunityCarNoticesCenterVC *vc = [[YJCommunityCarNoticesCenterVC alloc]init];
-            vc.model = model;
-            [self.navigationController pushViewController:vc animated:true];
-        }else if (model.msgType == 51){
-            YJCommunityCarDetailVC *vc = [[YJCommunityCarDetailVC alloc]init];
-            vc.carpoolingId = model.referId;
-            [self.navigationController pushViewController:vc animated:true];
-        }        
-    }    
+    }else if (model.msgType > 50&&model.msgType < 71){
+        YJCommunityCarNoticesCenterVC *vc = [[YJCommunityCarNoticesCenterVC alloc]init];
+        vc.carNoticesArr = self.carNoticesArr;//传递拼车消息
+        [self.navigationController pushViewController:vc animated:true];
+//        if (model.msgType == 52 || model.msgType == 53) {//52=司机接单，53=乘客加入
+//            YJCommunityCarNoticesCenterVC *vc = [[YJCommunityCarNoticesCenterVC alloc]init];
+//            vc.carNoticesArr = self.carNoticesArr;//传递拼车消息
+//            [self.navigationController pushViewController:vc animated:true];
+//        }else if (model.msgType == 51){
+//            YJCommunityCarDetailVC *vc = [[YJCommunityCarDetailVC alloc]init];
+//            vc.carpoolingId = model.referId;
+//            [self.navigationController pushViewController:vc animated:true];
+//        }        
+    }
     //http://192.168.1.55:8080/smarthome/mobileapi/messageLog/save.do?token=9DB2FD6FDD2F116CD47CE6C48B3047EE 标记消息为已读
     NSString *noticeUrlStr = [NSString stringWithFormat:@"%@/mobileapi/messageLog/save.do?token=%@&messageId=%ld",mPrefixUrl,mDefineToken1,model.info_id];
     [[HttpClient defaultClient]requestWithPath:noticeUrlStr method:1 parameters:nil prepareExecute:^{
@@ -258,7 +251,20 @@ static NSString* tableCell = @"table_cell";
         return @[action1];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 55*kiphone6;
+    return 90*kiphone6;
+}
+#pragma -懒加载
+-(NSMutableArray *)noticesArr{
+    if (_noticesArr == nil) {
+        _noticesArr = [NSMutableArray array];
+    }
+    return _noticesArr;
+}
+-(NSMutableArray *)carNoticesArr{
+    if (_carNoticesArr == nil) {
+        _carNoticesArr = [NSMutableArray array];
+    }
+    return _carNoticesArr;
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

@@ -138,6 +138,7 @@
         NSLog(@"%@",error);
     }];
 }
+//添加没有数据空页面时候tableview尾部视图
 - (UIView *)createTableFootView{
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 500)];
     footView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
@@ -153,7 +154,7 @@
         make.size.mas_equalTo(CGSizeMake(160, 230));
     }];
     
-    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nofamily"]];
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nofamily"]];
     [clickView addSubview:imageV];
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(clickView);

@@ -24,6 +24,8 @@
 #import "YJSetPersonalVC.h"
 #import "YJMyCircleFriendVC.h"
 #import "YJMyActivitiesVC.h"
+#import "YJNoticeListTableVC.h"
+#import "EditPersonalViewController.h"
 
 @interface YJPersonalVC ()<UITableViewDataSource, UITableViewDelegate>{
     UIImageView *navBarHairlineImageView;
@@ -37,7 +39,7 @@
 @property (nonatomic, strong) UILabel *nameLabel;//名字
 
 @property (nonatomic, strong) UILabel *idLabel;
-@property (nonatomic, strong) UIImageView *iconView;//头像
+@property (nonatomic, strong) UIButton *iconView;//头像
 @property (nonatomic, strong) UIImageView *genderV;
 @property (nonatomic, strong) UIButton *editBtn;
 //@property (nonatomic, strong) YYHomeUserModel *personalModel;
@@ -78,7 +80,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self httpRequestHomeInfo];
+//    [self httpRequestHomeInfo];
     self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"设置",@"关于宇家",@"意见反馈"]];
     self.iconList =@[@"mysettings",@"myabout",@"myopinion"];
     [self tableView];
@@ -90,9 +92,21 @@
         NSLog(@"%@",responseObject);
         NSDictionary *eDict = responseObject[@"Personal"];
         self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
-        self.nameLabel.text = self.personalModel.trueName;
+        self.nameLabel.text = self.personalModel.userName;
         if (self.personalModel.avatar.length>0) {
-            [self.iconView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
+            
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                NSLog(@"当前进度%ld",receivedSize/expectedSize);
+            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                NSLog(@"下载完成");
+                if (image) {
+                    [self.iconView setImage:image forState:UIControlStateNormal];
+                }else{
+                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
+                }
+            }];
+            
         }
         if ([self.personalModel.gender isEqualToString:@"1"]) {
             self.genderV.image = [UIImage imageNamed:@"man"];
@@ -112,12 +126,13 @@
     UIImageView *backView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 200)];
     backView.userInteractionEnabled = true;
     [headerView addSubview:backView];
-    UIImage *oldImage = [UIImage imageNamed:@"friend_circle_photo"];
+    UIImage *oldImage = [UIImage imageNamed:@"personal_back_photo"];
     backView.image = oldImage;
     //添加头像
-    UIImageView *iconView = [[UIImageView alloc]init];
+    UIButton *iconView = [[UIButton alloc]init];
     UIImage *iconImage = [UIImage imageNamed:@"avatar.jpg"];
-    iconView.image = iconImage;
+//    iconView.image = iconImage;
+    [iconView setImage:iconImage forState:UIControlStateNormal];
     [backView addSubview:iconView];
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(backView);
@@ -126,6 +141,7 @@
     }];
     iconView.layer.cornerRadius=37.5;//裁成圆角
     iconView.layer.masksToBounds=YES;//隐藏裁剪掉的部分
+    [iconView addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
 //    iconView.layer.borderColor = [UIColor colorWithHexString:@"#ffffff"].CGColor;
 //    iconView.layer.borderWidth = 1.5f;
     //添加名字
@@ -135,74 +151,6 @@
         make.centerX.equalTo(iconView);
         make.top.equalTo(iconView.mas_bottom).offset(10);
     }];
-    
-//    UIView *personV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 120)];
-//    personV.backgroundColor = [UIColor whiteColor];
-//    personV.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"personal_color"]];
-//    
-//    
-//    [headerView addSubview:personV];
-    
-//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
-//    ;
-    
-//    UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
-//    iconV.layer.cornerRadius = 32.5 *kiphone6;
-//    iconV.clipsToBounds = YES;
-//    //
-//    UILabel *nameLabel = [[UILabel alloc]init];
-//    nameLabel.text = @"赵启平";
-//    nameLabel.textColor = [UIColor colorWithHexString:@"6a6a6a"];
-//    nameLabel.font = [UIFont systemFontOfSize:14];
-//    nameLabel.textAlignment = NSTextAlignmentCenter;
-//    //
-//    UILabel *idName = [[UILabel alloc]init];
-//    //    idName.text = @"涿州市中医院  检验科";
-//    idName.textColor = [UIColor colorWithHexString:@"6a6a6a"];
-//    idName.font = [UIFont systemFontOfSize:12];
-//    idName.textAlignment = NSTextAlignmentCenter;
-//    
-//    
-//    UIButton *settingBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    settingBtn.backgroundColor = [UIColor cyanColor];
-//    [settingBtn addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    
-//    UIButton *notficVC = [UIButton buttonWithType:UIButtonTypeCustom];
-//    notficVC.backgroundColor = [UIColor cyanColor];
-//    [notficVC addTarget:self action:@selector(pushSettingVC) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    //
-//    [personV addSubview:iconV];
-//    [personV addSubview:nameLabel];
-//    [personV addSubview:idName];
-//    
-//    [personV addSubview:settingBtn];
-//    [personV addSubview:notficVC];
-//    //
-//    [iconV mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(personV).with.offset(15);
-//        make.centerY.equalTo(personV);
-//        make.size.mas_equalTo(CGSizeMake(65 , 65 ));
-//    }];
-//    
-//    NSString * nameStr = @"赵启平";
-//    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-//    CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-//                                        options:NSStringDrawingUsesLineFragmentOrigin
-//                                     attributes:attributes
-//                                        context:nil];
-//    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(personV);
-//        make.left.equalTo(iconV.mas_right).with.offset(10);
-//        make.size.mas_equalTo(CGSizeMake(rect.size.width, 14));
-//    }];
-//    //
-//    [idName mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(nameLabel.mas_bottom).with.offset(10 *kiphone6);
-//        make.left.equalTo(personV).with.offset(0 *kiphone6);
-//        make.size.mas_equalTo(CGSizeMake(kScreenW, 14 *kiphone6));;
-//    }];
     
     self.nameLabel = namelabel;
 //    self.idLabel = idName;
@@ -336,36 +284,39 @@
 - (void)action:(UIButton *)sender{
     switch (sender.tag -80) {
         case 0:
-            [self.navigationController pushViewController:[[YJMyhomeVC alloc]init] animated:YES];
+            [self.navigationController pushViewController:[[YJMyhomeVC alloc]init] animated:true];
             break;
         case 1:
-            [self.navigationController pushViewController:[[YJMyCircleFriendVC alloc]init] animated:YES];
+            [self.navigationController pushViewController:[[YJMyCircleFriendVC alloc]init] animated:true];
             break;
         case 2:
-            [self.navigationController pushViewController:[[YJMyActivitiesVC alloc]init] animated:YES];
+            [self.navigationController pushViewController:[[YJMyActivitiesVC alloc]init] animated:true];
             break;
         case 3:
-            
+            [self.navigationController pushViewController:[[YJNoticeListTableVC alloc]init] animated:true];
             break;
             
         default:
             break;
     }
 }
+//设置个人信息页面
 - (void)pushSettingVC{
-    [self.navigationController pushViewController:[[PersonalSettingViewController alloc]init] animated:YES];
+    EditPersonalViewController *eVC = [[EditPersonalViewController alloc]init];
+    eVC.personalModel = self.personalModel;
+    [self.navigationController pushViewController:eVC animated:YES];
 }
-- (void)pushNotficVC{
-    YJNoticeListTableVC *notficVC = [[YJNoticeListTableVC  alloc]init];
-    [self.navigationController pushViewController:notficVC animated:YES];
-}
+//- (void)pushNotficVC{
+//    YJNoticeListTableVC *notficVC = [[YJNoticeListTableVC  alloc]init];
+//    [self.navigationController pushViewController:notficVC animated:YES];
+//}
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
     self.navigationController.navigationBar.translucent = true;
-//    [self httpRequestHomeInfo];
+    [self httpRequestHomeInfo];
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{//如果有导航栏必须在导航栏重写- (UIViewController *)childViewControllerForStatusBarStyle{
     //    return self.topViewController;

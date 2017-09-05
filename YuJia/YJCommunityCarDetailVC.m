@@ -85,7 +85,7 @@ static NSString* tablecell = @"table_cell";
 //消息按钮点击事件
 -(void)informationBtnClick:(UIButton*)sender{
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
-    vc.noticeType = 3;
+//    vc.noticeType = 3;
     [self.navigationController pushViewController:vc animated:true];
 }
 -(void)refrish{

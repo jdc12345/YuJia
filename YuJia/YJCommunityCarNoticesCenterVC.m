@@ -8,6 +8,7 @@
 
 #import "YJCommunityCarNoticesCenterVC.h"
 #import "YJCommunityCarNoticesCenterTVCell.h"
+#import "YJCommunityCarDetailVC.h"
 
 static NSString* otherCellid = @"other_cell";
 @interface YJCommunityCarNoticesCenterVC ()<UITableViewDelegate, UITableViewDataSource>
@@ -66,7 +67,7 @@ static NSString* otherCellid = @"other_cell";
 // 有多少行
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return self.carNoticesArr.count;
 }
 
 // cell内容
@@ -74,12 +75,22 @@ static NSString* otherCellid = @"other_cell";
 {
         // 获取other的cell
     YJCommunityCarNoticesCenterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:otherCellid forIndexPath:indexPath];
-    cell.model = self.model;
+    YJNoticeListModel *model = self.carNoticesArr[indexPath.row];
+    cell.model = model;
         // 取消点击效果
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
     cell.backgroundColor = [UIColor clearColor];
         return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    YJNoticeListModel *model = self.carNoticesArr[indexPath.row];
+//    if (model.msgType == 51){
+        YJCommunityCarDetailVC *vc = [[YJCommunityCarDetailVC alloc]init];
+        vc.carpoolingId = model.referId;
+        [self.navigationController pushViewController:vc animated:true];
+//    }
+
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];

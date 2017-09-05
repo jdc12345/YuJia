@@ -158,7 +158,7 @@
     
     [headerView addSubview:personV];
     
-    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
+//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headViewClick)];
 ;
     
     UIImageView *iconV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
@@ -372,7 +372,7 @@
     }
 }
 - (void)pushSettingVC{
-    [self.navigationController pushViewController:[[PersonalSettingViewController alloc]init] animated:YES];
+    [self.navigationController pushViewController:[[EditPersonalViewController alloc]init] animated:YES];
 }
 - (void)httpRequestHomeInfo{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mUserInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{

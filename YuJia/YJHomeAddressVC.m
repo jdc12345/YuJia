@@ -35,7 +35,7 @@
         [_tableView registerClass:[YJHomeAddressTVCell class] forCellReuseIdentifier:@"UITableViewCell"];
         
         [self.view addSubview:_tableView];
-        [self.view sendSubviewToBack:_tableView];
+//        [self.view sendSubviewToBack:_tableView];
     }
     return _tableView;
 }
@@ -48,16 +48,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     self.title = @"房屋信息";
+    //添加空页面视图
+    UIImageView *backView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nohousing"]];
+    backView.userInteractionEnabled = true;
+    [self.view addSubview:backView];
+    [backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.view.mas_centerY).offset(-5*kiphone6);
+        make.width.height.offset(160*kiphone6);
+    }];
+    UILabel *noticeLabel = [[UILabel alloc]init];
+    noticeLabel.text = @"还没有添加房屋信息，去添加吧!";
+    noticeLabel.font = [UIFont systemFontOfSize:13];
+    noticeLabel.textColor = [UIColor colorWithHexString:@"#c6c6c6"];
+    noticeLabel.numberOfLines = 0;
+    noticeLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:noticeLabel];
+    [noticeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view.mas_centerY).offset(5*kiphone6);
+        make.width.offset(150*kiphone6);
+
+    }];
     [self tableView];
 //    [self httpRequestHomeInfo];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"添加房屋信息" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(addHomeInfo)];
 }
+//添加房屋信息
 -(void)addHomeInfo{
     YJAddhomeInfoVC *addHomeInfoVC = [[YJAddhomeInfoVC alloc]init];
     [self.navigationController pushViewController:addHomeInfoVC animated:true];
 }
+//请求房屋信息
 - (void)httpRequestHomeInfo{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mMyHomeListInfo,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
@@ -71,7 +95,14 @@
             YJHomeHouseInfoModel *houseModel = [YJHomeHouseInfoModel mj_objectWithKeyValues:aDict];
             [self.dataSource addObject:houseModel];
         }
-        [self.tableView reloadData];
+        
+        if (self.dataSource.count>0) {
+            self.tableView.hidden = false;
+            [self.tableView reloadData];
+        }else{
+            self.tableView.hidden = true;
+        }
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];

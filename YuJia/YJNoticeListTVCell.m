@@ -34,8 +34,12 @@
 }
 -(void)setModel:(YJNoticeListModel *)model{
     _model = model;
-    NSString *iconUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
-    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
+    if ([model.avatar isEqualToString:@"car_notice"]) {
+        self.iconView.image = [UIImage imageNamed:@"car_notice"];
+    }else{        
+        NSString *iconUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,model.avatar];
+        [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"]];
+    }
 //    [self.iconView sd_setImageWithURL:[NSURL URLWithString:iconUrl] placeholderImage:[UIImage imageNamed:@"icon"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
     // borderWidth 表示边框的宽度
 //        CGFloat borderWidth = 0;
@@ -78,12 +82,12 @@
     UIImageView *iconView = [[UIImageView alloc]init];
     iconView.image = [UIImage imageNamed:@"icon"];
     iconView.layer.masksToBounds = true;
-    iconView.layer.cornerRadius = 20*kiphone6;
+    iconView.layer.cornerRadius = 25*kiphone6;
     [self.contentView addSubview:iconView];
-    UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
+    UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];
     [self.contentView addSubview:nameLabel];
 
-    UILabel *itemLabel = [UILabel labelWithText:@"用户TIAN给你点赞了" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:14];
+    UILabel *itemLabel = [UILabel labelWithText:@"用户TIAN给你点赞了" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:12];
     [self.contentView addSubview:itemLabel];
     UILabel *timeLabel = [UILabel labelWithText:@"10:00" andTextColor:[UIColor colorWithHexString:@"#666666"] andFontSize:12];
     timeLabel.numberOfLines = 0;
@@ -91,11 +95,11 @@
     [iconView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.offset(10*kiphone6);
         make.centerY.equalTo(self.contentView);
-        make.width.height.offset(40*kiphone6);
+        make.width.height.offset(50*kiphone6);
     }];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
-        make.bottom.equalTo(self.contentView.mas_centerY).offset(-2.5*kiphone6);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
+        make.bottom.equalTo(self.contentView.mas_centerY).offset(-5*kiphone6);
     }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
@@ -103,8 +107,8 @@
         make.width.offset(80*kiphone6);
     }];
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconView.mas_right).offset(10*kiphone6);
-        make.top.equalTo(self.contentView.mas_centerY).offset(2.5*kiphone6);
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
+        make.top.equalTo(self.contentView.mas_centerY).offset(5*kiphone6);
         make.right.equalTo(timeLabel.mas_left).offset(-5*kiphone6);
     }];
     

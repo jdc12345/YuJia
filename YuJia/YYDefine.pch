@@ -58,10 +58,11 @@
 //#define mPrefixUrl @"http://59.110.169.148:8081"
 
 
-#define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
+//#define mDefineToken @"9DB2FD6FDD2F116CD47CE6C48B3047EE"
 //#define mDefineToken1 @"49491B920A9DD107E146D961F4BDA50E"
 #define mDefineToken1 [CcUserModel defaultClient].userToken
 #define mDefineToken2 [CcUserModel defaultClient].userToken
+#define mDefineToken [CcUserModel defaultClient].userToken
 
 // 首页数据接口
 #define mHomepageInfo [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/findList.do?"]
@@ -146,7 +147,9 @@
 //删除情景模式接口
 //http://192.168.1.55:8080/smarthome/mobileapi/scene/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mRemoveSigh [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/scene/delete.do?"]
-
+//批量删除活动
+//http://localhost:8080/smarthome/mobileapi/activity/BatchDelete.do?ids=69,80&token=736F2C031E131CDF8993936169ADEE6C
+#define mDeleActivitys [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/activity/BatchDelete.do?"]
 //删除房间接口
 //http://192.168.1.55:8080/smarthome/mobileapi/room/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
 #define mRemoveRoom [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/room/delete.do?"]

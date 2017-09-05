@@ -1280,6 +1280,12 @@
 				160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */,
 				16CCBBDD1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.h */,
 				16CCBBDE1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m */,
+				166FF49C1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.h */,
+				166FF49D1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m */,
+				166FF4B31EBC7C0400846A59 /* YJModifyAddressVC.h */,
+				166FF4B41EBC7C0400846A59 /* YJModifyAddressVC.m */,
+				163DA8F91ED82BB500313DD0 /* YJChangePropertyBillAddressVC.h */,
+				163DA8FA1ED82BB500313DD0 /* YJChangePropertyBillAddressVC.m */,
 			);
 			name = "Life payment";
 			sourceTree = "<group>";
@@ -1345,12 +1351,6 @@
 			children = (
 				166FF4981EBC210D00846A59 /* YJPropertyBillVC.h */,
 				166FF4991EBC210D00846A59 /* YJPropertyBillVC.m */,
-				166FF49C1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.h */,
-				166FF49D1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m */,
-				166FF4B31EBC7C0400846A59 /* YJModifyAddressVC.h */,
-				166FF4B41EBC7C0400846A59 /* YJModifyAddressVC.m */,
-				163DA8F91ED82BB500313DD0 /* YJChangePropertyBillAddressVC.h */,
-				163DA8FA1ED82BB500313DD0 /* YJChangePropertyBillAddressVC.m */,
 			);
 			name = PropertyBill;
 			sourceTree = "<group>";
@@ -1484,6 +1484,12 @@
 				161693761F57B56A00D1B522 /* YJMyCircleFriendVC.m */,
 				163E84A31F5904B3002094A9 /* YJMyActivitiesVC.h */,
 				163E84A41F5904B3002094A9 /* YJMyActivitiesVC.m */,
+				3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */,
+				3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */,
+				3E9439961ECD3ECB001FE471 /* ChangePassWordViewController.h */,
+				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
+				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
+				3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1809,18 +1815,12 @@
 				3E94394B1ECAA077001FE471 /* HomeInfo */,
 				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
 				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
-				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
-				3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */,
 				3E20B3471EC5874800C77B58 /* MYHomeViewController.h */,
 				3E20B3481EC5874800C77B58 /* MYHomeViewController.m */,
 				3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */,
 				3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */,
 				3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */,
 				3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */,
-				3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */,
-				3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */,
-				3E9439961ECD3ECB001FE471 /* ChangePassWordViewController.h */,
-				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
 				3E2CD8281ED921EF00C8FD56 /* CirleAndActiveViewController.h */,
 				3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */,
 				3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */,

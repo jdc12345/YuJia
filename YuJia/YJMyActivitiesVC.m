@@ -13,6 +13,7 @@
 #import "YJCommunityActivitiesTVCell.h"
 #import "YJActivitiesDetailsVC.h"
 #import "YJActivitiesDetailModel.h"
+#import "AFNetworking.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -217,6 +218,9 @@ static NSString* tableCellid = @"table_cell";
 }
 //删除所选
 -(void)deletSelectedBtnClick:(UIButton*)sender{
+    UIButton *rightBtn = self.navigationItem.rightBarButtonItem.customView;
+    [rightBtn setTitle:@"编辑" forState:UIControlStateNormal];
+    rightBtn.selected = !sender.selected;
     self.editView.hidden = YES;
     self.isSelecting = NO;
     //    删除所选状态
@@ -233,10 +237,10 @@ static NSString* tableCellid = @"table_cell";
         }
     }
     if (ids.length>0) {//有选中状态，需要删除
-    http://192.168.1.55:8080/smarthome/mobileapi/state/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
+        http://localhost:8080/smarthome/mobileapi/activity/BatchDelete.do?ids=69,80&token=736F2C031E131CDF8993936169ADEE6C
         [SVProgressHUD show];// 动画开始
-        NSString *deleUrlStr = [NSString stringWithFormat:@"%@/mobileapi/activity/delete.do?ids=%@&token=%@",mPrefixUrl,ids,mDefineToken1];
-        [[HttpClient defaultClient]requestWithPath:deleUrlStr method:1 parameters:nil prepareExecute:^{
+        NSString *deleUrlStr = [NSString stringWithFormat:@"%@ids=%@&token=%@",mDeleActivitys,ids,mDefineToken1];
+        [[HttpClient defaultClient]requestWithPath:deleUrlStr method:0 parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             NSLog(@"%@",responseObject);

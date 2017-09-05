@@ -96,7 +96,7 @@
     
     
     [sectionView addSubview:sectionTitleLabel];
-    WS(ws);
+//    WS(ws);
     [sectionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(sectionView).with.offset(18);
         make.left.equalTo(sectionView).with.offset(20);
@@ -200,7 +200,7 @@
     [headView addSubview:sightNameLabel];
     [headView addSubview:startWLabel];
     
-    WS(ws);
+//    WS(ws);
     [sightNameText mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headView).with.offset(25);
         make.left.equalTo(headView).with.offset(35 +rect.size.width);

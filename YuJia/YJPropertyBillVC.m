@@ -9,16 +9,15 @@
 #import "YJPropertyBillVC.h"
 #import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
-#import "YJAddPropertyBillAddressVC.h"
 #import "YJHeaderTitleBtn.h"
 #import "YJBillResultTableViewCell.h"
-#import "YJModifyAddressVC.h"
-#import "YJPropertyAddressModel.h"
 #import "YJMonthDetailItemModel.h"
 #import "YJMonthDetailSumModel.h"
 #import "UIViewController+Cloudox.h"
 #import "UINavigationController+Cloudox.h"
 #import "YJBillHeaderViewTVCell.h"
+#import "YJHomeAddressVC.h"
+#import "YJHomeHouseInfoModel.h"
 
 static NSString* billCellid = @"bill_cell";
 @interface YJPropertyBillVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
@@ -33,7 +32,7 @@ static NSString* billCellid = @"bill_cell";
 @property(nonatomic,assign)NSInteger nowYear;
 @property(nonatomic,assign)NSInteger nowMonth;
 
-@property(nonatomic,strong)NSMutableArray *addresses;
+@property(nonatomic,strong)YJHomeHouseInfoModel *houseModel;//当前地址model
 @property(nonatomic,strong)NSString *address;//当前显示的地址
 @property(nonatomic,strong)NSMutableArray *months;
 
@@ -49,76 +48,39 @@ static NSString* billCellid = @"bill_cell";
     self.title = @"物业账单";
     self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    [self loadData];
-//    [self setupBill];
+//    [self loadData];
+    [self setupBill];
 
 }
 - (void)loadData {
-//    CcUserModel *userModel = [CcUserModel defaultClient];
-//    NSString *token = userModel.userToken;
-//    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主(认证通过的家庭地址)地址
-    http://localhost:8080/smarthome/mobileapi/family/findMyFamilyAddress.do?token=49491B920A9DD107E146D961F4BDA50E
+//   查询业主(认证通过的家庭地址)地址
     [SVProgressHUD show];// 动画开始
-    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findMyFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@token=%@",mMyHomeListInfo,mDefineToken];
     [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
-            NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
-            }
-            self.addresses = mArr;
-            YJPropertyAddressModel *model = self.addresses[0];
-            self.address = model.address;//默认选择第一个地址
-            [SVProgressHUD dismiss];// 动画结束
-            [self setupBill];
             
-        }else{
-            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
-             [self addAddress];
+//            if (self.dataSource.count>0) {
+//                [self.dataSource removeAllObjects];
+//            }
+            NSArray *addressArr = responseObject[@"result"];
+            for (NSDictionary *aDict in addressArr) {
+                YJHomeHouseInfoModel *houseModle = [YJHomeHouseInfoModel mj_objectWithKeyValues:aDict];
+                if (houseModle.defaults) {
+                    self.address = [NSString stringWithFormat:@"%@%@",houseModle.residentialQuartersName,houseModle.address];
+                    self.houseModel = houseModle;
+                }
             }
+            [self.tableView reloadData];
+            
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+                [self.tableView reloadData];
         }
-        
+        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"加载失败"];
         return ;
     }];
-}
-- (void)addAddress{
-    UIImageView *imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"no_address"]];
-    [self.view addSubview:imageView];
-    [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.view);
-        make.width.height.offset(109*kiphone6);
-    }];
-    UILabel *itemLabel = [UILabel labelWithText:@"您还没有小区信息" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];
-    [self.view addSubview:itemLabel];
-    [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.top.equalTo(imageView.mas_bottom).offset(21*kiphone6);
-    }];
-    UIButton *btn = [[UIButton alloc]init];
-    btn.backgroundColor = [UIColor colorWithHexString:@"#01c0ff"];
-    [btn setTitle:@"添加地址" forState:UIControlStateNormal];
-    btn.titleLabel.textColor = [UIColor colorWithHexString:@"#ffffff"];
-    btn.titleLabel.font = [UIFont systemFontOfSize:15];
-    btn.layer.masksToBounds = true;
-    btn.layer.cornerRadius = 3;
-    [self.view addSubview:btn];
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(itemLabel.mas_bottom).offset(139*kiphone6);
-        make.centerX.equalTo(self.view);
-        make.width.offset(325*kiphone6);
-        make.height.offset(45*kiphone6);
-    }];
-    [btn addTarget:self action:@selector(addAddressVC) forControlEvents:UIControlEventTouchUpInside];
-
-}
-- (void)addAddressVC{
-    YJAddPropertyBillAddressVC *vc = [[YJAddPropertyBillAddressVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)setupBill{
     //添加tableView
@@ -451,7 +413,7 @@ static NSString* billCellid = @"bill_cell";
         make.centerY.equalTo(headerBtn);
     }];
     
-    UILabel *addressLabel = [UILabel labelWithText:self.address andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
+    UILabel *addressLabel = [UILabel labelWithText:self.address?self.address:@"请添加地址" andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:14];
     self.address = addressLabel.text;
     [headerBtn addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -466,8 +428,7 @@ static NSString* billCellid = @"bill_cell";
         [ws queryBill];
                 
                  };
-    YJPropertyAddressModel *model = self.addresses[0];
-    UILabel *cityLabel = [UILabel labelWithText:model.city andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
+    UILabel *cityLabel = [UILabel labelWithText:self.houseModel.areaName andTextColor:[UIColor colorWithHexString:@"#ffffff"] andFontSize:17];
     [headerBtn addSubview:cityLabel];
     [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(addressLabel.mas_top).offset(-5*kiphone6);
@@ -540,6 +501,10 @@ static NSString* billCellid = @"bill_cell";
         NSRange range = [self.monthBtn.titleLabel.text rangeOfString:@"月"];
         monthtime = [self.monthBtn.titleLabel.text substringToIndex:range.location];
     }
+    if (self.address.length==0) {
+        [SVProgressHUD showErrorWithStatus:@"你还没有地址，请添加地址"];
+        return;
+    }
     NSString *address = [self.address stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 
     NSString *queryUrlStr = [NSString stringWithFormat:@"%@/mobileapi/detail/findBill.do?token=%@&address=%@&Yeartime=%@&monthtime=%@",mPrefixUrl,mDefineToken1,address,Yeartime,monthtime];
@@ -557,10 +522,8 @@ static NSString* billCellid = @"bill_cell";
             self.months = mArr;
             [self.tableView reloadData];
 
-        }else{
-            if ([responseObject[@"code"] isEqualToString:@"-1"]) {
-                
-            }
+        }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            [SVProgressHUD showInfoWithStatus:responseObject[@"message"]];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -571,11 +534,14 @@ static NSString* billCellid = @"bill_cell";
 }
 - (void)modifyAddress{
     //跳转到家模块审核过的地址vc
+    YJHomeAddressVC *homeAddressVC = [[YJHomeAddressVC alloc]init];
+    [self.navigationController pushViewController:homeAddressVC animated:true];
 
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+    [self loadData];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

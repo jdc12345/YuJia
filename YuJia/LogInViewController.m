@@ -12,7 +12,6 @@
 #import "MMTextField.h"
 @interface LogInViewController ()
 
-
 /**
  登陆页面
  */
@@ -29,7 +28,7 @@
 @property (nonatomic, strong) UIButton *postBtn;
 
 
-@property (nonatomic, assign) BOOL isPSW;
+@property (nonatomic, assign) BOOL isPSW;//是否是密码登录
 /**
  注册页面
  */
@@ -77,17 +76,15 @@
         make.size.mas_equalTo(CGSizeMake(kScreenW, 121));
     }];
     
-    
-    
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    loginBtn.backgroundColor = [UIColor colorWithHexString:@"4dbfcd"];
+    loginBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [loginBtn setTitle:@"登录" forState:UIControlStateNormal];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [loginBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
     [loginBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *resignBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    resignBtn.backgroundColor = [UIColor colorWithHexString:@"9ae8e8"];
+    resignBtn.backgroundColor = [UIColor colorWithHexString:@"#9ff1e4"];
     [resignBtn setTitle:@"注册" forState:UIControlStateNormal];
     resignBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [resignBtn setTitleColor:[UIColor colorWithHexString:@"333333"] forState:UIControlStateNormal];
@@ -114,7 +111,7 @@
     
     self.loginView = [[UIView alloc]init];
     [self createLoginView];
-//    self.loginView.backgroundColor = [UIColor colorWithHexString:@"1ab3e3"];
+    self.loginView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.loginView];
     [self.loginView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(loginBtn.mas_bottom).with.offset(0);
@@ -123,7 +120,7 @@
     
     self.resignView = [[UIView alloc]init];
     [self createResignView];
-//    self.resignView.backgroundColor = [UIColor colorWithHexString:@"38d5d5"];
+    self.resignView.backgroundColor = [UIColor whiteColor];
     self.resignView.hidden = YES;
     [self.view addSubview:self.resignView];
     [self.resignView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -146,9 +143,6 @@
     NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
     [topView setItems:buttonsArray];
     
-    
-    
-    
     [self.phoneTF_login setInputAccessoryView:topView];
     [self.passWordTextF setInputAccessoryView:topView];
     [self.vcodeTextF setInputAccessoryView:topView];
@@ -158,22 +152,20 @@
     [self.repsw_resign setInputAccessoryView:topView];
 }
 - (void)createLoginView{
-    
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
-    gradientLayer.locations = @[@0 ,@1.0];
-    gradientLayer.startPoint = CGPointMake(0, 0);
-    gradientLayer.endPoint = CGPointMake(0, 1.0);
-    gradientLayer.frame = CGRectMake(0, 0, kScreenW, kScreenH - 121 -44);;
-    [self.loginView.layer addSublayer:gradientLayer];
+//    渐变色
+//    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+//    gradientLayer.locations = @[@0 ,@1.0];
+//    gradientLayer.startPoint = CGPointMake(0, 0);
+//    gradientLayer.endPoint = CGPointMake(0, 1.0);
+//    gradientLayer.frame = CGRectMake(0, 0, kScreenW, kScreenH - 121 -44);;
+//    [self.loginView.layer addSublayer:gradientLayer];
     
     NSMutableParagraphStyle *paraStyle3 = [[NSMutableParagraphStyle alloc] init];
     NSDictionary *dic3 = @{NSFontAttributeName:[UIFont systemFontOfSize:14], NSParagraphStyleAttributeName:paraStyle3, NSKernAttributeName:@0.0f
                            };
     
     NSAttributedString *attributeStr3 = [[NSAttributedString alloc] initWithString:@"手机号" attributes:dic3];
-    
-    
     
     UILabel *newNumberLabel = [[UILabel alloc]init];
     newNumberLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -208,42 +200,40 @@
     MMTextField *newNumberTextF = [[MMTextField alloc]init];
     newNumberTextF.font = [UIFont systemFontOfSize:15];
     newNumberTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     newNumberTextF.layer.borderWidth = 1;
     newNumberTextF.layer.cornerRadius = 2.5;
     newNumberTextF.clipsToBounds = YES;
     newNumberTextF.textAlignment = NSTextAlignmentLeft;
-    
+    newNumberTextF.placeholder = @"请输入手机号";
     [self.loginView addSubview:newNumberTextF];
     
     [newNumberTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(newNumberLabel).with.offset(0);
         make.left.equalTo(self.loginView).with.offset(100);
         make.right.equalTo(self.loginView).with.offset(-25);
-        make.size.height.mas_equalTo(40);
+        make.height.offset(40);
     }];
     
     
     MMTextField *passwordTextF = [[MMTextField alloc]init];
     passwordTextF.font = [UIFont systemFontOfSize:15];
     passwordTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     passwordTextF.layer.borderWidth = 1;
     passwordTextF.layer.cornerRadius = 2.5;
     passwordTextF.clipsToBounds = YES;
     passwordTextF.textAlignment = NSTextAlignmentLeft;
-    
+    passwordTextF.placeholder = @"输入6-12位数字、字母密码";
     [self.loginView addSubview:passwordTextF];
     
     [passwordTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(passwordLabel).with.offset(0);
         make.left.equalTo(self.loginView).with.offset(100);
         make.right.equalTo(self.loginView).with.offset(-25);
-        make.size.height.mas_equalTo(40);
+        make.height.offset(40);
     }];
-    
-    
-    
+   
     UIButton *agreeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [agreeBtn setImage:[UIImage imageNamed:@"selected-login"] forState:UIControlStateNormal];
 //    [agreeBtn sizeToFit];
@@ -276,7 +266,7 @@
     [sureBtn setTitle:@"登陆" forState:UIControlStateNormal];
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [sureBtn addTarget:self action:@selector(httpRequestForLogin) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
@@ -291,7 +281,7 @@
     UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [changeBtn setTitle:@"手机验证码登录" forState:UIControlStateNormal];
     [changeBtn setTitle:@"密码登录" forState:UIControlStateSelected];
-    [changeBtn setTitleColor:[UIColor colorWithHexString:@"267e89"] forState:UIControlStateNormal];
+    [changeBtn setTitleColor:[UIColor colorWithHexString:@"#0ddcbc"] forState:UIControlStateNormal];
     changeBtn.titleLabel.font = [UIFont systemFontOfSize:13];
     [changeBtn addTarget:self action:@selector(changeLoginStyle:) forControlEvents:UIControlEventTouchUpInside];
     [self.loginView addSubview:changeBtn];
@@ -307,10 +297,7 @@
     NSMutableParagraphStyle *paraStyle4 = [[NSMutableParagraphStyle alloc] init];
     NSDictionary *dic4 = @{NSFontAttributeName:[UIFont systemFontOfSize:14], NSParagraphStyleAttributeName:paraStyle4, NSKernAttributeName:@7.0f
                            };
-    
     NSAttributedString *attributeStr4 = [[NSAttributedString alloc] initWithString:@"验证码" attributes:dic4];
-    
-    
     
     UILabel *yanLabel = [[UILabel alloc]init];
     yanLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -324,11 +311,10 @@
         make.size.mas_equalTo(CGSizeMake(65, 14));
     }];
     
-    
     UITextField *yanLabelTextF = [[UITextField alloc]init];
     yanLabelTextF.font = [UIFont systemFontOfSize:15];
     yanLabelTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    yanLabelTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    yanLabelTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     yanLabelTextF.layer.borderWidth = 1;
     yanLabelTextF.layer.cornerRadius = 2.5;
     yanLabelTextF.clipsToBounds = YES;
@@ -338,10 +324,10 @@
     [self.loginView addSubview:yanLabelTextF];
     
     [yanLabelTextF mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(yanLabel).with.offset(0);
-        make.left.equalTo(self.loginView).with.offset(100);
-        make.right.equalTo(self.loginView).with.offset(-25 -100);
-        make.size.height.mas_equalTo(40);;
+        make.centerY.equalTo(yanLabel);
+        make.left.equalTo(self.loginView).offset(100);
+        make.right.equalTo(self.loginView).offset(-25 -100);
+        make.height.offset(40);
     }];
     
     UIButton *postBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -349,11 +335,10 @@
     [postBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
     [postBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    postBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [postBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     postBtn.layer.cornerRadius = 2.5;
     postBtn.clipsToBounds = YES;
-    
     
     [self.loginView addSubview:postBtn];
     [postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -361,8 +346,6 @@
         make.left.equalTo(yanLabelTextF.mas_right).with.offset(-1);
         make.right.equalTo(self.loginView).with.offset(-25);
     }];
-
-
     
     self.phoneTF_login = newNumberTextF;
     self.passWordLabel = passwordLabel;
@@ -377,26 +360,23 @@
     self.vcodeTextF.hidden = YES;
     self.postBtn.hidden = YES;
     
-
 }
 
 // 注册页面
 - (void)createResignView{
     
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
-    gradientLayer.locations = @[@0 ,@1.0];
-    gradientLayer.startPoint = CGPointMake(0, 0);
-    gradientLayer.endPoint = CGPointMake(0, 1.0);
-    gradientLayer.frame = CGRectMake(0, 0, kScreenW, kScreenH - 121 -44);;
-    [self.resignView.layer addSublayer:gradientLayer];
+//    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//    gradientLayer.colors = @[(__bridge id)[UIColor colorWithHexString:@"38d5cf"].CGColor, (__bridge id)[UIColor colorWithHexString:@"1ab4dc"].CGColor];
+//    gradientLayer.locations = @[@0 ,@1.0];
+//    gradientLayer.startPoint = CGPointMake(0, 0);
+//    gradientLayer.endPoint = CGPointMake(0, 1.0);
+//    gradientLayer.frame = CGRectMake(0, 0, kScreenW, kScreenH - 121 -44);;
+//    [self.resignView.layer addSublayer:gradientLayer];
     NSMutableParagraphStyle *paraStyle3 = [[NSMutableParagraphStyle alloc] init];
     NSDictionary *dic3 = @{NSFontAttributeName:[UIFont systemFontOfSize:14], NSParagraphStyleAttributeName:paraStyle3, NSKernAttributeName:@7.0f
                            };
     
     NSAttributedString *attributeStr3 = [[NSAttributedString alloc] initWithString:@"手机号" attributes:dic3];
-    
-    
     
     UILabel *newNumberLabel = [[UILabel alloc]init];
     newNumberLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -413,10 +393,7 @@
     NSMutableParagraphStyle *paraStyle4 = [[NSMutableParagraphStyle alloc] init];
     NSDictionary *dic4 = @{NSFontAttributeName:[UIFont systemFontOfSize:14], NSParagraphStyleAttributeName:paraStyle4, NSKernAttributeName:@7.0f
                            };
-    
     NSAttributedString *attributeStr4 = [[NSAttributedString alloc] initWithString:@"验证码" attributes:dic4];
-    
-    
     
     UILabel *yanLabel = [[UILabel alloc]init];
     yanLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -435,8 +412,6 @@
                            };
     
     NSAttributedString *attributeStr2 = [[NSAttributedString alloc] initWithString:@"设置密码" attributes:dic2];
-    
-    
     
     UILabel *fistPWLabel = [[UILabel alloc]init];
     fistPWLabel.textColor = [UIColor colorWithHexString:@"333333"];
@@ -473,26 +448,26 @@
     MMTextField *newNumberTextF = [[MMTextField alloc]init];
     newNumberTextF.font = [UIFont systemFontOfSize:15];
     newNumberTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    newNumberTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     newNumberTextF.layer.borderWidth = 1;
     newNumberTextF.layer.cornerRadius = 2.5;
     newNumberTextF.clipsToBounds = YES;
     newNumberTextF.textAlignment = NSTextAlignmentLeft;
-    
+    newNumberTextF.placeholder = @"请输入手机号";
     [self.resignView addSubview:newNumberTextF];
     
     [newNumberTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(newNumberLabel).with.offset(0);
         make.left.equalTo(self.resignView).with.offset(100);
         make.right.equalTo(self.resignView).with.offset(-25);
-        make.size.height.mas_equalTo(40);
+        make.height.offset(40);
     }];
     
     
     UITextField *yanLabelTextF = [[UITextField alloc]init];
     yanLabelTextF.font = [UIFont systemFontOfSize:15];
     yanLabelTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    yanLabelTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    yanLabelTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     yanLabelTextF.layer.borderWidth = 1;
     yanLabelTextF.layer.cornerRadius = 2.5;
     yanLabelTextF.clipsToBounds = YES;
@@ -505,7 +480,7 @@
         make.centerY.equalTo(yanLabel).with.offset(0);
         make.left.equalTo(self.resignView).with.offset(100);
         make.right.equalTo(self.resignView).with.offset(-25 -100);
-        make.size.height.mas_equalTo(40);;
+        make.height.offset(40);
     }];
 
     UIButton *postBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -513,7 +488,7 @@
     [postBtn setTitle:@"发送验证码" forState:UIControlStateNormal];
     [postBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    postBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    postBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [postBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
     postBtn.layer.cornerRadius = 2.5;
     postBtn.clipsToBounds = YES;
@@ -529,38 +504,38 @@
     MMTextField *passwordTextF = [[MMTextField alloc]init];
     passwordTextF.font = [UIFont systemFontOfSize:15];
     passwordTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    passwordTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     passwordTextF.layer.borderWidth = 1;
     passwordTextF.layer.cornerRadius = 2.5;
     passwordTextF.clipsToBounds = YES;
     passwordTextF.textAlignment = NSTextAlignmentLeft;
-    
+    passwordTextF.placeholder = @"输入6-12位数字、字母密码";
     [self.resignView addSubview:passwordTextF];
     
     [passwordTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(passwordLabel).with.offset(0);
         make.left.equalTo(self.resignView).with.offset(100);
         make.right.equalTo(self.resignView).with.offset(-25);
-        make.size.height.mas_equalTo(40);
+        make.height.offset(40);
     }];
     
     
     MMTextField *fistPWTextF = [[MMTextField alloc]init];
     fistPWTextF.font = [UIFont systemFontOfSize:15];
     fistPWTextF.textColor = [UIColor colorWithHexString:@"333333"];
-    fistPWTextF.layer.borderColor = [UIColor colorWithHexString:@"3899a5"].CGColor;
+    fistPWTextF.layer.borderColor = [UIColor colorWithHexString:@"#c4c4c4"].CGColor;
     fistPWTextF.layer.borderWidth = 1;
     fistPWTextF.layer.cornerRadius = 2.5;
     fistPWTextF.clipsToBounds = YES;
     fistPWTextF.textAlignment = NSTextAlignmentLeft;
-    
+    fistPWTextF.placeholder = @"重复输入密码";
     [self.resignView addSubview:fistPWTextF];
     
     [fistPWTextF mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(fistPWLabel).with.offset(0);
         make.left.equalTo(self.resignView).with.offset(100);
         make.right.equalTo(self.resignView).with.offset(-25);
-        make.size.height.mas_equalTo(40);
+        make.height.offset(40);
     }];
     
     
@@ -589,15 +564,12 @@
         make.size.mas_equalTo(CGSizeMake(250, 11));
     }];
     
-    
-    
-    
     UIButton *sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     sureBtn.frame = CGRectMake(10, 16, 190, 44);
     [sureBtn setTitle:@"注册" forState:UIControlStateNormal];
     [sureBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    sureBtn.backgroundColor = [UIColor colorWithHexString:@"00bfff"];
+    sureBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
     [sureBtn addTarget:self action:@selector(clickResign) forControlEvents:UIControlEventTouchUpInside];
     sureBtn.layer.cornerRadius = 2.5;
     sureBtn.clipsToBounds = YES;
@@ -608,20 +580,13 @@
         make.centerX.equalTo(self.resignView);
         make.size.mas_equalTo(CGSizeMake(150, 44));
     }];
-    
-//    @property(nonatomic, weak) UITextField *phoneTF_resign;
-//    @property(nonatomic, weak) UITextField *vcodeTF_resign;
-//    
-//    @property(nonatomic, weak) UITextField *psw_resign;
-//    @property(nonatomic, weak) UITextField *repsw_resign;
+
     self.phoneTF_resign = newNumberTextF;
     self.vcodeTF_resign = yanLabelTextF;
     self.psw_resign = passwordTextF;
     self.repsw_resign = fistPWTextF;
     self.psw_resign.secureTextEntry = YES;
     self.repsw_resign.secureTextEntry = YES;
-    
-
 
 }
 
@@ -633,15 +598,15 @@
         self.resignView.hidden = YES;
         
         
-        self.loginBtn.backgroundColor = [UIColor colorWithHexString:@"4dbfcd"];
-        self.resignBtn.backgroundColor = [UIColor colorWithHexString:@"9ae8e8"];
+        self.loginBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
+        self.resignBtn.backgroundColor = [UIColor colorWithHexString:@"#9ff1e4"];
     }else{
         self.loginView.hidden = YES;
         self.resignView.hidden = NO;
         
         
-        self.resignBtn.backgroundColor = [UIColor colorWithHexString:@"4dbfcd"];
-        self.loginBtn.backgroundColor = [UIColor colorWithHexString:@"9ae8e8"];
+        self.resignBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
+        self.loginBtn.backgroundColor = [UIColor colorWithHexString:@"#9ff1e4"];
     }
 }
 - (void)changeLoginStyle:(UIButton *)sender{
@@ -707,7 +672,6 @@
             userModel.telephoneNum = self.phoneTF_resign.text;
             [userModel saveAllInfo];
             
-            
             YYTabBarController *firstVC = [[YYTabBarController alloc]init];
             [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -721,6 +685,7 @@
     
 }
 - (void)httpRequestForLogin{
+    [SVProgressHUD show];//开始加载
     if (self.isPSW) {
         NSLog(@"密码登录");
         NSDictionary *dict = @{
@@ -732,6 +697,7 @@
         [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLogin] method:1 parameters:dict prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
+            [SVProgressHUD dismiss];//结束动画
             NSLog(@"%@",responseObject);
             //保存token
             CcUserModel *userModel = [CcUserModel defaultClient];
@@ -745,6 +711,7 @@
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
+            [SVProgressHUD dismiss];//结束动画
         }];
     }else{
         NSLog(@"验证码登录");
@@ -767,6 +734,7 @@
             [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLogin] method:1 parameters:dict prepareExecute:^{
                 
             } success:^(NSURLSessionDataTask *task, id responseObject) {
+                [SVProgressHUD dismiss];//结束动画
                 NSLog(@"%@",responseObject);
                 //保存token
                 CcUserModel *userModel = [CcUserModel defaultClient];
@@ -780,10 +748,12 @@
                 
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 NSLog(@"%@",error);
+                [SVProgressHUD dismiss];//结束动画
             }];
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
+            [SVProgressHUD dismiss];//结束动画
         }];
     }
 }
@@ -797,6 +767,69 @@
     [self.psw_resign resignFirstResponder];
     [self.repsw_resign resignFirstResponder];
 }
+#pragma mark - 键盘通知
+- (void)addNoticeForKeyboard {
+    
+    //注册键盘出现的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    //注册键盘消失的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+///键盘显示事件
+- (void) keyboardWillShow:(NSNotification *)notification {
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    CGFloat height = rect.size.height;
+    if (height <667.f) {//判断设备型号是6以下情况(此处是因为固定了屏幕方向，其他情况要判定屏幕方向)
+        if (self.passWordTextF.isFirstResponder||self.vcodeTextF.isFirstResponder||self.vcodeTF_resign.isFirstResponder||self.psw_resign.isFirstResponder||self.repsw_resign.isFirstResponder) {
+            //将视图上移计算好的偏移
+            [UIView animateWithDuration:duration animations:^{
+                [self.loginBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.view).with.offset(20);
+                    make.left.equalTo(self.view).with.offset(0 );
+                    make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 44));
+                }];
+
+            }];
+        }
+    }
+}
+
+///键盘消失事件
+- (void) keyboardWillHide:(NSNotification *)notify {
+    // 键盘动画时间
+    double duration = [[notify.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+
+        [self.loginBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view).with.offset(121);
+            make.left.equalTo(self.view).with.offset(0 );
+            make.size.mas_equalTo(CGSizeMake(kScreenW/2.0, 44));
+        }];
+
+    }];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    //注册键盘通知
+    [self addNoticeForKeyboard];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //移除键盘监听
+    //移除键盘监听 直接按照通知名字去移除键盘通知, 这是正确方式
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
 /*
 #pragma mark - Navigation
 

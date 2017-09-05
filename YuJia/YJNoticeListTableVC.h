@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YJNoticeListTableVC : UITableViewController
-//@property(nonatomic,strong)NSArray *noticeArr;
-@property(nonatomic,assign)NSInteger noticeType;//1.友邻圈2.社区活动3.社区拼车
+
 @end

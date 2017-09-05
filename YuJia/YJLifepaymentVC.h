@@ -13,4 +13,5 @@
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickBtnBlock)(YJLifePayAddressModel *model);
 @property (nonatomic, strong)YJLifePayAddressModel *currentAddressModel;//当前选中地址
+@property(nonatomic,assign)BOOL isBill;//是否有地址
 @end

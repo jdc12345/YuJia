@@ -8,7 +8,9 @@
 
 #import "YJSetPersonalVC.h"
 #import "UIViewController+Cloudox.h"
-
+#import "ChangePassWordViewController.h"
+#import "ChangePhoneNumberViewController.h"
+#import "LogInViewController.h"
 
 @interface YJSetPersonalVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -50,7 +52,7 @@
     UIButton *btn = [[UIButton alloc]init];
     btn.backgroundColor = [UIColor clearColor];
     [btn setTitle:@"退出登录" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(httpRequestDelete) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [btn setTitleColor:[UIColor colorWithHexString:@"#e00610"] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:17];
     btn.layer.masksToBounds = true;
@@ -67,13 +69,30 @@
     self.dataSource = @[@"修改绑定手机号",@"修改密码"];
     [self tableView];
 }
+-  (void)buttonClick:(UIButton *)sender{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"你确定退出吗" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        CcUserModel *userModel = [CcUserModel defaultClient];
+        [userModel removeUserInfo];//清除本地存储
+        [CcUserModel defaultClient];//清除缓存
+        LogInViewController *logVC = [[LogInViewController alloc]init];
+        [self.navigationController presentViewController:logVC animated:YES completion:nil];
+    }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 #pragma mark -
 #pragma mark ------------TableView Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //    [self.navigationController pushViewController:[[FamilyPersonalViewController alloc]init] animated:YES];
-//    UITableViewCell *familyCell = [tableView cellForRowAtIndexPath:indexPath];
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:true];
+    if (indexPath.row==0) {
+        [self.navigationController pushViewController:[[ChangePhoneNumberViewController alloc]init] animated:YES];
+    }else{
+        [self.navigationController pushViewController:[[ChangePassWordViewController alloc]init] animated:YES];
+    }
 }
 #pragma mark -
 #pragma mark ------------TableView DataSource----------------------
