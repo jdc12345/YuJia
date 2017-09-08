@@ -578,18 +578,18 @@ static NSString* eqCellid = @"eq_cell";
 //    WS(ws);
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView).with.offset(20);
-        make.top.equalTo(titleView).with.offset(25);;
-        make.size.mas_equalTo(CGSizeMake(120 ,14));
+        make.top.equalTo(titleView).with.offset(25*kiphone6);;
+        make.size.mas_equalTo(CGSizeMake(120 ,14*kiphone6));
     }];
     [pickerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView);
-        make.top.equalTo(titleLabel).with.offset(20);;
-        make.size.mas_equalTo(CGSizeMake(kScreenW ,90));
+        make.top.equalTo(titleLabel.mas_bottom).offset(20*kiphone6);;
+        make.size.mas_equalTo(CGSizeMake(kScreenW ,90*kiphone6));
     }];
     [repeatLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(titleView).with.offset(20);
-        make.top.equalTo(titleLabel).with.offset(135);;
-        make.size.mas_equalTo(CGSizeMake(120 ,14));
+        make.top.equalTo(pickerView.mas_bottom).offset(20*kiphone6);;
+        make.size.mas_equalTo(CGSizeMake(120 ,14*kiphone6));
     }];
     
     [lineLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -607,7 +607,7 @@ static NSString* eqCellid = @"eq_cell";
             row = 1;
         
         UIButton *weekBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        weekBtn.frame = CGRectMake(20 + (76 +10 +btnW_Change)*(i%4), 213 +row *45, 76 +btnW_Change, 30);
+        weekBtn.frame = CGRectMake(20 + (76 +10 +btnW_Change)*(i%4), 200*kiphone6 +row *45, 76 +btnW_Change, 30*kiphone6);
         weekBtn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         [weekBtn setTitle:btnText_Array[i] forState:UIControlStateNormal];
         weekBtn.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -636,9 +636,9 @@ static NSString* eqCellid = @"eq_cell";
     sureBtn.layer.masksToBounds = true;
     [titleView addSubview:sureBtn];
     [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(titleView).with.offset(-30);
+        make.bottom.equalTo(titleView).with.offset(-30*kiphone6);
         make.centerX.equalTo(titleView);
-        make.size.mas_equalTo(CGSizeMake(190, 44));
+        make.size.mas_equalTo(CGSizeMake(190*kiphone6, 44*kiphone6));
     }];
     
     

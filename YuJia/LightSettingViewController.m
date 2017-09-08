@@ -168,30 +168,30 @@
 }
 - (void)httpRequestInfo{
 
-    NSDictionary *equipDict = [self.equipmentModel properties_aps];
-    NSMutableDictionary *postDict = [[NSMutableDictionary alloc]initWithDictionary:equipDict];
-    [postDict setObject:@"token" forKey:mDefineToken];
-    NSLog(@"%@",postDict);
-//    NSDictionary *dict = @{
-//                           @"id":self.equipmentModel.info_id,
-//                           @"token":mDefineToken,
-//                           @"name":self.equipmentModel.name,
-//                           @"iconId":self.equipmentModel.iconId,
-//                           @"iconUrl":self.equipmentModel.iconUrl,
-//                           @"state":self.equipmentModel.state,
-//                           @"roomId":self.equipmentModel.roomId,
-//                           @"serialNumber":self.equipmentModel.serialNumber,
-//                           @"extendState":self.equipmentModel.toExtendState,
-//                           @"familyId":self.equipmentModel.familyId
-//                           };
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:postDict prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-    }];
+//    NSDictionary *equipDict = [self.equipmentModel properties_aps];
+//    NSMutableDictionary *postDict = [[NSMutableDictionary alloc]initWithDictionary:equipDict];
+//    [postDict setObject:@"token" forKey:mDefineToken];
+//    NSLog(@"%@",postDict);
+////    NSDictionary *dict = @{
+////                           @"id":self.equipmentModel.info_id,
+////                           @"token":mDefineToken,
+////                           @"name":self.equipmentModel.name,
+////                           @"iconId":self.equipmentModel.iconId,
+////                           @"iconUrl":self.equipmentModel.iconUrl,
+////                           @"state":self.equipmentModel.state,
+////                           @"roomId":self.equipmentModel.roomId,
+////                           @"serialNumber":self.equipmentModel.serialNumber,
+////                           @"extendState":self.equipmentModel.toExtendState,
+////                           @"familyId":self.equipmentModel.familyId
+////                           };
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mSightSave] method:1 parameters:postDict prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
 }
 /*
 #pragma mark - Navigation

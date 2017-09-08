@@ -8,12 +8,11 @@
 
 #import "YJRoomManagerVC.h"
 #import "EquipmentManagerTableViewCell.h"
-#import "EquipmentSettingViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "YJRoomDetailModel.h"
 #import "YJRoomSetUpVC.h"
 #import <SDWebImageManager.h>
-
+#import "YJEquipmentModel.h"
 
 @interface YJRoomManagerVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;

@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EquipmentModel.h"
+//#import "EquipmentModel.h"
 
 @interface LightSettingViewController : UIViewController
-@property (nonatomic, strong) EquipmentModel* equipmentModel;
+//@property (nonatomic, strong) EquipmentModel* equipmentModel;
 @property (nonatomic, assign) BOOL isNow;
 
 @end

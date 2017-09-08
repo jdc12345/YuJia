@@ -12,7 +12,6 @@
 #import "YJFriendLikeCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
 #import <UIImageView+WebCache.h>
-#import "OtherPeopleInfoViewController.h"
 
 static NSString* photoCellid = @"photo_cell";
 @interface YJLikeActivitiesTVCell()<UICollectionViewDelegate,UICollectionViewDataSource>

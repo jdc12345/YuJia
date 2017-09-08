@@ -8,7 +8,7 @@
 
 #import "YJSceneManagerVC.h"
 #import "EquipmentManagerTableViewCell.h"
-#import "EquipmentSettingViewController.h"
+//#import "EquipmentSettingViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "YJSceneDetailModel.h"
 #import "YJSceneSetVC.h"

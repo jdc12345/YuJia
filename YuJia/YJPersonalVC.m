@@ -11,7 +11,7 @@
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
-#import "PersonalSettingViewController.h"
+//#import "PersonalSettingViewController.h"
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"

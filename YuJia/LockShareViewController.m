@@ -11,7 +11,7 @@
 #import "LockShareTableViewCell.h"
 #import "PersonalModel.h"
 #import <UIImageView+WebCache.h>
-#import "PickViewController.h"
+//#import "PickViewController.h"
 @interface LockShareViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -224,17 +224,17 @@
     for (int i = 1; i < 61;  i++) {
         [array addObject:[NSString stringWithFormat:@"%d",i]];
     }
-    PickViewController *alertVC = [[PickViewController alloc]init];
-    alertVC.count = 1;
-    alertVC.dataArr = array;
-    alertVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
-//    self.userType = alertVC;
-    [self presentViewController:alertVC animated:YES completion:nil];
-    alertVC.blocksureBtn = ^(id arr) {
-//        self.myIsLabel.text = arr[0];
-        [self.timeBtn setTitle:arr[0] forState:UIControlStateNormal];
-        NSLog(@"%@",arr[0]);
-    };
+//    PickViewController *alertVC = [[PickViewController alloc]init];
+//    alertVC.count = 1;
+//    alertVC.dataArr = array;
+//    alertVC.modalPresentationStyle = UIModalPresentationOverFullScreen;
+////    self.userType = alertVC;
+//    [self presentViewController:alertVC animated:YES completion:nil];
+//    alertVC.blocksureBtn = ^(id arr) {
+////        self.myIsLabel.text = arr[0];
+//        [self.timeBtn setTitle:arr[0] forState:UIControlStateNormal];
+//        NSLog(@"%@",arr[0]);
+//    };
 }
 - (void)httpRequestHomeInfo{
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken] method:0 parameters:nil prepareExecute:^{

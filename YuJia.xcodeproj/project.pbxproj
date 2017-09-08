@@ -186,7 +186,6 @@
 		16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 16EBB5391F0B714C006D178C /* YJBillHeaderViewTVCell.m */; };
 		16F1897A1F384B2700797BF3 /* YJPostHouseVillageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F189791F384B2700797BF3 /* YJPostHouseVillageModel.m */; };
 		3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */; };
-		3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */; };
 		3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */; };
 		3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */; };
 		3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3331EC4685E00C77B58 /* LockTextViewController.m */; };
@@ -196,18 +195,8 @@
 		3E20B3401EC4798900C77B58 /* LockSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B33F1EC4798900C77B58 /* LockSettingTableViewCell.m */; };
 		3E20B3431EC542A100C77B58 /* LockShareTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3421EC542A100C77B58 /* LockShareTableViewCell.m */; };
 		3E20B3461EC54D4100C77B58 /* EditPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */; };
-		3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3481EC5874800C77B58 /* MYHomeViewController.m */; };
-		3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */; };
-		3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */; };
-		3E2CD8271ED920F200C8FD56 /* MyActiveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */; };
-		3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */; };
-		3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */; };
-		3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */; };
-		3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */; };
 		3E2CD8371EE52E3200C8FD56 /* RKNotificationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */; };
 		3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E2CD8381EE5473800C8FD56 /* 键盘.png */; };
-		3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */; };
-		3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */; };
 		3E6468551ECEC66D003E785B /* AllHomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468541ECEC66D003E785B /* AllHomeModel.m */; };
 		3E8970DD1ED3C64A00C9DEB1 /* LockChangePWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */; };
 		3E8970E01ED3C97000C9DEB1 /* LockRecardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8970DF1ED3C97000C9DEB1 /* LockRecardViewController.m */; };
@@ -229,26 +218,13 @@
 		3E94392B1EC99095001FE471 /* EquipmentManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392A1EC99095001FE471 /* EquipmentManagerViewController.m */; };
 		3E94392E1EC990B9001FE471 /* EquipmentManagerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */; };
 		3E9439311EC9B913001FE471 /* PersonalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439301EC9B913001FE471 /* PersonalModel.m */; };
-		3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94394D1ECAA087001FE471 /* ScreenUtil.m */; };
-		3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */; };
-		3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */; };
-		3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439521ECAA087001FE471 /* PickViewController.m */; };
-		3E94395F1ECAA087001FE471 /* area.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439531ECAA087001FE471 /* area.plist */; };
-		3E9439601ECAA087001FE471 /* city.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E9439541ECAA087001FE471 /* city.plist */; };
-		3E9439611ECAA087001FE471 /* AreaModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439561ECAA087001FE471 /* AreaModel.m */; };
-		3E9439621ECAA087001FE471 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439581ECAA087001FE471 /* CityModel.m */; };
-		3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94395A1ECAA087001FE471 /* ProvinceModel.m */; };
 		3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */; };
 		3E94397F1ECAF259001FE471 /* AddFamilyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */; };
 		3E9439831ECB0245001FE471 /* AddFamilyInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */; };
-		3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */; };
 		3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */; };
 		3E94398D1ECBE77C001FE471 /* CcUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398C1ECBE77C001FE471 /* CcUserModel.m */; };
-		3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */; };
-		3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */; };
 		3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */; };
 		3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */; };
-		3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */; };
 		3E984EEB1EB821EE0094CBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EEA1EB821EE0094CBE4 /* main.m */; };
 		3E984EEE1EB821EE0094CBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984EED1EB821EE0094CBE4 /* AppDelegate.m */; };
 		3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E984EF21EB821EE0094CBE4 /* Main.storyboard */; };
@@ -260,10 +236,8 @@
 		3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F281EB82AC50094CBE4 /* YYTabBarController.m */; };
 		3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */; };
 		3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */; };
-		3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F471EB82B550094CBE4 /* HomePageViewController.m */; };
 		3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */; };
 		3E984F4E1EB82B7E0094CBE4 /* CircleGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */; };
-		3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F511EB82BA20094CBE4 /* PersonalViewController.m */; };
 		3E984F621EB831170094CBE4 /* HttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F551EB831170094CBE4 /* HttpClient.m */; };
 		3E984F631EB831170094CBE4 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F571EB831170094CBE4 /* NSArray+Log.m */; };
 		3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F591EB831170094CBE4 /* NSDictionary+Log.m */; };
@@ -275,27 +249,12 @@
 		3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F791EB897CD0094CBE4 /* JXSegment.m */; };
 		3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */; };
 		3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E984F7E1EB9AD110094CBE4 /* avatar.jpg */; };
-		3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F811EB9BD7F0094CBE4 /* MyBtnView.m */; };
-		3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F8A1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m */; };
-		3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F8D1EB9DB140094CBE4 /* SightSettingViewController.m */; };
 		3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F871EB9BF640094CBE4 /* MMButton.m */; };
-		3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F911EBB08980094CBE4 /* AddEquipmentViewController.m */; };
-		3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F941EBB110F0094CBE4 /* ConnectWifiViewController.m */; };
-		3E984F981EBB1C1B0094CBE4 /* SuccessConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F971EBB1C1B0094CBE4 /* SuccessConnectViewController.m */; };
 		3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */; };
-		3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F9D1EBB2B3D0094CBE4 /* SightViewController.m */; };
-		3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA01EBB2B560094CBE4 /* EquipmentViewController.m */; };
-		3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */; };
-		3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */; };
-		3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FA91EBC17450094CBE4 /* AddSightViewController.m */; };
 		3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */; };
 		3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FAF1EBC5D760094CBE4 /* PopListTableViewController.m */; };
-		3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB31EC061D80094CBE4 /* SightModel.m */; };
-		3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB61EC062850094CBE4 /* EquipmentModel.m */; };
-		3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FB91EC062F20094CBE4 /* RoomModel.m */; };
 		3E984FBD1EC156DF0094CBE4 /* LightSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */; };
 		3EBB7FE11EE8E3FA004D1B02 /* MMTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7FE01EE8E3FA004D1B02 /* MMTextField.m */; };
-		3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */; };
 		3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6468511ECE887B003E785B /* YYFeedbackViewController.m */; };
 		3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */; };
 		A82D0D489FBD720BD2A951EF /* libPods-YuJia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C7631CFB80932FA44BD479 /* libPods-YuJia.a */; };
@@ -668,8 +627,6 @@
 		31C7631CFB80932FA44BD479 /* libPods-YuJia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YuJia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnLockRecordModel.h; sourceTree = "<group>"; };
 		3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnLockRecordModel.m; sourceTree = "<group>"; };
-		3E10BE031ED4033800FAF87C /* MyCircleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleTableViewCell.h; sourceTree = "<group>"; };
-		3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCircleTableViewCell.m; sourceTree = "<group>"; };
 		3E20B32C1EC446AB00C77B58 /* TVSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVSettingViewController.h; sourceTree = "<group>"; };
 		3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVSettingViewController.m; sourceTree = "<group>"; };
 		3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorLockViewController.h; sourceTree = "<group>"; };
@@ -688,29 +645,9 @@
 		3E20B3421EC542A100C77B58 /* LockShareTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockShareTableViewCell.m; sourceTree = "<group>"; };
 		3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPersonalViewController.h; sourceTree = "<group>"; };
 		3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPersonalViewController.m; sourceTree = "<group>"; };
-		3E20B3471EC5874800C77B58 /* MYHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeViewController.h; sourceTree = "<group>"; };
-		3E20B3481EC5874800C77B58 /* MYHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeViewController.m; sourceTree = "<group>"; };
-		3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYHomeTableViewCell.h; sourceTree = "<group>"; };
-		3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYHomeTableViewCell.m; sourceTree = "<group>"; };
-		3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveViewController.h; sourceTree = "<group>"; };
-		3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveViewController.m; sourceTree = "<group>"; };
-		3E2CD8251ED920F200C8FD56 /* MyActiveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyActiveTableViewCell.h; sourceTree = "<group>"; };
-		3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActiveTableViewCell.m; sourceTree = "<group>"; };
-		3E2CD8281ED921EF00C8FD56 /* CirleAndActiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CirleAndActiveViewController.h; sourceTree = "<group>"; };
-		3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CirleAndActiveViewController.m; sourceTree = "<group>"; };
-		3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherPeopleInfoViewController.h; sourceTree = "<group>"; };
-		3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherPeopleInfoViewController.m; sourceTree = "<group>"; };
-		3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotficViewController.h; sourceTree = "<group>"; };
-		3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotficViewController.m; sourceTree = "<group>"; };
-		3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherCircleViewController.h; sourceTree = "<group>"; };
-		3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherCircleViewController.m; sourceTree = "<group>"; };
 		3E2CD8351EE52E3200C8FD56 /* RKNotificationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKNotificationHub.h; sourceTree = "<group>"; };
 		3E2CD8361EE52E3200C8FD56 /* RKNotificationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKNotificationHub.m; sourceTree = "<group>"; };
 		3E2CD8381EE5473800C8FD56 /* 键盘.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "键盘.png"; sourceTree = "<group>"; };
-		3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRoomViewController.h; sourceTree = "<group>"; };
-		3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRoomViewController.m; sourceTree = "<group>"; };
-		3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCircleViewController.h; sourceTree = "<group>"; };
-		3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCircleViewController.m; sourceTree = "<group>"; };
 		3E6468501ECE887B003E785B /* YYFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedbackViewController.h; sourceTree = "<group>"; };
 		3E6468511ECE887B003E785B /* YYFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFeedbackViewController.m; sourceTree = "<group>"; };
 		3E6468531ECEC66D003E785B /* AllHomeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllHomeModel.h; sourceTree = "<group>"; };
@@ -755,43 +692,20 @@
 		3E94392D1EC990B9001FE471 /* EquipmentManagerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentManagerTableViewCell.m; sourceTree = "<group>"; };
 		3E94392F1EC9B913001FE471 /* PersonalModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalModel.h; sourceTree = "<group>"; };
 		3E9439301EC9B913001FE471 /* PersonalModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalModel.m; sourceTree = "<group>"; };
-		3E94394C1ECAA087001FE471 /* ScreenUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenUtil.h; sourceTree = "<group>"; };
-		3E94394D1ECAA087001FE471 /* ScreenUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenUtil.m; sourceTree = "<group>"; };
-		3E94394E1ECAA087001FE471 /* MyRoomInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRoomInfoViewController.h; sourceTree = "<group>"; };
-		3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyRoomInfoViewController.m; sourceTree = "<group>"; };
-		3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyRoomInfoViewController.xib; sourceTree = "<group>"; };
-		3E9439511ECAA087001FE471 /* PickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickViewController.h; sourceTree = "<group>"; };
-		3E9439521ECAA087001FE471 /* PickViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickViewController.m; sourceTree = "<group>"; };
-		3E9439531ECAA087001FE471 /* area.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = area.plist; sourceTree = "<group>"; };
-		3E9439541ECAA087001FE471 /* city.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = city.plist; sourceTree = "<group>"; };
-		3E9439551ECAA087001FE471 /* AreaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaModel.h; sourceTree = "<group>"; };
-		3E9439561ECAA087001FE471 /* AreaModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaModel.m; sourceTree = "<group>"; };
-		3E9439571ECAA087001FE471 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
-		3E9439581ECAA087001FE471 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
-		3E9439591ECAA087001FE471 /* ProvinceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProvinceModel.h; sourceTree = "<group>"; };
-		3E94395A1ECAA087001FE471 /* ProvinceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProvinceModel.m; sourceTree = "<group>"; };
 		3E9439641ECACF2A001FE471 /* AddFamilyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyViewController.h; sourceTree = "<group>"; };
 		3E9439651ECACF2A001FE471 /* AddFamilyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyViewController.m; sourceTree = "<group>"; };
 		3E94397D1ECAF259001FE471 /* AddFamilyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyInfoViewController.h; sourceTree = "<group>"; };
 		3E94397E1ECAF259001FE471 /* AddFamilyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoViewController.m; sourceTree = "<group>"; };
 		3E9439801ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFamilyInfoTableViewCell.h; sourceTree = "<group>"; };
 		3E9439811ECAF2D5001FE471 /* AddFamilyInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFamilyInfoTableViewCell.m; sourceTree = "<group>"; };
-		3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalSettingViewController.h; sourceTree = "<group>"; };
-		3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalSettingViewController.m; sourceTree = "<group>"; };
 		3E9439871ECBE656001FE471 /* ChangePhoneNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneNumberViewController.h; sourceTree = "<group>"; };
 		3E9439881ECBE656001FE471 /* ChangePhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePhoneNumberViewController.m; sourceTree = "<group>"; };
 		3E94398B1ECBE77C001FE471 /* CcUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CcUserModel.h; sourceTree = "<group>"; };
 		3E94398C1ECBE77C001FE471 /* CcUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CcUserModel.m; sourceTree = "<group>"; };
-		3E94398E1ECBE795001FE471 /* YYSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYSettingTableViewCell.h; sourceTree = "<group>"; };
-		3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYSettingTableViewCell.m; sourceTree = "<group>"; };
-		3E9439921ECC3E0C001FE471 /* MyRoomInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyRoomInfoModel.h; sourceTree = "<group>"; };
-		3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyRoomInfoModel.m; sourceTree = "<group>"; };
 		3E9439961ECD3ECB001FE471 /* ChangePassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePassWordViewController.h; sourceTree = "<group>"; };
 		3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePassWordViewController.m; sourceTree = "<group>"; };
 		3E9439991ECD8013001FE471 /* AboutYuJiaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutYuJiaViewController.h; sourceTree = "<group>"; };
 		3E94399A1ECD8013001FE471 /* AboutYuJiaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutYuJiaViewController.m; sourceTree = "<group>"; };
-		3E94399C1ECD950D001FE471 /* SelectEquipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectEquipmentViewController.h; sourceTree = "<group>"; };
-		3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectEquipmentViewController.m; sourceTree = "<group>"; };
 		3E984EE61EB821EE0094CBE4 /* YuJia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YuJia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E984EEA1EB821EE0094CBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3E984EEC1EB821EE0094CBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -814,14 +728,10 @@
 		3E984F2A1EB82AC50094CBE4 /* YYTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBar.m; sourceTree = "<group>"; };
 		3E984F2B1EB82AC50094CBE4 /* YYTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTabBarItem.h; sourceTree = "<group>"; };
 		3E984F2C1EB82AC50094CBE4 /* YYTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTabBarItem.m; sourceTree = "<group>"; };
-		3E984F461EB82B550094CBE4 /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
-		3E984F471EB82B550094CBE4 /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
 		3E984F491EB82B6B0094CBE4 /* PropertyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyViewController.h; sourceTree = "<group>"; };
 		3E984F4A1EB82B6B0094CBE4 /* PropertyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyViewController.m; sourceTree = "<group>"; };
 		3E984F4C1EB82B7E0094CBE4 /* CircleGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleGroupViewController.h; sourceTree = "<group>"; };
 		3E984F4D1EB82B7E0094CBE4 /* CircleGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleGroupViewController.m; sourceTree = "<group>"; };
-		3E984F501EB82BA20094CBE4 /* PersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalViewController.h; sourceTree = "<group>"; };
-		3E984F511EB82BA20094CBE4 /* PersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalViewController.m; sourceTree = "<group>"; };
 		3E984F531EB82E5D0094CBE4 /* YYDefine.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYDefine.pch; sourceTree = "<group>"; };
 		3E984F541EB831170094CBE4 /* HttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpClient.h; sourceTree = "<group>"; };
 		3E984F551EB831170094CBE4 /* HttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpClient.m; sourceTree = "<group>"; };
@@ -846,48 +756,18 @@
 		3E984F7B1EB89E210094CBE4 /* YYPersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPersonalTableViewCell.h; sourceTree = "<group>"; };
 		3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPersonalTableViewCell.m; sourceTree = "<group>"; };
 		3E984F7E1EB9AD110094CBE4 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
-		3E984F801EB9BD7F0094CBE4 /* MyBtnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBtnView.h; sourceTree = "<group>"; };
-		3E984F811EB9BD7F0094CBE4 /* MyBtnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBtnView.m; sourceTree = "<group>"; };
 		3E984F861EB9BF640094CBE4 /* MMButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMButton.h; sourceTree = "<group>"; };
 		3E984F871EB9BF640094CBE4 /* MMButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMButton.m; sourceTree = "<group>"; };
-		3E984F891EB9C6CC0094CBE4 /* EquipmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentTableViewCell.h; sourceTree = "<group>"; };
-		3E984F8A1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentTableViewCell.m; sourceTree = "<group>"; };
-		3E984F8C1EB9DB140094CBE4 /* SightSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SightSettingViewController.h; sourceTree = "<group>"; };
-		3E984F8D1EB9DB140094CBE4 /* SightSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SightSettingViewController.m; sourceTree = "<group>"; };
-		3E984F901EBB08980094CBE4 /* AddEquipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddEquipmentViewController.h; sourceTree = "<group>"; };
-		3E984F911EBB08980094CBE4 /* AddEquipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddEquipmentViewController.m; sourceTree = "<group>"; };
-		3E984F931EBB110F0094CBE4 /* ConnectWifiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectWifiViewController.h; sourceTree = "<group>"; };
-		3E984F941EBB110F0094CBE4 /* ConnectWifiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectWifiViewController.m; sourceTree = "<group>"; };
-		3E984F961EBB1C1B0094CBE4 /* SuccessConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuccessConnectViewController.h; sourceTree = "<group>"; };
-		3E984F971EBB1C1B0094CBE4 /* SuccessConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuccessConnectViewController.m; sourceTree = "<group>"; };
 		3E984F991EBB1C280094CBE4 /* FailConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FailConnectViewController.h; sourceTree = "<group>"; };
 		3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FailConnectViewController.m; sourceTree = "<group>"; };
-		3E984F9C1EBB2B3D0094CBE4 /* SightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SightViewController.h; sourceTree = "<group>"; };
-		3E984F9D1EBB2B3D0094CBE4 /* SightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SightViewController.m; sourceTree = "<group>"; };
-		3E984F9F1EBB2B560094CBE4 /* EquipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentViewController.h; sourceTree = "<group>"; };
-		3E984FA01EBB2B560094CBE4 /* EquipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentViewController.m; sourceTree = "<group>"; };
-		3E984FA21EBB383C0094CBE4 /* EquipmentSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentSettingViewController.h; sourceTree = "<group>"; };
-		3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentSettingViewController.m; sourceTree = "<group>"; };
-		3E984FA51EBB3D3A0094CBE4 /* RoomSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSettingViewController.h; sourceTree = "<group>"; };
-		3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSettingViewController.m; sourceTree = "<group>"; };
-		3E984FA81EBC17450094CBE4 /* AddSightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSightViewController.h; sourceTree = "<group>"; };
-		3E984FA91EBC17450094CBE4 /* AddSightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSightViewController.m; sourceTree = "<group>"; };
 		3E984FAC1EBC5D760094CBE4 /* AccountTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableViewCell.h; sourceTree = "<group>"; };
 		3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableViewCell.m; sourceTree = "<group>"; };
 		3E984FAE1EBC5D760094CBE4 /* PopListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopListTableViewController.h; sourceTree = "<group>"; };
 		3E984FAF1EBC5D760094CBE4 /* PopListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopListTableViewController.m; sourceTree = "<group>"; };
-		3E984FB21EC061D80094CBE4 /* SightModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SightModel.h; sourceTree = "<group>"; };
-		3E984FB31EC061D80094CBE4 /* SightModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SightModel.m; sourceTree = "<group>"; };
-		3E984FB51EC062850094CBE4 /* EquipmentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquipmentModel.h; sourceTree = "<group>"; };
-		3E984FB61EC062850094CBE4 /* EquipmentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquipmentModel.m; sourceTree = "<group>"; };
-		3E984FB81EC062F20094CBE4 /* RoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomModel.h; sourceTree = "<group>"; };
-		3E984FB91EC062F20094CBE4 /* RoomModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomModel.m; sourceTree = "<group>"; };
 		3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSettingViewController.h; sourceTree = "<group>"; };
 		3E984FBC1EC156DF0094CBE4 /* LightSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightSettingViewController.m; sourceTree = "<group>"; };
 		3EBB7FDF1EE8E3FA004D1B02 /* MMTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMTextField.h; sourceTree = "<group>"; };
 		3EBB7FE01EE8E3FA004D1B02 /* MMTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMTextField.m; sourceTree = "<group>"; };
-		3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMHomeInfoViewController.h; sourceTree = "<group>"; };
-		3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMHomeInfoViewController.m; sourceTree = "<group>"; };
 		3ED9F33E1ED2B3BC00AF7E0F /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		3ED9F33F1ED2B3BC00AF7E0F /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YuJia.release.xcconfig"; path = "Pods/Target Support Files/Pods-YuJia/Pods-YuJia.release.xcconfig"; sourceTree = "<group>"; };
@@ -1520,7 +1400,7 @@
 			name = GDLocation;
 			sourceTree = "<group>";
 		};
-		3E90B7371EC3F41300CC49D7 /* SubController */ = {
+		3E90B7371EC3F41300CC49D7 /* 需要根据情况改 */ = {
 			isa = PBXGroup;
 			children = (
 				3E90B7471EC3F66D00CC49D7 /* View */,
@@ -1540,8 +1420,6 @@
 				3E20B3391EC4687F00C77B58 /* LockShareViewController.m */,
 				3E20B33B1EC4688B00C77B58 /* LockSettingViewController.h */,
 				3E20B33C1EC4688B00C77B58 /* LockSettingViewController.m */,
-				3E94399C1ECD950D001FE471 /* SelectEquipmentViewController.h */,
-				3E94399D1ECD950D001FE471 /* SelectEquipmentViewController.m */,
 				3E8970DB1ED3C64A00C9DEB1 /* LockChangePWViewController.h */,
 				3E8970DC1ED3C64A00C9DEB1 /* LockChangePWViewController.m */,
 				3E8970DE1ED3C97000C9DEB1 /* LockRecardViewController.h */,
@@ -1551,7 +1429,7 @@
 				3E10BDFF1ED3D69000FAF87C /* UnLockRecordModel.h */,
 				3E10BE001ED3D69000FAF87C /* UnLockRecordModel.m */,
 			);
-			name = SubController;
+			name = "需要根据情况改";
 			sourceTree = "<group>";
 		};
 		3E90B7471EC3F66D00CC49D7 /* View */ = {
@@ -1572,23 +1450,6 @@
 		3E94394B1ECAA077001FE471 /* HomeInfo */ = {
 			isa = PBXGroup;
 			children = (
-				3E94394C1ECAA087001FE471 /* ScreenUtil.h */,
-				3E94394D1ECAA087001FE471 /* ScreenUtil.m */,
-				3E94394E1ECAA087001FE471 /* MyRoomInfoViewController.h */,
-				3E94394F1ECAA087001FE471 /* MyRoomInfoViewController.m */,
-				3E9439921ECC3E0C001FE471 /* MyRoomInfoModel.h */,
-				3E9439931ECC3E0C001FE471 /* MyRoomInfoModel.m */,
-				3E9439501ECAA087001FE471 /* MyRoomInfoViewController.xib */,
-				3E9439511ECAA087001FE471 /* PickViewController.h */,
-				3E9439521ECAA087001FE471 /* PickViewController.m */,
-				3E9439531ECAA087001FE471 /* area.plist */,
-				3E9439541ECAA087001FE471 /* city.plist */,
-				3E9439551ECAA087001FE471 /* AreaModel.h */,
-				3E9439561ECAA087001FE471 /* AreaModel.m */,
-				3E9439571ECAA087001FE471 /* CityModel.h */,
-				3E9439581ECAA087001FE471 /* CityModel.m */,
-				3E9439591ECAA087001FE471 /* ProvinceModel.h */,
-				3E94395A1ECAA087001FE471 /* ProvinceModel.m */,
 			);
 			name = HomeInfo;
 			sourceTree = "<group>";
@@ -1603,8 +1464,6 @@
 		3E9439911ECBE79A001FE471 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3E94398E1ECBE795001FE471 /* YYSettingTableViewCell.h */,
-				3E94398F1ECBE795001FE471 /* YYSettingTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1742,27 +1601,6 @@
 				164388511F2F189300BC3CEB /* V */,
 				1643884A1F2F158E00BC3CEB /* M */,
 				16211D3B1F09E94C00F1E9EF /* C */,
-				3E984FAB1EBC5D5D0094CBE4 /* Model */,
-				3E984F461EB82B550094CBE4 /* HomePageViewController.h */,
-				3E984F471EB82B550094CBE4 /* HomePageViewController.m */,
-				3E984F9C1EBB2B3D0094CBE4 /* SightViewController.h */,
-				3E984F9D1EBB2B3D0094CBE4 /* SightViewController.m */,
-				3E984F9F1EBB2B560094CBE4 /* EquipmentViewController.h */,
-				3E984FA01EBB2B560094CBE4 /* EquipmentViewController.m */,
-				3E984F8C1EB9DB140094CBE4 /* SightSettingViewController.h */,
-				3E984F8D1EB9DB140094CBE4 /* SightSettingViewController.m */,
-				3E984FA51EBB3D3A0094CBE4 /* RoomSettingViewController.h */,
-				3E984FA61EBB3D3A0094CBE4 /* RoomSettingViewController.m */,
-				3E984F901EBB08980094CBE4 /* AddEquipmentViewController.h */,
-				3E984F911EBB08980094CBE4 /* AddEquipmentViewController.m */,
-				3E984FA81EBC17450094CBE4 /* AddSightViewController.h */,
-				3E984FA91EBC17450094CBE4 /* AddSightViewController.m */,
-				3E4442B11ED6779900DE2F7D /* AddRoomViewController.h */,
-				3E4442B21ED6779900DE2F7D /* AddRoomViewController.m */,
-				3E984F931EBB110F0094CBE4 /* ConnectWifiViewController.h */,
-				3E984F941EBB110F0094CBE4 /* ConnectWifiViewController.m */,
-				3E984F961EBB1C1B0094CBE4 /* SuccessConnectViewController.h */,
-				3E984F971EBB1C1B0094CBE4 /* SuccessConnectViewController.m */,
 				3E984F991EBB1C280094CBE4 /* FailConnectViewController.h */,
 				3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */,
 				3E984FBB1EC156DF0094CBE4 /* LightSettingViewController.h */,
@@ -1777,9 +1615,7 @@
 				3E20B32D1EC446AB00C77B58 /* TVSettingViewController.m */,
 				3E20B32F1EC45D0600C77B58 /* DoorLockViewController.h */,
 				3E20B3301EC45D0600C77B58 /* DoorLockViewController.m */,
-				3E984FA21EBB383C0094CBE4 /* EquipmentSettingViewController.h */,
-				3E984FA31EBB383C0094CBE4 /* EquipmentSettingViewController.m */,
-				3E90B7371EC3F41300CC49D7 /* SubController */,
+				3E90B7371EC3F41300CC49D7 /* 需要根据情况改 */,
 				3E984F6A1EB87BA90094CBE4 /* 用到 */,
 			);
 			name = HomePage;
@@ -1818,34 +1654,6 @@
 				3E9439911ECBE79A001FE471 /* View */,
 				3E94398A1ECBE773001FE471 /* Model */,
 				3E94394B1ECAA077001FE471 /* HomeInfo */,
-				3E984F501EB82BA20094CBE4 /* PersonalViewController.h */,
-				3E984F511EB82BA20094CBE4 /* PersonalViewController.m */,
-				3E20B3471EC5874800C77B58 /* MYHomeViewController.h */,
-				3E20B3481EC5874800C77B58 /* MYHomeViewController.m */,
-				3E20B34D1EC5886500C77B58 /* MYHomeTableViewCell.h */,
-				3E20B34E1EC5886500C77B58 /* MYHomeTableViewCell.m */,
-				3E9439841ECBE645001FE471 /* PersonalSettingViewController.h */,
-				3E9439851ECBE645001FE471 /* PersonalSettingViewController.m */,
-				3E2CD8281ED921EF00C8FD56 /* CirleAndActiveViewController.h */,
-				3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */,
-				3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */,
-				3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */,
-				3E2CD8251ED920F200C8FD56 /* MyActiveTableViewCell.h */,
-				3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */,
-				3E10BE031ED4033800FAF87C /* MyCircleTableViewCell.h */,
-				3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */,
-				3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */,
-				3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */,
-				3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */,
-				3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */,
-				3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */,
-				3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */,
-				3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */,
-				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
-				3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */,
-				3EBB7FE31EF11A52004D1B02 /* MMHomeInfoViewController.m */,
-				3E984F801EB9BD7F0094CBE4 /* MyBtnView.h */,
-				3E984F811EB9BD7F0094CBE4 /* MyBtnView.m */,
 			);
 			name = PersonalPage;
 			sourceTree = "<group>";
@@ -1873,8 +1681,6 @@
 				3E984F721EB87F300094CBE4 /* JXPageView.m */,
 				3E984F731EB87F300094CBE4 /* JXSegment.h */,
 				3E984F741EB87F300094CBE4 /* JXSegment.m */,
-				3E984F891EB9C6CC0094CBE4 /* EquipmentTableViewCell.h */,
-				3E984F8A1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m */,
 				3E984FAC1EBC5D760094CBE4 /* AccountTableViewCell.h */,
 				3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */,
 				3E984FAE1EBC5D760094CBE4 /* PopListTableViewController.h */,
@@ -1885,19 +1691,6 @@
 				3E90B7351EC3041800CC49D7 /* AirConditioningView.m */,
 			);
 			name = "用到";
-			sourceTree = "<group>";
-		};
-		3E984FAB1EBC5D5D0094CBE4 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				3E984FB21EC061D80094CBE4 /* SightModel.h */,
-				3E984FB31EC061D80094CBE4 /* SightModel.m */,
-				3E984FB51EC062850094CBE4 /* EquipmentModel.h */,
-				3E984FB61EC062850094CBE4 /* EquipmentModel.m */,
-				3E984FB81EC062F20094CBE4 /* RoomModel.h */,
-				3E984FB91EC062F20094CBE4 /* RoomModel.m */,
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		9A0057F069AF3E6774E301F8 /* Pods */ = {
@@ -2034,14 +1827,11 @@
 			files = (
 				166CD9031ED28FE700CC4F11 /* YJSelectView.xib in Resources */,
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
-				3E94395D1ECAA087001FE471 /* MyRoomInfoViewController.xib in Resources */,
 				3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */,
 				164388491F2F126200BC3CEB /* YJEquipmentList.plist in Resources */,
 				3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
-				3E94395F1ECAA087001FE471 /* area.plist in Resources */,
 				169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */,
-				3E9439601ECAA087001FE471 /* city.plist in Resources */,
 				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,
 				16211D461F09E98900F1E9EF /* YJMyHomeFunctionList.plist in Resources */,
 				3E984EF41EB821EE0094CBE4 /* Main.storyboard in Resources */,
@@ -2120,7 +1910,6 @@
 			files = (
 				3E10BE021ED4002700FAF87C /* UnLockRecordModel.m in Sources */,
 				3ED9F33D1ED2705000AF7E0F /* YYFeedbackViewController.m in Sources */,
-				3E461D0C1ED2F3AA00B94E8E /* MyCircleViewController.m in Sources */,
 				1681276E1ECD2B75003EBC9F /* YJNearByShopTVCell.m in Sources */,
 				1675FBFB1F1C4E2D000991D8 /* YJCitySelectVC.m in Sources */,
 				1681276D1ECD2B66003EBC9F /* YJNearbyShopDetailVC.m in Sources */,
@@ -2140,13 +1929,11 @@
 				166CD8FA1ED27A6F00CC4F11 /* YJRentalHouseVC.m in Sources */,
 				160775FA1F304FD500DCD8E4 /* YJHomepageTVCell.m in Sources */,
 				166BDCAE1ECA86B100441DB5 /* YJExpressDeliveryVC.m in Sources */,
-				3E9439861ECBE645001FE471 /* PersonalSettingViewController.m in Sources */,
 				165655CB1EC6F30300B99966 /* YJPostActivitesCommentVC.m in Sources */,
 				3E20B33A1EC4687F00C77B58 /* LockShareViewController.m in Sources */,
 				166FF49A1EBC210D00846A59 /* YJPropertyBillVC.m in Sources */,
 				3E2CD8371EE52E3200C8FD56 /* RKNotificationHub.m in Sources */,
 				166FF4961EBC09D600846A59 /* YJRepairSectionTwoTableViewCell.m in Sources */,
-				3E2CD8241ED91F7900C8FD56 /* MyActiveViewController.m in Sources */,
 				3E984F2F1EB82AC50094CBE4 /* YYTabBar.m in Sources */,
 				16DD44521F1DEFAD000823AD /* YJHousePriceTVCell.m in Sources */,
 				169519851ED4498F00C2C380 /* YJSearchHourseVC.m in Sources */,
@@ -2155,22 +1942,16 @@
 				3E984F651EB831170094CBE4 /* NSString+unicode.m in Sources */,
 				166FF4931EBC098A00846A59 /* UIView+Extension.m in Sources */,
 				3E9439661ECACF2A001FE471 /* AddFamilyViewController.m in Sources */,
-				3E9439621ECAA087001FE471 /* CityModel.m in Sources */,
 				1695197D1ED40ED900C2C380 /* YJHouseDetailVC.m in Sources */,
 				166FF4921EBC097E00846A59 /* YJRepairRecordTableViewCell.m in Sources */,
-				3E984FB71EC062850094CBE4 /* EquipmentModel.m in Sources */,
 				163780541EC59FDF00AE104B /* YJActivitesPhotoTVCell.m in Sources */,
 				1652216A1EC583DF0033FB8A /* YJActivitiesDetailsTVCell.m in Sources */,
 				1672D7A91EC32FF500F5970C /* YJNoticeListTVCell.m in Sources */,
 				16742BF61EC1D9AB0016DDD9 /* YJFriendStateDetailVC.m in Sources */,
-				3E94395C1ECAA087001FE471 /* MyRoomInfoViewController.m in Sources */,
 				3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */,
-				3E2CD8271ED920F200C8FD56 /* MyActiveTableViewCell.m in Sources */,
 				3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */,
-				3E984FA41EBB383C0094CBE4 /* EquipmentSettingViewController.m in Sources */,
 				3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */,
 				16430A651F3D7F1B00E9CCB7 /* YJRoomDetailModel.m in Sources */,
-				3E20B34F1EC5886500C77B58 /* MYHomeTableViewCell.m in Sources */,
 				16DD44551F1E1AC9000823AD /* YJHouseSearchMoreTVCell.m in Sources */,
 				1639CFE91ECBE7C80015F8AA /* YJFriendNeighborStateModel.m in Sources */,
 				3E20B32E1EC446AB00C77B58 /* TVSettingViewController.m in Sources */,
@@ -2179,7 +1960,6 @@
 				3E90B73D1EC3F50900CC49D7 /* AirSpeedViewController.m in Sources */,
 				169519771ED3E0EB00C2C380 /* YJHouseSearchListVC.m in Sources */,
 				3E984F621EB831170094CBE4 /* HttpClient.m in Sources */,
-				3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */,
 				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
 				1641F0A81F5FD58300830A76 /* YJOtherPersonalInfoVC.m in Sources */,
@@ -2187,16 +1967,11 @@
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,
 				163E960C1ED5474F00C20B42 /* YJExpressReceiveModel.m in Sources */,
-				3E2CD82D1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m in Sources */,
 				163E960F1ED5756300C20B42 /* YJBussinessDetailModel.m in Sources */,
 				164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */,
 				1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */,
 				166BDCB31ECA972B00441DB5 /* YJExpressReceiveTVCell.m in Sources */,
-				3E984F521EB82BA20094CBE4 /* PersonalViewController.m in Sources */,
-				3E984F821EB9BD7F0094CBE4 /* MyBtnView.m in Sources */,
-				3E4442B31ED6779900DE2F7D /* AddRoomViewController.m in Sources */,
 				163E84A51F5904B3002094A9 /* YJMyActivitiesVC.m in Sources */,
-				3E984F481EB82B550094CBE4 /* HomePageViewController.m in Sources */,
 				1672D7A01EC2BDFB00F5970C /* YJFriendCommentTableViewCell.m in Sources */,
 				16CCBBDC1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m in Sources */,
 				161CEE9B1EC5940800B34E3B /* YJActivitesCommentTVCell.m in Sources */,
@@ -2204,9 +1979,6 @@
 				167B11FB1F4AE9A900A06274 /* YJMyHomeColFlowLayout.m in Sources */,
 				1606D9A11EC040CF00A74938 /* YJEditNumberVC.m in Sources */,
 				161918C01EC43B1500FE2FD1 /* YJCreateActivitieTVCell.m in Sources */,
-				3E2CD8301ED92B9400C8FD56 /* NotficViewController.m in Sources */,
-				3E984F921EBB08980094CBE4 /* AddEquipmentViewController.m in Sources */,
-				3E984FBA1EC062F20094CBE4 /* RoomModel.m in Sources */,
 				3E90B7401EC3F54000CC49D7 /* AirDirectionViewController.m in Sources */,
 				3E94391F1EC95A9B001FE471 /* MYFamilyTableViewCell.m in Sources */,
 				3E90B7241EC1BB8C00CC49D7 /* MMSlider.m in Sources */,
@@ -2224,14 +1996,11 @@
 				166B425C1ED0319E00E8FEF0 /* YJMonthDetailItemModel.m in Sources */,
 				167B11F21F4A788900A06274 /* YJPersonalVC.m in Sources */,
 				3E984F671EB831170094CBE4 /* UIColor+Extension.m in Sources */,
-				3E9439941ECC3E0C001FE471 /* MyRoomInfoModel.m in Sources */,
 				168CA06F1F5422FE00DDAC53 /* YJSceneManagerVC.m in Sources */,
 				16B991EB1F4179DC003DC9EC /* YJAddScenePicFlowLayout.m in Sources */,
 				160775FD1F30843A00DCD8E4 /* YJRoomSetUpVC.m in Sources */,
-				3E9439901ECBE795001FE471 /* YYSettingTableViewCell.m in Sources */,
 				1606D99E1EC0213700A74938 /* YJPayItemModel.m in Sources */,
 				164EC5001F56C478003F0E52 /* YJSetPersonalVC.m in Sources */,
-				3E94395E1ECAA087001FE471 /* PickViewController.m in Sources */,
 				3E20B3371EC4687200C77B58 /* LockFigureViewController.m in Sources */,
 				1672D7A61EC32F8300F5970C /* YJNoticeListTableVC.m in Sources */,
 				3EBB7FE11EE8E3FA004D1B02 /* MMTextField.m in Sources */,
@@ -2240,7 +2009,6 @@
 				3E984F681EB831170094CBE4 /* ZYAlertSView.m in Sources */,
 				167B11F81F4ACC7400A06274 /* YJMyhomeVC.m in Sources */,
 				166FA5021F4C3F640042D7CF /* YJAddHomeAddressPickerTVCell.m in Sources */,
-				3E94395B1ECAA087001FE471 /* ScreenUtil.m in Sources */,
 				1671302D1EB9B92700CC2394 /* YJRepairBaseInfoTableViewCell.m in Sources */,
 				1668688E1F0634F0008C3DFC /* UIViewController+Cloudox.m in Sources */,
 				3E94392B1EC99095001FE471 /* EquipmentManagerViewController.m in Sources */,
@@ -2260,7 +2028,6 @@
 				3E20B3341EC4685E00C77B58 /* LockTextViewController.m in Sources */,
 				164EC4FD1F566B50003F0E52 /* YJEditHomeAddressInfoVC.m in Sources */,
 				166BDCB61ECAA64C00441DB5 /* YJExpressSenderTVCell.m in Sources */,
-				3E984F8E1EB9DB140094CBE4 /* SightSettingViewController.m in Sources */,
 				168900021F147ED10025F1E0 /* YJFriendStatesFlowLayout.m in Sources */,
 				160F011A1F2584EE006EE0A2 /* YJPayRecoderVC.m in Sources */,
 				167130301EB9F07100CC2394 /* BRPlaceholderTextView.m in Sources */,
@@ -2290,20 +2057,16 @@
 				1672F9971F0DCB6E00019137 /* YJRepairRecoderVC.m in Sources */,
 				3E9439981ECD3ECB001FE471 /* ChangePassWordViewController.m in Sources */,
 				3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */,
-				3E984F8B1EB9C6CC0094CBE4 /* EquipmentTableViewCell.m in Sources */,
 				166FF4AD1EBC6BA600846A59 /* YJBillResultTableViewCell.m in Sources */,
 				1661FE241EB8788700583A7F /* NSObject+Addition.m in Sources */,
-				3E984FAA1EBC17450094CBE4 /* AddSightViewController.m in Sources */,
 				169E04A41ED301570002FDB2 /* YJRentPersonInfoTVCell.m in Sources */,
 				163DA8F81ED7C56800313DD0 /* YJCommunityCarListModel.m in Sources */,
 				166FA4FF1F4C24100042D7CF /* YJAddhomeInfoVC.m in Sources */,
 				1672D7A31EC2BE7500F5970C /* YJSelfReplyTableViewCell.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
 				3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */,
-				3E984FB41EC061D80094CBE4 /* SightModel.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */,
-				3E2CD82A1ED921EF00C8FD56 /* CirleAndActiveViewController.m in Sources */,
 				164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */,
 				3E9439891ECBE656001FE471 /* ChangePhoneNumberViewController.m in Sources */,
 				16AD9EA11EDED75100F52A7A /* YJNearbyShopChangeAddressVC.m in Sources */,
@@ -2313,8 +2076,6 @@
 				3E984F2E1EB82AC50094CBE4 /* YYTabBarController.m in Sources */,
 				163E96151ED597E100C20B42 /* YJActivitiesDetailModel.m in Sources */,
 				16CCBBDF1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.m in Sources */,
-				3E9439631ECAA087001FE471 /* ProvinceModel.m in Sources */,
-				3E984FA71EBB3D3A0094CBE4 /* RoomSettingViewController.m in Sources */,
 				16750B3C1EC8454A002296EE /* YJCommunityCarDetailVC.m in Sources */,
 				167EC1BD1ECEE55F00D8FF9E /* YJAreaDetailModel.m in Sources */,
 				166B425F1ED032C900E8FEF0 /* YJMonthDetailSumModel.m in Sources */,
@@ -2323,24 +2084,18 @@
 				3E20B3311EC45D0600C77B58 /* DoorLockViewController.m in Sources */,
 				16415AEB1F46DD2300A1587F /* YJLightSettingVC.m in Sources */,
 				166B40E81EC99A7100CEFAE2 /* YJPropertyAddressModel.m in Sources */,
-				3E984F951EBB110F0094CBE4 /* ConnectWifiViewController.m in Sources */,
-				3E984F9E1EBB2B3D0094CBE4 /* SightViewController.m in Sources */,
 				16A992E31EF272D80088774D /* UITableView+HYBCacheHeight.m in Sources */,
-				3E984FA11EBB2B560094CBE4 /* EquipmentViewController.m in Sources */,
 				3E90B73A1EC3F4A600CC49D7 /* AirModelViewController.m in Sources */,
 				16D389DC1F25972700F97814 /* YJPayRecoderTVCell.m in Sources */,
 				166FF49E1EBC2ABA00846A59 /* YJAddPropertyBillAddressVC.m in Sources */,
 				3E90B72A1EC1C7A500CC49D7 /* SocketSettingViewController.m in Sources */,
-				3E984F981EBB1C1B0094CBE4 /* SuccessConnectViewController.m in Sources */,
 				160952071F4447F7008DD1EC /* YJAddRoomBackgroundImageVC.m in Sources */,
 				16B991E81F4148CF003DC9EC /* YJScenePicCollectionVCell.m in Sources */,
 				164D9F591F3C6D1E00D62606 /* YJSuccessConnectVC.m in Sources */,
-				3EBB7FE41EF11A52004D1B02 /* MMHomeInfoViewController.m in Sources */,
 				166FA5051F4C41680042D7CF /* YJAddHomeAddressTextFieldTVCell.m in Sources */,
 				3E984F641EB831170094CBE4 /* NSDictionary+Log.m in Sources */,
 				168466A61EBB423000A98295 /* YJRepairRecordFlowLayout.m in Sources */,
 				168B7E071F21EC96003AC13C /* YJPayPropertyVC.m in Sources */,
-				3E9439611ECAA087001FE471 /* AreaModel.m in Sources */,
 				166CD8FD1ED27B4F00CC4F11 /* YJBackView.m in Sources */,
 				164132FF1F26E63D00B13228 /* manageAddressTVCell.m in Sources */,
 				164D9F561F3C6B7000D62606 /* YJConnectWifiVC.m in Sources */,
@@ -2363,7 +2118,6 @@
 				3E984FB11EBC5D760094CBE4 /* PopListTableViewController.m in Sources */,
 				16F1897A1F384B2700797BF3 /* YJPostHouseVillageModel.m in Sources */,
 				16211D451F09E98900F1E9EF /* YJHomeSceneFlowLayout.m in Sources */,
-				3E20B3491EC5874800C77B58 /* MYHomeViewController.m in Sources */,
 				1640BE941ED9123C00E3AE00 /* YJCityListModel.m in Sources */,
 				16239DC51ECD9DCB00CF6F4C /* YJFriendStateCommentModel.m in Sources */,
 				1661FE301EB88B4800583A7F /* YYPropertyItemModel.m in Sources */,
@@ -2375,12 +2129,10 @@
 				3E984F301EB82AC50094CBE4 /* YYTabBarItem.m in Sources */,
 				166B40EB1EC9BE0200CEFAE2 /* YJCommunityCarNoticesCenterVC.m in Sources */,
 				16EBB53A1F0B714C006D178C /* YJBillHeaderViewTVCell.m in Sources */,
-				3E94399E1ECD950D001FE471 /* SelectEquipmentViewController.m in Sources */,
 				166577AB1EBFF80D00FC812B /* YJLifepaymentVC.m in Sources */,
 				1640BE9A1ED97BA000E3AE00 /* YJSearchHouseDetailResultModel.m in Sources */,
 				3E8970E01ED3C97000C9DEB1 /* LockRecardViewController.m in Sources */,
 				3E20B33D1EC4688B00C77B58 /* LockSettingViewController.m in Sources */,
-				3E10BE051ED4033800FAF87C /* MyCircleTableViewCell.m in Sources */,
 				16750B321EC8268F002296EE /* YJCommunityCarVC.m in Sources */,
 				3E984EEB1EB821EE0094CBE4 /* main.m in Sources */,
 				165221671EC57EDC0033FB8A /* YJActivitiesDetailsVC.m in Sources */,

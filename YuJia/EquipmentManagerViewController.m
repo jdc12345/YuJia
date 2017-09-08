@@ -9,7 +9,7 @@
 #import "EquipmentManagerViewController.h"
 #import "YJEquipmentModel.h"
 #import "EquipmentManagerTableViewCell.h"
-#import "EquipmentSettingViewController.h"
+//#import "EquipmentSettingViewController.h"
 #import "UIBarButtonItem+Helper.h"
 #import "YJAddEquipmentVC.h"
 #import "YJEquipmentSettingVC.h"
