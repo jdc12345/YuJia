@@ -491,6 +491,10 @@ static NSString* tableCellid = @"table_cell";
         //
         //        });
     };
+    cell.iconViewTapgestureBlock = ^(YJFriendNeighborStateModel *model) {
+        //什么也不做
+
+    };
     return cell;
 }
 - (void)action:(NSString *)actionStr{

@@ -17,10 +17,10 @@
 #import "YJActiviesAddPersonModel.h"
 #import "YJActiviesPictureModel.h"
 #import "YJCommunityActivitiesVC.h"
-#import "OtherPeopleInfoViewController.h"
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 #import "YJFriendCommentTableViewCell.h"
 #import "YJSelfReplyTableViewCell.h"
+#import "YJOtherPersonalInfoVC.h"
 
 static NSString* tableDetailsCell = @"tableDetailsCell_cell";
 static NSString* LikeCell = @"Like_cell";
@@ -44,7 +44,7 @@ static NSString* photoCellid = @"photo_cell";
     [super viewDidLoad];
     self.title = @"社区活动";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -99,8 +99,20 @@ static NSString* photoCellid = @"photo_cell";
         self.communityBtn = btn;
     }else if(btn.tag==102){
         self.likeBtn = btn;
+        if (self.model.islike) {
+            [btn setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+        }else{
+            [btn setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            }
     }else{
         self.joinBtn = btn;
+        if (self.model.joined) {
+            [btn setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
+            btn.userInteractionEnabled = false;
+        }else{
+            [btn setImage:[UIImage imageNamed:@"click_add"] forState:UIControlStateNormal];
+
+        }
     }
     [btn addTarget:self action:@selector(toolBarItemClick:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -111,14 +123,14 @@ static NSString* photoCellid = @"photo_cell";
         vc.coverPersonalId = 0;
         [self.navigationController pushViewController:vc animated:true];
     }else if (sender.tag==102) {
-        if (self.model.islike) {
-            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
-            self.model.islike = false;
-        }else{
-            [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
-            
-            self.model.islike = true;
-        }
+//        if (self.model.islike) {
+//            [sender setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+//            self.model.islike = false;
+//        }else{
+//            [sender setImage:[UIImage imageNamed:@"click-like"] forState:UIControlStateNormal];
+//            
+//            self.model.islike = true;
+//        }
         //http://localhost:8080/smarthome/mobileapi/upVote/updateActivityLikeNum.do?token=EC9CDB5177C01F016403DFAAEE3C1182
         //    &ActivityId=5
         //    [SVProgressHUD show];// 动画开始
@@ -152,7 +164,7 @@ static NSString* photoCellid = @"photo_cell";
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
                 [sender setImage:[UIImage imageNamed:@"gray_add"] forState:UIControlStateNormal];
                 sender.userInteractionEnabled = false;
-                self.model.joined = true;
+//                self.model.joined = true;
                 [self refrish];
             }else{
                 [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
@@ -176,6 +188,11 @@ static NSString* photoCellid = @"photo_cell";
         
         YJActivitiesDetailsTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableDetailsCell forIndexPath:indexPath];
         cell.model = self.model;
+        cell.iconViewTapgestureBlock = ^(YJActivitiesDetailModel *model) {//跳转他人个人页面
+            YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+            detailVc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+            [ws.navigationController pushViewController:detailVc animated:true];
+        };
         return cell;
     }else if (indexPath.row == 1) {
         
@@ -184,7 +201,7 @@ static NSString* photoCellid = @"photo_cell";
         cell.likeList = self.likeList;
         
         cell.clickAddBlock = ^(NSString *personalId) {
-            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            YJOtherPersonalInfoVC *vc = [[YJOtherPersonalInfoVC alloc]init];
             vc.info_id = personalId;
             [ws.navigationController pushViewController:vc animated:true];
         };
@@ -195,7 +212,7 @@ static NSString* photoCellid = @"photo_cell";
         cell.likeList = self.addList;
         cell.image = @"blue-add";
         cell.clickAddBlock = ^(NSString *personalId) {
-            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            YJOtherPersonalInfoVC *vc = [[YJOtherPersonalInfoVC alloc]init];
             vc.info_id = personalId;
             [ws.navigationController pushViewController:vc animated:true];
         };
@@ -300,6 +317,9 @@ static NSString* photoCellid = @"photo_cell";
             if (!self.userId) {//第一次加载数据需要判断userId是否为空,空的代表从消息列表点赞过来
                 self.userId = model.info_id;
             }
+            NSString *is = responseObject[@"Islike"];
+            BOOL islike = [is integerValue];
+            model.islike = islike;//实体类外边的是对的
             self.model = model;//解析状态详情数据
             NSArray *likeArr = bigDic[@"upVptelist"];
             NSMutableArray *likemArr = [NSMutableArray array];
@@ -398,6 +418,15 @@ static NSString* photoCellid = @"photo_cell";
         [SVProgressHUD dismiss];// 动画结束
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
             NSDictionary *bigDic = responseObject[@"result"];
+            NSDictionary *detailDic = bigDic[@"activityEntity"];
+            YJActivitiesDetailModel *model = [YJActivitiesDetailModel mj_objectWithKeyValues:detailDic];
+            if (!self.userId) {//第一次加载数据需要判断userId是否为空,空的代表从消息列表点赞过来
+                self.userId = model.info_id;
+            }
+            NSString *is = responseObject[@"Islike"];
+            BOOL islike = [is integerValue];
+            model.islike = islike;//实体类外边的是对的
+            self.model = model;//解析状态详情数据
             NSArray *likeArr = bigDic[@"upVptelist"];
             NSMutableArray *likemArr = [NSMutableArray array];
             for (NSDictionary *dic in likeArr) {
@@ -439,8 +468,11 @@ static NSString* photoCellid = @"photo_cell";
     }];
  
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

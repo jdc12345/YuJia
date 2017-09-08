@@ -18,6 +18,7 @@
 #import "RKNotificationHub.h"
 #import "UILabel+Addition.h"
 #import <UIImageView+WebCache.h>
+#import "YJOtherPersonalInfoVC.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -598,6 +599,11 @@ static NSString* tableCellid = @"table_cell";
         //            [detailVc.commentField becomeFirstResponder];
         //
         //        });
+    };
+    cell.iconViewTapgestureBlock = ^(YJFriendNeighborStateModel *model) {
+        YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+        detailVc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+        [ws.navigationController pushViewController:detailVc animated:true];
     };
     return cell;
     

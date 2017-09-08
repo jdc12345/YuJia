@@ -8,7 +8,6 @@
 
 #import "YJPersonalVC.h"
 #import "UIViewController+Cloudox.h"
-//#import "UIColor+Extension.h"
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
@@ -16,7 +15,6 @@
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
-#import "CirleAndActiveViewController.h"
 #import "YJNoticeListTableVC.h"
 #import "YJPersonalModel.h"
 #import "UILabel+Addition.h"
@@ -27,11 +25,7 @@
 #import "YJNoticeListTableVC.h"
 #import "EditPersonalViewController.h"
 
-@interface YJPersonalVC ()<UITableViewDataSource, UITableViewDelegate>{
-    UIImageView *navBarHairlineImageView;
-    UIImageView *tabBarHairlineImageView;
-}
-
+@interface YJPersonalVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @property (nonatomic, strong) NSArray *iconList;
@@ -42,7 +36,6 @@
 @property (nonatomic, strong) UIButton *iconView;//头像
 @property (nonatomic, strong) UIImageView *genderV;
 @property (nonatomic, strong) UIButton *editBtn;
-//@property (nonatomic, strong) YYHomeUserModel *personalModel;
 
 @property (nonatomic, weak) UIButton *rightNotBtn;
 @property (nonatomic, strong) YJPersonalModel *personalModel;
@@ -212,21 +205,6 @@
 #pragma mark ------------Tableview Delegate----------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    //    if (indexPath.section == 1) {
-    //        if (indexPath.row == 0) {
-    ////            NSString *nameStr = @"salkjdklasjdklajslk";
-    ////            NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14]};
-    ////            CGRect rect = [nameStr boundingRectWithSize:CGSizeMake(MAXFLOAT, 14)
-    ////                                                options:NSStringDrawingUsesLineFragmentOrigin
-    ////                                             attributes:attributes
-    ////                                                context:nil];
-    ////            self.nameLabel.text = nameStr;
-    ////            self.nameLabel.frame = rect;
-    //        }else{
-    //        }
-    //
-    //    }else if(indexPath.section == 0){
     if (indexPath.row == 1) {
         [self.navigationController pushViewController:[[AboutYuJiaViewController alloc]init] animated:YES];
     }else if(indexPath.row == 2){

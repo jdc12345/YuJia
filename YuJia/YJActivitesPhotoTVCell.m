@@ -46,6 +46,8 @@ static NSString* imageCellid = @"image_cell";
     if (activitypicturelist.count==0) {
         return;
     }
+    [self.otherImageArr removeAllObjects];
+    [self.totleImagesArr removeAllObjects];
     for (int i=0;i < activitypicturelist.count; i++) {
         YJActiviesPictureModel *model = activitypicturelist[i];
         if (![model.picture isEqualToString:@""]) {

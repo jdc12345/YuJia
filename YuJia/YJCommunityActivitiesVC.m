@@ -15,6 +15,7 @@
 #import "RKNotificationHub.h"
 #import "YJNoticeListTableVC.h"
 #import <MJRefresh.h>
+#import "YJOtherPersonalInfoVC.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -40,7 +41,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"社区活动";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -353,9 +354,14 @@ static NSString* tableCellid = @"table_cell";
     return self.activiesArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    WS(ws);
     YJCommunityActivitiesTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.model = self.activiesArr[indexPath.row];
+    cell.iconViewTapgestureBlock = ^(YJActivitiesDetailModel *model) {//跳转他人个人页面
+        YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+        detailVc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+        [ws.navigationController pushViewController:detailVc animated:true];
+    };
     return cell;
     
 }
@@ -412,6 +418,11 @@ static NSString* tableCellid = @"table_cell";
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
 //    vc.noticeType = 2;
     [self.navigationController pushViewController:vc animated:true];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
+    
 }
 
 - (void)didReceiveMemoryWarning {

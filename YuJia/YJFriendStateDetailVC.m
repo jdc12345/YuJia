@@ -20,7 +20,7 @@
 #import "YJFriendStateCommentModel.h"
 #import <UIImageView+WebCache.h>
 #import "YJFriendNeighborVC.h"
-#import "OtherPeopleInfoViewController.h"
+#import "YJOtherPersonalInfoVC.h"
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
 static NSString* tableCell = @"table_cell";
@@ -302,12 +302,20 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.tableView == tableView) {
+        WS(ws);
     YJFriendStateTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
         cell.model = self.model;
         cell.isDetailCell = true;
         cell.detailCommentBtnBlock = ^(YJFriendNeighborStateModel *model){
-            self.fieldBackView.hidden = false;
-            [self.commentField becomeFirstResponder];
+            ws.fieldBackView.hidden = false;
+            [ws.commentField becomeFirstResponder];
+        };
+        cell.iconViewTapgestureBlock = ^(YJFriendNeighborStateModel *model) {
+//            if (ws.userId != model.personalId ) {//不是用户自己
+                YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+                detailVc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+                [ws.navigationController pushViewController:detailVc animated:true];
+//            }
         };
         return cell;
     }
@@ -419,13 +427,13 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
     return cell;
     
 }
-// cell点击事件
+// cell点击(他人信息查看)事件
 - (void)collectionView:(UICollectionView*)collectionView didSelectItemAtIndexPath:(NSIndexPath*)indexPath
 {
     YJFriendStateLikeModel *model = self.likeList[indexPath.row];
-    OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+    YJOtherPersonalInfoVC *vc = [[YJOtherPersonalInfoVC alloc]init];
     vc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
-    [self.navigationController pushViewController:[[OtherPeopleInfoViewController alloc]init] animated:YES];    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)noti{
@@ -444,14 +452,14 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/findStateOne.do?token=EC9CDB5
         if (self.coverPersonalId == self.userId) {
             self.coverPersonalId = 0;
         }
-        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/state/commentStat.do?token=%@&stateId=%ld&content=%@&coverPersonalId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id,[self.commentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],self.coverPersonalId];
+        NSString *urlStr = [NSString stringWithFormat:@"%@/mobileapi/state/commentStat.do?token=%@&stateId=%@&content=%@&coverPersonalId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id,[self.commentField.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]],self.coverPersonalId];
         [SVProgressHUD show];// 动画开始
         [[HttpClient defaultClient]requestWithPath:urlStr method:HttpRequestPost parameters:nil prepareExecute:^{
             
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             if ([responseObject[@"code"] isEqualToString:@"0"]) {
                 //更新评论数据源
-                NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%ld",mPrefixUrl,mDefineToken1,self.model.info_id];
+                NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findStateOne.do?token=%@&stateId=%@",mPrefixUrl,mDefineToken1,self.model.info_id];
                 [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
                     
                 } success:^(NSURLSessionDataTask *task, id responseObject) {

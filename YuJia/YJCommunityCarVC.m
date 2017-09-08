@@ -15,6 +15,7 @@
 #import "YJCommunityCarListModel.h"
 #import "RKNotificationHub.h"
 #import <MJRefresh.h>
+#import "YJOtherPersonalInfoVC.h"
 
 static NSInteger start = 0;
 static NSString* tableCellid = @"table_cell";
@@ -41,7 +42,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"社区拼车";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -346,10 +347,14 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
     return self.carsArr.count;//根据请求回来的数据定
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    WS(ws);
     YJCommunityCarTVCell *cell = [tableView dequeueReusableCellWithIdentifier:tableCellid forIndexPath:indexPath];
     cell.model = self.carsArr[indexPath.row];
-    
+    cell.iconViewTapgestureBlock = ^(YJCommunityCarListModel *model) {//跳转他人个人页面
+        YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+        detailVc.info_id = [NSString stringWithFormat:@"%ld",model.personalId];
+        [ws.navigationController pushViewController:detailVc animated:true];
+    };
     cell.clickForAddBlock = ^(UIButton *sender){
 //        ws.informationBtn.badgeValue = @" ";
 //        ws.informationBtn.badgeBGColor = [UIColor redColor];
@@ -383,7 +388,11 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
     YJNoticeListTableVC *vc = [[YJNoticeListTableVC alloc]init];
     [self.navigationController pushViewController:vc animated:true];
 }
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

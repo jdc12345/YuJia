@@ -8,7 +8,6 @@
 
 #import "YJHomePageVC.h"
 #import "UIViewController+Cloudox.h"
-//#import "NSArray+Addition.h"
 #import "UILabel+Addition.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
@@ -136,18 +135,16 @@ static NSString* tableCellid = @"table_cell";
                 [equipmentArray addObject:equipmentModel];
             }
             roomModel.equipmentList = equipmentArray;
-            if ([roomModel.info_id isEqualToString:self.curruntRoomModel.info_id]) {//如果修改了当前房间要更换当前房间数据源
+            if ([roomModel.info_id isEqualToString:self.curruntRoomModel.info_id]) {//修改了当前房间要更换当前房间数据源
                 self.curruntRoomModel = roomModel;
             }
-            if (![self.familyId isEqualToString:roomModel.familyId]) {
-                self.curruntRoomModel = roomModel;
+            if (self.familyId&&![self.familyId isEqualToString:roomModel.familyId]) {//更换了家
+                self.curruntRoomModel = roomModel;//赋值当前家
+                self.familyId = roomModel.familyId;//赋值当前家的id
             }
             [self.roomListData addObject:roomModel];
         }
-        if (!self.familyId) {
-            YJRoomDetailModel *roomModel = self.roomListData[0];
-            self.familyId = roomModel.familyId;
-        }
+
         if (!self.isMyscene) {//进入页面时候当前页面处于房间页面时候需要根据当前房间更换房间背景
             if (self.curruntRoomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
                 if ([self.curruntRoomModel.pictures isEqualToString:@"1"]) {
@@ -174,6 +171,7 @@ static NSString* tableCellid = @"table_cell";
         }
         if (self.roomListData.count>0&&!self.curruntRoomModel) {//第一次请求数据
             self.curruntRoomModel = self.roomListData[0];
+            self.familyId = self.curruntRoomModel.familyId;
         }
         if (self.roomBtn) {
             [self.roomBtn setTitle:self.curruntRoomModel.roomName forState:UIControlStateNormal];//给房间切换按钮赋值

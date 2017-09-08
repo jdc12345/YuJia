@@ -12,4 +12,5 @@
 @property(nonatomic,strong)YJFriendNeighborStateModel *model;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^commentBtnBlock)(YJFriendNeighborStateModel *model);
+@property (nonatomic, assign) CGFloat cellHeight;//cell的行高
 @end

@@ -16,7 +16,7 @@
 
 static NSString* collectionCellid = @"collection_cell";
 static NSString* photoCellid = @"photo_cell";
-@interface YJFriendStateTableViewCell()<UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate>
+@interface YJFriendStateTableViewCell()<UICollectionViewDelegate,UICollectionViewDataSource,UITextViewDelegate,UIGestureRecognizerDelegate>
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
 @property (nonatomic, weak) UILabel* areaLabel;
@@ -115,6 +115,11 @@ static NSString* photoCellid = @"photo_cell";
         make.left.top.offset(10*kiphone6);
         make.width.height.offset(40*kiphone6);
     }];
+    iconView.userInteractionEnabled = true;
+    //添加滑动手势
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
+    [iconView addGestureRecognizer:pan];
+    pan.delegate = self;
     UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:15];//维修时间
     [self.contentView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -281,6 +286,10 @@ static NSString* photoCellid = @"photo_cell";
     
     [HUPhotoBrowser showFromImageView:cell.imageView withURLStrings:self.urlStrs placeholderImage:[UIImage imageNamed:@"icon"] atIndex:indexPath.row dismiss:nil];
     
+}
+//设置点击手势
+-(void)tapGesture:(UITapGestureRecognizer*)sender{
+    self.iconViewTapgestureBlock(self.model);
 }
 -(NSMutableArray *)urlStrs{
     if (_urlStrs == nil) {

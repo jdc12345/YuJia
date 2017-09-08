@@ -18,12 +18,12 @@
 #import "YJNoticeListTableVC.h"
 
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
-#import "OtherPeopleInfoViewController.h"
 #import "YJLikeActivitiesTVCell.h"
 #import "YJActiviesLikeModel.h"
+#import "YJOtherPersonalInfoVC.h"
 
 static NSString* tablecell = @"table_cell";
-@interface YJCommunityCarDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface YJCommunityCarDetailVC ()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 @property(nonatomic,weak)UITableView *tableView;
 @property(nonatomic,weak)UIButton *communityBtn;
 
@@ -42,7 +42,7 @@ static NSString* tablecell = @"table_cell";
     [super viewDidLoad];
     self.title = @"社区拼车";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -206,6 +206,11 @@ static NSString* tablecell = @"table_cell";
         make.centerY.equalTo(headerView.mas_top).offset(31*kiphone6);
         make.width.height.offset(40*kiphone6);
     }];
+    iconView.userInteractionEnabled = true;
+    //添加滑动手势
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
+    [iconView addGestureRecognizer:pan];
+    pan.delegate = self;
     UILabel *nameLabel = [UILabel labelWithText:self.model.user_name andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//姓名
     [headerView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -389,7 +394,7 @@ static NSString* tablecell = @"table_cell";
             cell.image = @"blue-add";
             cell.clickAddBlock = ^(NSString *personalId) {
             WS(ws);
-            OtherPeopleInfoViewController *vc = [[OtherPeopleInfoViewController alloc]init];
+            YJOtherPersonalInfoVC *vc = [[YJOtherPersonalInfoVC alloc]init];
             vc.info_id = personalId;
             [ws.navigationController pushViewController:vc animated:true];
             };
@@ -520,6 +525,17 @@ static NSString* tablecell = @"table_cell";
         }];
  
     }
+    
+}
+//设置点击手势
+-(void)tapGesture:(UITapGestureRecognizer*)sender{//跳转到个人详情页面
+    YJOtherPersonalInfoVC *detailVc = [[YJOtherPersonalInfoVC alloc]init];
+    detailVc.info_id = [NSString stringWithFormat:@"%ld",self.model.personalId];
+    [self.navigationController pushViewController:detailVc animated:true];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = false;
     
 }
 //-(void)addCar:(UIButton*)sender{

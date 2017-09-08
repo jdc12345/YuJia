@@ -13,4 +13,5 @@
 @property(nonatomic,strong)YJCommunityCarListModel *model;
 /** block方式监听点击 */
 @property (nonatomic, copy) void (^clickForAddBlock)(UIButton *btn);
+@property (nonatomic, copy) void (^iconViewTapgestureBlock)(YJCommunityCarListModel *model);//点击头像跳转用户个人详情
 @end

@@ -11,4 +11,6 @@
 
 @interface YJCommunityActivitiesTVCell : UITableViewCell
 @property(nonatomic,strong)YJActivitiesDetailModel *model;
+@property (nonatomic, copy) void (^iconViewTapgestureBlock)(YJActivitiesDetailModel *model);//点击头像跳转用户个人详情
+
 @end

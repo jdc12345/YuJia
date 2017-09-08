@@ -97,14 +97,15 @@
         make.centerY.equalTo(self.contentView);
         make.width.height.offset(50*kiphone6);
     }];
-    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
-        make.bottom.equalTo(self.contentView.mas_centerY).offset(-5*kiphone6);
-    }];
     [timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.right.offset(-10*kiphone6);
         make.width.offset(80*kiphone6);
+    }];
+    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(iconView.mas_right).offset(15*kiphone6);
+        make.bottom.equalTo(self.contentView.mas_centerY).offset(-5*kiphone6);
+        make.right.equalTo(timeLabel.mas_left).offset(-5*kiphone6);
     }];
     [itemLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(iconView.mas_right).offset(15*kiphone6);

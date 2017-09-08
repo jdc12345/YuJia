@@ -52,6 +52,7 @@
 		164132FF1F26E63D00B13228 /* manageAddressTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 164132FE1F26E63D00B13228 /* manageAddressTVCell.m */; };
 		16415AEB1F46DD2300A1587F /* YJLightSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16415AEA1F46DD2300A1587F /* YJLightSettingVC.m */; };
 		16415AEE1F46F70A00A1587F /* YJCurtainSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 16415AED1F46F70A00A1587F /* YJCurtainSettingVC.m */; };
+		1641F0A81F5FD58300830A76 /* YJOtherPersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1641F0A71F5FD58300830A76 /* YJOtherPersonalInfoVC.m */; };
 		164275BF1ED66C4300F39E40 /* YJActiviesLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */; };
 		164275C21ED66CC100F39E40 /* YJActiviesAddPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C11ED66CC100F39E40 /* YJActiviesAddPersonModel.m */; };
 		164275C51ED6728800F39E40 /* YJActiviesPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 164275C41ED6728800F39E40 /* YJActiviesPictureModel.m */; };
@@ -415,6 +416,8 @@
 		16415AEA1F46DD2300A1587F /* YJLightSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLightSettingVC.m; sourceTree = "<group>"; };
 		16415AEC1F46F70A00A1587F /* YJCurtainSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJCurtainSettingVC.h; sourceTree = "<group>"; };
 		16415AED1F46F70A00A1587F /* YJCurtainSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJCurtainSettingVC.m; sourceTree = "<group>"; };
+		1641F0A61F5FD58300830A76 /* YJOtherPersonalInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJOtherPersonalInfoVC.h; sourceTree = "<group>"; };
+		1641F0A71F5FD58300830A76 /* YJOtherPersonalInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJOtherPersonalInfoVC.m; sourceTree = "<group>"; };
 		164275BD1ED66C4300F39E40 /* YJActiviesLikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesLikeModel.h; sourceTree = "<group>"; };
 		164275BE1ED66C4300F39E40 /* YJActiviesLikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJActiviesLikeModel.m; sourceTree = "<group>"; };
 		164275C01ED66CC100F39E40 /* YJActiviesAddPersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJActiviesAddPersonModel.h; sourceTree = "<group>"; };
@@ -1490,6 +1493,8 @@
 				3E9439971ECD3ECB001FE471 /* ChangePassWordViewController.m */,
 				3E20B3441EC54D4100C77B58 /* EditPersonalViewController.h */,
 				3E20B3451EC54D4100C77B58 /* EditPersonalViewController.m */,
+				1641F0A61F5FD58300830A76 /* YJOtherPersonalInfoVC.h */,
+				1641F0A71F5FD58300830A76 /* YJOtherPersonalInfoVC.m */,
 			);
 			name = C;
 			sourceTree = "<group>";
@@ -1825,16 +1830,16 @@
 				3E2CD8291ED921EF00C8FD56 /* CirleAndActiveViewController.m */,
 				3E461D0A1ED2F3AA00B94E8E /* MyCircleViewController.h */,
 				3E461D0B1ED2F3AA00B94E8E /* MyCircleViewController.m */,
-				3E10BE031ED4033800FAF87C /* MyCircleTableViewCell.h */,
-				3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */,
-				3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */,
-				3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */,
 				3E2CD8251ED920F200C8FD56 /* MyActiveTableViewCell.h */,
 				3E2CD8261ED920F200C8FD56 /* MyActiveTableViewCell.m */,
+				3E10BE031ED4033800FAF87C /* MyCircleTableViewCell.h */,
+				3E10BE041ED4033800FAF87C /* MyCircleTableViewCell.m */,
 				3E2CD82B1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.h */,
 				3E2CD82C1ED92AAF00C8FD56 /* OtherPeopleInfoViewController.m */,
 				3E2CD8311ED95D5A00C8FD56 /* OtherCircleViewController.h */,
 				3E2CD8321ED95D5A00C8FD56 /* OtherCircleViewController.m */,
+				3E2CD8221ED91F7900C8FD56 /* MyActiveViewController.h */,
+				3E2CD8231ED91F7900C8FD56 /* MyActiveViewController.m */,
 				3E2CD82E1ED92B9400C8FD56 /* NotficViewController.h */,
 				3E2CD82F1ED92B9400C8FD56 /* NotficViewController.m */,
 				3EBB7FE21EF11A52004D1B02 /* MMHomeInfoViewController.h */,
@@ -2177,6 +2182,7 @@
 				3E2CD8331ED95D5A00C8FD56 /* OtherCircleViewController.m in Sources */,
 				161918BD1EC4329100FE2FD1 /* YJCreatActivitiesVC.m in Sources */,
 				1661FE161EB864C900583A7F /* UIColor+colorValues.m in Sources */,
+				1641F0A81F5FD58300830A76 /* YJOtherPersonalInfoVC.m in Sources */,
 				3ED9F3401ED2B3BC00AF7E0F /* LogInViewController.m in Sources */,
 				1672D79D1EC2B4AC00F5970C /* YJFriendLikeCollectionViewCell.m in Sources */,
 				161918BA1EC403D500FE2FD1 /* YJCommunityActivitiesTVCell.m in Sources */,

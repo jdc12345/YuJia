@@ -85,9 +85,9 @@ static NSUInteger kTag = 1000;
     [shadowView.layer addSublayer:shadowLayer];
     [tabBar addSubview:shadowView];
      */
-    UILabel *line = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 0.5)];
-    line.backgroundColor = [UIColor colorWithHexString:@"E6E9ED"];
-    [tabBar addSubview:line];
+//    UILabel *line = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 0.5)];
+//    line.backgroundColor = [UIColor colorWithHexString:@"E6E9ED"];
+//    [tabBar addSubview:line];
     
     return tabBar;
 }

@@ -13,7 +13,7 @@
 #import "EditPersonalViewController.h"
 #import "MYHomeViewController.h"
 #import "PersonalSettingViewController.h"
-#import "PersonalModel.h"
+#import "YJPersonalModel.h"
 #import <UIImageView+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
@@ -36,7 +36,7 @@
 //@property (nonatomic, strong) YYHomeUserModel *personalModel;
 
 @property (nonatomic, weak) UIButton *rightNotBtn;
-@property (nonatomic, strong) PersonalModel *personalModel;
+@property (nonatomic, strong) YJPersonalModel *personalModel;
 
 @property (nonatomic, weak) MMButton *circleBtn;
 @property (nonatomic, weak) MMButton *activeBtn;
@@ -194,24 +194,21 @@
         leftNavBtn.tag = 800 +i;
         leftNavBtn.backgroundColor = [UIColor whiteColor];
         [leftNavBtn setTitle:nameList[i] forState:UIControlStateNormal];
-        [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"6a6a6a"] forState:UIControlStateNormal];
+        [leftNavBtn setTitleColor:[UIColor colorWithHexString:@"#6a6a6a"] forState:UIControlStateNormal];
         [leftNavBtn setImage:[UIImage imageNamed:iconList[i]] forState:UIControlStateNormal];
         leftNavBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [leftNavBtn addTarget:self action:@selector(changeVCType:) forControlEvents:UIControlEventTouchUpInside];
         [headerView addSubview:leftNavBtn];
-        leftNavBtn.layer.borderColor = [UIColor colorWithHexString:@"f1f1f1"].CGColor;
+        leftNavBtn.layer.borderColor = [UIColor colorWithHexString:@"#f1f1f1"].CGColor;
         leftNavBtn.layer.borderWidth = 0.5;
         
         if (i == 0) {
-            leftNavBtn.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+            leftNavBtn.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
             self.circleBtn = leftNavBtn;
         }else{
             self.activeBtn = leftNavBtn;
         }
     }
-    
-    
-    
     
     return headerView;
 }
@@ -307,7 +304,7 @@
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         NSDictionary *eDict = responseObject[@"Personal"];
-        self.personalModel = [PersonalModel mj_objectWithKeyValues:eDict];
+        self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
         self.nameLabel.text = self.personalModel.userName;
         if (self.personalModel.avatar.length>0) {
             [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
@@ -328,7 +325,7 @@
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH -64 -220)];
     footView.backgroundColor = [UIColor colorWithHexString:@"000000"];
     OtherCircleViewController *sightVC = [[OtherCircleViewController alloc]init];
-    //    sightVC.dataSource = self.sightDataSource;
+    sightVC.info_id = self.info_id;
     sightVC.view.frame = CGRectMake(0, 0, kScreenW, kScreenH -64 -220);
     
     self.myCircleView = sightVC.view;

@@ -23,6 +23,7 @@
 #import "UIViewController+Cloudox.h"
 #import "YJRepairRecoderVC.h"
 #import "YJPropertyAddressModel.h"
+#import "YJHomeHouseInfoModel.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -90,24 +91,22 @@ static NSString* photoCellid = @"photo_cell";
 }
 //查询业主(认证通过的家庭地址)地址
 - (void)loadData {
-    //    CcUserModel *userModel = [CcUserModel defaultClient];
-    //    NSString *token = userModel.userToken;
     //    http://192.168.1.55:8080/smarthome/mobileapi/family/findFamilyAddress.do?token=ACDCE729BCE6FABC50881A867CAFC1BC   查询业主(认证通过的家庭地址)地址
-http://localhost:8080/smarthome/mobileapi/family/findMyFamilyAddress.do?token=49491B920A9DD107E146D961F4BDA50E
     [SVProgressHUD show];// 动画开始
-    NSString *addressUrlStr = [NSString stringWithFormat:@"%@/mobileapi/family/findMyFamilyAddress.do?token=%@",mPrefixUrl,mDefineToken1];
+    NSString *addressUrlStr = [NSString stringWithFormat:@"%@token=%@",mMyHomeListInfo,mDefineToken];
     [[HttpClient defaultClient]requestWithPath:addressUrlStr method:0 parameters:nil prepareExecute:^{
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
+            NSArray *addressArr = responseObject[@"result"];
             NSMutableArray *mArr = [NSMutableArray array];
-            for (NSDictionary *dic in arr) {
-                YJPropertyAddressModel *infoModel = [YJPropertyAddressModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
+            for (NSDictionary *aDict in addressArr) {
+                YJHomeHouseInfoModel *houseModle = [YJHomeHouseInfoModel mj_objectWithKeyValues:aDict];
+                [mArr addObject:houseModle];
+                if (houseModle.defaults) {
+                    self.familyId = [houseModle.info_id integerValue];//当前用户地址id
+                }
             }
             self.addresses = mArr;
-            YJPropertyAddressModel *model = self.addresses[0];
-            self.familyId = model.info_id;//当前用户地址id
             [SVProgressHUD dismiss];// 动画结束
             
         }else{

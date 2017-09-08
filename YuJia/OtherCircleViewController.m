@@ -136,14 +136,17 @@
     
     //    self.rqId = [NSString stringWithFormat:@"%ld",sender.tag-50];
     [SVProgressHUD show];// 动画开始
-    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=1&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken1,@"3",@"1"];
+//    NSString *statesUrlStr = [NSString stringWithFormat:@"%@/mobileapi/state/findstate.do?token=%@&RQid=%@&visibleRange=1&start=0&limit=4&categoryId=%@",mPrefixUrl,mDefineToken,@"3",@"1"];
+    NSString *statesUrlStr = [NSString stringWithFormat:@"%@tataId=%@&token=%@&start=0&limit=4",mOtherStateInfo,self.info_id,mDefineToken];
     [[HttpClient defaultClient]requestWithPath:statesUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
         [SVProgressHUD dismiss];// 动画结束
-        if ([responseObject[@"code"] isEqualToString:@"0"]) {
-            NSArray *arr = responseObject[@"result"];
+        if (responseObject[@"total"]>0 ) {
+            
+//            self.personal = dic[@"personalEntity"];//个人信息
+            NSArray *arr = responseObject[@"rows"];//朋友圈状态
             NSMutableArray *mArr = [NSMutableArray array];
             for (NSDictionary *dic in arr) {
                 YJFriendNeighborStateModel *infoModel = [YJFriendNeighborStateModel mj_objectWithKeyValues:dic];

@@ -11,7 +11,7 @@
 #import <UIImageView+WebCache.h>
 #import "UITableViewCell+HYBMasonryAutoCellHeight.h"
 
-@interface YJActivitiesDetailsTVCell()
+@interface YJActivitiesDetailsTVCell()<UIGestureRecognizerDelegate>
 @property (nonatomic, weak) UIImageView* iconView;
 @property (nonatomic, weak) UILabel* nameLabel;
 @property (nonatomic, weak) UILabel* begainTimeLabel;
@@ -100,6 +100,11 @@
         make.centerY.equalTo(self.contentView.mas_top).offset(30*kiphone6);
         make.width.height.offset(40*kiphone6);
     }];
+    iconView.userInteractionEnabled = true;
+    //添加滑动手势
+    UITapGestureRecognizer *pan = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
+    [iconView addGestureRecognizer:pan];
+    pan.delegate = self;
     UILabel *nameLabel = [UILabel labelWithText:@"TIAN" andTextColor:[UIColor colorWithHexString:@"#333333"] andFontSize:14];//姓名
     [self.contentView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -209,6 +214,9 @@
     self.stateLabel = stateLabel;
     self.addressLabel = AddressLabel;
 }
-
+//设置点击手势
+-(void)tapGesture:(UITapGestureRecognizer*)sender{
+    self.iconViewTapgestureBlock(self.model);
+}
 
 @end
