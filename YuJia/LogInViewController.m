@@ -336,7 +336,8 @@
     [postBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     postBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
-    [postBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
+    postBtn.tag = 51;
+    [postBtn addTarget:self action:@selector(surePost:) forControlEvents:UIControlEventTouchUpInside];
     postBtn.layer.cornerRadius = 2.5;
     postBtn.clipsToBounds = YES;
     
@@ -489,7 +490,8 @@
     [postBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
     postBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     postBtn.backgroundColor = [UIColor colorWithHexString:@"#0ddcbc"];
-    [postBtn addTarget:self action:@selector(surePost) forControlEvents:UIControlEventTouchUpInside];
+    postBtn.tag = 52;
+    [postBtn addTarget:self action:@selector(surePost:) forControlEvents:UIControlEventTouchUpInside];
     postBtn.layer.cornerRadius = 2.5;
     postBtn.clipsToBounds = YES;
     
@@ -589,7 +591,43 @@
     self.repsw_resign.secureTextEntry = YES;
 
 }
-
+//发验证码
+-(void)surePost:(UIButton*)sender{
+    NSString *codeUrlStr = @"";
+    if (sender.tag == 51) {
+        if (self.phoneTF_login.text.length == 0) {
+            [SVProgressHUD showInfoWithStatus:@"请输入手机号"];
+            return;
+        }
+        codeUrlStr = [NSString stringWithFormat:@"%@/mobilepub/personal/loginvcode.do?&telephone=%@",mPrefixUrl,self.phoneTF_login.text];
+    }else{
+        if (self.phoneTF_resign.text.length == 0) {
+            [SVProgressHUD showInfoWithStatus:@"请输入手机号"];
+            return;
+        }
+        codeUrlStr = [NSString stringWithFormat:@"%@/mobilepub/personal/vcode.do?&telephone=%@",mPrefixUrl,self.phoneTF_resign.text];
+    }
+    
+    [[HttpClient defaultClient]requestWithPath:codeUrlStr method:0 parameters:nil prepareExecute:^{
+        
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *code = responseObject[@"code"];
+        if ([code isEqualToString:@"0"]) {
+            if (sender.tag == 51) {//发送验证码登录
+                self.vcodeTextF.text = responseObject[@"result"];
+            }else{//注册登录
+                
+                self.vcodeTF_resign.text = responseObject[@"result"];
+                
+            }
+        }else{
+            [SVProgressHUD showInfoWithStatus:responseObject[@"message"]];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"%@",error);
+        [SVProgressHUD dismiss];//结束动画
+    }];
+}
 
 - (void)btnClick:(UIButton *)sender{
     [self dismissKeyBoard];
@@ -646,16 +684,16 @@
 }
 
 - (void)httpRequestInfo{
-    NSDictionary *dict2 = @{
-                            @"telephone":self.phoneTF_resign.text,
-                            };
-    NSLog(@"%@",dict2);
-    
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobilepub/personal/vcode.do?"] method:1 parameters:dict2 prepareExecute:^{
-        
-    } success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-        self.vcodeTF_resign.text = responseObject[@"result"];
+//    NSDictionary *dict2 = @{
+//                            @"telephone":self.phoneTF_resign.text,
+//                            };
+//    NSLog(@"%@",dict2);
+//    
+//    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobilepub/personal/vcode.do?"] method:1 parameters:dict2 prepareExecute:^{
+//        
+//    } success:^(NSURLSessionDataTask *task, id responseObject) {
+//        
+//        self.vcodeTF_resign.text = responseObject[@"result"];
         NSDictionary *dict = @{
                                @"password":self.psw_resign.text,
                                @"telephone":self.phoneTF_resign.text,
@@ -678,9 +716,9 @@
             NSLog(@"%@",error);
         }];
         
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"%@",error);
-    }];
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
     
     
 }
@@ -688,6 +726,14 @@
     [SVProgressHUD show];//开始加载
     if (self.isPSW) {
         NSLog(@"密码登录");
+        if (self.phoneTF_login.text.length == 0) {
+            [SVProgressHUD showErrorWithStatus:@"请输入电话号码"];
+            return;
+        }
+        if (self.passWordTextF.text.length == 0) {
+            [SVProgressHUD showErrorWithStatus:@"请输入密码"];
+            return;
+        }
         NSDictionary *dict = @{
                                @"password":self.passWordTextF.text,
                                @"telephone":self.phoneTF_login.text,
@@ -699,15 +745,20 @@
         } success:^(NSURLSessionDataTask *task, id responseObject) {
             [SVProgressHUD dismiss];//结束动画
             NSLog(@"%@",responseObject);
-            //保存token
-            CcUserModel *userModel = [CcUserModel defaultClient];
-            userModel.userToken = responseObject[@"token"];
-            userModel.telephoneNum = self.phoneTF_login.text;
-            [userModel saveAllInfo];
-            
-            
-            YYTabBarController *firstVC = [[YYTabBarController alloc]init];
-            [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;;
+            NSString *code = responseObject[@"code"];
+            if ([code isEqualToString:@"0"]) {
+                //保存token
+                CcUserModel *userModel = [CcUserModel defaultClient];
+                userModel.userToken = responseObject[@"token"];
+                userModel.telephoneNum = self.phoneTF_login.text;
+                [userModel saveAllInfo];
+                
+                [self.view resignFirstResponder];
+                YYTabBarController *firstVC = [[YYTabBarController alloc]init];
+                [UIApplication sharedApplication].keyWindow.rootViewController = firstVC;;
+            }else{
+                [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
+            }
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             NSLog(@"%@",error);
@@ -715,20 +766,15 @@
         }];
     }else{
         NSLog(@"验证码登录");
-        NSDictionary *dict2 = @{
-                                @"telephone":self.phoneTF_login.text,
-                                };
-        NSLog(@"%@",dict2);
-        
-        [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"http://192.168.1.55:8080/smarthome/mobilepub/personal/loginvcode.do?"] method:1 parameters:dict2 prepareExecute:^{
-            
-        } success:^(NSURLSessionDataTask *task, id responseObject) {
-            
-            self.vcodeTF_resign.text = responseObject[@"result"];
+
+        if (self.vcodeTextF.text.length == 0) {
+            [SVProgressHUD showErrorWithStatus:@"请填写验证码"];
+            return;
+        }
             NSDictionary *dict = @{
 //                                   @"password":self.passWordTextF.text,
                                    @"telephone":self.phoneTF_login.text,
-                                   @"password":self.vcodeTF_resign.text
+                                   @"password":self.vcodeTextF.text
                                    };
             NSLog(@"%@",dict);
             [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@",mLogin] method:1 parameters:dict prepareExecute:^{
@@ -750,11 +796,7 @@
                 NSLog(@"%@",error);
                 [SVProgressHUD dismiss];//结束动画
             }];
-            
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            NSLog(@"%@",error);
-            [SVProgressHUD dismiss];//结束动画
-        }];
+        
     }
 }
 -(void)dismissKeyBoard

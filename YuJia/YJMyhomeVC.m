@@ -348,6 +348,9 @@ static NSString *headerViewIdentifier =@"hederview";
         for (NSDictionary *dict in allHome) {
             AllHomeModel *homeModel = [AllHomeModel mj_objectWithKeyValues:dict];
             [self.dataSource addObject:homeModel];//请求回来的家的数据
+            if (!homeModel.familyName) {
+                homeModel.familyName = @"未添加";
+            }
             [nameList addObject:homeModel.familyName];
         }
         self.selectStart = nameList;

@@ -114,9 +114,11 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)httpRequestHomeInfo{
+    [SVProgressHUD show];
     [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mFamilyList,mDefineToken2] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
+        [SVProgressHUD dismiss];
         NSLog(@"%@",responseObject);
         if (self.dataSource.count>0) {
             [self.dataSource removeAllObjects];
@@ -136,6 +138,7 @@
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
+        [SVProgressHUD dismiss];
     }];
 }
 //添加没有数据空页面时候tableview尾部视图

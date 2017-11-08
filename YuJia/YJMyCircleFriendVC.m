@@ -81,7 +81,7 @@ static NSString* tableCellid = @"table_cell";
     [self loadAreaData];
     [self setUPTabView];
     [self setEditView];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"编辑" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(deletedBtnClick:)];
+    
 }
 //添加tableview
 -(void)setUPTabView{
@@ -357,11 +357,13 @@ static NSString* tableCellid = @"table_cell";
             if (self.statesArr.count>0) {
                 self.tableView.hidden = false;
                 [self.tableView reloadData];
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"编辑" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(deletedBtnClick:)];
             }else{
                 self.tableView.hidden = true;
             }
             
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
+            
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

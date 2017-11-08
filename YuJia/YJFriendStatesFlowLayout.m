@@ -29,7 +29,7 @@
     self.minimumLineSpacing = 10*kiphone6;
     //
     //    // 组的内间距
-    self.sectionInset = UIEdgeInsetsMake(0*kiphone6, 0*kiphone6, 10*kiphone6, 0*kiphone6);
+    self.sectionInset = UIEdgeInsetsMake(0, 0, 10*kiphone6, 0);
 }
 
 @end

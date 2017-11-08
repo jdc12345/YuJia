@@ -79,7 +79,7 @@
     [self tableView];
 }
 - (void)httpRequestHomeInfo{
-    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mUserInfo,mDefineToken2] method:0 parameters:nil prepareExecute:^{
+    [[HttpClient defaultClient]requestWithPath:[NSString stringWithFormat:@"%@token=%@",mUserInfo,mDefineToken] method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -260,7 +260,7 @@
 }
 //按钮点击事件
 - (void)action:(UIButton *)sender{
-    switch (sender.tag -80) {
+    switch (sender.tag - 80) {
         case 0:
             [self.navigationController pushViewController:[[YJMyhomeVC alloc]init] animated:true];
             break;

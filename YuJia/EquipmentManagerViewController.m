@@ -22,6 +22,7 @@
 @property (nonatomic, weak) UIButton *deletSelectedBtn;//删除所选btn
 @property (nonatomic, weak) UIButton *deletedBtn;//删除btn
 @property (nonatomic, weak) UIButton *addBtn;//添加btn
+@property (nonatomic, weak) UIView *emptyView;//空页面
 @end
 
 @implementation EquipmentManagerViewController
@@ -232,17 +233,81 @@
         if (self.dataSource.count>0) {
             [self.dataSource removeAllObjects];
         }
-        NSArray *equipmentList= responseObject[@"equipmentList"];
-        for(NSDictionary *eDict in equipmentList){
-            YJEquipmentModel *eModel = [YJEquipmentModel mj_objectWithKeyValues:eDict];
-            [self.dataSource addObject:eModel];
+        NSArray *equipmentList = responseObject[@"equipmentList"];
+        if (equipmentList.count > 0) {
+            if (self.emptyView) {
+                [self.emptyView removeFromSuperview];
+            }
+            for(NSDictionary *eDict in equipmentList){
+                YJEquipmentModel *eModel = [YJEquipmentModel mj_objectWithKeyValues:eDict];
+                [self.dataSource addObject:eModel];
+            }
+            [self.tableView reloadData];
+        }else{
+            if (self.emptyView) {
+                self.emptyView.hidden = false;
+            }else{
+                [self createEmptyView];
+            }
         }
-        [self.tableView reloadData];
+        
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
     }];
 }
+//添加没有数据空页面图
+- (void)createEmptyView{
+    UIView *emptyView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 500)];
+    emptyView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+    self.emptyView = emptyView;
+    UIView *clickView = [[UIView alloc]init];
+    clickView.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
+//    UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(emptyClick)];
+//    [clickView addGestureRecognizer:tapGest];
+    [emptyView addSubview:clickView];
+    [clickView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(emptyView).with.offset(125);
+        make.centerX.equalTo(emptyView);
+        make.size.mas_equalTo(CGSizeMake(160, 230));
+    }];
+    
+    UIImageView *imageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nofamily"]];
+    [clickView addSubview:imageV];
+    [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(clickView);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 160));
+    }];
+    
+    UILabel *titleLabel = [[UILabel alloc]init];
+    titleLabel.text = @"还没添加设备哦！";
+    titleLabel.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(imageV.mas_bottom).with.offset(15);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    
+    UILabel *titleLabel2 = [[UILabel alloc]init];
+    titleLabel2.text = @"去添加吧！";
+    titleLabel2.textColor = [UIColor colorWithHexString:@"cccccc"];
+    titleLabel2.font = [UIFont systemFontOfSize:13];
+    titleLabel2.textAlignment = NSTextAlignmentCenter;
+    [clickView addSubview:titleLabel2];
+    [titleLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(titleLabel.mas_bottom).with.offset(10);
+        make.centerX.equalTo(clickView);
+        make.size.mas_equalTo(CGSizeMake(160, 13));
+    }];
+    
+    [self.view addSubview:emptyView];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self httpRequestHomeInfo];

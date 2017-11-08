@@ -60,7 +60,7 @@ static NSString* tableCellid = @"table_cell";
     [self loadActivitysData];
     [self setUPTabView];
     [self setEditView];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"编辑" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(deletedBtnClick:)];
+    
 }
 //添加tableview
 -(void)setUPTabView{
@@ -298,16 +298,19 @@ static NSString* tableCellid = @"table_cell";
             NSString *userId = responseObject[@"userid"];
             self.userId = [userId integerValue];
             NSArray *arr = responseObject[@"result"];
-            
-            for (NSDictionary *dic in arr) {
-                NSMutableArray *mArr = [NSMutableArray array];
-                YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
-                [mArr addObject:infoModel];
-                infoModel.over = self.over;//传入活动状态
-                [self.activiesArr addObject:mArr];
+            if (arr.count > 0) {
+                for (NSDictionary *dic in arr) {
+                    NSMutableArray *mArr = [NSMutableArray array];
+                    YJActivitiesDetailModel *infoModel = [YJActivitiesDetailModel mj_objectWithKeyValues:dic];
+                    [mArr addObject:infoModel];
+                    infoModel.over = self.over;//传入活动状态
+                    [self.activiesArr addObject:mArr];
+                }
+                start = self.activiesArr.count;
+                [self.tableView reloadData];
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"编辑" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(deletedBtnClick:)];
             }
-            start = self.activiesArr.count;
-            [self.tableView reloadData];
+            
         }else if ([responseObject[@"code"] isEqualToString:@"-1"]){
             [SVProgressHUD showErrorWithStatus:responseObject[@"message"]];
         }
