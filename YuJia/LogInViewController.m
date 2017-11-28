@@ -607,7 +607,7 @@
         }
         codeUrlStr = [NSString stringWithFormat:@"%@/mobilepub/personal/vcode.do?&telephone=%@",mPrefixUrl,self.phoneTF_resign.text];
     }
-    
+    codeUrlStr = [codeUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [[HttpClient defaultClient]requestWithPath:codeUrlStr method:0 parameters:nil prepareExecute:^{
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
