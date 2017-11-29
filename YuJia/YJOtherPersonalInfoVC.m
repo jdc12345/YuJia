@@ -163,11 +163,8 @@ static NSInteger start = 0;
         self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
         self.nameLabel.text = self.personalModel.userName;
         if (self.personalModel.avatar.length>0) {
-            
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            [manager loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
                 NSLog(@"下载完成");
                 if (image) {
                     [self.iconView setImage:image forState:UIControlStateNormal];
@@ -175,6 +172,18 @@ static NSInteger start = 0;
                     [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
                 }
             }];
+            
+//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+//            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
+//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+//                NSLog(@"下载完成");
+//                if (image) {
+//                    [self.iconView setImage:image forState:UIControlStateNormal];
+//                }else{
+//                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
+//                }
+//            }];
             
         }
         if ([self.personalModel.gender isEqualToString:@"1"]) {

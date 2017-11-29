@@ -153,17 +153,18 @@ static NSString* tableCellid = @"table_cell";
                     [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
                 }else{
                     NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
-                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                    [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                        NSLog(@"当前进度%ld",receivedSize/expectedSize);
-                    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                        NSLog(@"下载完成");
-                        if (image) {
-                            [self setBackGroundColorWithImage:image];
-                        }else{
-                            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-                        }
+                    
+                    SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+                    [downloader downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (image) {
+                                [self setBackGroundColorWithImage:image];
+                            }else{
+                                [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                            }
+                        });
                     }];
+
                 }
             }else{
                 [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
@@ -369,16 +370,15 @@ static NSString* tableCellid = @"table_cell";
                 [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
             }else{
                 NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
-                SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                    NSLog(@"当前进度%ld",receivedSize/expectedSize);
-                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    NSLog(@"下载完成");
-                    if (image) {
-                        [self setBackGroundColorWithImage:image];
-                    }else{
-                        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-                    }
+                SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+                [downloader downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (image) {
+                            [self setBackGroundColorWithImage:image];
+                        }else{
+                            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                        }
+                    });
                 }];
             }
         }else{
@@ -625,16 +625,15 @@ static NSString* tableCellid = @"table_cell";
                 [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
             }else{
                 NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.curruntRoomModel.pictures];
-                SDWebImageManager *manager = [SDWebImageManager sharedManager];
-                [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                    NSLog(@"当前进度%ld",receivedSize/expectedSize);
-                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    NSLog(@"下载完成");
-                    if (image) {
-                        [self setBackGroundColorWithImage:image];
-                    }else{
-                        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-                    }
+                SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+                [downloader downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (image) {
+                            [self setBackGroundColorWithImage:image];
+                        }else{
+                            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+                        }
+                    });
                 }];
             }
         }else{

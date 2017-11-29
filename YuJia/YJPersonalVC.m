@@ -87,18 +87,38 @@
         self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
         self.nameLabel.text = self.personalModel.userName;
         if (self.personalModel.avatar.length>0) {
-            
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                NSLog(@"下载完成");
-                if (image) {
-                    [self.iconView setImage:image forState:UIControlStateNormal];
-                }else{
-                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
-                }
+//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            NSURL *iconUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]];
+            SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+            [downloader downloadImageWithURL:iconUrl options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (image) {
+                        [self.iconView setImage:image forState:UIControlStateNormal];
+                    }else{
+                        [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
+                    }
+                });                
             }];
+//            [manager loadImageWithURL:iconUrl options:SDWebImageRetryFailed progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+//                NSLog(@"下载完成");
+//                if (image) {
+//                    [self.iconView setImage:image forState:UIControlStateNormal];
+//                }else{
+//                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
+//                }
+//            }];
+            
+//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+//            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
+//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+//                NSLog(@"下载完成");
+//                if (image) {
+//                    [self.iconView setImage:image forState:UIControlStateNormal];
+//                }else{
+//                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
+//                }
+//            }];
             
         }
         if ([self.personalModel.gender isEqualToString:@"1"]) {
@@ -195,7 +215,7 @@
     return headerView;
 }
 - (void)headViewClick{
-    NSLog(@"123");
+//    NSLog(@"123");
     //    YYPInfomartionViewController *pInfoVC = [[YYPInfomartionViewController alloc]init];
     //    pInfoVC.personalModel = self.personalModel;
     //    [self.navigationController pushViewController:pInfoVC animated:YES];
