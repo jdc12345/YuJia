@@ -12,7 +12,7 @@
 #import "YJBussinessDetailModel.h"
 #import "YJBussinessServeDetailModel.h"
 #import <UIImageView+WebCache.h>
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJRenovationViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -27,7 +27,7 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    self.title = @"装修服务";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -214,7 +214,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/business/findbusinessOne.do?
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

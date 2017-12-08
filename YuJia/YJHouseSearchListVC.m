@@ -16,7 +16,7 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 #import <MJRefresh.h>
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 //改
 #import "YJHeaderTitleBtn.h"
 #import "YJCitySelectVC.h"
@@ -79,7 +79,8 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"租房信息";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     NSMutableArray* itemArr = [NSMutableArray array];
     UIBarButtonItem *negativeSpacer1 = [[UIBarButtonItem alloc]   initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -116,7 +117,7 @@ static NSString* tableCellid = @"table_cell";
     NSArray *moreArr = @[@{@"typeArr":@[@"1室",@"2室",@"3室",@"4室",@"4室以上"],@"item":@"户型"},@{@"typeArr":@[@"东",@"南",@"西",@"北",@"南北"],@"item":@"朝向"}];
     self.moreArr = moreArr;
     //头部视图
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 88.5*kiphone6)];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 88.5*kiphone6)];
     headerView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
     [self.view addSubview:headerView];
     self.headerView = headerView;
@@ -975,7 +976,7 @@ http://localhost:8080/smarthome/mobileapi/rental/findconditionAll.do?token=49491
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
     
 }
 - (void)didReceiveMemoryWarning {

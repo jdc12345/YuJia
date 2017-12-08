@@ -7,12 +7,13 @@
 //
 
 #import "YJPersonalVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "YYPersonalTableViewCell.h"
 #import "MMButton.h"
 #import "EditPersonalViewController.h"
 //#import "PersonalSettingViewController.h"
-#import <UIImageView+WebCache.h>
+//#import <UIImageView+WebCache.h>
+#import <UIButton+WebCache.h>
 #import "AboutYuJiaViewController.h"
 #import "YYFeedbackViewController.h"
 #import "YJNoticeListTableVC.h"
@@ -76,6 +77,16 @@
 //    [self httpRequestHomeInfo];
     self.dataSource = [[NSMutableArray alloc]initWithArray:@[@"设置",@"关于宇家",@"意见反馈"]];
     self.iconList =@[@"mysettings",@"myabout",@"myopinion"];
+    if (@available(iOS 11.0, *)) {
+        //        如果你的APP中使用的是自定义的navigationbar，隐藏掉系统的navigationbar，并且tableView的frame为(0,0,SCREEN_WIDTH, SCREEN_HEIGHT)开始，那么系统会自动调整SafeAreaInsets值为(20,0,0,0)，如果使用了系统的navigationbar，那么SafeAreaInsets值为(64,0,0,0)，如果也使用了系统的tabbar，那么SafeAreaInsets值为(64,0,49,0)
+        //        即使把navigationbar设置为透明的，系统也认为安全区域是从navigationbar的bottom开始的,想要从导航栏左上角开始需要添加下边的代码,作用是计算tableview的adjustContentInset（表示contentView.frame.origin偏移了scrollview.frame.origin多少；是系统计算得来的，计算方式由contentInsetAdjustmentBehavior决定）
+        //        NSLog(@"----------safeAreaInsets--------------->top:%f,botoom:%f",self.view.safeAreaInsets.top,self.view.safeAreaInsets.bottom);
+        //        NSLog(@"----------adjustedContentInset--------------->top:%f,botoom:%f",self.tableView.adjustedContentInset.top,self.tableView.adjustedContentInset.bottom);
+        //        NSLog(@"-----------contentInset-------------->top:%f,botoom:%f",self.tableView.contentInset.top,self.tableView.contentInset.bottom);
+        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     [self tableView];
 }
 - (void)httpRequestHomeInfo{
@@ -89,37 +100,18 @@
         if (self.personalModel.avatar.length>0) {
 //            SDWebImageManager *manager = [SDWebImageManager sharedManager];
             NSURL *iconUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]];
-            SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
-            [downloader downloadImageWithURL:iconUrl options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (image) {
-                        [self.iconView setImage:image forState:UIControlStateNormal];
-                    }else{
-                        [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
-                    }
-                });                
-            }];
-//            [manager loadImageWithURL:iconUrl options:SDWebImageRetryFailed progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-//                NSLog(@"下载完成");
-//                if (image) {
-//                    [self.iconView setImage:image forState:UIControlStateNormal];
-//                }else{
-//                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
-//                }
+            [self.iconView sd_setImageWithURL:iconUrl forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"avatar"]];
+//            SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+//            [downloader downloadImageWithURL:iconUrl options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (image) {
+//                        [self.iconView setImage:image forState:UIControlStateNormal];
+//                    }else{
+//                        [self.iconView setImage:[UIImage imageNamed:@"avatar"] forState:UIControlStateNormal];
+//                    }
+//                });                
 //            }];
-            
-//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-//            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-//                NSLog(@"下载完成");
-//                if (image) {
-//                    [self.iconView setImage:image forState:UIControlStateNormal];
-//                }else{
-//                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
-//                }
-//            }];
-            
+
         }
         if ([self.personalModel.gender isEqualToString:@"1"]) {
             self.genderV.image = [UIImage imageNamed:@"man"];
@@ -143,7 +135,7 @@
     backView.image = oldImage;
     //添加头像
     UIButton *iconView = [[UIButton alloc]init];
-    UIImage *iconImage = [UIImage imageNamed:@"avatar.jpg"];
+    UIImage *iconImage = [UIImage imageNamed:@"avatar"];
 //    iconView.image = iconImage;
     [iconView setImage:iconImage forState:UIControlStateNormal];
     [backView addSubview:iconView];
@@ -311,10 +303,15 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
-    self.navigationController.navigationBar.translucent = true;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navigationController.navigationBar.translucent = true;
+    self.navigationController.navigationBarHidden = YES;
     [self httpRequestHomeInfo];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];    
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{//如果有导航栏必须在导航栏重写- (UIViewController *)childViewControllerForStatusBarStyle{
     //    return self.topViewController;

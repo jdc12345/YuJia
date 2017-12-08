@@ -12,7 +12,7 @@
 #import "YJExpressSenderTVCell.h"
 #import "YJExpressCompanyModel.h"
 #import "YJExpressReceiveModel.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 
 static NSString* receiveCellid = @"receive_cell";
 static NSString* senderCellid = @"sender_cell";
@@ -34,7 +34,7 @@ static NSString* senderCellid = @"sender_cell";
     [super viewDidLoad];
     self.title = @"快递收发";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -250,7 +250,7 @@ static NSString* senderCellid = @"sender_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

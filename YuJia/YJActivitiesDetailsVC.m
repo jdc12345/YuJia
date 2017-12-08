@@ -70,17 +70,17 @@ static NSString* photoCellid = @"photo_cell";
 //    tableView.rowHeight = UITableViewAutomaticDimension;
 //    tableView.estimatedRowHeight = 235*kiphone6;
     //底部bar
-    [self setBtnWithFrame:CGRectMake(0, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
-    [self setBtnWithFrame:CGRectMake(kScreenW/3, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"兴趣"andTag:102 andImage:@"like"];
-    [self setBtnWithFrame:CGRectMake(kScreenW/3*2, kScreenH-102*kiphone6, kScreenW/3, 38*kiphone6) WithTitle:@"参加"andTag:103 andImage:@"click_add"];
+    [self setBtnWithFrame:CGRectMake(0, kScreenH-47*kiphone6, kScreenW/3, 47*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
+    [self setBtnWithFrame:CGRectMake(kScreenW/3, kScreenH-47*kiphone6, kScreenW/3, 47*kiphone6) WithTitle:@"兴趣"andTag:102 andImage:@"like"];
+    [self setBtnWithFrame:CGRectMake(kScreenW/3*2, kScreenH-47*kiphone6, kScreenW/3, 47*kiphone6) WithTitle:@"参加"andTag:103 andImage:@"click_add"];
 
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag andImage:(NSString*)image{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-1, 0, 1*kiphone6,38*kiphone6)];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-1, 0, 1,47*kiphone6)];
     [btn addSubview:line];
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width,1*kiphone6)];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width,1)];
     [btn addSubview:line2];
     line2.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -471,7 +471,7 @@ static NSString* photoCellid = @"photo_cell";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 - (void)didReceiveMemoryWarning {

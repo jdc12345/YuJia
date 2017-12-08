@@ -8,14 +8,14 @@
 
 #import "YJRoomSetUpVC.h"
 #import "UIBarButtonItem+Helper.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
 #import "YJEquipmentrCollectionVCell.h"
 #import "YJEquipmentModel.h"
 #import "YJAddEquipmentToCurruntSceneOrRoomVC.h"
 #import "YJAddRoomBackgroundImageVC.h"
-#import <SDWebImageManager.h>
+#import <UIImageView+WebCache.h>
 #import <AFNetworking.h>
 
 static NSString* collectionCellid = @"collection_cell";
@@ -26,6 +26,7 @@ static NSString* eqCellid = @"eq_cell";
 @property(nonatomic,weak)UICollectionView *equipmentColView;//情景collectionView
 @property (nonatomic, strong) NSMutableArray* addedEquipmentListData;//添加过设备的房间设备列表，也是数据源
 @property(nonatomic, strong) UIImage *selectImage;//选中背景图片
+@property(nonatomic,weak)UIImageView *backImageView;//背景图片
 @end
 
 @implementation YJRoomSetUpVC
@@ -173,43 +174,39 @@ static NSString* eqCellid = @"eq_cell";
 }
 
 - (void)setUPUI{
+    //添加背景图片imageView
+    UIImageView *backImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:roomBackImages[0]]];
+    [self.view addSubview:backImageView];
+    self.backImageView = backImageView;
+    [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(64);
+        make.left.right.bottom.offset(0);
+    }];
+    backImageView.userInteractionEnabled = YES;
     if (self.roomModel.pictures.length>0) {//把控制器背景设为当前房间背景图片
         if ([self.roomModel.pictures isEqualToString:@"1"]) {
-            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+            self.backImageView.image = [UIImage imageNamed:roomBackImages[0]];
+//            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
         }else if ([self.roomModel.pictures isEqualToString:@"2"]){
-            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
+            self.backImageView.image = [UIImage imageNamed:roomBackImages[1]];
+//            [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
         }else{
             NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,self.roomModel.pictures];
-            SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
-            [downloader downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
-                if (image) {
-                    [self setBackGroundColorWithImage:image];
-                }else{
-                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-                }
-            }];
-//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-//            [manager loadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-//                NSLog(@"下载完成");
-//                if (image) {
-//                    [self setBackGroundColorWithImage:image];
-//                }else{
-//                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-//                }
-//            }];
-//            [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-//                NSLog(@"下载完成");
-//                if (image) {
-//                    [self setBackGroundColorWithImage:image];
-//                }else{
-//                    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
-//                }
+            [self.backImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:roomBackImages[0]]];
+//            SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+//            [downloader downloadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (image) {
+//                        [self setBackGroundColorWithImage:image];
+//                    }else{
+//                        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+//                    }
+//                });
+//                
 //            }];
         }
     }else{
-        [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+        self.backImageView.image = [UIImage imageNamed:roomBackImages[0]];
     }
     UIView *backGrayView = [[UIView alloc]init];//添加模糊视图
     backGrayView.backgroundColor = [UIColor colorWithHexString:@"#333333"];
@@ -350,32 +347,35 @@ static NSString* eqCellid = @"eq_cell";
     self.roomModel.roomName = textField.text;
 }
 
-//把控制器背景设为图片
-- (void)setBackGroundColorWithImage:(UIImage *)image
-{
-    UIImage *oldImage = image;
-    
-    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)), NO, 0.0);
-    [oldImage drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    self.view.backgroundColor = [UIColor colorWithPatternImage:newImage];
-}
+////把控制器背景设为图片
+//- (void)setBackGroundColorWithImage:(UIImage *)image
+//{
+//    UIImage *oldImage = image;
+//
+//    UIGraphicsBeginImageContextWithOptions((CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)), NO, 0.0);
+//    [oldImage drawInRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:newImage];
+//}
 //选择背景图片
 -(void)selectBackgroundImage{
     YJAddRoomBackgroundImageVC *addImageVC = [[YJAddRoomBackgroundImageVC alloc]init];
     addImageVC.itemClick = ^(UIImage *selectImage,NSInteger defaultImageNum) {
         WS(ws);
-        if (defaultImageNum==1) {
-            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
+        if (defaultImageNum == 1) {
+            ws.backImageView.image = [UIImage imageNamed:roomBackImages[0]];
+//            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
             ws.roomModel.pictures=@"1";
         }else if (defaultImageNum==2){
-            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
+            ws.backImageView.image = [UIImage imageNamed:roomBackImages[1]];
+//            [ws setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[1]]];
             ws.roomModel.pictures=@"2";
         }else{
-            [ws setBackGroundColorWithImage:selectImage];//把block回传的图片设置为房间背景
-            ws.roomModel.pictures=NULL;//NULL代表要传的是图片数据
+            ws.backImageView.image = selectImage;
+//            [ws setBackGroundColorWithImage:selectImage];//把block回传的图片设置为房间背景
+            ws.roomModel.pictures = NULL;//NULL代表要传的是图片数据,不是本地的图片代号1或者2
             ws.selectImage = selectImage;//要上传的背景照片
         }
     };
@@ -471,8 +471,8 @@ static NSString* eqCellid = @"eq_cell";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navBarBgAlpha = @"1.0";
+//    self.navigationController.navigationBar.translucent = false;
 }
  
 - (void)didReceiveMemoryWarning {

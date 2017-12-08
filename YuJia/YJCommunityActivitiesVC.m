@@ -47,7 +47,7 @@ static NSString* tableCellid = @"table_cell";
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     //添加头部视图
-    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 55*kiphone6)];
+    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 55*kiphone6)];
     headerView.userInteractionEnabled = true;
     [self.view addSubview:headerView];
     UIImage *oldImage = [UIImage imageNamed:@"activites_header"];
@@ -421,7 +421,7 @@ static NSString* tableCellid = @"table_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 

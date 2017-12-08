@@ -268,7 +268,7 @@ static NSString* tableCell = @"table_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
 }
 
 - (void)didReceiveMemoryWarning {

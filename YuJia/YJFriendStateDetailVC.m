@@ -7,7 +7,6 @@
 //
 
 #import "YJFriendStateDetailVC.h"
-#import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import "YJFriendStateTableViewCell.h"
 #import "YJFriendLikeFlowLayout.h"
@@ -51,7 +50,7 @@ static NSString* selfReplyCellid = @"selfReply_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"友邻圈";
-    self.navigationController.navigationBar.translucent = true;
+//    self.navigationController.navigationBar.translucent = true;
 //    self.edgesForExtendedLayout = UIRectEdgeBottom;     //从navigationBar下面开始计算一直到屏幕底部
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
@@ -602,7 +601,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/state/delteState.do?token=ACDCE729B
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

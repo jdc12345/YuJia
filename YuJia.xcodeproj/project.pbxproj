@@ -248,7 +248,6 @@
 		3E984F781EB897C20094CBE4 /* JXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F771EB897C20094CBE4 /* JXPageView.m */; };
 		3E984F7A1EB897CD0094CBE4 /* JXSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F791EB897CD0094CBE4 /* JXSegment.m */; };
 		3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */; };
-		3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E984F7E1EB9AD110094CBE4 /* avatar.jpg */; };
 		3E984F8F1EB9E8830094CBE4 /* MMButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F871EB9BF640094CBE4 /* MMButton.m */; };
 		3E984F9B1EBB1C280094CBE4 /* FailConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984F9A1EBB1C280094CBE4 /* FailConnectViewController.m */; };
 		3E984FB01EBC5D760094CBE4 /* AccountTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E984FAD1EBC5D760094CBE4 /* AccountTableViewCell.m */; };
@@ -755,7 +754,6 @@
 		3E984F791EB897CD0094CBE4 /* JXSegment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXSegment.m; sourceTree = "<group>"; };
 		3E984F7B1EB89E210094CBE4 /* YYPersonalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYPersonalTableViewCell.h; sourceTree = "<group>"; };
 		3E984F7C1EB89E210094CBE4 /* YYPersonalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYPersonalTableViewCell.m; sourceTree = "<group>"; };
-		3E984F7E1EB9AD110094CBE4 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 		3E984F861EB9BF640094CBE4 /* MMButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMButton.h; sourceTree = "<group>"; };
 		3E984F871EB9BF640094CBE4 /* MMButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMButton.m; sourceTree = "<group>"; };
 		3E984F991EBB1C280094CBE4 /* FailConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FailConnectViewController.h; sourceTree = "<group>"; };
@@ -1665,7 +1663,6 @@
 				3E984EF21EB821EE0094CBE4 /* Main.storyboard */,
 				3E984EF51EB821EE0094CBE4 /* Assets.xcassets */,
 				3E984EF71EB821EE0094CBE4 /* LaunchScreen.storyboard */,
-				3E984F7E1EB9AD110094CBE4 /* avatar.jpg */,
 				3E984EFA1EB821EE0094CBE4 /* Info.plist */,
 				3E2CD8381EE5473800C8FD56 /* 键盘.png */,
 			);
@@ -1829,7 +1826,6 @@
 				3E984EF91EB821EE0094CBE4 /* LaunchScreen.storyboard in Resources */,
 				3E2CD8391EE5473800C8FD56 /* 键盘.png in Resources */,
 				164388491F2F126200BC3CEB /* YJEquipmentList.plist in Resources */,
-				3E984F7F1EB9AD110094CBE4 /* avatar.jpg in Resources */,
 				3E984EF61EB821EE0094CBE4 /* Assets.xcassets in Resources */,
 				169E04A11ED2EAD70002FDB2 /* YJShareRentView.xib in Resources */,
 				1661FE1E1EB8761900583A7F /* FunctionsList.plist in Resources */,

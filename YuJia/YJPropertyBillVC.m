@@ -13,7 +13,7 @@
 #import "YJBillResultTableViewCell.h"
 #import "YJMonthDetailItemModel.h"
 #import "YJMonthDetailSumModel.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "UINavigationController+Cloudox.h"
 #import "YJBillHeaderViewTVCell.h"
 #import "YJHomeAddressVC.h"
@@ -46,7 +46,7 @@ static NSString* billCellid = @"bill_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"物业账单";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
 //    [self loadData];
     [self setupBill];
@@ -540,7 +540,7 @@ static NSString* billCellid = @"bill_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
     [self loadData];
 }
 - (void)didReceiveMemoryWarning {

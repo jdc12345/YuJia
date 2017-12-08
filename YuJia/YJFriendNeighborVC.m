@@ -676,12 +676,12 @@ static NSString* tableCellid = @"table_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = true;
+//    self.navigationController.navigationBar.translucent = true;
     
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 - (void)didReceiveMemoryWarning {

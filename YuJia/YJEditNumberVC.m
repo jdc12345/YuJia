@@ -26,7 +26,7 @@ static NSString* payCellid = @"pay_cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
 }
 

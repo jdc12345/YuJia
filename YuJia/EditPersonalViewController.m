@@ -38,7 +38,7 @@
     // Do any additional setup after loading the view.
 }
 - (void)createSubViews{
-    UIImageView *iconImageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
+    UIImageView *iconImageV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"avatar"]];
     iconImageV.layer.cornerRadius = 45;
     iconImageV.clipsToBounds = YES;
     UITapGestureRecognizer *tapGest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeIconImage)];
@@ -150,7 +150,7 @@
         make.size.mas_equalTo(CGSizeMake(150 ,30));
     }];
     
-    
+    //根据传过来的个人信息设置需要显示的信息
     if (self.personalModel.avatar.length>0) {
         [self.iconV sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]]];
     }
@@ -160,8 +160,6 @@
     }else{
         self.genderSel.selectedSegmentIndex = 0;
     }
-    
-    
 }
 - (void)changeIconImage{
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -246,9 +244,9 @@
 - (void)changeInfo{
     //UIImage图片转成Base64字符串：
     
-    UIImage *originImage = self.iconV.image;
-    NSData *data = UIImageJPEGRepresentation(originImage, 0.2f);
-    NSString *encodedImageStr = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+//    UIImage *originImage = self.iconV.image;
+//    NSData *data = UIImageJPEGRepresentation(originImage, 0.2f);
+//    NSString *encodedImageStr = [data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity:2];
     // 添加性别

@@ -20,7 +20,7 @@
 #import "AFNetworking.h"
 #import "YJReportRepairRecordModel.h"
 #import <MJRefresh.h>
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "YJRepairRecoderVC.h"
 #import "YJPropertyAddressModel.h"
 #import "YJHomeHouseInfoModel.h"
@@ -66,8 +66,8 @@ static NSString* photoCellid = @"photo_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"报事报修";
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -220,7 +220,8 @@ static NSString* photoCellid = @"photo_cell";
     [self.view addSubview:view];
     self.typeView = view;
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.offset(0);
+        make.top.offset(64);
+        make.left.right.offset(0);
         make.height.offset(89*kiphone6);
     }];
     NSArray *imageSelecteds = @[@"click-water",@"click-house",@"click-tree"];
@@ -752,7 +753,7 @@ static NSString* photoCellid = @"photo_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 
 - (void)didReceiveMemoryWarning {

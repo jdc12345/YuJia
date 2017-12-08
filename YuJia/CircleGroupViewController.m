@@ -7,7 +7,6 @@
 //
 
 #import "CircleGroupViewController.h"
-#import "UIColor+colorValues.h"
 #import "YYCircleTableViewCell.h"
 #import "YYPropertyFunctionList.h"
 #import "YJFriendNeighborVC.h"

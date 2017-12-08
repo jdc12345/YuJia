@@ -49,7 +49,7 @@ static NSString* tableCellid = @"table_cell";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
     
     //添加头部视图
-    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 55*kiphone6)];
+    UIImageView *headerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 55*kiphone6)];
     headerView.userInteractionEnabled = true;
     [self.view addSubview:headerView];
     UIImage *oldImage = [UIImage imageNamed:@"car_header"];
@@ -390,7 +390,7 @@ http://192.168.1.55:8080/smarthome/mobileapi/carpooling/findcarpoolingAll.do?tok
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 - (void)didReceiveMemoryWarning {

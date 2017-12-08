@@ -23,7 +23,7 @@ static NSString* otherCellid = @"other_cell";
     [super viewDidLoad];
     self.title = @"拼车消息";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -94,12 +94,12 @@ static NSString* otherCellid = @"other_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.translucent = true;
+//    self.navigationController.navigationBar.translucent = true;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

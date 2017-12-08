@@ -15,7 +15,7 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <AMapSearchKit/AMapSearchKit.h>
 #import "YJNearbyShopChangeAddressVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 
 static NSString* tableCellid = @"table_cell";
 @interface YJNearbyShopViewController ()<UITableViewDelegate,UITableViewDataSource,AMapSearchDelegate>
@@ -33,7 +33,7 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"附近商户";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -231,7 +231,7 @@ static NSString* tableCellid = @"table_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

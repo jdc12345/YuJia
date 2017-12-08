@@ -8,7 +8,7 @@
 
 #import "YJEquipmentSettingVC.h"
 #import "UIBarButtonItem+Helper.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
 #import "UILabel+Addition.h"
@@ -64,7 +64,7 @@
     [super viewDidLoad];
     self.title = @"设备设置";
     //    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
 //    self.selectStart = @[@"房间1",@"房间2"];

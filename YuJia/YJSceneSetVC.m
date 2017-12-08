@@ -8,7 +8,7 @@
 
 #import "YJSceneSetVC.h"
 #import "UIBarButtonItem+Helper.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "YJHomeSceneFlowLayout.h"
 #import "YJHomeSceneCollectionViewCell.h"
 #import "YJEquipmentrCollectionVCell.h"
@@ -81,8 +81,8 @@ static NSString* eqCellid = @"eq_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"情景设置";
-    //    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//        self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.navigationController.navigationBar.translucent = false;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#333333"] highlightedColor:[UIColor colorWithHexString:@"#00bfff"] target:self action:@selector(changeInfo:)];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
     self.selectStart = @[@"定时启动",@"定位启动"];
@@ -970,7 +970,8 @@ static NSString* eqCellid = @"eq_cell";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";    
+//    self.navBarBgAlpha = @"1.0";
+    
 }
 
 - (void)didReceiveMemoryWarning {

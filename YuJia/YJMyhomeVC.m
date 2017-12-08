@@ -7,7 +7,7 @@
 //
 
 #import "YJMyhomeVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 //#import "YJHomeSceneCollectionViewCell.h"
 #import "PopListTableViewController.h"
 #import "ZYAlertSView.h"
@@ -67,7 +67,7 @@ static NSString *headerViewIdentifier =@"hederview";
     [super viewDidLoad];
     self.title = @"我的家";
     //    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
 //    self.selectStart = @[@"定时启动",@"定位启动"];
 //    [self httpRequestHomeInfo];

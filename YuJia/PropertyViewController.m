@@ -25,7 +25,7 @@
 #import "YJExpressReceiveModel.h"
 #import "YJExpressDeliveryVC.h"
 #import "UINavigationController+Cloudox.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 
 static NSString* tableCellid = @"table_cell";
 static NSString* collectionCellid = @"collection_cell";
@@ -246,13 +246,16 @@ static NSString* collectionCellid = @"collection_cell";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
-    self.navigationController.navigationBar.translucent = true;
+//    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navigationController.navigationBar.translucent = true;
+    self.navigationController.navigationBarHidden = YES;
 }
-//-(void)viewWillDisappear:(BOOL)animated{
-//    [super viewWillDisappear:animated];
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+
 //    self.navBarBgAlpha = @"1.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
-//}
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

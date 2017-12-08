@@ -11,7 +11,7 @@
 #import "UIBarButtonItem+Helper.h"
 #import "YJRoomDetailModel.h"
 #import "YJRoomSetUpVC.h"
-#import <SDWebImageManager.h>
+#import <UIImageView+WebCache.h>
 #import "YJEquipmentModel.h"
 
 @interface YJRoomManagerVC ()<UITableViewDataSource, UITableViewDelegate>
@@ -216,18 +216,9 @@
             homeTableViewCell.iconV.image = [UIImage imageNamed:roomBackImages[1]];
         }else{
             NSString *imageUrl = [NSString stringWithFormat:@"%@%@",mPrefixUrl,roomModel.pictures];
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            [manager loadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-                NSLog(@"下载完成");
-                if (image) {
-                    homeTableViewCell.iconV.image = image;
-                }else{
-                    homeTableViewCell.iconV.image = [UIImage imageNamed:roomBackImages[0]];
-                }
-            }];
-//            [manager downloadImageWithURL:[NSURL URLWithString:imageUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            [homeTableViewCell.iconV sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:roomBackImages[0]]];
+//            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+//            [manager loadImageWithURL:[NSURL URLWithString:imageUrl] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
 //                NSLog(@"下载完成");
 //                if (image) {
 //                    homeTableViewCell.iconV.image = image;
@@ -235,6 +226,7 @@
 //                    homeTableViewCell.iconV.image = [UIImage imageNamed:roomBackImages[0]];
 //                }
 //            }];
+
         }
     }else{
         homeTableViewCell.iconV.image = [UIImage imageNamed:roomBackImages[0]];

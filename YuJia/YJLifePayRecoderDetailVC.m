@@ -7,7 +7,6 @@
 //
 
 #import "YJLifePayRecoderDetailVC.h"
-#import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 
 static NSString* payCellid = @"pay_cell";
@@ -29,7 +28,7 @@ static NSString* payCellid = @"pay_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"缴费金额";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
 }
 -(void)setInfoModel:(YJLifePayRecoderModel *)infoModel{

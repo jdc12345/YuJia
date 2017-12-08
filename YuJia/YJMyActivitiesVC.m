@@ -55,7 +55,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"我的活动";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.isSelecting = NO;
     [self loadActivitysData];
     [self setUPTabView];
@@ -69,7 +69,8 @@ static NSString* tableCellid = @"table_cell";
     self.tableView = tableView;
     [self.view addSubview:tableView];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+        make.top.offset(64);
+        make.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJCommunityActivitiesTVCell class] forCellReuseIdentifier:tableCellid];

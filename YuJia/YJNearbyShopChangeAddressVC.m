@@ -30,7 +30,7 @@ static NSString *dentifier=@"cellforappliancelist";
     self.title = @"切换地址";
     //给导航条添加一个返回按钮
    self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"close_shop"] style:UIBarButtonItemStylePlain target:self action:@selector(change)];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     //搜索框+定位
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 115)];
     [self.view addSubview:headerView];

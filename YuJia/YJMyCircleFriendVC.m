@@ -53,7 +53,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"我的圈子";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#f1f1f1"];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     //添加空页面视图
     UIImageView *backView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"empty_nostatus"]];
     backView.userInteractionEnabled = true;
@@ -90,7 +90,8 @@ static NSString* tableCellid = @"table_cell";
     self.tableView = tableView;
     [self.view addSubview:tableView];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.offset(0);
+        make.top.offset(64);
+        make.left.right.bottom.offset(0);
     }];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView registerClass:[YJFriendStateTableViewCell class] forCellReuseIdentifier:tableCellid];

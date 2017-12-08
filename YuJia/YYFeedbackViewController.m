@@ -7,8 +7,6 @@
 //
 
 #import "YYFeedbackViewController.h"
-#import "UIColor+Extension.h"
-#import <Masonry.h>
 #import "UIBarButtonItem+Helper.h"
 #import "HttpClient.h"
 #import "CcUserModel.h"
@@ -24,7 +22,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithHexString:@"f2f2f2"];
     self.title = @"意见反馈";
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" normalColor:[UIColor colorWithHexString:@"#0ddcbc"] highlightedColor:[UIColor colorWithHexString:@"#0ddcbc"] target:self action:@selector(sendFeedBack)];
     [self createSubView];
     // Do any additional setup after loading the view.
@@ -116,7 +113,7 @@
     
 }
 - (void)sendFeedBack{
-    NSString *tokenStr = [CcUserModel defaultClient].userToken;
+//    NSString *tokenStr = [CcUserModel defaultClient].userToken;
     
     NSDictionary *dict = @{
                            @"token":mDefineToken,

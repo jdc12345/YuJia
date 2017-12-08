@@ -7,7 +7,6 @@
 //
 
 #import "YJLifepaymentVC.h"
-#import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import "YJModifyAddressVC.h"
 #import "YJAddPropertyBillAddressVC.h"
@@ -15,7 +14,7 @@
 #import "YJPayItemModel.h"
 #import "YJEditNumberVC.h"
 #import "YJInputPayNumberVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "YJPayPropertyVC.h"
 #import "YJPayRecoderVC.h"
 
@@ -38,7 +37,7 @@ static NSString* payCellid = @"pay_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"生活缴费";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.view.backgroundColor = [UIColor whiteColor];
     [self loadData];
     
@@ -331,7 +330,7 @@ static NSString* payCellid = @"pay_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";
+//    self.navBarBgAlpha = @"1.0";
     if (self.emptyTableView&&self.isBill) {//第一次添加地址后返回该页面
         [self.emptyTableView removeFromSuperview];
         [self loadData];

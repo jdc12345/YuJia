@@ -300,21 +300,21 @@ static NSString* tablecell = @"table_cell";
 
     tableView.tableHeaderView = headerView;
     //底部bar
-    [self setBtnWithFrame:CGRectMake(0, kScreenH-102*kiphone6, kScreenW/2, 38*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
+    [self setBtnWithFrame:CGRectMake(0, kScreenH-47*kiphone6, kScreenW/2, 47*kiphone6) WithTitle:@"评论"andTag:101 andImage:@"comment"];
     if (self.model.ctype == 1) {
-        [self setBtnWithFrame:CGRectMake(kScreenW/2, kScreenH-102*kiphone6, kScreenW/2, 38*kiphone6) WithTitle:@"接单"andTag:102 andImage:nil];
+        [self setBtnWithFrame:CGRectMake(kScreenW/2, kScreenH-47*kiphone6, kScreenW/2, 47*kiphone6) WithTitle:@"接单"andTag:102 andImage:nil];
     }else{
-        [self setBtnWithFrame:CGRectMake(kScreenW/2, kScreenH-102*kiphone6, kScreenW/2, 38*kiphone6) WithTitle:[NSString stringWithFormat:@"%ld人参加",self.model.participateNumber] andTag:102 andImage:@"click_add"];
+        [self setBtnWithFrame:CGRectMake(kScreenW/2, kScreenH-47*kiphone6, kScreenW/2, 47*kiphone6) WithTitle:[NSString stringWithFormat:@"%ld人参加",self.model.participateNumber] andTag:102 andImage:@"click_add"];
     }
 
     
 }
 -(void)setBtnWithFrame:(CGRect)frame WithTitle:(NSString*)title andTag:(CGFloat)tag andImage:(NSString*)image{
     UIButton *btn = [[UIButton alloc]initWithFrame:frame];
-    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-1, 0, 1*kiphone6,38*kiphone6)];
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-1, 0, 1,47*kiphone6)];
     [btn addSubview:line];
     line.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width,1*kiphone6)];
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width,1)];
     [btn addSubview:line2];
     line2.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
     btn.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -535,7 +535,7 @@ static NSString* tablecell = @"table_cell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     
 }
 //-(void)addCar:(UIButton*)sender{

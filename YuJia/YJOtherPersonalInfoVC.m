@@ -7,9 +7,10 @@
 //
 
 #import "YJOtherPersonalInfoVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "MMButton.h"
-#import <UIImageView+WebCache.h>
+#import <UIButton+WebCache.h>
+//#import <UIImageView+WebCache.h>
 #import "UILabel+Addition.h"
 #import "YJFriendStateTableViewCell.h"
 #import "YJFriendStateDetailVC.h"
@@ -163,20 +164,9 @@ static NSInteger start = 0;
         self.personalModel = [YJPersonalModel mj_objectWithKeyValues:eDict];
         self.nameLabel.text = self.personalModel.userName;
         if (self.personalModel.avatar.length>0) {
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            [manager loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-                NSLog(@"下载完成");
-                if (image) {
-                    [self.iconView setImage:image forState:UIControlStateNormal];
-                }else{
-                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
-                }
-            }];
-            
+            [self.iconView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"avatar"]];
 //            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-//            [manager downloadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                NSLog(@"当前进度%ld",receivedSize/expectedSize);
-//            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+//            [manager loadImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",mPrefixUrl,self.personalModel.avatar]] options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
 //                NSLog(@"下载完成");
 //                if (image) {
 //                    [self.iconView setImage:image forState:UIControlStateNormal];
@@ -184,6 +174,7 @@ static NSInteger start = 0;
 //                    [self.iconView setImage:[UIImage imageNamed:@"avatar.jpg"] forState:UIControlStateNormal];
 //                }
 //            }];
+            
             
         }
         if ([self.personalModel.gender isEqualToString:@"1"]) {
@@ -384,9 +375,9 @@ static NSInteger start = 0;
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
-    self.navigationController.navigationBar.translucent = true;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.navBarBgAlpha = @"0.0";//添加了导航栏和控制器的分类实现了导航栏透明处理
+//    self.navigationController.navigationBar.translucent = true;
     [self httpRequestHomeInfo];
     if (self.isCircle) {//他的圈子
         [self requestForState];

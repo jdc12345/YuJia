@@ -43,7 +43,7 @@ static NSString* tableCellid = @"table_cell";
     [super viewDidLoad];
     self.title = @"社区拼车";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];
@@ -71,7 +71,7 @@ static NSString* tableCellid = @"table_cell";
     self.tableView.backgroundColor = [UIColor whiteColor];
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.offset(0);
-        make.top.offset(5*kiphone6);
+        make.top.offset(64+5*kiphone6);
     }];
     [tableView registerClass:[YJCreateActivitieTVCell class] forCellReuseIdentifier:tableCellid];
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

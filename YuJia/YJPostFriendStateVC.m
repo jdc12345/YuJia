@@ -14,7 +14,6 @@
 #import <HUImagePickerViewController.h>
 #import "YJPhotoDisplayCollectionViewCell.h"
 #import <HUPhotoBrowser.h>
-#import "UIColor+colorValues.h"
 #import "UILabel+Addition.h"
 #import <AFNetworking.h>
 
@@ -45,7 +44,7 @@ static NSString* photoCellid = @"photo_cell";
     [super viewDidLoad];
     self.title = @"友邻圈";
     self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];

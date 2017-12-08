@@ -22,7 +22,7 @@
     [super viewDidLoad];
     self.title = @"设备管理";
     self.view.backgroundColor = [UIColor colorWithHexString:@"f1f1f1"];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self httpRequestHomeInfo];
 }
 //请求所有设备数据

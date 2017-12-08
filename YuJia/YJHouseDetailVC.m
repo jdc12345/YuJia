@@ -26,7 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     self.title = @"详情";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
  

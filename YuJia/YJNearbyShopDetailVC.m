@@ -28,7 +28,7 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"附近商户";
-    self.navigationController.navigationBar.translucent = false;
+//    self.navigationController.navigationBar.translucent = false;
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSFontAttributeName:[UIFont systemFontOfSize:15],
        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#333333"]}];

@@ -7,7 +7,7 @@
 //
 
 #import "YJSetPersonalVC.h"
-#import "UIViewController+Cloudox.h"
+//#import "UIViewController+Cloudox.h"
 #import "ChangePassWordViewController.h"
 #import "ChangePhoneNumberViewController.h"
 #import "LogInViewController.h"
@@ -124,7 +124,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navBarBgAlpha = @"1.0";
+//    self.navBarBgAlpha = @"1.0";
 }
 /*
 #pragma mark - Navigation
