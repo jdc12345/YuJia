@@ -27,6 +27,24 @@
 #pragma mark --------------Color--------------------
 #define kColor_DefaultGray [UIColor  colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1]
 
+typedef NS_ENUM(NSInteger, mDeviceName) {
+    mDeviceNameUnidentified = 0,    // 未识别的设备
+    mDeviceNameMagnetometer = 1,    // 门磁
+    mDeviceNameDoorLock = 2,     // 门锁
+    mDeviceNameSwitch = 3,     // 开关
+    mDeviceNameSocket = 4,     // 插座
+    mDeviceNameLight = 5,     // 灯
+    mDeviceNameTv = 6,   // 电视
+    mDeviceNameWindowCurtains = 7,     // 窗帘
+    mDeviceNameAirConditioner = 8,     // 空调
+    mDeviceNameHygrothermograph = 9,     // 温湿度计
+    mDeviceNameScenePanel = 10,     // 情景面板
+    mDeviceNameHumanInfrared = 11,     // 人体红外
+    mDeviceNameGateway = 12,     // 网关
+};
+
+//public static int[]mIconId={0,1,2,3,4,5,6,7,8,9,10,11,12};
+//public static String[]mDeviceName={"未识别的设备","门磁","门锁","开关","插座","灯","电视","窗帘","空调","温湿度计","情景面板","人体红外","网关"};
 /**
  *
  1=开关
@@ -36,8 +54,8 @@
  5=空调
  6=门锁
  */
-#define mIcon @[@"",@"socket",@"light",@"tv",@"curtain",@"aircondition",@"lock",@""]
-#define mName @[@"",@"开关",@"灯",@"电视",@"窗帘",@"空调",@"门锁",@""]
+#define mIcon @[@"unidentified",@"unidentified",@"lock",@"unidentified",@"socket",@"light",@"tv",@"curtain",@"aircondition",@"unidentified",@"unidentified",@"unidentified",@"wifi"]
+//#define mName @[@"",@"开关",@"灯",@"电视",@"窗帘",@"空调",@"门锁",@""]
 #define roomBackImages @[@"home_back",@"home_backTwo"]
 
 #pragma mark  ------------WeakSelf------------------
@@ -97,8 +115,9 @@
 
  #define mFamilyList [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/homeUser/findList.do?"]
 
-
-
+//连接设备接口
+//http://192.168.1.168:8080/smarthome/mobileapi/equipment/adddef.do?iconId=3
+#define mConnectEquipment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/adddef.do?"]
 //删除设备接口
 //http://192.168.1.55:8080/smarthome/mobileapi/equipment/delete.do?ids=1234,12345&token=9DB2FD6FDD2F116CD47CE6C48B3047EE
  #define mDeleteEquipment [NSString stringWithFormat:@"%@%@",mPrefixUrl,@"/mobileapi/equipment/delete.do?"]

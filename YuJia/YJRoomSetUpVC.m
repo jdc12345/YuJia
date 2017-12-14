@@ -393,8 +393,13 @@ static NSString* eqCellid = @"eq_cell";
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     // 去缓存池找
-    YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
+    YJHomeSceneCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
+    if (indexPath.row<self.addedEquipmentListData.count-1) {
     cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
+    }else{
+        cell.iconView.image = [UIImage imageNamed:@"add_home"];
+        cell.nameLabel.text = @"添加";
+    }
     //    cell.selected = false;
     return cell;
 }

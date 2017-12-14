@@ -10,5 +10,6 @@ pod 'SDCycleScrollView'
 pod 'AMapLocation'
 pod 'SVProgressHUD'
 pod 'HUPhotoBrowser','~> 1.1.3'
+pod 'JPush', '3.0.7'
 end
 

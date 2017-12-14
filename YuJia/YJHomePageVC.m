@@ -55,7 +55,6 @@ static NSString* tableCellid = @"table_cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-//    [self setBackGroundColorWithImage:[UIImage imageNamed:roomBackImages[0]]];
     [self setUpUI];
 }
 //请求所有设备
@@ -752,7 +751,7 @@ static NSString* tableCellid = @"table_cell";
 //        cell.selected = false;
         return cell;
     }else{
-        YJEquipmentrCollectionVCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
+        YJEquipmentrCollectionVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
         cell.equipmentModel = self.equipmentListData[indexPath.row];
 //        cell.alpha = 0.7;
         return cell;

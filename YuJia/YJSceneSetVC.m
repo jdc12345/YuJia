@@ -220,34 +220,34 @@ static NSString* eqCellid = @"eq_cell";
     
     //    WS(ws);
     [selectPictureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headView).with.offset(25*kiphone6);
-        make.left.equalTo(headView).with.offset(35*kiphone6 +rect.size.width*kiphone6);
+        make.top.equalTo(headView).offset(25*kiphone6);
+        make.left.equalTo(headView).offset(35*kiphone6 +rect.size.width*kiphone6);
         make.size.mas_equalTo(CGSizeMake(55*kiphone6 ,55*kiphone6));
     }];
     [picselectLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(selectPictureBtn.mas_centerY).with.offset(0);
-        make.left.equalTo(headView).with.offset(20*kiphone6);
+        make.left.equalTo(headView).offset(20*kiphone6);
         make.size.mas_equalTo(CGSizeMake((rect.size.width +5)*kiphone6,14*kiphone6));
     }];
     [sightNameText mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headView).with.offset(100*kiphone6);
-        make.left.equalTo(headView).with.offset(35*kiphone6 +rect.size.width*kiphone6);
+        make.top.equalTo(headView).offset(100*kiphone6);
+        make.left.equalTo(headView).offset(35*kiphone6 +rect.size.width*kiphone6);
         make.size.mas_equalTo(CGSizeMake(254*kiphone6 ,30*kiphone6));
     }];
     [_curAccount mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(sightNameText.mas_bottom).with.offset(20*kiphone6);
-        make.left.equalTo(headView).with.offset(35*kiphone6 +rect.size.width*kiphone6);
+        make.top.equalTo(sightNameText.mas_bottom).offset(20*kiphone6);
+        make.left.equalTo(headView).offset(35*kiphone6 +rect.size.width*kiphone6);
         make.size.mas_equalTo(CGSizeMake(254*kiphone6 ,30*kiphone6));
     }];
     
     [sightNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(sightNameText.mas_centerY).with.offset(0);
-        make.left.equalTo(headView).with.offset(20*kiphone6);
+        make.centerY.equalTo(sightNameText.mas_centerY).offset(0);
+        make.left.equalTo(headView).offset(20*kiphone6);
         make.size.mas_equalTo(CGSizeMake((rect.size.width +5)*kiphone6,14*kiphone6));
     }];
     [startWLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_curAccount.mas_centerY).with.offset(0);
-        make.left.equalTo(headView).with.offset(20*kiphone6);
+        make.centerY.equalTo(_curAccount.mas_centerY).offset(0);
+        make.left.equalTo(headView).offset(20*kiphone6);
         make.size.mas_equalTo(CGSizeMake((rect.size.width +5)*kiphone6,14*kiphone6));
     }];
     
@@ -313,13 +313,15 @@ static NSString* eqCellid = @"eq_cell";
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     if (indexPath.row<self.addedEquipmentListData.count-1) {
-        YJEquipmentrCollectionVCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
+        YJEquipmentrCollectionVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:eqCellid forIndexPath:indexPath];
         cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
         return cell;
     }
     // 去缓存池找
-    YJHomeSceneCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
-    cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
+    YJHomeSceneCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionCellid forIndexPath:indexPath];
+    cell.iconView.image = [UIImage imageNamed:@"add_home"];
+    cell.nameLabel.text = @"添加";
+//    cell.equipmentModel = self.addedEquipmentListData[indexPath.row];
     //    cell.selected = false;
     return cell;
 }
@@ -341,59 +343,129 @@ static NSString* eqCellid = @"eq_cell";
             self.sceneNameTF.text = self.sceneModel.sceneName;
         };
         [self.navigationController pushViewController:sVC animated:true];
-    }else{
+    }else{//跳转对应的设备页面
         YJEquipmentModel *equipmentModel;
 //        equipmentModel = self.sceneModel.equipmentList[indexPath.row];
         equipmentModel = self.addedEquipmentListData[indexPath.row];
         
         NSLog(@"点击了第几个%ld",[equipmentModel.iconId integerValue]);
-        switch ([equipmentModel.iconId integerValue]) {
-            case 2:{
+        //根据设备类型序号取对应标签
+        NSInteger equipmentId = [self getDeviceEnumWithIconid:equipmentModel.iconId];
+        //根据对应标签跳转对应设备页面
+        switch (equipmentId) {
+            case mDeviceNameUnidentified:{// 未识别的设备
                 YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
                 [self.navigationController pushViewController:sightVC animated:YES];
             }
-                
-                break;
-            case 1:{
-                YJSocketSettingVC *sightVC = [[YJSocketSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                 break;
+            case mDeviceNameMagnetometer:{// 门磁
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
                 [self.navigationController pushViewController:sightVC animated:YES];
             }
-                
-                break;
-            case 3:{
-                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 4:{
-                YJCurtainSettingVC *sightVC = [[YJCurtainSettingVC alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 5:{
-                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
-                [self.navigationController pushViewController:sightVC animated:YES];
-            }
-                
-                break;
-            case 6:{
+                 break;
+            case mDeviceNameDoorLock:{// 门锁
                 DoorLockViewController *sightVC = [[DoorLockViewController alloc]init];
-                //        sightVC.sightModel = self.dataSource[segment.selectedIndex];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameSwitch:{// 开关
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                 break;
+            case mDeviceNameSocket:{// 插座
+                YJSocketSettingVC *sightVC = [[YJSocketSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameLight:{// 灯
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameTv:{//电视
+                TVSettingViewController *sightVC = [[TVSettingViewController alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameWindowCurtains:{// 窗帘
+                YJCurtainSettingVC *sightVC = [[YJCurtainSettingVC alloc]init];
                 [self.navigationController pushViewController:sightVC animated:YES];
             }
                 break;
                 
+            case mDeviceNameAirConditioner:{// 空调
+                AirConditioningViewController *sightVC = [[AirConditioningViewController alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameHygrothermograph:{// 温湿度计
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameScenePanel:{// 情景面板
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameHumanInfrared:{// 人体红外
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+            case mDeviceNameGateway:{// 网关
+                YJLightSettingVC *sightVC = [[YJLightSettingVC alloc]init];
+                [self.navigationController pushViewController:sightVC animated:YES];
+            }
+                break;
+              
             default:
                 break;
         }
         
+    }
+}
+//public static int[]mIconId={0,1,2,3,4,5,6,7,8,9,10,11,12};
+//public static String[]mDeviceName={"未识别的设备","门磁","门锁","开关","插座","灯","电视","窗帘","空调","温湿度计","情景面板","人体红外","网关"};
+//根据设备iconid(类型序号)取对应图片
+-(NSInteger)getDeviceEnumWithIconid:(NSString*)iconId{
+    
+    switch ([iconId integerValue]) {
+        case 0:
+            return mDeviceNameUnidentified;// 未识别的设备
+        case 1:
+            return mDeviceNameMagnetometer;// 门磁
+        case 2:
+            return mDeviceNameDoorLock;// 门锁
+        case 3:
+            return mDeviceNameSwitch;// 开关
+        case 4:
+            return mDeviceNameSocket;// 插座
+        case 5:
+            return mDeviceNameLight;// 灯
+        case 6:
+            return mDeviceNameTv;// 电视
+        case 7:
+            return mDeviceNameWindowCurtains;// 窗帘
+        case 8:
+            return mDeviceNameAirConditioner;// 空调
+            
+        case 9:
+            return mDeviceNameHygrothermograph;// 温湿度计
+            
+        case 10:
+            return mDeviceNameScenePanel;// 情景面板
+            
+        case 11:
+            return mDeviceNameHumanInfrared;// 人体红外
+            
+        case 12:
+            return mDeviceNameGateway;// 网关
+            
+            
+        default:
+            return mDeviceNameUnidentified;// 未识别的设备
     }
 }
 //  返回头视图

@@ -73,7 +73,7 @@
 }
 
 - (void)setUPUI{
-    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, 205*kiphone6)];
+    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenW, 205*kiphone6)];
     headView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:headView];
     NSString *picSelect = @"设 备 图 标";
@@ -91,7 +91,11 @@
     if (self.eqipmentModel.iconUrl.length >0) {
         
     }else{
-        picName = mIcon[[self.eqipmentModel.iconId integerValue]];//根据图标序号确定图标
+//        picName = mIcon[[self.eqipmentModel.iconId integerValue]];//根据图标序号确定图标
+        //设备类型序号枚举标签
+        NSInteger equmentTag = [self getDeviceEnumWithIconid:self.eqipmentModel.iconId];
+        
+        picName = mIcon[equmentTag];//根据图标序号确定图标
     }
     [selectPictureBtn setImage:[UIImage imageNamed:picName] forState:UIControlStateNormal];
     [selectPictureBtn addTarget:self action:@selector(action:) forControlEvents:UIControlEventTouchUpInside];
@@ -100,7 +104,7 @@
     UITextField  *sightNameText = [[UITextField alloc]init];
     sightNameText.textColor = [UIColor colorWithHexString:@"#333333"];
     sightNameText.font = [UIFont systemFontOfSize:14];
-//    sightNameText.text = mName[[self.eqipmentModel.iconId integerValue]];
+// 设备名字
     sightNameText.text = self.eqipmentModel.name;
     sightNameText.layer.cornerRadius = 2.5;
     sightNameText.clipsToBounds = YES;
@@ -136,7 +140,6 @@
     [headView addSubview:sightNameLabel];
     [headView addSubview:startWLabel];
     
-    //    WS(ws);
     [selectPictureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(headView).with.offset(25*kiphone6);
         make.left.equalTo(headView).with.offset(35*kiphone6 +rect.size.width*kiphone6);
@@ -173,6 +176,49 @@
     self.leftPodding = 35*kiphone6 +rect.size.width;//下拉菜单距离左侧距离
     [self setPopMenu];
     
+}
+
+//public static int[]mIconId={0,1,2,3,4,5,6,7,8,9,10,11,12};
+//public static String[]mDeviceName={"未识别的设备","门磁","门锁","开关","插座","灯","电视","窗帘","空调","温湿度计","情景面板","人体红外","网关"};
+//根据设备iconid(类型序号)取对应图片
+-(NSInteger)getDeviceEnumWithIconid:(NSString*)iconId{
+    
+    switch ([iconId integerValue]) {
+        case 0:
+            return mDeviceNameUnidentified;// 未识别的设备
+        case 1:
+            return mDeviceNameMagnetometer;// 门磁
+        case 2:
+            return mDeviceNameDoorLock;// 门锁
+        case 3:
+            return mDeviceNameSwitch;// 开关
+        case 4:
+            return mDeviceNameSocket;// 插座
+        case 5:
+            return mDeviceNameLight;// 灯
+        case 6:
+            return mDeviceNameTv;// 电视
+        case 7:
+            return mDeviceNameWindowCurtains;// 窗帘
+        case 8:
+            return mDeviceNameAirConditioner;// 空调
+          
+        case 9:
+            return mDeviceNameHygrothermograph;// 温湿度计
+           
+        case 10:
+            return mDeviceNameScenePanel;// 情景面板
+            
+        case 11:
+            return mDeviceNameHumanInfrared;// 人体红外
+            
+        case 12:
+            return mDeviceNameGateway;// 网关
+          
+            
+        default:
+            return mDeviceNameUnidentified;// 未识别的设备
+    }
 }
 //点击更换图标按钮事件
 - (void)action:(UIButton *)sender{

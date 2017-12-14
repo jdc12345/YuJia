@@ -13,4 +13,6 @@
 @interface YJHomeSceneCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) YJSceneDetailModel* sceneDetailModel;//场景模型
 @property (nonatomic, strong) YJEquipmentModel* equipmentModel;//设备模型(用以添加最后的添加按钮)
+@property (nonatomic, weak) UIImageView* iconView;
+@property (nonatomic, weak) UILabel* nameLabel;
 @end

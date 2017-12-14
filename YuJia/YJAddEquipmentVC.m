@@ -9,6 +9,7 @@
 #import "YJAddEquipmentVC.h"
 #import "YJConnectWifiVC.h"
 #import <AVFoundation/AVFoundation.h>
+#import "YJBindingEquipmentVC.h"
 
 /**
  *  屏幕 高 宽 边界
@@ -221,25 +222,30 @@
         AVMetadataMachineReadableCodeObject * metadataObject = [metadataObjects objectAtIndex:0];
         stringValue = metadataObject.stringValue;
         NSLog(@"扫描结果：%@",stringValue);
-        
+        YJBindingEquipmentVC *addEquipmentVC  = [[YJBindingEquipmentVC alloc]init];
+        addEquipmentVC.scanStr = stringValue;
+        [self.navigationController pushViewController:addEquipmentVC animated:YES];
         NSArray *arry = metadataObject.corners;
         for (id temp in arry) {
             NSLog(@"%@",temp);
         }
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"扫描结果" message:stringValue preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            if (_session != nil && timer != nil) {
-                [self action];
-                //                [_session startRunning];
-                //                [timer setFireDate:[NSDate date]];
-                [_session stopRunning];
-                [timer setFireDate:[NSDate distantFuture]];
-            }
-            
-        }]];
-        [self presentViewController:alert animated:YES completion:nil];
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"扫描结果" message:stringValue preferredStyle:UIAlertControllerStyleAlert];
+//        [alert addAction:[UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            
+//            if (_session != nil && timer != nil) {
+//                [self action];
+//                //                [_session startRunning];
+//                //                [timer setFireDate:[NSDate date]];
+//                [_session stopRunning];
+//                //关闭定时器
+//                [timer setFireDate:[NSDate distantFuture]];
+//                //开启定时器
+////                [scrollView.myTimer setFireDate:[NSDate distantPast]]; 
+//            }
+//            
+//        }]];
+//        [self presentViewController:alert animated:YES completion:nil];
         
     } else {
         NSLog(@"无扫描信息");

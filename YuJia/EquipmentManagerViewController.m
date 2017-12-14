@@ -69,8 +69,8 @@
     [self.view bringSubviewToFront:deletBtn];
     [deletBtn setTitle:@"删除设备" forState:UIControlStateNormal];
     deletBtn.titleLabel.font = [UIFont systemFontOfSize:18];
-    [deletBtn setTitleColor:[UIColor colorWithHexString:@"#ffffff"] forState:UIControlStateNormal];
-    [deletBtn setBackgroundColor:[UIColor colorWithHexString:@"#f34a52"]];
+    [deletBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateNormal];
+    [deletBtn setBackgroundColor:[UIColor colorWithHexString:@"f34a52"]];
     [deletBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.offset(0);
         make.width.offset(kScreenW*0.5);
@@ -207,7 +207,10 @@
     homeTableViewCell.titleLabel.text = equipmentModel.name;
     if (equipmentModel.iconUrl.length >0) {
     }else{
-        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue] ]];
+//        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[[equipmentModel.iconId integerValue]] ];
+        //设备类型序号枚举标签
+        NSInteger equmentTag = [self getDeviceEnumWithIconid:equipmentModel.iconId];
+        homeTableViewCell.iconV.image = [UIImage imageNamed:mIcon[equmentTag]];//根据类型序号确定图标
     }
     homeTableViewCell.isSelecting = self.isSelecting;//是否处于正在选择状态
     homeTableViewCell.isAllSelected = self.isAllSelected;//是否全选
@@ -215,6 +218,48 @@
 //    homeTableViewCell.switch0.hidden = YES;
     [homeTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return homeTableViewCell;
+}
+//public static int[]mIconId={0,1,2,3,4,5,6,7,8,9,10,11,12};
+//public static String[]mDeviceName={"未识别的设备","门磁","门锁","开关","插座","灯","电视","窗帘","空调","温湿度计","情景面板","人体红外","网关"};
+//根据设备iconid(类型序号)取对应图片
+-(NSInteger)getDeviceEnumWithIconid:(NSString*)iconId{
+    
+    switch ([iconId integerValue]) {
+        case 0:
+            return mDeviceNameUnidentified;// 未识别的设备
+        case 1:
+            return mDeviceNameMagnetometer;// 门磁
+        case 2:
+            return mDeviceNameDoorLock;// 门锁
+        case 3:
+            return mDeviceNameSwitch;// 开关
+        case 4:
+            return mDeviceNameSocket;// 插座
+        case 5:
+            return mDeviceNameLight;// 灯
+        case 6:
+            return mDeviceNameTv;// 电视
+        case 7:
+            return mDeviceNameWindowCurtains;// 窗帘
+        case 8:
+            return mDeviceNameAirConditioner;// 空调
+            
+        case 9:
+            return mDeviceNameHygrothermograph;// 温湿度计
+            
+        case 10:
+            return mDeviceNameScenePanel;// 情景面板
+            
+        case 11:
+            return mDeviceNameHumanInfrared;// 人体红外
+            
+        case 12:
+            return mDeviceNameGateway;// 网关
+            
+            
+        default:
+            return mDeviceNameUnidentified;// 未识别的设备
+    }
 }
 - (void)action:(NSString *)actionStr{
     NSLog(@"点什么点");
@@ -250,7 +295,6 @@
                 [self createEmptyView];
             }
         }
-        
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"%@",error);
@@ -291,7 +335,6 @@
         make.centerX.equalTo(clickView);
         make.size.mas_equalTo(CGSizeMake(160, 13));
     }];
-    
     
     UILabel *titleLabel2 = [[UILabel alloc]init];
     titleLabel2.text = @"去添加吧！";

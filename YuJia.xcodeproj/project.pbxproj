@@ -15,6 +15,7 @@
 		160775FA1F304FD500DCD8E4 /* YJHomepageTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 160775F91F304FD500DCD8E4 /* YJHomepageTVCell.m */; };
 		160775FD1F30843A00DCD8E4 /* YJRoomSetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160775FC1F30843A00DCD8E4 /* YJRoomSetUpVC.m */; };
 		160952071F4447F7008DD1EC /* YJAddRoomBackgroundImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160952061F4447F6008DD1EC /* YJAddRoomBackgroundImageVC.m */; };
+		160B66231FDE835B00DADCA8 /* YJBindingEquipmentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160B66221FDE835B00DADCA8 /* YJBindingEquipmentVC.m */; };
 		160F011A1F2584EE006EE0A2 /* YJPayRecoderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */; };
 		161693771F57B56A00D1B522 /* YJMyCircleFriendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 161693761F57B56A00D1B522 /* YJMyCircleFriendVC.m */; };
 		1618C1E01ECC46E6003BBA58 /* YJNearbyShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1618C1DF1ECC46E6003BBA58 /* YJNearbyShopViewController.m */; };
@@ -293,6 +294,8 @@
 		160775FC1F30843A00DCD8E4 /* YJRoomSetUpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJRoomSetUpVC.m; sourceTree = "<group>"; };
 		160952051F4447F6008DD1EC /* YJAddRoomBackgroundImageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAddRoomBackgroundImageVC.h; sourceTree = "<group>"; };
 		160952061F4447F6008DD1EC /* YJAddRoomBackgroundImageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJAddRoomBackgroundImageVC.m; sourceTree = "<group>"; };
+		160B66211FDE835B00DADCA8 /* YJBindingEquipmentVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YJBindingEquipmentVC.h; sourceTree = "<group>"; };
+		160B66221FDE835B00DADCA8 /* YJBindingEquipmentVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YJBindingEquipmentVC.m; sourceTree = "<group>"; };
 		160F01181F2584EE006EE0A2 /* YJPayRecoderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJPayRecoderVC.h; sourceTree = "<group>"; };
 		160F01191F2584EE006EE0A2 /* YJPayRecoderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJPayRecoderVC.m; sourceTree = "<group>"; };
 		161693751F57B56A00D1B522 /* YJMyCircleFriendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJMyCircleFriendVC.h; sourceTree = "<group>"; };
@@ -607,6 +610,7 @@
 		16B991E71F4148CF003DC9EC /* YJScenePicCollectionVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJScenePicCollectionVCell.m; sourceTree = "<group>"; };
 		16B991E91F4179DC003DC9EC /* YJAddScenePicFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJAddScenePicFlowLayout.h; sourceTree = "<group>"; };
 		16B991EA1F4179DC003DC9EC /* YJAddScenePicFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJAddScenePicFlowLayout.m; sourceTree = "<group>"; };
+		16CA9ED31FE216CF00D8CAA7 /* YuJia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YuJia.entitlements; sourceTree = "<group>"; };
 		16CCBBDA1F2B1B3700C0D9CB /* YJLifePayRecoderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayRecoderModel.h; sourceTree = "<group>"; };
 		16CCBBDB1F2B1B3700C0D9CB /* YJLifePayRecoderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJLifePayRecoderModel.m; sourceTree = "<group>"; };
 		16CCBBDD1F2B389B00C0D9CB /* YJLifePayRecoderDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJLifePayRecoderDetailVC.h; sourceTree = "<group>"; };
@@ -872,6 +876,8 @@
 				164FA2511F31B06C004BC4BE /* YJSceneSetVC.m */,
 				164D9F511F3C6ADB00D62606 /* YJAddEquipmentVC.h */,
 				164D9F521F3C6ADB00D62606 /* YJAddEquipmentVC.m */,
+				160B66211FDE835B00DADCA8 /* YJBindingEquipmentVC.h */,
+				160B66221FDE835B00DADCA8 /* YJBindingEquipmentVC.m */,
 				164D9F541F3C6B7000D62606 /* YJConnectWifiVC.h */,
 				164D9F551F3C6B7000D62606 /* YJConnectWifiVC.m */,
 				164D9F571F3C6D1E00D62606 /* YJSuccessConnectVC.h */,
@@ -1493,6 +1499,7 @@
 		3E984EE81EB821EE0094CBE4 /* YuJia */ = {
 			isa = PBXGroup;
 			children = (
+				16CA9ED31FE216CF00D8CAA7 /* YuJia.entitlements */,
 				3E984F1C1EB829410094CBE4 /* Root_Tools */,
 				3E984F1D1EB8294A0094CBE4 /* Classes */,
 				3E984EE91EB821EE0094CBE4 /* Supporting Files */,
@@ -1784,6 +1791,11 @@
 						CreatedOnToolsVersion = 8.3.1;
 						DevelopmentTeam = HM3WX6CXQ7;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					3E984EFE1EB821EE0094CBE4 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -2071,6 +2083,7 @@
 				166FA4FF1F4C24100042D7CF /* YJAddhomeInfoVC.m in Sources */,
 				1672D7A31EC2BE7500F5970C /* YJSelfReplyTableViewCell.m in Sources */,
 				3E984F4B1EB82B6B0094CBE4 /* PropertyViewController.m in Sources */,
+				160B66231FDE835B00DADCA8 /* YJBindingEquipmentVC.m in Sources */,
 				3E94399B1ECD8013001FE471 /* AboutYuJiaViewController.m in Sources */,
 				3E984F7D1EB89E210094CBE4 /* YYPersonalTableViewCell.m in Sources */,
 				167EC1BA1ECED99A00D8FF9E /* YJCityDetailModel.m in Sources */,
@@ -2298,6 +2311,7 @@
 			baseConfigurationReference = FCEB0B1798004515169B3904 /* Pods-YuJia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YuJia/YuJia.entitlements;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2319,6 +2333,7 @@
 			baseConfigurationReference = E59A863B85B3DB5E62ED328E /* Pods-YuJia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YuJia/YuJia.entitlements;
 				DEVELOPMENT_TEAM = HM3WX6CXQ7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

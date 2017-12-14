@@ -30,7 +30,7 @@
     [self.view addSubview:imageV];
     
     [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).with.offset(10);
+        make.top.offset(10);
         make.centerX.equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(260 ,260));
     }];
